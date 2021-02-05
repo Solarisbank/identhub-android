@@ -1,0 +1,13 @@
+<resources>
+    <string name="onboarding_intro_title">Start identification</string>
+    <string name="onboarding_intro_description">
+        In order to complete the identification process, you will be asked to:
+    </string>
+    <string name="onboarding_intro_step_1">1. Verify your phone number with TAN.</string>
+    <string name="onboarding_intro_step_2">2. Identify yourself using a bank account.</string>
+    <string name="onboarding_intro_step_3">3. Read and sign proper consents.</string>
+    <string name="onboarding_intro_phone_number">Please follow the verification of your phone number\n %1$s to continue.</string>
+
+    <string name="onboarding_intro_verify_button">Send verification code</string>
+    <string name="onboarding_intro_quit">Return to site</string>
+</resources>

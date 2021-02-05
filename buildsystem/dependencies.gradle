@@ -1,0 +1,126 @@
+ext {
+    appCompatVersion = "1.1.0"
+    support = [
+            "androidx.appcompat:appcompat:$appCompatVersion",
+            "androidx.recyclerview:recyclerview:1.1.0",
+            "androidx.cardview:cardview:1.0.0",
+            "com.google.android.material:material:1.2.0",
+            "androidx.annotation:annotation:$appCompatVersion",
+            "androidx.constraintlayout:constraintlayout:2.0.2",
+    ]
+
+    fragmentVersion = "1.2.5"
+    fragment = [
+            "androidx.fragment:fragment:$fragmentVersion",
+            "androidx.fragment:fragment-ktx:$fragmentVersion",
+    ]
+
+    daggerVersion = '2.28.3'
+    dagger = [
+            libs: [
+                    "com.google.dagger:dagger:$daggerVersion",
+            ],
+            proc: [
+                    "com.google.dagger:dagger-compiler:$daggerVersion", // kapt
+            ],
+    ]
+
+    lifecycleVersion = "2.2.0"
+    lifecycle = [
+            libs: [
+                    "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+                    "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+            ],
+            proc: [
+                    "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion",
+            ],
+    ]
+
+    viewmodel = [
+            "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    ]
+
+    roomVersion = '2.2.5'
+    room = [
+            libs: [
+                    "androidx.room:room-runtime:$roomVersion",
+                    "androidx.room:room-ktx:$roomVersion",
+            ],
+            proc: [
+                    "androidx.room:room-compiler:$roomVersion"
+            ],
+            test: [
+                    "androidx.room:room-testing:$roomVersion",
+            ]
+    ]
+
+    navigationVersion = "2.3.3"
+    navigation = [
+            "androidx.navigation:navigation-runtime:$navigationVersion",
+            "androidx.navigation:navigation-fragment:$navigationVersion",
+            "androidx.navigation:navigation-ui:$navigationVersion",
+    ]
+
+    okHttpVersion = '4.8.0'
+    retrofitVersion = '2.9.0'
+    networking = [
+            libs: [
+                    "com.google.code.gson:gson:2.8.6",
+                    "com.squareup.okhttp3:okhttp:$okHttpVersion",
+                    "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
+                    "com.squareup.retrofit2:retrofit:$retrofitVersion",
+                    "com.squareup.retrofit2:converter-gson:$retrofitVersion",],
+            test: [
+                    "com.squareup.okhttp3:mockwebserver:$okHttpVersion",
+            ],
+    ]
+
+    glideVersion = '4.11.0'
+    utils = [
+            libs: [
+                    "com.jakewharton.threetenabp:threetenabp:1.2.4",
+                    "com.jakewharton.timber:timber:4.7.1",
+                    "com.github.bumptech.glide:glide:$glideVersion",
+                    'com.squareup.leakcanary:leakcanary-android:2.4',
+            ],
+            proc: [
+                    "com.github.bumptech.glide:compiler:$glideVersion",
+            ],
+            test: [
+                    threetenabp: 'org.threeten:threetenbp:1.4.1',
+            ]
+    ]
+
+    stethoVersion = '1.5.1'
+    stetho = [
+            "com.facebook.stetho:stetho:$stethoVersion",
+            "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
+    ]
+
+    rxJava = [
+            "io.reactivex.rxjava2:rxjava:2.2.19",
+            "io.reactivex.rxjava2:rxandroid:2.1.1",
+            "com.jakewharton.rxbinding2:rxbinding:2.2.0",
+            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+            "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion",
+    ]
+
+    baseTest = [
+            "junit:junit:4.13",
+            "org.mockito:mockito-core:3.5.15",
+            "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0",
+    ]
+
+    espressoVersion = '3.2.0'
+    espresso = [
+            "androidx.test.espresso:espresso-core:$espressoVersion",
+            "androidx.test.espresso:espresso-contrib:$espressoVersion",
+            "androidx.test.espresso:espresso-intents:$espressoVersion",
+            "androidx.test:runner:1.2.0",
+            "androidx.test:rules:1.2.0",
+    ]
+
+    libs = [
+            preference         : "androidx.preference:preference:$appCompatVersion"
+    ]
+}

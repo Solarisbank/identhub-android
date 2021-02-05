@@ -1,0 +1,15 @@
+<resources>
+    <string name="verification_bank_description">Please provide the IBAN number of your personal bank account.</string>
+    <string name="verification_bank_second_description">Please note, that joined accounts will not pass the identification requirements.</string>
+    <string name="verification_bank_input_label">Iban</string>
+    <string name="verification_bank_action_submit">Initiate Payment Verification</string>
+    <string name="verification_bank_input_hint">e.g. DE21 1234 3456 4567 5678 6789</string>
+    <string name="verification_bank_input_not_valid_message">IBAN format is not valid!</string>
+    <string name="verification_bank_action_next_step">Continue</string>
+    <string name="verification_bank_error_title">Payment verification error</string>
+    <string name="verification_bank_error_message">The account you provided is a joined account, which is not fit for personal identification. Please provide your individual account number..</string>
+    <string name="verification_bank_success_title">Payment verification successful</string>
+    <string name="verification_bank_success_message">Continue to sign documents to finish your identification process.</string>
+    <string name="verification_bank_action_quit">Quit</string>
+    <string name="verification_bank_action_retry">Retry IBAN verification</string>
+</resources>

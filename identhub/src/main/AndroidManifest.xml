@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="de.solarisbank.identhub">
+
+    <application tools:node="merge">
+        <activity android:name="de.solarisbank.identhub.identity.IdentityActivity" />
+        <activity android:name="de.solarisbank.identhub.intro.IntroActivity" />
+        <activity android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryActivity" />
+    </application>
+
+</manifest>

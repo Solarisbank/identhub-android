@@ -1,0 +1,8 @@
+ext {
+    buildConfig = [
+            compileSdk: 30,
+            minSdk: 23,
+            targetSdk: 30,
+            buildTools: "30.0.3"
+    ]
+}

@@ -1,0 +1,10 @@
+<resources>
+    <string name="contract_signing_preview_title">Confirm your application</string>
+    <string name="contract_signing_preview_description">To finalise the process, please read following documents and sign it with a TAN sent to your mobile phone number.</string>
+    <string name="contract_signing_preview_download_action">Download all documents</string>
+    <string name="contract_signing_preview_send_code_action">Send code to sign</string>
+    <string name="contract_signing_preview_code_description">Enter the 6-digit code sent to %1$s.</string>
+    <string name="contract_signing_preview_new_code">Send new code</string>
+    <string name="contract_signing_preview_sign_action">Submit and sign</string>
+    <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
+</resources>

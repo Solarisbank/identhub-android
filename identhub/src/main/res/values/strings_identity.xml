@@ -1,0 +1,7 @@
+<resources>
+    <string name="identity_activity_label_progress">Identification progress</string>
+    <string name="identity_activity_first_step_label">Phone verification</string>
+    <string name="identity_activity_second_step_label">Bank verification</string>
+    <string name="identity_activity_third_step_label">Sign documents</string>
+    <string name="identity_activity_next_step">Next: %1$s</string>
+</resources>

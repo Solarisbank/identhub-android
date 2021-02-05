@@ -1,0 +1,3 @@
+include ':identhub'
+include ':example'
+rootProject.name = "identhub-android"

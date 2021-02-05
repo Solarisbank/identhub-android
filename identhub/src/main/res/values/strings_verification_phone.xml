@@ -1,0 +1,15 @@
+<resources>
+    <string name="verification_phone_description">Enter the 6-digit code sent to %1$s.</string>
+    <string name="verification_phone_error_message">Wrong TAN. You need to request a new TAN and try again.</string>
+    <string name="verification_phone_request_code">Request a new code in %1$s.</string>
+    <string name="verification_phone_action_submit">Submit code</string>
+    <string name="verification_phone_action_new_code">Send new code</string>
+    <string name="verification_phone_status_verifying">Verifying…</string>
+    <string name="verification_phone_error_title">Phone verification error</string>
+    <string name="verification_phone_error_default_message">Something went wrong.</string>
+    <string name="verification_phone_success_title">Phone verification successful</string>
+    <string name="verification_phone_success_message">Continue to identify yourself with a bank account.</string>
+    <string name="verification_phone_action_next_step">Begin Bank Identification</string>
+    <string name="verification_phone_action_quit">Quit</string>
+    <string name="verification_phone_action_retry">Retry TAN verification</string>
+</resources>

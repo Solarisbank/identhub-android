@@ -1,0 +1,93 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-test.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            maven(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = project.group
+                artifactId = project.ext.artifactId
+                version = project.version
+
+                pom {
+                    name = 'Person onboarding SDK'
+                    description = 'Solarisbank’s library of user identification for Android'
+                    developers {
+                        developer {
+                            name = 'Solarisbank AG.'
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "mavencentral"
+                url = "http://localhost:8080/repository/internal/"
+                credentials {
+                    username System.getenv('MAVEN_USERNAME')
+                    password System.getenv('MAVEN_PASSWORD')
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation support
+    implementation viewmodel
+    implementation rxJava
+    implementation lifecycle.libs
+    implementation navigation
+    implementation utils.libs
+    annotationProcessor utils.libs
+    testImplementation baseTest
+    androidTestImplementation espresso
+}
