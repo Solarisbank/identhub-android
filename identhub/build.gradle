@@ -50,7 +50,7 @@ afterEvaluate {
                 from components.release
 
                 groupId = project.group
-                artifactId = project.ext.artifactId
+                artifactId = 'identhub-android'
                 // Version should match the release tag
                 version = System.getenv("GITHUB_REF")
 
