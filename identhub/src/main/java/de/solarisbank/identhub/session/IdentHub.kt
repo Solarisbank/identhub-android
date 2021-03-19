@@ -1,5 +1,8 @@
 package de.solarisbank.identhub.session
 
+import android.net.Uri
+import java.net.URI
+
 
 object IdentHub {
     private var instance: IdentHubSession? = null
@@ -8,11 +11,26 @@ object IdentHub {
         get() = instance?.isPaymentProcessAvailable ?: false
 
     fun sessionWithUrl(url: String): IdentHubSession {
-        return IdentHubSession(url).apply { instance = this }
+        val uri = URI.create(url)
+        val apiURL = buildUrl(uri)
+
+        return IdentHubSession(apiURL).apply { instance = this }
     }
 
-    fun currentSession(): IdentHubSession {
-        return instance ?: throw IllegalStateException("Session is not initialized")
+    private fun buildUrl(uri: URI): String {
+        val domain = uri.authority.replaceFirst(".", "-api.")
+        val apiUri = Uri.Builder().authority(domain)
+                .scheme(uri.scheme)
+                .appendEncodedPath("person_onboarding")
+                .appendEncodedPath(uri.path.substring(1))
+                .build()
+
+        var apiStringUrl = apiUri.toString()
+        if (apiStringUrl.last() != '/') {
+            apiStringUrl = "$apiStringUrl/"
+        }
+
+        return apiStringUrl
     }
 
     fun clear() {
