@@ -52,7 +52,7 @@ afterEvaluate {
                 groupId = project.group
                 artifactId = 'identhub-android'
                 // Version should match the release tag
-                version = System.getenv("GITHUB_REF")
+                version = System.getenv("GITHUB_REF").split('/')[2]
 
                 pom {
                     name = 'IdentHub'
@@ -69,7 +69,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/Solarisbank/identhub-android"
+                url = "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}"
                 credentials {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
