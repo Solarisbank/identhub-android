@@ -1,23 +1,23 @@
 package de.solarisbank.identhub.verfication.phone;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.AssistedViewModelFactory;
 import de.solarisbank.identhub.di.internal.MembersInjector;
 import de.solarisbank.identhub.di.internal.Provider;
 
-public class VerificationPhoneFragmentInjector implements MembersInjector<VerificationPhoneFragment> {
+public final class VerificationPhoneFragmentInjector implements MembersInjector<VerificationPhoneFragment> {
 
-    private final Provider<ViewModelFactory> viewModelFactoryProvider;
+    private final Provider<AssistedViewModelFactory> assistedViewModelFactory;
 
-    public VerificationPhoneFragmentInjector(Provider<ViewModelFactory> viewModelFactoryProvider) {
-        this.viewModelFactoryProvider = viewModelFactoryProvider;
+    public VerificationPhoneFragmentInjector(Provider<AssistedViewModelFactory> assistedViewModelFactory) {
+        this.assistedViewModelFactory = assistedViewModelFactory;
     }
 
-    public static void injectViewModelFactory(VerificationPhoneFragment instance, ViewModelFactory viewModelFactory) {
-        instance.viewModelFactory = viewModelFactory;
+    public static void injectAssistedViewModelFactory(VerificationPhoneFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
+        instance.assistedViewModelFactory = assistedViewModelFactory;
     }
 
     @Override
     public void injectMembers(VerificationPhoneFragment instance) {
-        injectViewModelFactory(instance, viewModelFactoryProvider.get());
+        injectAssistedViewModelFactory(instance, assistedViewModelFactory.get());
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import de.solarisbank.identhub.di.internal.Factory;
 import de.solarisbank.identhub.identity.IdentityModule;
 
-public class VerificationPhoneErrorViewModelFactory implements Factory<ViewModel> {
+public final class VerificationPhoneErrorViewModelFactory implements Factory<ViewModel> {
     private final IdentityModule identityModule;
 
     public VerificationPhoneErrorViewModelFactory(IdentityModule identityModule) {

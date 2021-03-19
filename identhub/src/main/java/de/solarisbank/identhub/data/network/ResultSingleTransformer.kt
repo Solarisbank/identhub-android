@@ -1,0 +1,33 @@
+package de.solarisbank.identhub.data.network
+
+import de.solarisbank.shared.result.Result
+import de.solarisbank.shared.result.Type
+import io.reactivex.Single
+import io.reactivex.SingleSource
+import io.reactivex.SingleTransformer
+import retrofit2.HttpException
+import java.net.HttpURLConnection
+
+class ResultSingleTransformer<U> : SingleTransformer<U, Result<U>> {
+    override fun apply(upstream: Single<U>): SingleSource<Result<U>> {
+        return upstream.map<Result<U>> { Result.Success(it) }
+                .onErrorReturn {
+                    var errorType: Type = Type.Unknown
+                    if (it is HttpException) {
+                        errorType = when (it.code()) {
+                            HttpURLConnection.HTTP_BAD_REQUEST -> Type.BadRequest
+                            HttpURLConnection.HTTP_NOT_FOUND -> Type.ResourceNotFound
+                            HttpURLConnection.HTTP_INTERNAL_ERROR -> Type.ServerError
+                            HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
+                            HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
+                            else -> Type.Unknown
+                        }
+                    }
+                    Result.Error(errorType, it)
+                }
+    }
+}
+
+fun <T> Single<T>.transformResult(): Single<Result<T>> {
+    return compose(ResultSingleTransformer())
+}

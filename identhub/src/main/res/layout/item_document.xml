@@ -33,9 +33,11 @@
     <TextView
         android:id="@+id/subtitle"
         style="@style/TextView.Small"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/base50"
+        android:ellipsize="middle"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="@+id/title"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/title"

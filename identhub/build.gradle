@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -44,22 +46,20 @@ android {
 afterEvaluate {
     publishing {
         publications {
-            // Creates a Maven publication called "release".
             maven(MavenPublication) {
-                // Applies the component for the release build variant.
                 from components.release
 
-                // You can then customize attributes of the publication as shown below.
                 groupId = project.group
                 artifactId = project.ext.artifactId
-                version = project.version
+                // Version should match the release tag
+                version = System.getenv("GITHUB_REF")
 
                 pom {
-                    name = 'Person onboarding SDK'
-                    description = 'Solarisbank’s library of user identification for Android'
+                    name = 'IdentHub'
+                    description = 'Solarisbank IdentHub Android SDK'
                     developers {
                         developer {
-                            name = 'Solarisbank AG.'
+                            name = 'Solarisbank AG'
                         }
                     }
                 }
@@ -68,11 +68,11 @@ afterEvaluate {
 
         repositories {
             maven {
-                name = "mavencentral"
-                url = "http://localhost:8080/repository/internal/"
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/Solarisbank/identhub-android"
                 credentials {
-                    username System.getenv('MAVEN_USERNAME')
-                    password System.getenv('MAVEN_PASSWORD')
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
                 }
             }
         }
@@ -80,14 +80,19 @@ afterEvaluate {
 }
 
 dependencies {
-
+    implementation kotlinCore
     implementation support
+    implementation activity
     implementation viewmodel
     implementation rxJava
     implementation lifecycle.libs
+    implementation networking.libs
+    implementation room.libs
+    kapt room.proc
     implementation navigation
-    implementation utils.libs
-    annotationProcessor utils.libs
+    debugImplementation leakCanary
+    implementation timber
     testImplementation baseTest
+    testImplementation room.test
     androidTestImplementation espresso
 }

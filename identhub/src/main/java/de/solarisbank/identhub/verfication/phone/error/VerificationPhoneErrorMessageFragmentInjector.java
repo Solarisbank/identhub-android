@@ -1,23 +1,23 @@
 package de.solarisbank.identhub.verfication.phone.error;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.AssistedViewModelFactory;
 import de.solarisbank.identhub.di.internal.MembersInjector;
 import de.solarisbank.identhub.di.internal.Provider;
 
-public class VerificationPhoneErrorMessageFragmentInjector implements MembersInjector<VerificationPhoneErrorMessageFragment> {
+public final class VerificationPhoneErrorMessageFragmentInjector implements MembersInjector<VerificationPhoneErrorMessageFragment> {
 
-    private final Provider<ViewModelFactory> viewModelFactoryProvider;
+    private final Provider<AssistedViewModelFactory> assistedViewModelFactory;
 
-    public VerificationPhoneErrorMessageFragmentInjector(Provider<ViewModelFactory> viewModelFactoryProvider) {
-        this.viewModelFactoryProvider = viewModelFactoryProvider;
+    public VerificationPhoneErrorMessageFragmentInjector(Provider<AssistedViewModelFactory> assistedViewModelFactory) {
+        this.assistedViewModelFactory = assistedViewModelFactory;
     }
 
-    public static void injectViewModelFactory(VerificationPhoneErrorMessageFragment instance, ViewModelFactory viewModelFactory) {
-        instance.viewModelFactory = viewModelFactory;
+    public static void injectAssistedViewModelFactory(VerificationPhoneErrorMessageFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
+        instance.assistedViewModelFactory = assistedViewModelFactory;
     }
 
     @Override
     public void injectMembers(VerificationPhoneErrorMessageFragment instance) {
-        injectViewModelFactory(instance, viewModelFactoryProvider.get());
+        injectAssistedViewModelFactory(instance, assistedViewModelFactory.get());
     }
 }

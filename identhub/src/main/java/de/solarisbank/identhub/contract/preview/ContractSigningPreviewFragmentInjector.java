@@ -1,23 +1,23 @@
 package de.solarisbank.identhub.contract.preview;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.AssistedViewModelFactory;
 import de.solarisbank.identhub.di.internal.MembersInjector;
 import de.solarisbank.identhub.di.internal.Provider;
 
 public class ContractSigningPreviewFragmentInjector implements MembersInjector<ContractSigningPreviewFragment> {
 
-    private final Provider<ViewModelFactory> viewModelFactoryProvider;
+    private final Provider<AssistedViewModelFactory> assistedViewModelFactory;
 
-    public ContractSigningPreviewFragmentInjector(Provider<ViewModelFactory> viewModelFactoryProvider) {
-        this.viewModelFactoryProvider = viewModelFactoryProvider;
+    public ContractSigningPreviewFragmentInjector(Provider<AssistedViewModelFactory> assistedViewModelFactory) {
+        this.assistedViewModelFactory = assistedViewModelFactory;
     }
 
-    public static void injectViewModelFactory(ContractSigningPreviewFragment instance, ViewModelFactory viewModelFactory) {
-        instance.viewModelFactory = viewModelFactory;
+    public static void injectAssistedViewModelFactory(ContractSigningPreviewFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
+        instance.assistedViewModelFactory = assistedViewModelFactory;
     }
 
     @Override
     public void injectMembers(ContractSigningPreviewFragment instance) {
-        injectViewModelFactory(instance, viewModelFactoryProvider.get());
+        injectAssistedViewModelFactory(instance, assistedViewModelFactory.get());
     }
 }

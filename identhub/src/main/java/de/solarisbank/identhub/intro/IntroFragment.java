@@ -11,12 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import de.solarisbank.identhub.R;
+import de.solarisbank.identhub.base.BaseFragment;
 import de.solarisbank.identhub.databinding.FragmentOnboardingIntroBinding;
-import de.solarisbank.identhub.di.LibraryComponent;
-import de.solarisbank.identhub.BaseFragment;
+import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
 
-public class IntroFragment extends BaseFragment {
+public final class IntroFragment extends BaseFragment {
     public static final String TAG = "IntroFragment";
 
     private FragmentOnboardingIntroBinding binding;
@@ -42,6 +42,7 @@ public class IntroFragment extends BaseFragment {
         binding.phoneNumber.setText(String.format(getString(R.string.onboarding_intro_phone_number), ""));
         binding.startVerifyButton.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), IdentityActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             startActivity(intent);
             getActivity().finish();
         });
@@ -54,7 +55,7 @@ public class IntroFragment extends BaseFragment {
     }
 
     @Override
-    protected void inject(LibraryComponent component) {
-
+    protected void inject(FragmentComponent component) {
+        component.inject(this);
     }
 }

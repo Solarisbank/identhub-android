@@ -1,23 +1,23 @@
 package de.solarisbank.identhub.intro;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.AssistedViewModelFactory;
 import de.solarisbank.identhub.di.internal.MembersInjector;
 import de.solarisbank.identhub.di.internal.Provider;
 
-public class IntroActivityInjector implements MembersInjector<IntroActivity> {
+public final class IntroActivityInjector implements MembersInjector<IntroActivity> {
 
-    private final Provider<ViewModelFactory> viewModelFactoryProvider;
+    private final Provider<AssistedViewModelFactory> viewModelFactoryProvider;
 
-    public IntroActivityInjector(Provider<ViewModelFactory> viewModelFactoryProvider) {
+    public IntroActivityInjector(Provider<AssistedViewModelFactory> viewModelFactoryProvider) {
         this.viewModelFactoryProvider = viewModelFactoryProvider;
     }
 
-    public static void injectViewModelFactory(IntroActivity instance, ViewModelFactory viewModelFactory) {
-        instance.viewModelFactory = viewModelFactory;
+    public static void injectAssistedViewModelFactory(IntroActivity instance, AssistedViewModelFactory saveStateViewModelFactory) {
+        instance.assistedViewModelFactory = saveStateViewModelFactory;
     }
 
     @Override
     public void injectMembers(IntroActivity instance) {
-        injectViewModelFactory(instance, viewModelFactoryProvider.get());
+        injectAssistedViewModelFactory(instance, viewModelFactoryProvider.get());
     }
 }

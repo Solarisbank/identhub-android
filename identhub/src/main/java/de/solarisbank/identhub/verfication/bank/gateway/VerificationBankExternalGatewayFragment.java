@@ -13,18 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.solarisbank.identhub.ViewModelFactory;
-import de.solarisbank.identhub.R;
+import de.solarisbank.identhub.base.BaseFragment;
 import de.solarisbank.identhub.databinding.FragmentVerificationBankExternalGatewayBinding;
-import de.solarisbank.identhub.di.LibraryComponent;
-import de.solarisbank.identhub.BaseFragment;
+import de.solarisbank.identhub.di.FragmentComponent;
+import de.solarisbank.identhub.di.internal.Preconditions;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
+import de.solarisbank.shared.result.Event;
+import de.solarisbank.shared.result.Result;
+import timber.log.Timber;
 
-public class VerificationBankExternalGatewayFragment extends BaseFragment {
-
-    ViewModelFactory viewModelFactory;
+public final class VerificationBankExternalGatewayFragment extends BaseFragment {
 
     private IdentityActivityViewModel sharedViewModel;
+    private VerificationBankExternalGateViewModel verificationBankExternalGateViewModel;
     private FragmentVerificationBankExternalGatewayBinding binding;
 
     public static Fragment newInstance() {
@@ -32,7 +33,7 @@ public class VerificationBankExternalGatewayFragment extends BaseFragment {
     }
 
     @Override
-    protected void inject(LibraryComponent component) {
+    protected void inject(FragmentComponent component) {
         component.inject(this);
     }
 
@@ -46,22 +47,52 @@ public class VerificationBankExternalGatewayFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViewModel();
-        binding.webView.loadUrl("https://www.google.pl");
+        initWebView();
+        observeVerificationStatus();
+    }
+
+    @Override
+    protected void initViewModel() {
+        super.initViewModel();
+        sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
+                .get(IdentityActivityViewModel.class);
+
+        verificationBankExternalGateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
+                .get(VerificationBankExternalGateViewModel.class);
+    }
+
+    private void initWebView() {
+        Event<String> bankVerificationUrlEvent = verificationBankExternalGateViewModel.getVerificationBankUrl().getValue();
+        String verificationBankUrl = bankVerificationUrlEvent.getContent();
+
+        Preconditions.checkNotNull(verificationBankUrl);
+
+        binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
         });
-        binding.emptyButton.setOnClickListener(
-                button -> sharedViewModel.navigateTo(R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment)
-        );
+        binding.webView.loadUrl(verificationBankUrl);
     }
 
-    private void initViewModel() {
-        sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
-                .get(IdentityActivityViewModel.class);
+    private void observeVerificationStatus() {
+        verificationBankExternalGateViewModel.getVerificationResultLiveData().observe(getViewLifecycleOwner(), this::onVerificationStatusChanged);
+    }
+
+    private void onVerificationStatusChanged(Result<Object> result) {
+        if (result instanceof Result.Success) {
+            sharedViewModel.navigateToProcessingVerification();
+        } else if (result instanceof Result.Error) {
+            Timber.d("Could not find verification result");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
 

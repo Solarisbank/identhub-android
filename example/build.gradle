@@ -1,5 +1,14 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
+}
+
+ext {
+
+    secrets = [
+            // define your app secrets, for example:
+             sessionUrl: keyProperty("SESSION_URL")
+    ]
 }
 
 android {
@@ -12,6 +21,8 @@ android {
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "SESSION_URL", "\"${secrets.sessionUrl}\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,7 +58,11 @@ android {
 }
 
 dependencies {
+    implementation kotlinCore
     implementation support
+    implementation activity
+    implementation fragment
+    implementation lifecycle.libs
     implementation project(path: ':identhub')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

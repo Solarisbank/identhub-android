@@ -4,11 +4,11 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.solarisbank.identhub.contract.model.Document;
+import de.solarisbank.identhub.data.entity.Document;
 import de.solarisbank.identhub.databinding.ItemDocumentBinding;
 
 public class DocumentViewHolder extends RecyclerView.ViewHolder {
-    private ItemDocumentBinding binding;
+    protected ItemDocumentBinding binding;
 
     public DocumentViewHolder(ItemDocumentBinding binding) {
         super(binding.getRoot());
@@ -17,8 +17,8 @@ public class DocumentViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Document document) {
         binding.imageView.setImageLevel(0);
-        binding.title.setText(document.getLabel());
-        binding.subtitle.setText(document.getFileName());
+        binding.title.setText(document.getDocumentType());
+        binding.subtitle.setText(document.getName());
     }
 
     public void bindAction(View.OnClickListener clickListener) {

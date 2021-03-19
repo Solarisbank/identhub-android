@@ -18,13 +18,15 @@
             android:background="@color/surface"
             android:elevation="2dp">
 
-            <FrameLayout
-                android:id="@+id/fragmentContainer"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/surface"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
+                app:defaultNavHost="true"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />

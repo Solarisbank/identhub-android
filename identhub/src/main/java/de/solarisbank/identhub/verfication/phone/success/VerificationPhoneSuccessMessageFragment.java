@@ -3,7 +3,7 @@ package de.solarisbank.identhub.verfication.phone.success;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.di.LibraryComponent;
+import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.success.SuccessMessageFragment;
 
 public class VerificationPhoneSuccessMessageFragment extends SuccessMessageFragment {
@@ -18,7 +18,7 @@ public class VerificationPhoneSuccessMessageFragment extends SuccessMessageFragm
     @Override
     protected void initViews() {
         super.initViews();
-        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment));
+        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateToIBanVerification());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class VerificationPhoneSuccessMessageFragment extends SuccessMessageFragm
     }
 
     @Override
-    protected void inject(LibraryComponent component) {
+    protected void inject(FragmentComponent component) {
         component.inject(this);
     }
 }

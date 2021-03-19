@@ -1,23 +1,23 @@
 package de.solarisbank.identhub.verfication.bank;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.AssistedViewModelFactory;
 import de.solarisbank.identhub.di.internal.MembersInjector;
 import de.solarisbank.identhub.di.internal.Provider;
 
-public class VerificationBankFragmentInjector implements MembersInjector<VerificationBankFragment> {
+public final class VerificationBankFragmentInjector implements MembersInjector<VerificationBankFragment> {
 
-    private final Provider<ViewModelFactory> viewModelFactoryProvider;
+    private final Provider<AssistedViewModelFactory> assistedViewModelFactory;
 
-    public VerificationBankFragmentInjector(Provider<ViewModelFactory> viewModelFactoryProvider) {
-        this.viewModelFactoryProvider = viewModelFactoryProvider;
+    public VerificationBankFragmentInjector(Provider<AssistedViewModelFactory> assistedViewModelFactory) {
+        this.assistedViewModelFactory = assistedViewModelFactory;
     }
 
-    public static void injectViewModelFactory(VerificationBankFragment instance, ViewModelFactory viewModelFactory) {
-        instance.viewModelFactory = viewModelFactory;
+    public static void injectAssistedViewModelFactory(VerificationBankFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
+        instance.assistedViewModelFactory = assistedViewModelFactory;
     }
 
     @Override
     public void injectMembers(VerificationBankFragment instance) {
-        injectViewModelFactory(instance, viewModelFactoryProvider.get());
+        injectAssistedViewModelFactory(instance, assistedViewModelFactory.get());
     }
 }

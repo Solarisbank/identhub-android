@@ -7,6 +7,16 @@
         <activity android:name="de.solarisbank.identhub.identity.IdentityActivity" />
         <activity android:name="de.solarisbank.identhub.intro.IntroActivity" />
         <activity android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="de.solarisbank.identhub.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

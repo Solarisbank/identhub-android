@@ -1,12 +1,34 @@
 package de.solarisbank.identhub.verfication.bank.gateway;
 
-import androidx.navigation.fragment.NavHostFragment;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.di.LibraryComponent;
+import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
+import de.solarisbank.shared.result.Event;
 
-public class EstablishConnectionFragment extends ProgressIndicatorFragment {
+public final class EstablishConnectionFragment extends ProgressIndicatorFragment {
+
+    private VerificationBankExternalGateViewModel verificationBankExternalGateViewModel;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        observeScreenState();
+    }
+
+    private void observeScreenState() {
+        verificationBankExternalGateViewModel.getEstablishSecureConnectionEvent().observe(getViewLifecycleOwner(), this::onSecureConnectionEstablished);
+    }
+
+    private void onSecureConnectionEstablished(Event<Object> event) {
+        sharedViewModel.moveToExternalGate();
+    }
 
     @Override
     protected int getIconResource() {
@@ -19,15 +41,13 @@ public class EstablishConnectionFragment extends ProgressIndicatorFragment {
     }
 
     @Override
-    protected void inject(LibraryComponent component) {
+    protected void inject(FragmentComponent component) {
         component.inject(this);
     }
 
     @Override
-    protected void initViews() {
-        super.initViews();
-        binding.icon.setOnClickListener(view ->
-                NavHostFragment.findNavController(EstablishConnectionFragment.this)
-                        .navigate(R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment));
+    protected void initViewModel() {
+        super.initViewModel();
+        verificationBankExternalGateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(VerificationBankExternalGateViewModel.class);
     }
 }

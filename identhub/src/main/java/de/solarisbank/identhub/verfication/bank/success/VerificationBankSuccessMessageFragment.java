@@ -1,29 +1,21 @@
 package de.solarisbank.identhub.verfication.bank.success;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.di.LibraryComponent;
+import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.success.SuccessMessageFragment;
 
-public class VerificationBankSuccessMessageFragment extends SuccessMessageFragment {
+public final class VerificationBankSuccessMessageFragment extends SuccessMessageFragment {
 
     public static Fragment newInstance() {
         return new VerificationBankSuccessMessageFragment();
     }
 
     @Override
-    protected void initViewModel() {
-        super.initViewModel();
-        viewModel = new ViewModelProvider(this, viewModelFactory)
-                .get(VerificationBankSuccessViewModel.class);
-    }
-
-    @Override
     protected void initViews() {
         super.initViews();
-        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateTo(R.id.action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment));
+        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateToContractSigningPreview());
     }
 
     @Override
@@ -42,7 +34,7 @@ public class VerificationBankSuccessMessageFragment extends SuccessMessageFragme
     }
 
     @Override
-    protected void inject(LibraryComponent component) {
+    protected void inject(FragmentComponent component) {
         component.inject(this);
     }
 }

@@ -11,15 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.solarisbank.identhub.ViewModelFactory;
+import de.solarisbank.identhub.base.BaseFragment;
 import de.solarisbank.identhub.databinding.FragmentVerificationProgressIndicatorBinding;
-import de.solarisbank.identhub.BaseFragment;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 
 public abstract class ProgressIndicatorFragment extends BaseFragment {
 
     private static final int NO_RESOURCE = -1;
-    public ViewModelFactory viewModelFactory;
+
     protected IdentityActivityViewModel sharedViewModel;
 
     protected FragmentVerificationProgressIndicatorBinding binding;
@@ -35,7 +34,6 @@ public abstract class ProgressIndicatorFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews();
-        initViewModel();
     }
 
     protected void initViews() {
@@ -66,7 +64,15 @@ public abstract class ProgressIndicatorFragment extends BaseFragment {
         return NO_RESOURCE;
     }
 
+    @Override
     protected void initViewModel() {
+        super.initViewModel();
         sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(IdentityActivityViewModel.class);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

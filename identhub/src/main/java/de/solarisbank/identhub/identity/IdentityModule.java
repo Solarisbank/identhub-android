@@ -1,26 +1,44 @@
 package de.solarisbank.identhub.identity;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.SavedStateHandle;
 
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
+import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
+import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
+import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
+import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
+import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
+import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
+import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
+import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
+import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
+import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
+import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
+import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel;
-import de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessViewModel;
+import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
+import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel;
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorViewModel;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModel;
 
-public class IdentityModule {
+public final class IdentityModule {
 
     @NonNull
-    public IdentityActivityViewModel provideIdentityActivityViewModel() {
-        return new IdentityActivityViewModel();
+    public IdentityActivityViewModel provideIdentityActivityViewModel(
+            final GetIdentificationUseCase getIdentificationUseCase,
+            final IdentificationStepPreferences identificationStepPreferences) {
+        return new IdentityActivityViewModel(getIdentificationUseCase, identificationStepPreferences);
     }
 
     @NonNull
-    public VerificationPhoneViewModel provideVerificationPhoneViewModel() {
-        return new VerificationPhoneViewModel();
+    public VerificationPhoneViewModel provideVerificationPhoneViewModel(final AuthorizeVerificationPhoneUseCase authorizeVerificationPhoneUseCase,
+                                                                        final ConfirmVerificationPhoneUseCase confirmVerificationPhoneUseCase) {
+        return new VerificationPhoneViewModel(authorizeVerificationPhoneUseCase, confirmVerificationPhoneUseCase);
     }
 
     @NonNull
@@ -34,13 +52,8 @@ public class IdentityModule {
     }
 
     @NonNull
-    public VerificationBankViewModel provideVerificationBankViewModel() {
-        return new VerificationBankViewModel();
-    }
-
-    @NonNull
-    public VerificationBankSuccessViewModel provideVerificationBankSuccessViewModel() {
-        return new VerificationBankSuccessViewModel();
+    public VerificationBankViewModel provideVerificationBankViewModel(final VerifyIBanUseCase verifyIBanUseCase) {
+        return new VerificationBankViewModel(verifyIBanUseCase);
     }
 
     @NonNull
@@ -49,12 +62,49 @@ public class IdentityModule {
     }
 
     @NonNull
-    public ContractSigningViewModel provideContractSigningViewModel() {
-        return new ContractSigningViewModel();
+    public ProcessingVerificationViewModel provideProcessingVerificationViewModel() {
+        return new ProcessingVerificationViewModel();
     }
 
     @NonNull
-    public ContractSigningPreviewViewModel provideContractSigningPreviewViewModel() {
-        return new ContractSigningPreviewViewModel();
+    public ContractSigningViewModel provideContractSigningViewModel(
+            final SavedStateHandle savedStateHandle,
+            final AuthorizeContractSignUseCase authorizeContractSignUseCase,
+            final ConfirmContractSignUseCase confirmContractSignUseCase,
+            final GetIdentificationUseCase getIdentificationUseCase) {
+        return new ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, getIdentificationUseCase);
+    }
+
+    @NonNull
+    public ContractSigningPreviewViewModel provideContractSigningPreviewViewModel(
+            final GetDocumentsUseCase getDocumentsUseCase,
+            final FetchPdfUseCase fetchPdfUseCase
+    ) {
+        return new ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase);
+    }
+
+    @NonNull
+    public VerificationBankExternalGateViewModel provideVerificationBankExternalGateViewModel(final SavedStateHandle savedStateHandle,
+                                                                                              final FetchingAuthorizedIBanStatusUseCase fetchingAuthorizedIBanStatusUseCase,
+                                                                                              final GetIdentificationUseCase getIdentificationUseCase) {
+        return new VerificationBankExternalGateViewModel(savedStateHandle, fetchingAuthorizedIBanStatusUseCase, getIdentificationUseCase);
+    }
+
+    @NonNull
+    public IdentitySummaryFragmentViewModel provideIdentitySummaryFragmentViewModel(
+            final DeleteAllLocalStorageUseCase deleteAllLocalStorageUseCase,
+            final GetDocumentsUseCase getDocumentsUseCase,
+            final FetchPdfUseCase fetchPdfUseCase,
+            final IdentificationStepPreferences identificationStepPreferences,
+            final SavedStateHandle savedStateHandle) {
+        return new IdentitySummaryFragmentViewModel(
+                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, savedStateHandle);
+    }
+
+    @NonNull
+    public IdentitySummaryViewModel provideIdentitySummaryViewModel(
+            final GetIdentificationUseCase getIdentificationUseCase,
+            final SavedStateHandle savedStateHandle) {
+        return new IdentitySummaryViewModel(getIdentificationUseCase, savedStateHandle);
     }
 }

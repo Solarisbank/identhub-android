@@ -1,8 +1,10 @@
 # Solarisbank IdentHub SDK
 Android SDK for Solarisbank IdentHub.
 
+It provides an easy way to integrate identification provided by Solarisbank into your Android app.
+
 ## Installation
-Then add the identhub-android to the dependicies in your `build.gradle` file:
+Add `identhub-android` as a dependency to your `build.gradle` file:
 
 ```groovy
 dependencies {
@@ -17,17 +19,80 @@ Add the required permissions for IdentHub to your app's `Manifest.xml` file:
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-Start a [Bankident](https://www.solarisbank.com/en/services/bankident/) identification:
+First you need to create an identification session via the Solarisbank API. The session will contain a URL that can be passed to the IdentHub SDK to create a new session.
 
-```java
-IdentHub identHub = new IdentHub();
-String token = …;
-identHub.startBankident(token);
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    // …
+
+    val sessionUrl = … // from the API
+    val button = findViewById(R.id.button)
+
+    val identHubSession = IdentHub().sessionWithUrl(sessionUrl) {
+        .onCompletion(this, ::onSuccess, ::onFailure)
+
+    button.setOnClickListener { identHubSession.start() }
+}
+
+private fun onSuccess(result: IdentHubSessionResult) {
+    val identificationId = result.identficationId
+    // Continue with your flow.
+}
+
+private fun onFailure(failure: IdentHubSessionFailure) {
+    // Continue after failed identification.
+}
 ```
 
-You can request a unique token to start the identification of a person from the Solarisbank API.
+When the IdentHub session is completed, the `onCompletion` callback is invoked to give back control to your activity.
+
+### Add custom step after payment initiation
+You can define listener that will be called after a successful payment initiation. You can use this to do something else in your app, before you continue the identification later.
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    // …
+
+    val sessionUrl = … // from the API
+    val startButton = findViewById(R.id.startButton)
+    val resumeButton = findViewById(R.id.resumeButton)
+
+    val identHubSession = IdentHub().sessionWithUrl(sessionUrl)
+        .onPaymentSuccess(this, ::onPaymentSuccess)
+        .onCompletion(this, ::onSuccess, ::onFailure)
+
+    startButton.setOnClickListener { identHubSession.start() }
+    resumeButton.setOnClickListener { identHubSession.resume() }
+}
+
+private fun onPaymentSuccess(result: IdentHubSessionResult) {
+    val identificationId = result.identficationId
+    // Continue with your flow.
+}
+
+// …
+```
+
+The call to `resume` will continue the identification.
+
+You can also resume the IdentHub session in a different activity. But this requires to add a new `onCompletion` listener that is scoped to the other activity.
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    // …
+
+    val button = findViewById(R.id.button)
+
+    val identHubSession = IdentHub().currentSession()
+        .onCompletion(this, ::onSuccess, ::onFailure)
+
+    button.setOnClickListener { identHubSession.resume() }
+}
+
+// …
+```
 
 ### Example
-To try out the example app, clone this repository and open it in [Android studio](https://developer.android.com/studio/).
+You can open the example app in [Android studio](https://developer.android.com/studio/) to try it out.
 
 You can find the example code in `example` directory.

@@ -13,9 +13,9 @@ import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.databinding.LayoutStepIndicatorBinding;
 
 public class StepIndicatorView extends ConstraintLayout {
-    public static final int FIRST_STEP = 0;
-    public static final int SECOND_STEP = 1;
-    public static final int THIRD_STEP = 2;
+    public static final int FIRST_STEP = 1;
+    public static final int SECOND_STEP = 2;
+    public static final int THIRD_STEP = 3;
 
     private LayoutStepIndicatorBinding binding;
 

@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:text="@string/verification_phone_action_new_code"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/submitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

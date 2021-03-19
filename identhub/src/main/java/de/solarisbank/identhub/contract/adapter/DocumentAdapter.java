@@ -6,20 +6,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jakewharton.rxrelay2.PublishRelay;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import de.solarisbank.identhub.data.entity.Document;
 import de.solarisbank.identhub.databinding.ItemDocumentBinding;
-import de.solarisbank.identhub.contract.model.Document;
+import io.reactivex.Observable;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
     private List<Document> documents = new ArrayList<>();
 
-    public DocumentAdapter() {
-        super();
-        documents.add(new Document("doc1.pdf", "Doc 1", ""));
-        documents.add(new Document("doc2.pdf", "Doc 2", ""));
-        documents.add(new Document("doc3.pdf", "Doc 3", ""));
+    private PublishRelay<Document> actionClickRelay = PublishRelay.create();
+
+    public Observable<Document> getActionOnClickObservable() {
+        return actionClickRelay.hide();
     }
 
     @NonNull
@@ -31,14 +33,27 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
-        holder.bind(documents.get(position));
+        Document document = documents.get(position);
+        holder.bind(document);
         holder.bindAction(view -> {
-
+            actionClickRelay.accept(document);
         });
     }
 
     @Override
     public int getItemCount() {
         return documents.size();
+    }
+
+    public void clear() {
+        this.documents.clear();
+    }
+
+    public void add(List<Document> documents) {
+        this.documents.addAll(documents);
+    }
+
+    public List<Document> getItems() {
+        return documents;
     }
 }
