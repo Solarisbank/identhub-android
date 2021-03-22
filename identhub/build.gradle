@@ -52,7 +52,7 @@ afterEvaluate {
                 groupId = project.group
                 artifactId = 'identhub-android'
                 // Version should match the release tag
-                version = System.getenv("GITHUB_REF").split('/')[2]
+                version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
                 pom {
                     name = 'IdentHub'
