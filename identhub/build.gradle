@@ -46,20 +46,23 @@ android {
 afterEvaluate {
     publishing {
         publications {
-            maven(MavenPublication) {
-                from components.release
+            def githubRef = System.getenv("GITHUB_REF")
+            if (githubRef != null) {
+                maven(MavenPublication) {
+                    from components.release
 
                 groupId = project.group
                 artifactId = 'identhub-android'
                 // Version should match the release tag
                 version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
-                pom {
-                    name = 'IdentHub'
-                    description = 'Solarisbank IdentHub Android SDK'
-                    developers {
-                        developer {
-                            name = 'Solarisbank AG'
+                    pom {
+                        name = 'IdentHub'
+                        description = 'Solarisbank IdentHub Android SDK'
+                        developers {
+                            developer {
+                                name = 'Solarisbank AG'
+                            }
                         }
                     }
                 }

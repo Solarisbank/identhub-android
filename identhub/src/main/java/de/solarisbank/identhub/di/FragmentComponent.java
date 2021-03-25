@@ -2,6 +2,7 @@ package de.solarisbank.identhub.di;
 
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment;
 import de.solarisbank.identhub.contract.sign.ContractSigningFragment;
+import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment;
 import de.solarisbank.identhub.intro.IntroFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
@@ -38,6 +39,8 @@ public interface FragmentComponent {
     void inject(ProgressIndicatorFragment progressIndicatorFragment);
 
     void inject(IntroFragment introFragment);
+
+    void inject(TermsAndConditionsFragment termsAndConditionsFragment);
 
     enum Initializer {
         ;

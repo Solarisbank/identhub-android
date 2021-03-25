@@ -20,6 +20,9 @@ import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
+import de.solarisbank.identhub.fourthline.FourthlineModule;
+import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsModelFactory;
+import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsViewModel;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModelFactory;
@@ -36,6 +39,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
 
     private final IntroModule introModule;
     private final IdentityModule identityModule;
+    private final FourthlineModule fourthlineModule;
     private final Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
     private final Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
@@ -56,7 +60,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                                          IdentityModule identityModule,
                                          Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
                                          Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-                                         IntroModule introModule) {
+                                         IntroModule introModule,
+                                         FourthlineModule fourthlineModule) {
         this.authorizeContractSignUseCaseProvider = authorizeContractSignUseCaseProvider;
         this.confirmContractSignUseCaseProvider = confirmContractSignUseCaseProvider;
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
@@ -66,6 +71,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
         this.introModule = introModule;
+        this.fourthlineModule = fourthlineModule;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
     }
@@ -81,7 +87,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            IntroModule introModule) {
+            IntroModule introModule,
+            FourthlineModule fourthlineModule) {
         return new SaveStateViewModelMapProvider(
                 authorizeContractSignUseCaseProvider,
                 confirmContractSignUseCaseProvider,
@@ -93,7 +100,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 identityModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
-                introModule);
+                introModule,
+                fourthlineModule);
     }
 
     @Override
@@ -105,6 +113,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(identityModule, fetchingAuthorizedIBanStatusUseCaseProvider, getIdentificationUseCaseProvider));
         map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(identityModule, deleteAllLocalStorageUseCaseProvider, getDocumentsUseCaseProvider, fetchPdfUseCaseProvider, identificationStepPreferencesProvider));
         map.put(IdentitySummaryViewModel.class, IdentitySummaryViewModelFactory.create(identityModule, getIdentificationUseCaseProvider));
+        map.put(TermsAndConditionsViewModel.class, TermsAndConditionsModelFactory.create(fourthlineModule));
 
         return map;
     }

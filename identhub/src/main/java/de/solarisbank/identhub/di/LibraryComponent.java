@@ -93,6 +93,9 @@ import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhon
 import de.solarisbank.identhub.domain.verification.phone.VerificationPhoneRepository;
 import de.solarisbank.identhub.file.FileController;
 import de.solarisbank.identhub.file.FileControllerFactory;
+import de.solarisbank.identhub.fourthline.FourthlineModule;
+import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
+import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsInjector;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
@@ -136,6 +139,7 @@ public class LibraryComponent {
     private final LibraryModule libraryModule;
     private final NetworkModule networkModule;
     private final DatabaseModule databaseModule;
+    private final FourthlineModule fourthlineModule;
 
     private Provider<Context> applicationContextProvider;
     private Provider<IdentityRoomDatabase> identityRoomDatabaseProvider;
@@ -178,6 +182,7 @@ public class LibraryComponent {
     private LibraryComponent(
             IdentityModule identityModule,
             IntroModule introModule,
+            FourthlineModule fourthlineModule,
             LibraryModule libraryModule,
             NetworkModule networkModule,
             DatabaseModule databaseModule,
@@ -189,6 +194,7 @@ public class LibraryComponent {
         this.identityModule = identityModule;
         this.introModule = introModule;
         this.libraryModule = libraryModule;
+        this.fourthlineModule = fourthlineModule;
         this.networkModule = networkModule;
         this.databaseModule = databaseModule;
         initializeMapper(mapperModule);
@@ -299,6 +305,7 @@ public class LibraryComponent {
             return new LibraryComponent(
                     identityModule,
                     introModule,
+                    new FourthlineModule(),
                     libraryModule,
                     networkModule,
                     databaseModule,
@@ -353,7 +360,8 @@ public class LibraryComponent {
                     LibraryComponent.this.identityModule,
                     identificationStepPreferencesProvider,
                     LibraryComponent.this.sessionUrlRepositoryProvider,
-                    LibraryComponent.this.introModule
+                    LibraryComponent.this.introModule,
+                    LibraryComponent.this.fourthlineModule
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(LibraryModuleAssistedViewModelFactory.create(LibraryComponent.this.libraryModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
         }
@@ -444,6 +452,11 @@ public class LibraryComponent {
             @Override
             public void inject(IntroFragment introFragment) {
                 IntroFragmentInjector.injectAssistedViewModelFactory(introFragment, fragmentAssistedViewModelFactoryProvider.get());
+            }
+
+            @Override
+            public void inject(TermsAndConditionsFragment termsAndConditionsFragment) {
+                TermsAndConditionsInjector.injectAssistedViewModelFactory(termsAndConditionsFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
         }
