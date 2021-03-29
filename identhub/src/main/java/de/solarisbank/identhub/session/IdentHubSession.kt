@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.session
 
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 
 class IdentHubSession(private val sessionUrl: String) {
     private var mainProcess: IdentHubSessionObserver? = null
@@ -15,7 +15,7 @@ class IdentHubSession(private val sessionUrl: String) {
         get() = paymentErrorCallback != null || paymentSuccessCallback != null
 
     fun onCompletionCallback(
-            context: ComponentActivity,
+            fragmentActivity: FragmentActivity,
             successCallback: ((IdentHubSessionResult) -> Unit),
             errorCallback: ((IdentHubSessionFailure) -> Unit)
     ) {
@@ -23,8 +23,8 @@ class IdentHubSession(private val sessionUrl: String) {
         this.identificationErrorCallback = errorCallback
         this.identificationSuccessCallback = successCallback
 
-        mainProcess = IdentHubSessionObserver(context.activityResultRegistry, ::onResultSuccess, ::onResultFailure)
-        context.lifecycle.addObserver(mainProcess!!)
+        mainProcess = IdentHubSessionObserver(fragmentActivity, ::onResultSuccess, ::onResultFailure)
+        fragmentActivity.lifecycle.addObserver(mainProcess!!)
     }
 
     fun onPaymentCallback(
