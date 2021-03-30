@@ -94,6 +94,10 @@ import de.solarisbank.identhub.domain.verification.phone.VerificationPhoneReposi
 import de.solarisbank.identhub.file.FileController;
 import de.solarisbank.identhub.file.FileControllerFactory;
 import de.solarisbank.identhub.fourthline.FourthlineModule;
+import de.solarisbank.identhub.fourthline.selfie.SelfieFragment;
+import de.solarisbank.identhub.fourthline.selfie.SelfieFragmentInjector;
+import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragment;
+import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragmentInjector;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsInjector;
 import de.solarisbank.identhub.identity.IdentityActivity;
@@ -459,6 +463,16 @@ public class LibraryComponent {
                 TermsAndConditionsInjector.injectAssistedViewModelFactory(termsAndConditionsFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
+            @Override
+            public void inject(@NotNull SelfieFragment selfieFragment) {
+                SelfieFragmentInjector.injectAssistedViewModelFactory(selfieFragment, fragmentAssistedViewModelFactoryProvider.get());
+            }
+
+            @Override
+            public void inject(SelfieResultFragment selfieResultFragment) {
+                SelfieResultFragmentInjector.injectAssistedViewModelFactory(selfieResultFragment, fragmentAssistedViewModelFactoryProvider.get());
+
+            }
         }
     }
 }

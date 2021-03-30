@@ -21,6 +21,8 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.fourthline.FourthlineModule;
+import de.solarisbank.identhub.fourthline.selfie.SelfieSharedViewModel;
+import de.solarisbank.identhub.fourthline.selfie.SelfieSharedViewModelFactory;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsModelFactory;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsViewModel;
 import de.solarisbank.identhub.identity.IdentityModule;
@@ -114,6 +116,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(identityModule, deleteAllLocalStorageUseCaseProvider, getDocumentsUseCaseProvider, fetchPdfUseCaseProvider, identificationStepPreferencesProvider));
         map.put(IdentitySummaryViewModel.class, IdentitySummaryViewModelFactory.create(identityModule, getIdentificationUseCaseProvider));
         map.put(TermsAndConditionsViewModel.class, TermsAndConditionsModelFactory.create(fourthlineModule));
+        map.put(SelfieSharedViewModel.class, SelfieSharedViewModelFactory.create(fourthlineModule));
 
         return map;
     }

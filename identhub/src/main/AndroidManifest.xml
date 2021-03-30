@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.solarisbank.identhub">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application tools:node="merge">
         <activity android:name="de.solarisbank.identhub.identity.IdentityActivity" />
         <activity android:name="de.solarisbank.identhub.intro.IntroActivity" />

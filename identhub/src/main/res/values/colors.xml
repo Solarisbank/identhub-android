@@ -17,6 +17,7 @@
     <color name="background">#F7F8FA</color>
 
     <color name="black">#FF000000</color>
+    <color name="black30">#4D000000</color>
     <color name="black50">#7E8794</color>
     <color name="black25">#BFBFBF</color>
     <color name="black10">#E9EDF2</color>

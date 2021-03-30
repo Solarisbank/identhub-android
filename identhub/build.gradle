@@ -86,11 +86,12 @@ dependencies {
     implementation kotlinCore
     implementation support
     implementation activity
-    implementation viewmodel
+    implementation fourthline
     implementation rxJava
     implementation lifecycle.libs
     implementation networking.libs
     implementation room.libs
+    implementation viewmodel
     kapt room.proc
     implementation navigation
     debugImplementation leakCanary

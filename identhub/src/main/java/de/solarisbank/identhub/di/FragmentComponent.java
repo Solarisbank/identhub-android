@@ -2,6 +2,8 @@ package de.solarisbank.identhub.di;
 
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment;
 import de.solarisbank.identhub.contract.sign.ContractSigningFragment;
+import de.solarisbank.identhub.fourthline.selfie.SelfieFragment;
+import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragment;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment;
 import de.solarisbank.identhub.intro.IntroFragment;
@@ -41,6 +43,10 @@ public interface FragmentComponent {
     void inject(IntroFragment introFragment);
 
     void inject(TermsAndConditionsFragment termsAndConditionsFragment);
+
+    void inject(SelfieFragment selfieFragment);
+
+    void inject(SelfieResultFragment selfieResultFragment);
 
     enum Initializer {
         ;

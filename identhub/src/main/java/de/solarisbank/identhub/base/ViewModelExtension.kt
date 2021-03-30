@@ -14,5 +14,5 @@ inline fun <reified VM : ViewModel> BaseFragment.viewModels() =
                 .get(VM::class.java)
 
 inline fun <reified VM : ViewModel> BaseFragment.activityViewModels() =
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).defaultViewModelProviderFactory)
+        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
                 .get(VM::class.java)
