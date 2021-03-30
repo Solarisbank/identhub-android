@@ -100,6 +100,10 @@ import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragment;
 import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragmentInjector;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsInjector;
+import de.solarisbank.identhub.fourthline.welcome.WelcomeContainerFragment;
+import de.solarisbank.identhub.fourthline.welcome.WelcomeContainerFragmentInjector;
+import de.solarisbank.identhub.fourthline.welcome.WelcomePageFragment;
+import de.solarisbank.identhub.fourthline.welcome.WelcomePageFragmentInjector;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
@@ -464,6 +468,20 @@ public class LibraryComponent {
             }
 
             @Override
+            public void inject(WelcomeContainerFragment welcomeContainerFragment) {
+                WelcomeContainerFragmentInjector.Companion.injectAssistedViewModelFactory(
+                        welcomeContainerFragment, fragmentAssistedViewModelFactoryProvider.get()
+                );
+            }
+
+            @Override
+            public void inject(WelcomePageFragment welcomePageFragment) {
+                WelcomePageFragmentInjector.Companion.injectAssistedViewModelFactory(
+                        welcomePageFragment, fragmentAssistedViewModelFactoryProvider.get()
+                );
+            }
+
+            @Override
             public void inject(@NotNull SelfieFragment selfieFragment) {
                 SelfieFragmentInjector.injectAssistedViewModelFactory(selfieFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
@@ -471,8 +489,8 @@ public class LibraryComponent {
             @Override
             public void inject(SelfieResultFragment selfieResultFragment) {
                 SelfieResultFragmentInjector.injectAssistedViewModelFactory(selfieResultFragment, fragmentAssistedViewModelFactoryProvider.get());
-
             }
+
         }
     }
 }

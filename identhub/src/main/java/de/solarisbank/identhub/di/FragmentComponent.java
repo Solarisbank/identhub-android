@@ -5,6 +5,8 @@ import de.solarisbank.identhub.contract.sign.ContractSigningFragment;
 import de.solarisbank.identhub.fourthline.selfie.SelfieFragment;
 import de.solarisbank.identhub.fourthline.selfie.SelfieResultFragment;
 import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsFragment;
+import de.solarisbank.identhub.fourthline.welcome.WelcomeContainerFragment;
+import de.solarisbank.identhub.fourthline.welcome.WelcomePageFragment;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment;
 import de.solarisbank.identhub.intro.IntroFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
@@ -43,6 +45,10 @@ public interface FragmentComponent {
     void inject(IntroFragment introFragment);
 
     void inject(TermsAndConditionsFragment termsAndConditionsFragment);
+
+    void inject(WelcomeContainerFragment welcomeContainerFragment);
+
+    void inject(WelcomePageFragment welcomePageFragment);
 
     void inject(SelfieFragment selfieFragment);
 
