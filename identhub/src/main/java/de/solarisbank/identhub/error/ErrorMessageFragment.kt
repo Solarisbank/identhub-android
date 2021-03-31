@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.base.BaseFragment
-import de.solarisbank.identhub.base.activityViewModels
-import de.solarisbank.identhub.base.view.viewBinding
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.databinding.FragmentErrorMessageBinding
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.view.viewBinding
 
-abstract class ErrorMessageFragment : BaseFragment() {
+abstract class ErrorMessageFragment : IdentHubFragment() {
     private lateinit var alertDialog: AlertDialog
-    protected val binding: FragmentErrorMessageBinding by viewBinding(FragmentErrorMessageBinding::inflate)
-    protected val sharedViewModel: IdentityActivityViewModel by lazy { activityViewModels() }
+    protected val binding: FragmentErrorMessageBinding by viewBinding { FragmentErrorMessageBinding.inflate(layoutInflater) }
+    protected val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return binding.root

@@ -28,7 +28,7 @@ public final class NetworkModule {
         return MoshiConverterFactory.create(
                 new Moshi.Builder()
                         .add(Date.class, new Rfc3339DateJsonAdapter())
-                        .addLast(new KotlinJsonAdapterFactory())
+                        .add(new KotlinJsonAdapterFactory())
                         .build()
         );
     }

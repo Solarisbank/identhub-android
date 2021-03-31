@@ -3,7 +3,7 @@ package de.solarisbank.identhub.verfication.bank.gateway.processing
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.shared.result.Event
+import de.solarisbank.sdk.core.result.Event
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit

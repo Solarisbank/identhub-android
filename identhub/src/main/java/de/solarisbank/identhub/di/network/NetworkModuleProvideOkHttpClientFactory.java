@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.di.network;
 
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor;
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Preconditions;
-import de.solarisbank.identhub.di.internal.Provider;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
+import de.solarisbank.sdk.core.di.internal.Provider;
 import okhttp3.OkHttpClient;
 
 public final class NetworkModuleProvideOkHttpClientFactory implements Factory<OkHttpClient> {

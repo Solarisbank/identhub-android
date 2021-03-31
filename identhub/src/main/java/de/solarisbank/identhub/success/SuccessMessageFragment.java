@@ -10,11 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.solarisbank.identhub.base.BaseFragment;
+import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.databinding.FragmentSuccessMessageBinding;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 
-public abstract class SuccessMessageFragment extends BaseFragment {
+public abstract class SuccessMessageFragment extends IdentHubFragment {
 
     protected SuccessViewModel viewModel;
     protected FragmentSuccessMessageBinding binding;

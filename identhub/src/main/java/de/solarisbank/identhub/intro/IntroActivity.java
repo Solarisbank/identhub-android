@@ -7,13 +7,13 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.base.BaseActivity;
+import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.databinding.ActivityIntroBinding;
-import de.solarisbank.identhub.di.ActivityComponent;
+import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.session.IdentHubSession;
 
-public final class IntroActivity extends BaseActivity {
+public final class IntroActivity extends IdentHubActivity {
 
     private ActivityIntroBinding binding;
 
@@ -44,7 +44,7 @@ public final class IntroActivity extends BaseActivity {
     }
 
     @Override
-    protected void inject(ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+    protected void inject(ActivitySubcomponent activitySubcomponent) {
+        activitySubcomponent.inject(this);
     }
 }

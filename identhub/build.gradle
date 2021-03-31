@@ -41,6 +41,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 afterEvaluate {
@@ -50,11 +54,11 @@ afterEvaluate {
             if (githubRef != null) {
                 maven(MavenPublication) {
                     from components.release
+                    groupId = project.group
+                    artifactId = 'identhub-android'
+                    // Version should match the release tag
+                    version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
-                groupId = project.group
-                artifactId = 'identhub-android'
-                // Version should match the release tag
-                version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
                     pom {
                         name = 'IdentHub'
@@ -64,6 +68,7 @@ afterEvaluate {
                                 name = 'Solarisbank AG'
                             }
                         }
+
                     }
                 }
             }
@@ -83,10 +88,10 @@ afterEvaluate {
 }
 
 dependencies {
+    api project(":core")
     implementation kotlinCore
     implementation support
     implementation activity
-    implementation fourthline
     implementation rxJava
     implementation lifecycle.libs
     implementation networking.libs

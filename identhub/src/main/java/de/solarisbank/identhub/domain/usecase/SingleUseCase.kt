@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.domain.usecase
 
 import de.solarisbank.identhub.data.network.transformResult
-import de.solarisbank.shared.result.Result
+import de.solarisbank.sdk.core.result.Result
 import io.reactivex.Single
 
 abstract class SingleUseCase<P, R> {

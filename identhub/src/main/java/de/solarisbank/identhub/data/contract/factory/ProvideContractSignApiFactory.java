@@ -2,9 +2,9 @@ package de.solarisbank.identhub.data.contract.factory;
 
 import de.solarisbank.identhub.data.contract.ContractSignApi;
 import de.solarisbank.identhub.data.contract.ContractSignModule;
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Preconditions;
-import de.solarisbank.identhub.di.internal.Provider;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
+import de.solarisbank.sdk.core.di.internal.Provider;
 import retrofit2.Retrofit;
 
 public class ProvideContractSignApiFactory implements Factory<ContractSignApi> {

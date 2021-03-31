@@ -2,10 +2,10 @@ package de.solarisbank.identhub.identity.summary
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.di.internal.Factory2
-import de.solarisbank.identhub.di.internal.Provider
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.identity.IdentityModule
+import de.solarisbank.sdk.core.di.internal.Factory2
+import de.solarisbank.sdk.core.di.internal.Provider
 
 class IdentitySummaryViewModelFactory(
         private val identityModule: IdentityModule,

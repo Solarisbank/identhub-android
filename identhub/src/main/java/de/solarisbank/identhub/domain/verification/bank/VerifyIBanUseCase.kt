@@ -4,7 +4,7 @@ import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
-import de.solarisbank.shared.result.data
+import de.solarisbank.sdk.core.result.data
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 

@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.di.network;
 
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Preconditions;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
 import retrofit2.CallAdapter;
 
 public final class NetworkModuleProvideRxJavaCallAdapterFactory implements Factory<CallAdapter.Factory> {

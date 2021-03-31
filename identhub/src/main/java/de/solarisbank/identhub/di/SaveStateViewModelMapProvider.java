@@ -10,8 +10,6 @@ import java.util.Map;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModelFactory;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
-import de.solarisbank.identhub.di.internal.Factory2;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
@@ -20,13 +18,6 @@ import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
-import de.solarisbank.identhub.fourthline.FourthlineModule;
-import de.solarisbank.identhub.fourthline.selfie.SelfieSharedViewModel;
-import de.solarisbank.identhub.fourthline.selfie.SelfieSharedViewModelFactory;
-import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsModelFactory;
-import de.solarisbank.identhub.fourthline.terms.TermsAndConditionsViewModel;
-import de.solarisbank.identhub.fourthline.welcome.WelcomeSharedViewModel;
-import de.solarisbank.identhub.fourthline.welcome.WelcomeViewModelFactory;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModelFactory;
@@ -37,13 +28,14 @@ import de.solarisbank.identhub.intro.IntroActivityViewModelFactory;
 import de.solarisbank.identhub.intro.IntroModule;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
+import de.solarisbank.sdk.core.di.internal.Factory2;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     private final IntroModule introModule;
     private final IdentityModule identityModule;
-    private final FourthlineModule fourthlineModule;
     private final Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
     private final Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
@@ -64,8 +56,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                                          IdentityModule identityModule,
                                          Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
                                          Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-                                         IntroModule introModule,
-                                         FourthlineModule fourthlineModule) {
+                                         IntroModule introModule) {
         this.authorizeContractSignUseCaseProvider = authorizeContractSignUseCaseProvider;
         this.confirmContractSignUseCaseProvider = confirmContractSignUseCaseProvider;
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
@@ -75,7 +66,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
         this.introModule = introModule;
-        this.fourthlineModule = fourthlineModule;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
     }
@@ -91,8 +81,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            IntroModule introModule,
-            FourthlineModule fourthlineModule) {
+            IntroModule introModule) {
         return new SaveStateViewModelMapProvider(
                 authorizeContractSignUseCaseProvider,
                 confirmContractSignUseCaseProvider,
@@ -104,8 +93,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 identityModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
-                introModule,
-                fourthlineModule);
+                introModule);
     }
 
     @Override
@@ -117,9 +105,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(identityModule, fetchingAuthorizedIBanStatusUseCaseProvider, getIdentificationUseCaseProvider));
         map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(identityModule, deleteAllLocalStorageUseCaseProvider, getDocumentsUseCaseProvider, fetchPdfUseCaseProvider, identificationStepPreferencesProvider));
         map.put(IdentitySummaryViewModel.class, IdentitySummaryViewModelFactory.create(identityModule, getIdentificationUseCaseProvider));
-        map.put(TermsAndConditionsViewModel.class, TermsAndConditionsModelFactory.create(fourthlineModule));
-        map.put(WelcomeSharedViewModel.class, WelcomeViewModelFactory.create(fourthlineModule));
-        map.put(SelfieSharedViewModel.class, SelfieSharedViewModelFactory.create(fourthlineModule));
 
         return map;
     }

@@ -1,18 +1,18 @@
 package de.solarisbank.identhub.data.preferences
 
 import android.content.SharedPreferences
-import de.solarisbank.identhub.di.ActivityModule
-import de.solarisbank.identhub.di.internal.Factory
-import de.solarisbank.identhub.di.internal.Preconditions
-import de.solarisbank.identhub.di.internal.Provider
+import de.solarisbank.identhub.di.ActivitySubModule
+import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.core.di.internal.Preconditions
+import de.solarisbank.sdk.core.di.internal.Provider
 
 class IdentificationStepPreferencesFactory(
-        private val activityModule: ActivityModule,
+        private val activitySubModule: ActivitySubModule,
         private val sharedPreferencesProvider: Provider<SharedPreferences>
 ) : Factory<IdentificationStepPreferences> {
     override fun get(): IdentificationStepPreferences {
         return Preconditions.checkNotNull(
-                activityModule.provideIdentificationStepPreferences(sharedPreferencesProvider.get()),
+                activitySubModule.provideIdentificationStepPreferences(sharedPreferencesProvider.get()),
                 "Cannot return null from provider method"
         )
     }
@@ -20,10 +20,10 @@ class IdentificationStepPreferencesFactory(
     companion object {
         @JvmStatic
         fun create(
-                activityModule: ActivityModule,
+                activitySubModule: ActivitySubModule,
                 sharedPreferencesProvider: Provider<SharedPreferences>
         ): IdentificationStepPreferencesFactory {
-            return IdentificationStepPreferencesFactory(activityModule, sharedPreferencesProvider)
+            return IdentificationStepPreferencesFactory(activitySubModule, sharedPreferencesProvider)
         }
     }
 }

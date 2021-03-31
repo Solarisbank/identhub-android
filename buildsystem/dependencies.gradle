@@ -72,11 +72,11 @@ ext {
 
     okHttpVersion = '4.8.0'
     retrofitVersion = '2.9.0'
-    moshi = '1.11.0'
+    moshi = '1.8.0'
     networking = [
             libs: [
                     "com.squareup.moshi:moshi:$moshi",
-                    "com.squareup.moshi:moshi-adapters:$moshi",
+                    "com.squareup.moshi:moshi-adapters:1.11.0",
                     "com.squareup.moshi:moshi-kotlin:$moshi",
                     "com.squareup.okhttp3:okhttp:$okHttpVersion",
                     "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
@@ -105,6 +105,7 @@ ext {
 
     baseTest = [
             "junit:junit:4.13",
+            "androidx.test.ext:junit:1.1.2",
             "org.mockito:mockito-core:3.5.15",
             "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0",
     ]

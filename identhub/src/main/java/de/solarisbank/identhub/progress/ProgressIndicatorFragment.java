@@ -11,11 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.solarisbank.identhub.base.BaseFragment;
+import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.databinding.FragmentVerificationProgressIndicatorBinding;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 
-public abstract class ProgressIndicatorFragment extends BaseFragment {
+public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     private static final int NO_RESOURCE = -1;
 

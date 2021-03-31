@@ -12,14 +12,14 @@ import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.base.BaseActivity;
+import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.databinding.ActivitySummaryIdentityBinding;
-import de.solarisbank.identhub.di.ActivityComponent;
+import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 import de.solarisbank.identhub.navigation.NaviDirection;
-import de.solarisbank.shared.result.Event;
+import de.solarisbank.sdk.core.result.Event;
 
-public final class IdentitySummaryActivity extends BaseActivity {
+public final class IdentitySummaryActivity extends IdentHubActivity {
 
     private IdentitySummaryViewModel viewModel;
 
@@ -71,7 +71,7 @@ public final class IdentitySummaryActivity extends BaseActivity {
     }
 
     @Override
-    protected void inject(ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+    protected void inject(ActivitySubcomponent activitySubcomponent) {
+        activitySubcomponent.inject(this);
     }
 }

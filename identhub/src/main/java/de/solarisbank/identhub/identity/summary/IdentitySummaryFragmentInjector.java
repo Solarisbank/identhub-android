@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.identity.summary;
 
-import de.solarisbank.identhub.AssistedViewModelFactory;
-import de.solarisbank.identhub.di.internal.MembersInjector;
-import de.solarisbank.identhub.di.internal.Provider;
+import de.solarisbank.sdk.core.di.internal.MembersInjector;
+import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
 
 public class IdentitySummaryFragmentInjector implements MembersInjector<IdentitySummaryFragment> {
     private final Provider<AssistedViewModelFactory> viewModelFactoryProvider;

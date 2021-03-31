@@ -13,16 +13,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.base.BaseActivity;
+import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.databinding.ActivityIdentityBinding;
-import de.solarisbank.identhub.di.ActivityComponent;
+import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity;
 import de.solarisbank.identhub.navigation.NaviDirection;
 import de.solarisbank.identhub.session.IdentHubSession;
 import de.solarisbank.identhub.ui.StepIndicatorView;
-import de.solarisbank.shared.result.Event;
+import de.solarisbank.sdk.core.result.Event;
 
-public final class IdentityActivity extends BaseActivity {
+public final class IdentityActivity extends IdentHubActivity {
 
     private ActivityIdentityBinding binding;
 
@@ -56,8 +56,8 @@ public final class IdentityActivity extends BaseActivity {
     }
 
     @Override
-    protected void inject(ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+    protected void inject(ActivitySubcomponent activitySubcomponent) {
+        activitySubcomponent.inject(this);
     }
 
     @Override

@@ -11,12 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.base.BaseFragment;
+import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.databinding.FragmentOnboardingIntroBinding;
 import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
 
-public final class IntroFragment extends BaseFragment {
+public final class IntroFragment extends IdentHubFragment {
     public static final String TAG = "IntroFragment";
 
     private FragmentOnboardingIntroBinding binding;

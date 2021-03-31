@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
 import io.reactivex.disposables.CompositeDisposable
 import java.util.regex.Pattern
 

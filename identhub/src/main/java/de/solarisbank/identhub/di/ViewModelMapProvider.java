@@ -9,7 +9,6 @@ import java.util.Map;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModelFactory;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
@@ -31,6 +30,7 @@ import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorVie
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorViewModelFactory;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModel;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModelFactory;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class ViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> {

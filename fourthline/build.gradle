@@ -1,0 +1,99 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard-rules-test.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            def githubRef = System.getenv("GITHUB_REF")
+            if (githubRef != null) {
+                maven(MavenPublication) {
+                    from components.release
+                    groupId = project.group
+                    artifactId = 'fourthline-android'
+                    // Version should match the release tag
+                    version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
+
+                    pom {
+                        name = 'IdentHub'
+                        description = 'Solarisbank IdentHub Android SDK'
+                        developers {
+                            developer {
+                                name = 'Solarisbank AG'
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}"
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    api project(":core")
+    implementation kotlinCore
+    implementation support
+    implementation lifecycle.libs
+    implementation activity
+    implementation viewmodel
+    implementation fourthline
+    testImplementation baseTest
+    androidTestImplementation espresso
+}

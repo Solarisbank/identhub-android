@@ -1,0 +1,9 @@
+<resources>
+    <string name="terms_and_condition_title">Terms &amp; Conditions</string>
+    <string name="terms_and_condition_description">In order to proceed, please carefully read and agree to the Privacy Statement and Terms &amp; Conditions policies</string>
+    <string name="terms_and_condition_action_submit">Continue</string>
+    <string name="terms_and_condition_checkbox_label">I agree to the Privacy Statement &amp;\nTerms &amp; Conditions</string>
+    <string name="terms_and_condition_label">Terms &amp; Conditions</string>
+    <string name="privacy_statement_label">Privacy Statement</string>
+
+</resources>

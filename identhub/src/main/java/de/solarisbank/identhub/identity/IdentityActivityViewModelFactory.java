@@ -3,9 +3,9 @@ package de.solarisbank.identhub.identity;
 import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 public final class IdentityActivityViewModelFactory implements Factory<ViewModel> {
     private final IdentityModule identityModule;

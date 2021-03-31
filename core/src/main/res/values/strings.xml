@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IdentHub</string>
+    <string name="copyright">Powered by</string>
+    <string name="session_expire">Your session is about to expire:</string>
+</resources>

@@ -10,9 +10,9 @@ import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPh
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.succeeded
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.succeeded
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 

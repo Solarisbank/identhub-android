@@ -12,8 +12,8 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
 import de.solarisbank.identhub.verfication.phone.CountDownTime
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit

@@ -2,11 +2,11 @@ package de.solarisbank.identhub.contract.preview;
 
 import androidx.lifecycle.ViewModel;
 
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 public class ContractSigningPreviewViewModelFactory implements Factory<ViewModel> {
     private final IdentityModule identityModule;

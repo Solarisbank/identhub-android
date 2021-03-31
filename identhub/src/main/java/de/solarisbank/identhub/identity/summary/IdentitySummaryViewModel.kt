@@ -12,8 +12,8 @@ import de.solarisbank.identhub.navigation.NaviDirection
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.IdentHub.LAST_COMPLETED_STEP_KEY
 import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 

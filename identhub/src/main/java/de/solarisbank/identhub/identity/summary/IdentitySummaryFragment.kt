@@ -6,26 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.base.*
-import de.solarisbank.identhub.base.view.viewBinding
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.adapter.SignedDocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.databinding.FragmentIdentitySummaryBinding
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.data
-import de.solarisbank.shared.result.succeeded
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.view.viewBinding
+import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.Disposables
 import java.io.File
 
-class IdentitySummaryFragment : BaseFragment() {
+class IdentitySummaryFragment : IdentHubFragment() {
     private var clickDisposable = Disposables.disposed()
     private val adapter = SignedDocumentAdapter()
-    private val binding: FragmentIdentitySummaryBinding by viewBinding(FragmentIdentitySummaryBinding::inflate)
-    private val viewModel: IdentitySummaryFragmentViewModel by lazy { viewModels() }
-    private val sharedViewModel: IdentitySummaryViewModel by lazy { activityViewModels() }
+    private val binding: FragmentIdentitySummaryBinding by viewBinding { FragmentIdentitySummaryBinding.inflate(layoutInflater) }
+    private val viewModel: IdentitySummaryFragmentViewModel by lazy<IdentitySummaryFragmentViewModel> { viewModels() }
+    private val sharedViewModel: IdentitySummaryViewModel by lazy<IdentitySummaryViewModel> { activityViewModels() }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -61,7 +64,7 @@ class IdentitySummaryFragment : BaseFragment() {
     }
 
     private fun observeDocumentsResult() {
-        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, { result: Result<List<Document>> -> onSummaryResultChanged(result) })
+        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, Observer { result: Result<List<Document>> -> onSummaryResultChanged(result) })
     }
 
     private fun onSummaryResultChanged(result: Result<List<Document>>) {
@@ -75,11 +78,11 @@ class IdentitySummaryFragment : BaseFragment() {
     }
 
     private fun observeFetchingPdfFile() {
-        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, { onPdfFileFetched(it) })
+        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, Observer { onPdfFileFetched(it) })
     }
 
     private fun observeFetchingPdfFiles() {
-        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner, { onDownloadedPdfFiles(it) })
+        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner, Observer { onDownloadedPdfFiles(it) })
     }
 
     private fun onDownloadedPdfFiles(result: Result<List<File>>) {
@@ -93,10 +96,10 @@ class IdentitySummaryFragment : BaseFragment() {
         }
     }
 
-    private fun onPdfFileFetched(result: Result<Optional<File>>) {
+    private fun onPdfFileFetched(result: Result<de.solarisbank.sdk.core.Optional<File>>) {
         if (result.succeeded) {
-            val file: Optional<File> = result.data!!
-            PdfIntent.openFile(context, file.get())
+            val file: de.solarisbank.sdk.core.Optional<File> = result.data!!
+            de.solarisbank.sdk.core.PdfIntent.openFile(context, file.get())
         } else {
             Toast.makeText(context, R.string.contract_signing_preview_render_pdf_error, Toast.LENGTH_SHORT).show()
         }

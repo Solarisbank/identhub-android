@@ -5,7 +5,7 @@ import android.content.Context;
 import java.io.File;
 import java.io.IOException;
 
-import de.solarisbank.identhub.base.Optional;
+import de.solarisbank.sdk.core.Optional;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;

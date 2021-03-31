@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.data.network
 
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.Type
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.Type
 import io.reactivex.Single
 import io.reactivex.SingleSource
 import io.reactivex.SingleTransformer

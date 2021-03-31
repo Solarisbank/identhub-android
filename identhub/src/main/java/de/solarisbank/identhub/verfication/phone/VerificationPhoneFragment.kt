@@ -10,34 +10,35 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.base.BaseFragment
-import de.solarisbank.identhub.base.activityViewModels
-import de.solarisbank.identhub.base.view.viewBinding
-import de.solarisbank.identhub.base.viewModels
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.data.verification.phone.model.VerificationPhoneResponse
 import de.solarisbank.identhub.databinding.FragmentVerificationPhoneBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.ui.DefaultTextWatcher
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.Result.Loading
-import de.solarisbank.shared.result.Type
-import de.solarisbank.shared.result.Type.ResourceNotFound
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.Result.Loading
+import de.solarisbank.sdk.core.result.Type
+import de.solarisbank.sdk.core.result.Type.ResourceNotFound
+import de.solarisbank.sdk.core.view.viewBinding
+import de.solarisbank.sdk.core.viewModels
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 
-class VerificationPhoneFragment : BaseFragment() {
-    private val binding: FragmentVerificationPhoneBinding by viewBinding(FragmentVerificationPhoneBinding::inflate)
+class VerificationPhoneFragment : IdentHubFragment() {
+    private val binding: FragmentVerificationPhoneBinding by viewBinding { FragmentVerificationPhoneBinding.inflate(layoutInflater) }
     private var currentFocusedEditText: View? = null
     private var digitsEditTexts: MutableList<EditText>? = null
     private var disposable = Disposables.disposed()
     private var listLevelDrawables: MutableList<LevelListDrawable>? = null
-    private val sharedViewModel: IdentityActivityViewModel by lazy { activityViewModels() }
-    private val viewModel: VerificationPhoneViewModel by lazy { viewModels() }
+    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val viewModel: VerificationPhoneViewModel by lazy<VerificationPhoneViewModel> { viewModels() }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -108,15 +109,15 @@ class VerificationPhoneFragment : BaseFragment() {
     }
 
     private fun observeAuthorizeState() {
-        viewModel.getAuthorizeResultLiveData().observe(viewLifecycleOwner, { result: Result<VerificationPhoneResponse> -> onAuthorizeStateChanged(result) })
+        viewModel.getAuthorizeResultLiveData().observe(viewLifecycleOwner, Observer { result: Result<VerificationPhoneResponse> -> onAuthorizeStateChanged(result) })
     }
 
     private fun observeConfirmationState() {
-        viewModel.getConfirmResultLiveData().observe(viewLifecycleOwner, { result: Result<VerificationPhoneResponse> -> onConfirmationResultChanged(result) })
+        viewModel.getConfirmResultLiveData().observe(viewLifecycleOwner, Observer { result: Result<VerificationPhoneResponse> -> onConfirmationResultChanged(result) })
     }
 
     private fun observeCountDownTimeState() {
-        viewModel.getCountDownTimeEventLiveData().observe(viewLifecycleOwner, { event: Event<CountDownTime> -> onCountDownTimeState(event) })
+        viewModel.getCountDownTimeEventLiveData().observe(viewLifecycleOwner, Observer { event: Event<CountDownTime> -> onCountDownTimeState(event) })
     }
 
     private fun observeInputs() {

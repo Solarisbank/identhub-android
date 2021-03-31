@@ -2,8 +2,8 @@ package de.solarisbank.identhub.data.session.factory
 
 import de.solarisbank.identhub.data.session.SessionModule
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
-import de.solarisbank.identhub.di.internal.Factory
-import de.solarisbank.identhub.di.internal.Preconditions
+import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.core.di.internal.Preconditions
 
 class SessionUrlLocalDataSourceFactory(
         private val sessionModule: SessionModule

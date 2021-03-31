@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.verfication.bank.error;
 
-import de.solarisbank.identhub.AssistedViewModelFactory;
-import de.solarisbank.identhub.di.internal.MembersInjector;
-import de.solarisbank.identhub.di.internal.Provider;
+import de.solarisbank.sdk.core.di.internal.MembersInjector;
+import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
 
 public final class VerificationBankErrorMessageFragmentInjector implements MembersInjector<VerificationBankErrorMessageFragment> {
 

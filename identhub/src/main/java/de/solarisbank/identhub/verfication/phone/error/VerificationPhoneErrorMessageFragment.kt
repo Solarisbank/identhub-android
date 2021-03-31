@@ -17,7 +17,7 @@ class VerificationPhoneErrorMessageFragment : ErrorMessageFragment() {
 
     override fun initViews() {
         super.initViews()
-        binding?.apply {
+        binding.apply {
             submitButton.setOnClickListener { sharedViewModel.retryPhoneVerification() }
         }
     }

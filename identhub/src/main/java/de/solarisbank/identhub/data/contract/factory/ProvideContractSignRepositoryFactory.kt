@@ -6,10 +6,10 @@ import de.solarisbank.identhub.data.contract.ContractSignModule
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
 import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument
-import de.solarisbank.identhub.di.internal.Factory
-import de.solarisbank.identhub.di.internal.Preconditions
-import de.solarisbank.identhub.di.internal.Provider
 import de.solarisbank.identhub.domain.contract.ContractSignRepository
+import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.core.di.internal.Preconditions
+import de.solarisbank.sdk.core.di.internal.Provider
 
 class ProvideContractSignRepositoryFactory(
         private val contractSignModule: ContractSignModule,

@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.domain.verification.bank;
 
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Preconditions;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 public class VerifyIBanUseCaseFactory implements Factory<VerifyIBanUseCase> {
 

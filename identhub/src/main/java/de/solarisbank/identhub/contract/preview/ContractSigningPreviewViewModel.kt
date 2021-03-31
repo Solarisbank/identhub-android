@@ -3,13 +3,13 @@ package de.solarisbank.identhub.contract.preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.base.Optional
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.data
-import de.solarisbank.shared.result.succeeded
+import de.solarisbank.sdk.core.Optional
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.core.result.succeeded
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
@@ -35,7 +35,7 @@ class ContractSigningPreviewViewModel(
         return fetchPdfFilesResultLiveData
     }
 
-    fun getFetchPdfResultLiveData(): LiveData<Result<Optional<File>>> {
+    fun getFetchPdfResultLiveData(): LiveData<Result<de.solarisbank.sdk.core.Optional<File>>> {
         return fetchPdfResultLiveData
     }
 

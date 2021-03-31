@@ -6,29 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.base.*
-import de.solarisbank.identhub.base.view.viewBinding
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.databinding.FragmentContractSigningPreviewBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.data
-import de.solarisbank.shared.result.succeeded
-import de.solarisbank.shared.result.throwable
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.result.throwable
+import de.solarisbank.sdk.core.view.viewBinding
+import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import java.io.File
 
-class ContractSigningPreviewFragment : BaseFragment() {
+class ContractSigningPreviewFragment : IdentHubFragment() {
     private val adapter = DocumentAdapter()
-    private val binding: FragmentContractSigningPreviewBinding by viewBinding(FragmentContractSigningPreviewBinding::inflate)
+    private val binding: FragmentContractSigningPreviewBinding by viewBinding<ContractSigningPreviewFragment, FragmentContractSigningPreviewBinding> { FragmentContractSigningPreviewBinding.inflate(layoutInflater) }
     private var clickDisposable = Disposables.disposed()
-    private val sharedViewModel: IdentityActivityViewModel by lazy { activityViewModels() }
-    private val viewModel: ContractSigningPreviewViewModel by lazy { viewModels() }
+    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -62,7 +65,7 @@ class ContractSigningPreviewFragment : BaseFragment() {
     }
 
     private fun observeDownloadingPdfFiles() {
-        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner, { onDownloadedPdfFiles(it) })
+        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner, Observer { onDownloadedPdfFiles(it) })
     }
 
     private fun onDownloadedPdfFiles(result: Result<List<File>>) {
@@ -77,20 +80,20 @@ class ContractSigningPreviewFragment : BaseFragment() {
     }
 
     private fun observeDownloadPdfFile() {
-        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, { onPdfFileFetched(it) })
+        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, Observer { onPdfFileFetched(it) })
     }
 
-    private fun onPdfFileFetched(result: Result<Optional<File>>) {
+    private fun onPdfFileFetched(result: Result<de.solarisbank.sdk.core.Optional<File>>) {
         if (result.succeeded) {
-            val file: Optional<File> = result.data!!
-            PdfIntent.openFile(context, file.get())
+            val file: de.solarisbank.sdk.core.Optional<File> = result.data!!
+            de.solarisbank.sdk.core.PdfIntent.openFile(context, file.get())
         } else {
             Toast.makeText(context, R.string.contract_signing_preview_render_pdf_error, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun observeContracts() {
-        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, { onDocumentResultChanged(it) })
+        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, Observer { onDocumentResultChanged(it) })
     }
 
     private fun onDocumentResultChanged(result: Result<List<Document>>) {

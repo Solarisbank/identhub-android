@@ -2,9 +2,9 @@ package de.solarisbank.identhub.di.database
 
 import de.solarisbank.identhub.data.dao.DocumentDao
 import de.solarisbank.identhub.data.room.IdentityRoomDatabase
-import de.solarisbank.identhub.di.internal.Factory
-import de.solarisbank.identhub.di.internal.Preconditions
-import de.solarisbank.identhub.di.internal.Provider
+import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.core.di.internal.Preconditions
+import de.solarisbank.sdk.core.di.internal.Provider
 
 class DatabaseModuleProvideDocumentDaoFactory(
         private val databaseModule: DatabaseModule,

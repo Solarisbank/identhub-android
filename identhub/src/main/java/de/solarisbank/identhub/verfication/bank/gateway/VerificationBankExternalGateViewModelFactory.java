@@ -3,11 +3,11 @@ package de.solarisbank.identhub.verfication.bank.gateway;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import de.solarisbank.identhub.di.internal.Factory2;
-import de.solarisbank.identhub.di.internal.Provider;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
+import de.solarisbank.sdk.core.di.internal.Factory2;
+import de.solarisbank.sdk.core.di.internal.Provider;
 
 public final class VerificationBankExternalGateViewModelFactory implements Factory2<ViewModel, SavedStateHandle> {
     private final IdentityModule identityModule;

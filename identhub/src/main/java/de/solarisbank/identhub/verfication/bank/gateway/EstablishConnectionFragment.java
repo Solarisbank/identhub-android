@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
-import de.solarisbank.shared.result.Event;
+import de.solarisbank.sdk.core.result.Event;
 
 public final class EstablishConnectionFragment extends ProgressIndicatorFragment {
 

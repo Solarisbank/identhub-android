@@ -10,12 +10,10 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.base.BaseFragment
-import de.solarisbank.identhub.base.activityViewModels
-import de.solarisbank.identhub.base.view.viewBinding
-import de.solarisbank.identhub.base.viewModels
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.databinding.FragmentContractSigningBinding
 import de.solarisbank.identhub.di.FragmentComponent
@@ -24,23 +22,26 @@ import de.solarisbank.identhub.ui.DefaultTextWatcher
 import de.solarisbank.identhub.verfication.phone.CountDownTime
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
-import de.solarisbank.shared.result.Event
-import de.solarisbank.shared.result.Result
-import de.solarisbank.shared.result.data
-import de.solarisbank.shared.result.succeeded
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.view.viewBinding
+import de.solarisbank.sdk.core.viewModels
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import java.util.*
 
-class ContractSigningFragment : BaseFragment() {
-    private val binding: FragmentContractSigningBinding by viewBinding(FragmentContractSigningBinding::inflate)
+class ContractSigningFragment : IdentHubFragment() {
+    private val binding: FragmentContractSigningBinding by viewBinding { FragmentContractSigningBinding.inflate(layoutInflater) }
     private var currentFocusedEditText: View? = null
     private val digitsEditTexts: MutableList<EditText> = ArrayList()
     private var disposable = Disposables.disposed()
     private val listLevelDrawables: MutableList<LevelListDrawable> = ArrayList()
-    private val sharedViewModel: IdentityActivityViewModel by lazy { activityViewModels() }
-    private val viewModel: ContractSigningViewModel by lazy { viewModels() }
+    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val viewModel: ContractSigningViewModel by lazy<ContractSigningViewModel> { viewModels() }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -127,7 +128,7 @@ class ContractSigningFragment : BaseFragment() {
     }
 
     private fun observeAuthorizeResult() {
-        viewModel.getAuthorizeResultLiveData().observe(viewLifecycleOwner, { onAuthorizeResultChanged(it) })
+        viewModel.getAuthorizeResultLiveData().observe(viewLifecycleOwner, Observer { onAuthorizeResultChanged(it) })
     }
 
     private fun onAuthorizeResultChanged(result: Result<Any>) {
@@ -151,7 +152,7 @@ class ContractSigningFragment : BaseFragment() {
     }
 
     private fun observeIdentificationResult() {
-        viewModel.getIdentificationResultLiveData().observe(viewLifecycleOwner, { onIdentificationResultChanged(it) })
+        viewModel.getIdentificationResultLiveData().observe(viewLifecycleOwner, Observer { onIdentificationResultChanged(it) })
     }
 
     private fun onIdentificationResultChanged(result: Result<Identification>) {
@@ -161,7 +162,7 @@ class ContractSigningFragment : BaseFragment() {
     }
 
     private fun observeConfirmationResult() {
-        viewModel.getConfirmResultLiveData().observe(viewLifecycleOwner, { onConfirmationResultChanged(it) })
+        viewModel.getConfirmResultLiveData().observe(viewLifecycleOwner, Observer { onConfirmationResultChanged(it) })
     }
 
     private fun onConfirmationResultChanged(result: Result<Any>) {
@@ -180,7 +181,7 @@ class ContractSigningFragment : BaseFragment() {
     }
 
     private fun observeCountDownTimeEvent() {
-        viewModel.getCountDownTimeEventLiveData().observe(viewLifecycleOwner, { event: Event<CountDownTime> -> onCountDownTimeState(event) })
+        viewModel.getCountDownTimeEventLiveData().observe(viewLifecycleOwner, Observer { onCountDownTimeState(it) })
     }
 
     private fun onCountDownTimeState(event: Event<CountDownTime>) {

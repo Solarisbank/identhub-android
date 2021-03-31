@@ -4,10 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-import de.solarisbank.identhub.base.Optional;
 import de.solarisbank.identhub.data.entity.Document;
 import de.solarisbank.identhub.domain.usecase.SingleUseCase;
 import de.solarisbank.identhub.file.FileController;
+import de.solarisbank.sdk.core.Optional;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 

@@ -6,27 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent
-import de.solarisbank.identhub.base.BaseFragment
-import de.solarisbank.identhub.base.activityViewModels
-import de.solarisbank.identhub.base.view.viewBinding
-import de.solarisbank.identhub.base.viewModels
+import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.databinding.FragmentVerificationBankBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel.IBanState
-import de.solarisbank.shared.result.*
-import de.solarisbank.shared.result.Type.ResourceNotFound
+import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.result.*
+import de.solarisbank.sdk.core.result.Type.ResourceNotFound
+import de.solarisbank.sdk.core.view.viewBinding
+import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class VerificationBankFragment : BaseFragment() {
+class VerificationBankFragment : IdentHubFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val binding: FragmentVerificationBankBinding by viewBinding(FragmentVerificationBankBinding::inflate)
-    private val sharedViewModel: IdentityActivityViewModel by lazy { activityViewModels() }
-    private val viewModel: VerificationBankViewModel by lazy { viewModels() }
+    private val binding: FragmentVerificationBankBinding by viewBinding { FragmentVerificationBankBinding.inflate(layoutInflater) }
+    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val viewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { viewModels() }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -44,7 +45,7 @@ class VerificationBankFragment : BaseFragment() {
     }
 
     private fun observeVerifyResult() {
-        viewModel.getVerifyResultLiveData().observe(viewLifecycleOwner, { onResultVerifyIBanChanged(it) })
+        viewModel.getVerifyResultLiveData().observe(viewLifecycleOwner, Observer { onResultVerifyIBanChanged(it) })
     }
 
     private fun onResultVerifyIBanChanged(result: Result<String>) {
@@ -79,7 +80,7 @@ class VerificationBankFragment : BaseFragment() {
     }
 
     private fun observeInputsState() {
-        viewModel.iBanState.observe(viewLifecycleOwner, { event: Event<IBanState> -> onIBanInputValidationStateChanged(event) })
+        viewModel.iBanState.observe(viewLifecycleOwner, Observer { event: Event<IBanState> -> onIBanInputValidationStateChanged(event) })
     }
 
     private fun onIBanInputValidationStateChanged(event: Event<IBanState>) {

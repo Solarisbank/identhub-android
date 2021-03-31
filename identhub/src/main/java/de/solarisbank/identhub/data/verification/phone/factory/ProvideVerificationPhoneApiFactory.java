@@ -2,9 +2,9 @@ package de.solarisbank.identhub.data.verification.phone.factory;
 
 import de.solarisbank.identhub.data.verification.phone.VerificationPhoneApi;
 import de.solarisbank.identhub.data.verification.phone.VerificationPhoneModule;
-import de.solarisbank.identhub.di.internal.Factory;
-import de.solarisbank.identhub.di.internal.Preconditions;
-import de.solarisbank.identhub.di.internal.Provider;
+import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
+import de.solarisbank.sdk.core.di.internal.Provider;
 import retrofit2.Retrofit;
 
 public class ProvideVerificationPhoneApiFactory implements Factory<VerificationPhoneApi> {

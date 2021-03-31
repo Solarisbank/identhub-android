@@ -13,16 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.solarisbank.identhub.base.BaseFragment;
+import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.databinding.FragmentVerificationBankExternalGatewayBinding;
 import de.solarisbank.identhub.di.FragmentComponent;
-import de.solarisbank.identhub.di.internal.Preconditions;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
-import de.solarisbank.shared.result.Event;
-import de.solarisbank.shared.result.Result;
+import de.solarisbank.sdk.core.di.internal.Preconditions;
+import de.solarisbank.sdk.core.result.Event;
+import de.solarisbank.sdk.core.result.Result;
 import timber.log.Timber;
 
-public final class VerificationBankExternalGatewayFragment extends BaseFragment {
+public final class VerificationBankExternalGatewayFragment extends IdentHubFragment {
 
     private IdentityActivityViewModel sharedViewModel;
     private VerificationBankExternalGateViewModel verificationBankExternalGateViewModel;
