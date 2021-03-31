@@ -55,7 +55,7 @@ afterEvaluate {
                 maven(MavenPublication) {
                     from components.release
                     groupId = project.group
-                    artifactId = 'fourthline-android'
+                    artifactId = 'identhub-android-fourthline'
                     // Version should match the release tag
                     version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
