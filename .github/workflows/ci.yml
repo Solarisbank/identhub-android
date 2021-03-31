@@ -27,6 +27,6 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Run tests
-        run: ./gradlew :identhub:test
+        run: ./gradlew :core:test :identhub:test
       - name: Build example
         run: ./gradlew :example:build
