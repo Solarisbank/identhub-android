@@ -31,10 +31,13 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
+//            todo check does proguard have influence on excluding the classes or
+//            disabling the minification is enough
+
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+//                    'proguard-rules.pro'
         }
     }
     compileOptions {
