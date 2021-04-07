@@ -27,7 +27,7 @@ public class ApplicationProcessingFragment extends ProgressIndicatorFragment {
     @Override
     protected void initViews() {
         super.initViews();
-        binding.icon.setOnClickListener(v -> {
+        icon.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), IdentitySummaryActivity.class);
             startActivity(intent);
             getActivity().finish();

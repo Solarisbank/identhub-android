@@ -4,21 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.adapter.SignedDocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
-import de.solarisbank.identhub.databinding.FragmentIdentitySummaryBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
-import de.solarisbank.sdk.core.view.viewBinding
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.Disposables
 import java.io.File
@@ -26,16 +26,24 @@ import java.io.File
 class IdentitySummaryFragment : IdentHubFragment() {
     private var clickDisposable = Disposables.disposed()
     private val adapter = SignedDocumentAdapter()
-    private val binding: FragmentIdentitySummaryBinding by viewBinding { FragmentIdentitySummaryBinding.inflate(layoutInflater) }
     private val viewModel: IdentitySummaryFragmentViewModel by lazy<IdentitySummaryFragmentViewModel> { viewModels() }
     private val sharedViewModel: IdentitySummaryViewModel by lazy<IdentitySummaryViewModel> { activityViewModels() }
+
+    private lateinit var documentsList: RecyclerView
+    private lateinit var downloadButton: Button
+    private lateinit var submitButton: Button
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_identity_summary, container, false)
+                .also {
+                    documentsList = it.findViewById(R.id.documentsList)
+                    downloadButton = it.findViewById(R.id.downloadButton)
+                    submitButton = it.findViewById(R.id.submitButton)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,13 +56,11 @@ class IdentitySummaryFragment : IdentHubFragment() {
 
     private fun initViews() {
         clickDisposable = adapter.actionOnClickObservable.subscribe({ document: Document -> onDocumentActionClicked(document) }) { throwable: Throwable -> onDocumentActionError(throwable) }
-        binding.run {
-            documentsList.layoutManager = LinearLayoutManager(context)
-            documentsList.setHasFixedSize(true)
-            documentsList.adapter = adapter
-            downloadButton.setOnClickListener { viewModel.onDownloadAllDocumentClicked(adapter.items) }
-            submitButton.setOnClickListener { sharedViewModel.onSubmitButtonClicked() }
-        }
+        documentsList.layoutManager = LinearLayoutManager(context)
+        documentsList.setHasFixedSize(true)
+        documentsList.adapter = adapter
+        downloadButton.setOnClickListener { viewModel.onDownloadAllDocumentClicked(adapter.items) }
+        submitButton.setOnClickListener { sharedViewModel.onSubmitButtonClicked() }
     }
 
     private fun onDocumentActionError(throwable: Throwable) {}

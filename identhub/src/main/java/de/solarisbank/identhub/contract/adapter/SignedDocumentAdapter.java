@@ -1,18 +1,19 @@
 package de.solarisbank.identhub.contract.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import de.solarisbank.identhub.databinding.ItemDocumentBinding;
+import de.solarisbank.identhub.R;
 
 public class SignedDocumentAdapter extends DocumentAdapter {
 
     @NonNull
     @Override
     public SignedDocumentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDocumentBinding binding = ItemDocumentBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new SignedDocumentViewHolder(binding);
+        View holderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
+        return new SignedDocumentViewHolder(holderView);
     }
 }

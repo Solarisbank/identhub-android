@@ -1,6 +1,7 @@
 package de.solarisbank.identhub.contract.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,8 +12,8 @@ import com.jakewharton.rxrelay2.PublishRelay;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.data.entity.Document;
-import de.solarisbank.identhub.databinding.ItemDocumentBinding;
 import io.reactivex.Observable;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
@@ -27,8 +28,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
     @NonNull
     @Override
     public DocumentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDocumentBinding binding = ItemDocumentBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new DocumentViewHolder(binding);
+        View holderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
+        return new DocumentViewHolder(holderView);
     }
 
     @Override

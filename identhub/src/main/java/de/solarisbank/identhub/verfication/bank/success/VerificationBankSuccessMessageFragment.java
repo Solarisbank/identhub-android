@@ -15,7 +15,7 @@ public final class VerificationBankSuccessMessageFragment extends SuccessMessage
     @Override
     protected void initViews() {
         super.initViews();
-        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateToContractSigningPreview());
+        submitButton.setOnClickListener(view -> sharedViewModel.navigateToContractSigningPreview());
     }
 
     @Override

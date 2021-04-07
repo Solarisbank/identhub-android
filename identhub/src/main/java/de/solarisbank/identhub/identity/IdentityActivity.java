@@ -3,7 +3,6 @@ package de.solarisbank.identhub.identity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
-import de.solarisbank.identhub.databinding.ActivityIdentityBinding;
 import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity;
 import de.solarisbank.identhub.navigation.NaviDirection;
@@ -24,16 +22,14 @@ import de.solarisbank.sdk.core.result.Event;
 
 public final class IdentityActivity extends IdentHubActivity {
 
-    private ActivityIdentityBinding binding;
-
     private IdentityActivityViewModel viewModel;
+
+    private StepIndicatorView stepIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityIdentityBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_identity);
         initGraph();
         initView();
     }
@@ -51,8 +47,9 @@ public final class IdentityActivity extends IdentHubActivity {
     }
 
     private void initView() {
+        stepIndicator = findViewById(R.id.stepIndicator);
         IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
-        binding.stepIndicator.setStep(lastCompletedStep != null ? lastCompletedStep.getIndex() : IdentHubSession.Step.VERIFICATION_PHONE.getIndex());
+        stepIndicator.setStep(lastCompletedStep != null ? lastCompletedStep.getIndex() : IdentHubSession.Step.VERIFICATION_PHONE.getIndex());
     }
 
     @Override
@@ -82,16 +79,16 @@ public final class IdentityActivity extends IdentHubActivity {
                 startSummaryActivity();
             } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
                     naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-                Navigation.findNavController(binding.navHostFragment).navigate(naviActionId, naviDirection.getArgs());
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.getArgs());
             } else {
                 quit(naviDirection.getArgs());
                 return;
             }
 
             if (naviDirection.getActionId() == R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment) {
-                binding.stepIndicator.setStep(StepIndicatorView.SECOND_STEP);
+                stepIndicator.setStep(StepIndicatorView.SECOND_STEP);
             } else if (naviDirection.getActionId() == R.id.action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment) {
-                binding.stepIndicator.setStep(StepIndicatorView.THIRD_STEP);
+                stepIndicator.setStep(StepIndicatorView.THIRD_STEP);
             }
         }
     }

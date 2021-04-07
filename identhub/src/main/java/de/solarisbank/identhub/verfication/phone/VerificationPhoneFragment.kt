@@ -8,14 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.data.verification.phone.model.VerificationPhoneResponse
-import de.solarisbank.identhub.databinding.FragmentVerificationPhoneBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.ui.DefaultTextWatcher
@@ -25,14 +26,12 @@ import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.Result.Loading
 import de.solarisbank.sdk.core.result.Type
 import de.solarisbank.sdk.core.result.Type.ResourceNotFound
-import de.solarisbank.sdk.core.view.viewBinding
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 
 class VerificationPhoneFragment : IdentHubFragment() {
-    private val binding: FragmentVerificationPhoneBinding by viewBinding { FragmentVerificationPhoneBinding.inflate(layoutInflater) }
     private var currentFocusedEditText: View? = null
     private var digitsEditTexts: MutableList<EditText>? = null
     private var disposable = Disposables.disposed()
@@ -40,12 +39,38 @@ class VerificationPhoneFragment : IdentHubFragment() {
     private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
     private val viewModel: VerificationPhoneViewModel by lazy<VerificationPhoneViewModel> { viewModels() }
 
+    private lateinit var description: TextView
+    private lateinit var sendNewCode: Button
+
+    private lateinit var firstDigit: EditText
+    private lateinit var secondDigit: EditText
+    private lateinit var thirdDigit: EditText
+    private lateinit var fourthDigit: EditText
+    private lateinit var fifthDigit: EditText
+    private lateinit var sixthDigit: EditText
+    private lateinit var submitButton: Button
+    private lateinit var newCodeCounter: TextView
+    private lateinit var errorMessage: TextView
+
     override fun inject(component: FragmentComponent) {
         component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_verification_phone, container, false)
+                .also {
+                    description = it.findViewById(R.id.description)
+                    sendNewCode = it.findViewById(R.id.sendNewCode)
+                    firstDigit = it.findViewById(R.id.firstDigit)
+                    secondDigit = it.findViewById(R.id.secondDigit)
+                    thirdDigit = it.findViewById(R.id.thirdDigit)
+                    fourthDigit = it.findViewById(R.id.fourthDigit)
+                    fifthDigit = it.findViewById(R.id.fifthDigit)
+                    sixthDigit = it.findViewById(R.id.sixthDigit)
+                    submitButton = it.findViewById(R.id.submitButton)
+                    newCodeCounter = it.findViewById(R.id.newCodeCounter)
+                    errorMessage = it.findViewById(R.id.errorMessage)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,10 +86,8 @@ class VerificationPhoneFragment : IdentHubFragment() {
         initFocusListener()
         initTextWatcher()
         initStateOfDigitInputField()
-        binding.run {
-            description.text = String.format(getString(R.string.verification_phone_description), "")
-            sendNewCode.setOnClickListener { viewModel.onSendNewCodeClicked() }
-        }
+        description.text = String.format(getString(R.string.verification_phone_description), "")
+        sendNewCode.setOnClickListener { viewModel.onSendNewCodeClicked() }
     }
 
 
@@ -74,16 +97,13 @@ class VerificationPhoneFragment : IdentHubFragment() {
                 currentFocusedEditText = view
             }
         }
-
-        binding.run {
-            firstDigit.onFocusChangeListener = onFocusChangeListener
-            secondDigit.onFocusChangeListener = onFocusChangeListener
-            thirdDigit.onFocusChangeListener = onFocusChangeListener
-            fourthDigit.onFocusChangeListener = onFocusChangeListener
-            fifthDigit.onFocusChangeListener = onFocusChangeListener
-            sixthDigit.onFocusChangeListener = onFocusChangeListener
-            firstDigit.requestFocus()
-        }
+        firstDigit.onFocusChangeListener = onFocusChangeListener
+        secondDigit.onFocusChangeListener = onFocusChangeListener
+        thirdDigit.onFocusChangeListener = onFocusChangeListener
+        fourthDigit.onFocusChangeListener = onFocusChangeListener
+        fifthDigit.onFocusChangeListener = onFocusChangeListener
+        sixthDigit.onFocusChangeListener = onFocusChangeListener
+        firstDigit.requestFocus()
     }
 
     private fun initTextWatcher() {
@@ -94,17 +114,15 @@ class VerificationPhoneFragment : IdentHubFragment() {
                 }
             }
         }
-        binding.run {
-            firstDigit.addTextChangedListener(textWatcher)
-            secondDigit.addTextChangedListener(textWatcher)
-            thirdDigit.addTextChangedListener(textWatcher)
-            fourthDigit.addTextChangedListener(textWatcher)
-            fifthDigit.addTextChangedListener(textWatcher)
-        }
+        firstDigit.addTextChangedListener(textWatcher)
+        secondDigit.addTextChangedListener(textWatcher)
+        thirdDigit.addTextChangedListener(textWatcher)
+        fourthDigit.addTextChangedListener(textWatcher)
+        fifthDigit.addTextChangedListener(textWatcher)
     }
 
     private fun changeFocusToNextInput() {
-        val view = FocusFinder.getInstance().findNextFocus(binding.root, currentFocusedEditText, View.FOCUS_RIGHT)
+        val view = FocusFinder.getInstance().findNextFocus(view as ViewGroup, currentFocusedEditText, View.FOCUS_RIGHT)
         view.requestFocus()
     }
 
@@ -121,7 +139,7 @@ class VerificationPhoneFragment : IdentHubFragment() {
     }
 
     private fun observeInputs() {
-        disposable = RxView.clicks(binding.submitButton)
+        disposable = RxView.clicks(submitButton)
                 .flatMapSingle {
                     Observable.fromIterable(digitsEditTexts)
                             .map { it.text.toString() }
@@ -138,16 +156,12 @@ class VerificationPhoneFragment : IdentHubFragment() {
     private fun onAuthorizeStateChanged(result: Result<VerificationPhoneResponse>) {
         when (result) {
             is Result.Error -> {
-                binding.run {
-                    sendNewCode.visibility = View.VISIBLE
-                    newCodeCounter.visibility = View.GONE
-                }
+                sendNewCode.visibility = View.VISIBLE
+                newCodeCounter.visibility = View.GONE
             }
             is Result.Success<*> -> {
-                binding.run {
-                    sendNewCode.visibility = View.GONE
-                    newCodeCounter.visibility = View.VISIBLE
-                }
+                sendNewCode.visibility = View.GONE
+                newCodeCounter.visibility = View.VISIBLE
             }
             is Loading -> {
                 defaultState()
@@ -158,25 +172,20 @@ class VerificationPhoneFragment : IdentHubFragment() {
     private fun onCountDownTimeState(event: Event<CountDownTime>) {
         val countDownTime = event.content
         if (countDownTime != null) {
-            binding.run {
-                newCodeCounter.visibility = if (countDownTime.isFinish) View.GONE else View.VISIBLE
-                sendNewCode.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
-                newCodeCounter.text = String.format(getString(R.string.verification_phone_request_code), countDownTime.format())
-            }
+            newCodeCounter.visibility = if (countDownTime.isFinish) View.GONE else View.VISIBLE
+            sendNewCode.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
+            newCodeCounter.text = String.format(getString(R.string.verification_phone_request_code), countDownTime.format())
         }
     }
 
     private fun initStateOfDigitInputField() {
-        binding.run {
-            digitsEditTexts = mutableListOf(firstDigit, secondDigit, thirdDigit, fourthDigit, fifthDigit, sixthDigit)
-            listLevelDrawables = mutableListOf(firstDigit.background as LevelListDrawable,
-                    secondDigit.background as LevelListDrawable,
-                    thirdDigit.background as LevelListDrawable,
-                    fourthDigit.background as LevelListDrawable,
-                    fifthDigit.background as LevelListDrawable,
-                    sixthDigit.background as LevelListDrawable)
-        }
-
+        digitsEditTexts = mutableListOf(firstDigit, secondDigit, thirdDigit, fourthDigit, fifthDigit, sixthDigit)
+        listLevelDrawables = mutableListOf(firstDigit.background as LevelListDrawable,
+                secondDigit.background as LevelListDrawable,
+                thirdDigit.background as LevelListDrawable,
+                fourthDigit.background as LevelListDrawable,
+                fifthDigit.background as LevelListDrawable,
+                sixthDigit.background as LevelListDrawable)
     }
 
     private fun onConfirmationResultChanged(result: Result<VerificationPhoneResponse>) {
@@ -188,20 +197,18 @@ class VerificationPhoneFragment : IdentHubFragment() {
         } else if (result is Loading) {
             state = LOADING_STATE
         }
-        binding.run {
-            newCodeCounter.visibility = if (state == DEFAULT_STATE) View.VISIBLE else View.GONE
-            errorMessage.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
-            sendNewCode.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
-            sendNewCode.isEnabled = state != LOADING_STATE
-            submitButton.isEnabled = state != LOADING_STATE
-            submitButton.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.verification_phone_action_submit)
-            firstDigit.isEnabled = state != LOADING_STATE
-            secondDigit.isEnabled = state != LOADING_STATE
-            thirdDigit.isEnabled = state != LOADING_STATE
-            fourthDigit.isEnabled = state != LOADING_STATE
-            fifthDigit.isEnabled = state != LOADING_STATE
-            sixthDigit.isEnabled = state != LOADING_STATE
-        }
+        newCodeCounter.visibility = if (state == DEFAULT_STATE) View.VISIBLE else View.GONE
+        errorMessage.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
+        sendNewCode.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
+        sendNewCode.isEnabled = state != LOADING_STATE
+        submitButton.isEnabled = state != LOADING_STATE
+        submitButton.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.verification_phone_action_submit)
+        firstDigit.isEnabled = state != LOADING_STATE
+        secondDigit.isEnabled = state != LOADING_STATE
+        thirdDigit.isEnabled = state != LOADING_STATE
+        fourthDigit.isEnabled = state != LOADING_STATE
+        fifthDigit.isEnabled = state != LOADING_STATE
+        sixthDigit.isEnabled = state != LOADING_STATE
 
         listLevelDrawables?.forEach { it.level = state }
 
@@ -219,17 +226,15 @@ class VerificationPhoneFragment : IdentHubFragment() {
         listLevelDrawables?.forEach { it.level = 0 }
         currentFocusedEditText?.clearFocus()
 
-        binding.run {
-            firstDigit.requestFocus()
-            errorMessage.visibility = View.GONE
-            firstDigit.text = null
-            secondDigit.text = null
-            thirdDigit.text = null
-            fourthDigit.text = null
-            fifthDigit.text = null
-            sixthDigit.text = null
-            sixthDigit.invalidate()
-        }
+        firstDigit.requestFocus()
+        errorMessage.visibility = View.GONE
+        firstDigit.text = null
+        secondDigit.text = null
+        thirdDigit.text = null
+        fourthDigit.text = null
+        fifthDigit.text = null
+        sixthDigit.text = null
+        sixthDigit.invalidate()
     }
 
     override fun onDestroyView() {

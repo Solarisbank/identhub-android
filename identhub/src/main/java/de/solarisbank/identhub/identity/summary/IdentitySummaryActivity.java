@@ -13,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
-import de.solarisbank.identhub.databinding.ActivitySummaryIdentityBinding;
 import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 import de.solarisbank.identhub.navigation.NaviDirection;
@@ -26,8 +25,7 @@ public final class IdentitySummaryActivity extends IdentHubActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivitySummaryIdentityBinding binding = ActivitySummaryIdentityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_summary_identity);
         initGraph();
     }
 

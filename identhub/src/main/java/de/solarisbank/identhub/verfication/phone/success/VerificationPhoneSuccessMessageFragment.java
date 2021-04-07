@@ -18,7 +18,7 @@ public class VerificationPhoneSuccessMessageFragment extends SuccessMessageFragm
     @Override
     protected void initViews() {
         super.initViews();
-        binding.submitButton.setOnClickListener(view -> sharedViewModel.navigateToIBanVerification());
+        submitButton.setOnClickListener(view -> sharedViewModel.navigateToIBanVerification());
     }
 
     @Override

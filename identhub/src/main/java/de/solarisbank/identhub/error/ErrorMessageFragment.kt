@@ -5,21 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.StringRes
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
-import de.solarisbank.identhub.databinding.FragmentErrorMessageBinding
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.view.viewBinding
 
 abstract class ErrorMessageFragment : IdentHubFragment() {
     private lateinit var alertDialog: AlertDialog
-    protected val binding: FragmentErrorMessageBinding by viewBinding { FragmentErrorMessageBinding.inflate(layoutInflater) }
     protected val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
 
+    protected lateinit var title: TextView
+    protected lateinit var description: TextView
+    protected lateinit var cancelButton: Button
+    protected lateinit var submitButton: Button
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_error_message, container, false)
+                .also {
+                    title = it.findViewById(R.id.title)
+                    description = it.findViewById(R.id.description)
+                    cancelButton = it.findViewById(R.id.cancelButton)
+                    submitButton = it.findViewById(R.id.submitButton)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,23 +52,21 @@ abstract class ErrorMessageFragment : IdentHubFragment() {
     }
 
     protected open fun initViews() {
-        binding.apply {
-            title.setText(this@ErrorMessageFragment.title)
-            description.setText(message)
-            cancelButton.setText(cancelButtonLabel)
-            submitButton.setText(submitButtonLabel)
-            cancelButton.setOnClickListener { alertDialog.show() }
-        }
+        title.setText(this@ErrorMessageFragment.titleLabel)
+        description.setText(messageLabel)
+        cancelButton.setText(cancelButtonLabel)
+        submitButton.setText(submitButtonLabel)
+        cancelButton.setOnClickListener { alertDialog.show() }
     }
 
     @get:StringRes
     protected abstract val cancelButtonLabel: Int
 
     @get:StringRes
-    protected abstract val message: Int
+    protected abstract val messageLabel: Int
 
     @get:StringRes
-    protected abstract val title: Int
+    protected abstract val titleLabel: Int
 
     @get:StringRes
     protected abstract val submitButtonLabel: Int

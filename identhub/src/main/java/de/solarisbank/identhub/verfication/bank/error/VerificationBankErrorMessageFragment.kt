@@ -9,18 +9,16 @@ class VerificationBankErrorMessageFragment : ErrorMessageFragment() {
 
     override val cancelButtonLabel: Int
         get() = R.string.verification_phone_action_quit
-    override val message: Int
+    override val messageLabel: Int
         get() = R.string.verification_bank_error_message
-    override val title: Int
+    override val titleLabel: Int
         get() = R.string.verification_bank_error_title
     override val submitButtonLabel: Int
         get() = R.string.verification_bank_action_retry
 
     override fun initViews() {
         super.initViews()
-        binding?.apply {
-            submitButton.setOnClickListener { sharedViewModel.retryBankVerification() }
-        }
+        submitButton.setOnClickListener { sharedViewModel.retryBankVerification() }
     }
 
     override fun inject(component: FragmentComponent) {

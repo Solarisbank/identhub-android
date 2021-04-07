@@ -2,27 +2,21 @@ package de.solarisbank.identhub.intro;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
-import de.solarisbank.identhub.databinding.ActivityIntroBinding;
 import de.solarisbank.identhub.di.ActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.session.IdentHubSession;
 
 public final class IntroActivity extends IdentHubActivity {
 
-    private ActivityIntroBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityIntroBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_intro);
 
         IntroActivityViewModel viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(IntroActivityViewModel.class);

@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
-import de.solarisbank.identhub.databinding.FragmentVerificationBankExternalGatewayBinding;
 import de.solarisbank.identhub.di.FragmentComponent;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
@@ -26,7 +26,7 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
 
     private IdentityActivityViewModel sharedViewModel;
     private VerificationBankExternalGateViewModel verificationBankExternalGateViewModel;
-    private FragmentVerificationBankExternalGatewayBinding binding;
+    private WebView webView;
 
     public static Fragment newInstance() {
         return new VerificationBankExternalGatewayFragment();
@@ -40,8 +40,9 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentVerificationBankExternalGatewayBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_verification_bank_external_gateway, container, false);
+        webView = root.findViewById(R.id.webView);
+        return root;
     }
 
     @Override
@@ -67,14 +68,14 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
 
         Preconditions.checkNotNull(verificationBankUrl);
 
-        binding.webView.getSettings().setJavaScriptEnabled(true);
-        binding.webView.setWebViewClient(new WebViewClient() {
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
         });
-        binding.webView.loadUrl(verificationBankUrl);
+        webView.loadUrl(verificationBankUrl);
     }
 
     private void observeVerificationStatus() {
@@ -87,12 +88,6 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
         } else if (result instanceof Result.Error) {
             Timber.d("Could not find verification result");
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }
 

@@ -1,15 +1,15 @@
 ext {
     kotlinCore = [
             "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            "androidx.core:core-ktx:1.3.2",
+            "androidx.core:core-ktx:1.3.1",
     ]
-    appCompatVersion = "1.2.0"
+    appCompatVersion = "1.1.0"
     support = [
             "androidx.appcompat:appcompat:$appCompatVersion",
-            "androidx.recyclerview:recyclerview:1.1.0",
-            "com.google.android.material:material:1.3.0",
+            "androidx.recyclerview:recyclerview:1.0.0",
+            "com.google.android.material:material:1.0.0",
             "androidx.annotation:annotation:1.1.0",
-            "androidx.constraintlayout:constraintlayout:2.0.4",
+            "androidx.constraintlayout:constraintlayout:1.1.3",
     ]
 
     activityVersion = "1.1.0"
@@ -35,7 +35,7 @@ ext {
     lifecycleVersion = "2.2.0"
     lifecycle = [
             libs: [
-                    "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+                    "androidx.lifecycle:lifecycle-extensions:2.0.0",
                     "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion",
                     "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
             ],
@@ -48,12 +48,12 @@ ext {
             "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     ]
 
-    roomVersion = '2.2.6'
+    roomVersion = '2.1.0'
     room = [
             libs: [
                     "androidx.room:room-runtime:$roomVersion",
                     "androidx.room:room-ktx:$roomVersion",
-                    "androidx.room:room-rxjava2:$roomVersion"
+                    "androidx.room:room-rxjava2:2.0.0"
             ],
             proc: [
                     "androidx.room:room-compiler:$roomVersion"
@@ -70,9 +70,9 @@ ext {
             "androidx.navigation:navigation-ui:$navigationVersion",
     ]
 
-    okHttpVersion = '4.8.0'
-    retrofitVersion = '2.9.0'
-    moshi = '1.8.0'
+    okHttpVersion = '3.14.1'
+    retrofitVersion = '2.5.0'
+    moshi = '1.9.3'
     networking = [
             libs: [
                     "com.squareup.moshi:moshi:$moshi",
@@ -95,7 +95,7 @@ ext {
     ]
 
     rxJava = [
-            "io.reactivex.rxjava2:rxjava:2.2.19",
+            "io.reactivex.rxjava2:rxjava:2.2.1",
             "io.reactivex.rxjava2:rxandroid:2.1.1",
             "com.jakewharton.rxbinding2:rxbinding:2.2.0",
             "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",

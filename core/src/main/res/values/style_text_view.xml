@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="TextView" parent="Widget.MaterialComponents.TextView">
+    <style name="TextView" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">14sp</item>
     </style>

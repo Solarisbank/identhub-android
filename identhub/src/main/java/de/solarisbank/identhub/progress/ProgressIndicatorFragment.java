@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -11,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
-import de.solarisbank.identhub.databinding.FragmentVerificationProgressIndicatorBinding;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 
 public abstract class ProgressIndicatorFragment extends IdentHubFragment {
@@ -21,13 +23,18 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     protected IdentityActivityViewModel sharedViewModel;
 
-    protected FragmentVerificationProgressIndicatorBinding binding;
+    protected ImageView icon;
+    protected TextView title;
+    protected TextView description;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentVerificationProgressIndicatorBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_verification_progress_indicator, container, false);
+        icon = root.findViewById(R.id.icon);
+        title = root.findViewById(R.id.title);
+        description = root.findViewById(R.id.description);
+        return root;
     }
 
     @Override
@@ -39,15 +46,15 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     protected void initViews() {
         int iconResource = getIconResource();
         if (iconResource != NO_RESOURCE) {
-            binding.icon.setImageResource(iconResource);
+            icon.setImageResource(iconResource);
         }
 
-        binding.title.setText(getTitleResource());
+        title.setText(getTitleResource());
 
         int messageResource = getMessageResource();
         if (messageResource != NO_RESOURCE) {
-            binding.description.setText(messageResource);
-            binding.description.setVisibility(View.VISIBLE);
+            description.setText(messageResource);
+            description.setVisibility(View.VISIBLE);
         }
     }
 
@@ -68,11 +75,5 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     protected void initViewModel() {
         super.initViewModel();
         sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(IdentityActivityViewModel.class);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

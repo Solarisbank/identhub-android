@@ -5,36 +5,46 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent
+import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
-import de.solarisbank.identhub.databinding.FragmentVerificationBankBinding
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel.IBanState
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.result.Type.ResourceNotFound
-import de.solarisbank.sdk.core.view.viewBinding
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class VerificationBankFragment : IdentHubFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val binding: FragmentVerificationBankBinding by viewBinding { FragmentVerificationBankBinding.inflate(layoutInflater) }
     private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
     private val viewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { viewModels() }
+
+    private lateinit var ibanNumber: EditText
+    private lateinit var errorMessage: TextView
+    private lateinit var submitButton: Button
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_verification_bank, container, false)
+                .also {
+                    ibanNumber = it.findViewById(R.id.ibanNumber)
+                    errorMessage = it.findViewById(R.id.errorMessage)
+                    submitButton = it.findViewById(R.id.submitButton)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,19 +73,19 @@ class VerificationBankFragment : IdentHubFragment() {
     }
 
     private fun updateIBanInputState(iBanState: IBanState) {
-        (binding.ibanNumber.background as LevelListDrawable).level = iBanState.value
-        binding.errorMessage.visibility = if (iBanState === IBanState.INVALID) View.VISIBLE else View.GONE
+        (ibanNumber.background as LevelListDrawable).level = iBanState.value
+        errorMessage.visibility = if (iBanState === IBanState.INVALID) View.VISIBLE else View.GONE
     }
 
     private fun initViews() {
-        compositeDisposable.add(RxView.clicks(binding.submitButton)
-                .map { binding.ibanNumber.text.toString().trim { it <= ' ' } }
+        compositeDisposable.add(RxView.clicks(submitButton)
+                .map { ibanNumber.text.toString().trim { it <= ' ' } }
                 .filter { viewModel.validationIBan(it) }
                 .subscribe(
                         { iBan: String -> viewModel.onSubmitButtonClicked(iBan) },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
-        compositeDisposable.add(RxTextView.textChangeEvents(binding.ibanNumber)
+        compositeDisposable.add(RxTextView.textChangeEvents(ibanNumber)
                 .subscribe { textViewTextChangeEvent: TextViewTextChangeEvent -> viewModel.onIBanInputChanged(textViewTextChangeEvent.text().toString()) })
     }
 
