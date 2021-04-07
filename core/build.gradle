@@ -17,10 +17,6 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     buildTypes {
         debug {
             debuggable true
