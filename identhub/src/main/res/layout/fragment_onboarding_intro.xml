@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextView.HeadLine1"
+        style="@style/IdentHubTextView.HeadLine1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/step1"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/step2"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/onboarding_intro_step_2"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/step3"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/onboarding_intro_step_3"
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/phone_number"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"

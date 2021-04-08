@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/verification_bank_description"
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/secondDescription"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/label"
-        style="@style/TextView.Small"
+        style="@style/IdentHubTextView.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_8"
@@ -62,7 +62,7 @@
 
     <TextView
         android:id="@+id/errorMessage"
-        style="@style/TextView.Tiny.Error"
+        style="@style/IdentHubTextView.Tiny.Error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"

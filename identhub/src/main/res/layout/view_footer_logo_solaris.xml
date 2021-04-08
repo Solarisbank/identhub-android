@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
-        style="@style/TextView.Small"
+        style="@style/IdentHubTextView.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_4"

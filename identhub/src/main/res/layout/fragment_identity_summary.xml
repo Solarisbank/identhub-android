@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextView.HeadLine2"
+        style="@style/IdentHubTextView.HeadLine2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/identity_summary_title"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_24"

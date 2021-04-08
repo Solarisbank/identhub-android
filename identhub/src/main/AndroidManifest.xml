@@ -7,9 +7,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application tools:node="merge">
-        <activity android:name="de.solarisbank.identhub.identity.IdentityActivity" />
-        <activity android:name="de.solarisbank.identhub.intro.IntroActivity" />
-        <activity android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryActivity" />
+        <activity
+            android:name="de.solarisbank.identhub.identity.IdentityActivity"
+            android:theme="@style/IdentHubTheme" />
+        <activity
+            android:name="de.solarisbank.identhub.intro.IntroActivity"
+            android:theme="@style/IdentHubTheme" />
+        <activity
+            android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryActivity"
+            android:theme="@style/IdentHubTheme" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

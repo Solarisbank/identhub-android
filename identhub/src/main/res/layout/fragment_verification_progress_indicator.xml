@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextView.HeadLine2"
+        style="@style/IdentHubTextView.HeadLine2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/TextView"
+        style="@style/IdentHubTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
