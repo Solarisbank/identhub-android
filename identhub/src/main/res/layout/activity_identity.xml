@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:background="@color/surface"
+        android:background="@color/ident_hub_color_surface"
         android:elevation="2dp">
 
         <TextView
@@ -36,7 +36,7 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/surface"
+            android:background="@color/ident_hub_color_surface"
             android:paddingTop="40dp"
             android:paddingBottom="40dp"
             app:defaultNavHost="true"

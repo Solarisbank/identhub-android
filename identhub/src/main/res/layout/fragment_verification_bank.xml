@@ -44,7 +44,7 @@
 
     <EditText
         android:id="@+id/ibanNumber"
-        style="@style/EditText"
+        style="@style/IdentHubEditText"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="48dp"
@@ -76,7 +76,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"

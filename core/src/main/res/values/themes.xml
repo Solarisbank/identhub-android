@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="IdentHubTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="color">@color/primaryVariant</item>
-        <item name="colorControlNormal">@color/onPrimary</item>
+        <item name="colorPrimary">@color/ident_hub_color_primary</item>
+        <item name="color">@color/ident_hub_color_primaryVariant</item>
+        <item name="colorControlNormal">@color/ident_hub_color_onPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondary">@color/ident_hub_color_secondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
 <!--        <item name="checkboxStyle">@style/Primary.CheckBox</item>-->

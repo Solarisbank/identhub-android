@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/downloadButton"
-        style="@style/LightButton"
+        style="@style/IdentHubLightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
@@ -53,7 +53,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_32"

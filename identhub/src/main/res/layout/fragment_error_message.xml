@@ -27,14 +27,14 @@
         android:padding="@dimen/margin_16"
         android:text="@string/verification_phone_error_default_message"
         app:drawableStartCompat="@drawable/ic_alert_16_black"
-        app:drawableTint="@color/error"
+        app:drawableTint="@color/ident_hub_color_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -45,7 +45,7 @@
 
     <Button
         android:id="@+id/cancelButton"
-        style="@style/LightButton"
+        style="@style/IdentHubLightButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"

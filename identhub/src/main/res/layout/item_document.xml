@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/imageview_document_level_list_drawable"
-        app:tint="@color/base25" />
+        app:tint="@color/ident_hub_color_base25" />
 
     <TextView
         android:id="@+id/title"
@@ -35,7 +35,7 @@
         style="@style/IdentHubTextView.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/base50"
+        android:textColor="@color/ident_hub_color_base50"
         android:ellipsize="middle"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="@+id/title"
@@ -46,7 +46,7 @@
 
     <Button
         android:id="@+id/previewButton"
-        style="@style/IconOnly"
+        style="@style/IdentHubIconOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_preview_16_black"

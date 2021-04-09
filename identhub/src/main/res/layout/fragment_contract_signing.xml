@@ -16,7 +16,7 @@
 
     <EditText
         android:id="@+id/firstDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:layout_width="32dp"
         android:layout_height="48dp"
         android:layout_marginEnd="@dimen/margin_8"
@@ -30,7 +30,7 @@
 
     <EditText
         android:id="@+id/secondDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:layout_marginEnd="@dimen/margin_8"
         android:imeOptions="actionNext"
         android:nextFocusRight="@id/thirdDigit"
@@ -41,7 +41,7 @@
 
     <EditText
         android:id="@+id/thirdDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:layout_marginEnd="@dimen/margin_8"
         android:imeOptions="actionNext"
         android:nextFocusRight="@id/fourthDigit"
@@ -52,7 +52,7 @@
 
     <EditText
         android:id="@+id/fourthDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:layout_marginEnd="@dimen/margin_8"
         android:imeOptions="actionNext"
         android:nextFocusRight="@id/fifthDigit"
@@ -63,7 +63,7 @@
 
     <EditText
         android:id="@+id/fifthDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:layout_marginEnd="@dimen/margin_8"
         android:imeOptions="actionNext"
         android:nextFocusRight="@id/sixthDigit"
@@ -74,7 +74,7 @@
 
     <EditText
         android:id="@+id/sixthDigit"
-        style="@style/EditText.OneDigit"
+        style="@style/IdentHubEditTextOneDigit"
         android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -108,7 +108,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -120,7 +120,7 @@
 
     <Button
         android:id="@+id/sendNewCode"
-        style="@style/TextButton"
+        style="@style/IdentHubTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/verification_phone_action_new_code"
@@ -171,7 +171,7 @@
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_alert_16_black"
-            app:tint="@color/black50" />
+            app:tint="@color/ident_hub_color_black50" />
 
         <TextView
             android:id="@+id/transactionDescription"

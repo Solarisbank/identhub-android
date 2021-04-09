@@ -101,7 +101,7 @@
 
     <Button
         android:id="@+id/startVerifyButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -111,7 +111,7 @@
         app:layout_constraintTop_toBottomOf="@+id/phone_number" />
 
     <Button
-        style="@style/LightButton"
+        style="@style/IdentHubLightButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"

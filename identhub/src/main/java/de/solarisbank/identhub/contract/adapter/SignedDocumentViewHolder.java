@@ -29,7 +29,7 @@ public class SignedDocumentViewHolder extends DocumentViewHolder {
     @Override
     public void bind(Document signedDocument) {
         imageView.setImageLevel(1);
-        imageView.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(itemView.getContext(), R.color.success)));
+        imageView.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(itemView.getContext(), R.color.ident_hub_color_success)));
         title.setText(signedDocument.getDocumentType());
         subtitle.setText(signedDocument.getName());
     }

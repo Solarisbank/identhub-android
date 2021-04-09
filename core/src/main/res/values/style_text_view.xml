@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="IdentHubTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/ident_hub_color_black</item>
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0</item>
     </style>
@@ -53,6 +53,6 @@
 
     <!-- error message -->
     <style name="IdentHubTextView.Tiny.Error">
-        <item name="android:textColor">@color/error</item>
+        <item name="android:textColor">@color/ident_hub_color_error</item>
     </style>
 </resources>

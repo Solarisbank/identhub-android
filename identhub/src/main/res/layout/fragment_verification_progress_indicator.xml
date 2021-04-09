@@ -19,7 +19,7 @@
         android:id="@+id/icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        app:tint="@color/secondary"
+        app:tint="@color/ident_hub_color_secondary"
         app:srcCompat="@drawable/ic_hourglass_32_secondary"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_4"
         android:text="@string/copyright"
-        android:textColor="@color/black50" />
+        android:textColor="@color/ident_hub_color_black50" />
 
     <ImageView
         android:layout_width="80dp"
