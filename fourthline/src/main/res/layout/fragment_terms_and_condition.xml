@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextView.HeadLine1"
+        style="@style/IdentHubTextView.HeadLine1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_alert_16_black"
-            app:tint="@color/black50" />
+            app:tint="@color/ident_hub_color_black50" />
 
         <TextView
             android:id="@+id/transactionDescription"
@@ -52,7 +52,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"

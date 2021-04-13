@@ -7,24 +7,30 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.view.viewBinding
 import de.solarisbank.sdk.core.viewModels
-import de.solarisbank.sdk.fourthline.FourthlineComponent
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.databinding.FragmentTermsAndConditionBinding
+import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 
 class TermsAndConditionsFragment : FourthlineFragment() {
-    private val binding: FragmentTermsAndConditionBinding by viewBinding { FragmentTermsAndConditionBinding.inflate(layoutInflater) }
+
+    private var submitButton: Button? = null
+    private var termsAndConditionCheckbox: CheckBox? = null
+
     private val viewModel: TermsAndConditionsViewModel by lazy<TermsAndConditionsViewModel> { viewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_terms_and_condition, container, false)
+                .also {
+                    submitButton = it.findViewById(R.id.submitButton)
+                    termsAndConditionCheckbox = it.findViewById(R.id.termsAndConditionCheckbox)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,15 +44,15 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     }
 
     private fun onTermsAndConditionCheckChanged(event: Event<Boolean>) {
-        binding.submitButton.isEnabled = event.content ?: false
+        submitButton!!.isEnabled = event.content ?: false
     }
 
     private fun initView() {
-        binding.termsAndConditionCheckbox.makeLinks(
+        termsAndConditionCheckbox!!.makeLinks(
                 Pair(getString(R.string.terms_and_condition_label), ::onTermsAndConditionsClicked),
                 Pair(getString(R.string.privacy_statement_label), ::onPrivacyStatementClicked)
         )
-        binding.termsAndConditionCheckbox.setOnCheckedChangeListener { _, isChecked -> viewModel.onTermsAndConditionCheckChanged(isChecked) }
+        termsAndConditionCheckbox!!.setOnCheckedChangeListener { _, isChecked -> viewModel.onTermsAndConditionCheckChanged(isChecked) }
     }
 
     private fun onTermsAndConditionsClicked() {
@@ -57,12 +63,14 @@ class TermsAndConditionsFragment : FourthlineFragment() {
         TODO("Need to be implemented later")
     }
 
-    override fun inject(component: FourthlineComponent) {
+    override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
     }
 
     override fun onDestroyView() {
-        binding.termsAndConditionCheckbox.removeLink()
+        termsAndConditionCheckbox!!.removeLink()
+        termsAndConditionCheckbox = null
+        submitButton = null
         super.onDestroyView()
     }
 

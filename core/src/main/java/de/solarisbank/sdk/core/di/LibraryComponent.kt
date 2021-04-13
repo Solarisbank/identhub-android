@@ -4,7 +4,7 @@ import android.content.Context
 
 interface LibraryComponent {
 
-    fun activityComponent(): ActivityComponent.Factory
+    fun activityComponent(): CoreActivityComponent.Factory
 
     fun applicationContext(): Context
 }

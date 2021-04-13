@@ -2,27 +2,35 @@ package de.solarisbank.sdk.fourthline.selfie
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.core.BaseActivity
-import de.solarisbank.sdk.core.view.viewBinding
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.FourthlineComponent
-import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.asString
-import de.solarisbank.sdk.fourthline.databinding.FragmentSelfieBinding
-import de.solarisbank.sdk.fourthline.onLayoutMeasuredOnce
+import de.solarisbank.sdk.fourthline.*
+import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SelfieFragment : SelfieScannerFragment() {
-    private val binding: FragmentSelfieBinding by viewBinding { FragmentSelfieBinding.inflate(layoutInflater) }
+
+    private var takeSnapshot: ImageButton? = null
+    private var punchhole: PunchholeView? = null
+    private var selfieMask: ImageView? = null
+    private var stepLabel: TextView? = null
+    private var icon: ImageView? = null
+    private var warningsLabel: TextView? = null
+
     private val viewModel: SelfieSharedViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[SelfieSharedViewModel::class.java]
     }
@@ -34,8 +42,8 @@ class SelfieFragment : SelfieScannerFragment() {
     private var cleanupJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val activityComponent = (requireActivity() as BaseActivity).activityComponent
-        inject(FourthlineComponent.getInstance(activityComponent))
+        val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
+        inject(activityComponent.fragmentComponent().create())
         super.onCreate(savedInstanceState)
     }
 
@@ -50,10 +58,10 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     private fun initView() {
-        binding.takeSnapshot.setOnClickListener { takeSnapshot() }
-        binding.root.onLayoutMeasuredOnce {
-            binding.punchhole.punchholeRect = getFaceDetectionArea()
-            binding.punchhole.postInvalidate()
+        takeSnapshot!!.setOnClickListener { takeSnapshot() }
+        (view as ViewGroup).onLayoutMeasuredOnce {
+            punchhole!!.punchholeRect = getFaceDetectionArea()
+            punchhole!!.postInvalidate()
         }
     }
 
@@ -62,21 +70,30 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun getFaceDetectionArea(): Rect {
-        return Rect(binding.selfieMask.left,
-                binding.selfieMask.top,
-                binding.selfieMask.right,
-                binding.selfieMask.bottom
+        return Rect(selfieMask!!.left,
+                selfieMask!!.top,
+                selfieMask!!.right,
+                selfieMask!!.bottom
         )
     }
 
     override fun getOverlayView(): View? {
-        return binding.root
+        return LayoutInflater
+                .from(requireContext())
+                .inflate(R.layout.fragment_selfie, requireActivity().findViewById(R.id.content))
+                .also {
+                    takeSnapshot = it.findViewById(R.id.takeSnapshot)
+                    punchhole = it.findViewById(R.id.punchhole)
+                    selfieMask = it.findViewById(R.id.selfieMask)
+                    stepLabel
+
+                }
     }
 
     override fun onFail(error: SelfieScannerError) {
         lifecycleScope.launch(Dispatchers.Main) {
             if (error == SelfieScannerError.TIMEOUT) {
-                binding.takeSnapshot.visibility = View.VISIBLE
+                takeSnapshot!!.visibility = View.VISIBLE
             }
             Toast.makeText(requireContext(), error.asString(), Toast.LENGTH_LONG).show()
         }
@@ -84,7 +101,7 @@ class SelfieFragment : SelfieScannerFragment() {
 
     override fun onStepUpdate(step: SelfieScannerStep) {
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.stepLabel.text = step.asString()
+            stepLabel!!.text = step.asString()
         }
     }
 
@@ -92,9 +109,9 @@ class SelfieFragment : SelfieScannerFragment() {
         viewModel.selfieResultBitmap = result.image.cropped
 
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.icon.visibility = View.VISIBLE
-            binding.icon.setImageLevel(1)
-            binding.warningsLabel.setText(R.string.selfie_scanner_scan_successful)
+            icon!!.visibility = View.VISIBLE
+            icon!!.setImageLevel(1)
+            warningsLabel!!.setText(R.string.selfie_scanner_scan_successful)
         }
 
         viewModel.success()
@@ -103,17 +120,27 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun onWarnings(warnings: List<SelfieScannerWarning>) {
         cleanupJob?.cancel()
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
-            binding.icon.visibility = View.VISIBLE
-            binding.warningsLabel.text = warnings[0].asString()
-            binding.icon.setImageLevel(0)
+            icon!!.visibility = View.VISIBLE
+            warningsLabel!!.text = warnings[0].asString()
+            icon!!.setImageLevel(0)
 
             delay(500)
-            binding.warningsLabel.text = ""
-            binding.icon.visibility = View.GONE
+            warningsLabel!!.text = ""
+            icon!!.visibility = View.GONE
         }
     }
 
-    fun inject(component: FourthlineComponent) {
+    override fun onDestroyView() {
+        takeSnapshot = null
+        punchhole = null
+        selfieMask = null
+        stepLabel = null
+        icon = null
+        warningsLabel = null
+        super.onDestroyView()
+    }
+
+    fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
     }
 

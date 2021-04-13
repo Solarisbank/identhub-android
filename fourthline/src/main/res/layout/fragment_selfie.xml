@@ -9,7 +9,7 @@
         android:id="@+id/punchhole"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black30" />
+        android:background="@color/ident_hub_color_black30" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/buttonClose"
@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/stepLabel"
-            style="@style/TextView.HeadLine3"
+            style="@style/IdentHubTextView.HeadLine3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -59,11 +59,11 @@
 
         <TextView
             android:id="@+id/warningsLabel"
-            style="@style/TextView.Small"
+            style="@style/IdentHubTextView.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
-            android:textColor="@color/base50"
+            android:textColor="@color/ident_hub_color_base50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

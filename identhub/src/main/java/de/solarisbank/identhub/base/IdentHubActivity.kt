@@ -1,20 +1,20 @@
 package de.solarisbank.identhub.base
 
-import de.solarisbank.identhub.di.ActivitySubcomponent
+import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.di.IdenthubComponent
 import de.solarisbank.sdk.core.BaseActivity
 
 abstract class IdentHubActivity : BaseActivity() {
 
-    val activitySubcomponent: ActivitySubcomponent by lazy {
+    val identHubActivitySubcomponent: IdentHubActivitySubcomponent by lazy {
         IdenthubComponent.getInstance(libraryComponent)
                 .activitySubcomponent().create(activityComponent)
     }
 
     override fun injectMe() {
         super.injectMe()
-        inject(activitySubcomponent)
+        inject(identHubActivitySubcomponent)
     }
 
-    protected abstract fun inject(activitySubcomponent: ActivitySubcomponent)
+    protected abstract fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent)
 }

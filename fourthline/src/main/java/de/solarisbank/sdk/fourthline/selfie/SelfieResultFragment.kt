@@ -4,19 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.view.viewBinding
-import de.solarisbank.sdk.fourthline.FourthlineComponent
+import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.databinding.FragmentSelfieResultBinding
+import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 
 class SelfieResultFragment : FourthlineFragment() {
-    private val binding: FragmentSelfieResultBinding by viewBinding { FragmentSelfieResultBinding.inflate(layoutInflater) }
+
+    private var imageResult: ImageView? = null
+    private var submitButton: Button? = null
+    private var retryButton: Button? = null
+
     private val viewModel: SelfieSharedViewModel by lazy<SelfieSharedViewModel> { activityViewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_selfie_result, container, false)
+                .also {
+                    imageResult = it.findViewById(R.id.imageResult)
+                    submitButton = it.findViewById(R.id.submitButton)
+                    retryButton = it.findViewById(R.id.retryButton)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,15 +36,22 @@ class SelfieResultFragment : FourthlineFragment() {
 
     private fun initView() {
         if (viewModel.selfieResultBitmap != null) {
-            binding.imageResult.setImageBitmap(viewModel.selfieResultBitmap)
+            imageResult!!.setImageBitmap(viewModel.selfieResultBitmap)
         }
 
-        binding.retryButton.setOnClickListener { viewModel.onRetakeButtonClicked() }
-        binding.submitButton.setOnClickListener { viewModel.onConfirmButtonClicked() }
+        retryButton!!.setOnClickListener { viewModel.onRetakeButtonClicked() }
+        submitButton!!.setOnClickListener { viewModel.onConfirmButtonClicked() }
     }
 
-    override fun inject(component: FourthlineComponent) {
+    override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
+    }
+
+    override fun onDestroyView() {
+        imageResult = null
+        submitButton = null
+        retryButton = null
+        super.onDestroyView()
     }
 
     companion object {

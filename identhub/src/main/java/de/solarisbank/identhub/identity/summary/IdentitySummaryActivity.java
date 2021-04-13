@@ -13,9 +13,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
-import de.solarisbank.identhub.di.ActivitySubcomponent;
+import de.solarisbank.identhub.di.IdentHubActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
-import de.solarisbank.identhub.navigation.NaviDirection;
+import de.solarisbank.sdk.core.navigation.NaviDirection;
 import de.solarisbank.sdk.core.result.Event;
 
 public final class IdentitySummaryActivity extends IdentHubActivity {
@@ -69,7 +69,7 @@ public final class IdentitySummaryActivity extends IdentHubActivity {
     }
 
     @Override
-    protected void inject(ActivitySubcomponent activitySubcomponent) {
-        activitySubcomponent.inject(this);
+    protected void inject(IdentHubActivitySubcomponent identHubActivitySubcomponent) {
+        identHubActivitySubcomponent.inject(this);
     }
 }

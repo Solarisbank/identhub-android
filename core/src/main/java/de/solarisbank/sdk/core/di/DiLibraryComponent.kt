@@ -11,7 +11,7 @@ class DiLibraryComponent private constructor(libraryModule: LibraryModule) : Lib
 
     private val applicationContextProvider: Provider<Context> = DoubleCheck.provider<LibraryModuleContextFactory, Context>(LibraryModuleContextFactory.create(libraryModule))
 
-    override fun activityComponent(): ActivityComponent.Factory = ActivityComponentFactory()
+    override fun activityComponent(): CoreActivityComponent.Factory = CoreActivityComponentFactory()
 
     override fun applicationContext(): Context {
         return applicationContextProvider.get()
@@ -25,13 +25,13 @@ class DiLibraryComponent private constructor(libraryModule: LibraryModule) : Lib
         fun build() = DiLibraryComponent(libraryModule)
     }
 
-    private class ActivityComponentFactory : ActivityComponent.Factory {
-        override fun create(baseActivity: BaseActivity): ActivityComponent {
-            return ActivityComponentImpl(ActivityModule(baseActivity))
+    private class CoreActivityComponentFactory : CoreActivityComponent.Factory {
+        override fun create(baseActivity: BaseActivity): CoreActivityComponent {
+            return CoreActivityComponentImpl(ActivityModule(baseActivity))
         }
     }
 
-    private class ActivityComponentImpl(activityModule: ActivityModule) : ActivityComponent {
+    private class CoreActivityComponentImpl(activityModule: ActivityModule) : CoreActivityComponent {
 
         private val contextProvider: Provider<Context> = DoubleCheck.provider(ActivityModuleContextFactory.create(activityModule))
 

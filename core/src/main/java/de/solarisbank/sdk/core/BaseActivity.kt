@@ -3,7 +3,7 @@ package de.solarisbank.sdk.core
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core.di.ActivityComponent
+import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.DiLibraryComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
@@ -18,7 +18,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var activityComponent: ActivityComponent
+    lateinit var activityComponent: CoreActivityComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectMe()

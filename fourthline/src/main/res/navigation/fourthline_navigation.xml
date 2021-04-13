@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fourthline_navigation"
+    app:startDestination="@id/termsAndConditionsFragment">
+
+    <fragment
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.terms.TermsAndConditionsFragment"
+        android:label="TermsAndConditionsFragment"
+        >
+
+        <action
+            android:id="@+id/action_termsAndConditionsFragment_to_welcomeContainerFragment"
+            app:destination="@id/welcomeContainerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/welcomeContainerFragment"
+        android:name="de.solarisbank.sdk.fourthline.welcome.WelcomeContainerFragment"
+        android:label="WelcomeContainerFragment"
+        >
+        <action
+            android:id="@+id/action_welcomeContainerFragment_to_selfieFragment"
+            app:destination="@id/selfieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selfieFragment"
+        android:name="de.solarisbank.sdk.fourthline.selfie.SelfieFragment"
+        android:label="SelfieFragment"
+        >
+        <action
+            android:id="@+id/action_selfieFragment_to_SelfieResultFragment"
+            app:destination="@id/SelfieResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SelfieResultFragment"
+        android:name="de.solarisbank.sdk.fourthline.selfie.SelfieResultFragment"
+        android:label="SelfieResultFragment"
+        />
+
+</navigation>

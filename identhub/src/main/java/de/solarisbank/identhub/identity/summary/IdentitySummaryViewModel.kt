@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.navigation.NaviDirection
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.IdentHub.LAST_COMPLETED_STEP_KEY
 import de.solarisbank.identhub.session.IdentHubSession
+import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import io.reactivex.disposables.CompositeDisposable

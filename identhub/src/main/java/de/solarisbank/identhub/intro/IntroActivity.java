@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
-import de.solarisbank.identhub.di.ActivitySubcomponent;
+import de.solarisbank.identhub.di.IdentHubActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.session.IdentHubSession;
 
@@ -38,7 +38,7 @@ public final class IntroActivity extends IdentHubActivity {
     }
 
     @Override
-    protected void inject(ActivitySubcomponent activitySubcomponent) {
-        activitySubcomponent.inject(this);
+    protected void inject(IdentHubActivitySubcomponent identHubActivitySubcomponent) {
+        identHubActivitySubcomponent.inject(this);
     }
 }

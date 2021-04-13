@@ -7,7 +7,7 @@ import de.solarisbank.sdk.core.BaseFragment
 abstract class IdentHubFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val activityComponent = (requireActivity() as IdentHubActivity).activitySubcomponent
+        val activityComponent = (requireActivity() as IdentHubActivity).identHubActivitySubcomponent
         inject(activityComponent.fragmentComponent().create())
         super.onCreate(savedInstanceState)
     }

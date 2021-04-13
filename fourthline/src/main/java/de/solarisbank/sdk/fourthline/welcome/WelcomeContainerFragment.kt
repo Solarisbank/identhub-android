@@ -4,25 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
-import de.solarisbank.sdk.core.view.viewBinding
+import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import de.solarisbank.sdk.core.viewModels
-import de.solarisbank.sdk.fourthline.FourthlineComponent
+import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.databinding.FragmentWelcomeContainerBinding
+import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 
 class WelcomeContainerFragment : FourthlineFragment() {
 
-    private val binding: FragmentWelcomeContainerBinding by viewBinding { FragmentWelcomeContainerBinding.inflate(layoutInflater) }
+    private var welcomeTitle: TextView? = null
+    private var welcomePager: ViewPager? = null
+    private var welcomeTabLayout: TabLayout? = null
+
     private val viewModel: WelcomeSharedViewModel by lazy<WelcomeSharedViewModel> { viewModels() }
 
-    override fun inject(component: FourthlineComponent) {
+    override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return binding.root
+        return inflater.inflate(R.layout.fragment_welcome_container, container, false)
+                .also {
+                    welcomeTitle = it.findViewById(R.id.welcomeTitle)
+                    welcomePager = it.findViewById(R.id.welcomePager)
+                    welcomeTabLayout = it.findViewById(R.id.welcomeTabLayout)
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,19 +40,32 @@ class WelcomeContainerFragment : FourthlineFragment() {
 
     private fun initView() {
         val savedPosition = viewModel.pagerPosition
-        binding.welcomePager.also {
-            it.adapter = WelcomePagerAdapter(this)
+        welcomePager.also {
+            it!!.adapter = WelcomePagerAdapter(childFragmentManager)
             it.setCurrentItem(savedPosition, false)
-            it.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            it.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                }
+
                 override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
                     viewModel.pagerPosition = position
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+
                 }
             })
         }
 
-        TabLayoutMediator(binding.welcomeTabLayout, binding.welcomePager) { _, _ ->
-        }.attach()
+        welcomeTabLayout!!.setupWithViewPager(welcomePager)
+    }
+
+    override fun onDestroyView() {
+        welcomeTitle = null
+        welcomePager = null
+        welcomeTabLayout = null
+        super.onDestroyView()
     }
 }
 

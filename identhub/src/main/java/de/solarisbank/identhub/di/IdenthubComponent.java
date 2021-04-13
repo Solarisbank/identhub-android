@@ -116,7 +116,7 @@ import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMes
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector;
-import de.solarisbank.sdk.core.di.ActivityComponent;
+import de.solarisbank.sdk.core.di.CoreActivityComponent;
 import de.solarisbank.sdk.core.di.LibraryComponent;
 import de.solarisbank.sdk.core.di.internal.DoubleCheck;
 import de.solarisbank.sdk.core.di.internal.Factory2;
@@ -260,7 +260,7 @@ public class IdenthubComponent {
     }
 
 
-    public ActivitySubcomponent.Factory activitySubcomponent() {
+    public IdentHubActivitySubcomponent.Factory activitySubcomponent() {
         return new ActivitySubcomponentFactory();
     }
 
@@ -335,16 +335,16 @@ public class IdenthubComponent {
         }
     }
 
-    public class ActivitySubcomponentFactory implements ActivitySubcomponent.Factory {
+    public class ActivitySubcomponentFactory implements IdentHubActivitySubcomponent.Factory {
 
         @NotNull
         @Override
-        public ActivitySubcomponent create(@NotNull ActivityComponent activityComponent) {
-            return new ActivitySubcomponentImp(activityComponent, activitySubModule);
+        public IdentHubActivitySubcomponent create(@NotNull CoreActivityComponent activityComponent) {
+            return new IdentHubActivitySubcomponentImp(activityComponent, activitySubModule);
         }
     }
 
-    private final class ActivitySubcomponentImp implements ActivitySubcomponent {
+    private final class IdentHubActivitySubcomponentImp implements IdentHubActivitySubcomponent {
 
         private Provider<Context> contextProvider;
         private Provider<SharedPreferences> sharedPreferencesProvider;
@@ -356,11 +356,11 @@ public class IdenthubComponent {
         private Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> mapOfClassOfAndProviderOfViewModelProvider;
         private Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> saveStateViewModelMapProvider;
 
-        public ActivitySubcomponentImp(ActivityComponent activityComponent, ActivitySubModule activitySubModule) {
+        public IdentHubActivitySubcomponentImp(CoreActivityComponent activityComponent, ActivitySubModule activitySubModule) {
             initialize(activityComponent, activitySubModule);
         }
 
-        private void initialize(ActivityComponent activityComponent, ActivitySubModule identHubModule) {
+        private void initialize(CoreActivityComponent activityComponent, ActivitySubModule identHubModule) {
             this.contextProvider = new ContextProvider(activityComponent);
             this.sharedPreferencesProvider = new SharedPreferencesProvider(activityComponent);
             this.identificationStepPreferencesProvider = DoubleCheck.provider(IdentificationStepPreferencesFactory.create(identHubModule, sharedPreferencesProvider));
@@ -415,9 +415,9 @@ public class IdenthubComponent {
 
         class ContextProvider implements Provider<Context> {
 
-            private final ActivityComponent activityComponent;
+            private final CoreActivityComponent activityComponent;
 
-            ContextProvider(ActivityComponent libraryComponent) {
+            ContextProvider(CoreActivityComponent libraryComponent) {
                 this.activityComponent = libraryComponent;
             }
 
@@ -429,9 +429,9 @@ public class IdenthubComponent {
 
         class SharedPreferencesProvider implements Provider<SharedPreferences> {
 
-            private final ActivityComponent activityComponent;
+            private final CoreActivityComponent activityComponent;
 
-            SharedPreferencesProvider(ActivityComponent libraryComponent) {
+            SharedPreferencesProvider(CoreActivityComponent libraryComponent) {
                 this.activityComponent = libraryComponent;
             }
 

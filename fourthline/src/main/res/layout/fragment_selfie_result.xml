@@ -24,7 +24,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/retryButton"
-        style="@style/LightButton"
+        style="@style/IdentHubLightButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"

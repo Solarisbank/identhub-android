@@ -28,8 +28,8 @@
         app:layout_constraintGuide_begin="16dp" />
 
     <TextView
-        android:id="@+id/welcome_title"
-        style="@style/TextView.HeadLine2"
+        android:id="@+id/welcomeTitle"
+        style="@style/IdentHubTextView.HeadLine2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_title"
@@ -38,16 +38,16 @@
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/topGuideline" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/welcome_pager"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/welcomePager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/welcome_tab_layout"
-        app:layout_constraintTop_toBottomOf="@id/welcome_title"
+        app:layout_constraintBottom_toTopOf="@id/welcomeTabLayout"
+        app:layout_constraintTop_toBottomOf="@id/welcomeTitle"
         tools:context=".ui.screens.intro.IntroViewPagerFragment" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/welcome_tab_layout"
+        android:id="@+id/welcomeTabLayout"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/start_button"
@@ -59,23 +59,14 @@
 
     <Button
         android:id="@+id/start_button"
-        style="@style/PrimaryButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Start"
-        app:layout_constraintBottom_toTopOf="@id/logo_solaris"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline" />
 
-    <LinearLayout
-        android:id="@+id/logo_solaris"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <include layout="@layout/view_footer_logo_solaris" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

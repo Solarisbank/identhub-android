@@ -7,7 +7,6 @@ import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.FourthlineModule
 
 class FourthlineModuleAssistedViewModelFactory(
         private val fourthlineModule: FourthlineModule,

@@ -7,7 +7,7 @@
             android:shape="ring"
             android:thickness="2dp"
             android:useLevel="false">
-            <solid android:color="@color/secondaryTint" />
+            <solid android:color="@color/ident_hub_color_secondaryTint" />
         </shape>
     </item>
     <item
@@ -19,7 +19,7 @@
             <size
                 android:width="24dp"
                 android:height="24dp" />
-            <solid android:color="@color/primaryVariant" />
+            <solid android:color="@color/ident_hub_color_primaryVariant" />
         </shape>
     </item>
 </layer-list>

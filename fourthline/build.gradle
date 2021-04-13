@@ -17,10 +17,6 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     buildTypes {
         debug {
             debuggable true
@@ -89,6 +85,7 @@ afterEvaluate {
 dependencies {
     api project(":core")
     implementation kotlinCore
+    implementation navigation
     implementation support
     implementation lifecycle.libs
     implementation activity
