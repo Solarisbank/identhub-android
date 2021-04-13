@@ -39,6 +39,10 @@ public final class IdentityActivity extends IdentHubActivity {
         NavInflater navInflater = navHostFragment.getNavController().getNavInflater();
         NavGraph navGraph = navInflater.inflate(R.navigation.identity_nav_graph);
 
+        if (!IdentHubSession.hasPhoneVerification) {
+            navGraph.setStartDestination(R.id.verificationBankFragment);
+        }
+
         IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
         if (lastCompletedStep == IdentHubSession.Step.VERIFICATION_BANK) {
             navGraph.setStartDestination(R.id.contractSigningPreviewFragment);
@@ -49,7 +53,11 @@ public final class IdentityActivity extends IdentHubActivity {
     private void initView() {
         stepIndicator = findViewById(R.id.stepIndicator);
         IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
-        stepIndicator.setStep(lastCompletedStep != null ? lastCompletedStep.getIndex() : IdentHubSession.Step.VERIFICATION_PHONE.getIndex());
+        int startStep = IdentHubSession.Step.VERIFICATION_PHONE.getIndex();
+        if (!IdentHubSession.hasPhoneVerification) {
+            startStep = IdentHubSession.Step.VERIFICATION_BANK.getIndex();
+        }
+        stepIndicator.setStep(lastCompletedStep != null ? lastCompletedStep.getIndex() : startStep);
     }
 
     @Override

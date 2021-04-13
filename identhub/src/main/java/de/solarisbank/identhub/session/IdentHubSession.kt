@@ -98,6 +98,11 @@ class IdentHubSession(private val sessionUrl: String) {
             }
         }
     }
+
+    companion object {
+        @kotlin.jvm.JvmField
+        var hasPhoneVerification: Boolean = false
+    }
 }
 
 data class IdentHubSessionResult(val identificationId: String, val step: IdentHubSession.Step?)
