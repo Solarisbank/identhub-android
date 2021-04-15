@@ -80,13 +80,10 @@ class VerificationBankFragment : IdentHubFragment() {
     private fun initViews() {
         compositeDisposable.add(RxView.clicks(submitButton)
                 .map { ibanNumber.text.toString().trim { it <= ' ' } }
-                .filter { viewModel.validationIBan(it) }
                 .subscribe(
                         { iBan: String -> viewModel.onSubmitButtonClicked(iBan) },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
-        compositeDisposable.add(RxTextView.textChangeEvents(ibanNumber)
-                .subscribe { textViewTextChangeEvent: TextViewTextChangeEvent -> viewModel.onIBanInputChanged(textViewTextChangeEvent.text().toString()) })
     }
 
     private fun observeInputsState() {

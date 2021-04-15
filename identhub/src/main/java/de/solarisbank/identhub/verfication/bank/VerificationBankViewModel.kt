@@ -7,7 +7,6 @@ import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import io.reactivex.disposables.CompositeDisposable
-import java.util.regex.Pattern
 
 class VerificationBankViewModel(private val verifyIBanUseCase: VerifyIBanUseCase) : ViewModel() {
     private val iBanStateLiveData: MutableLiveData<Event<IBanState>> = MutableLiveData()
@@ -43,27 +42,7 @@ class VerificationBankViewModel(private val verifyIBanUseCase: VerifyIBanUseCase
         super.onCleared()
     }
 
-    fun onIBanInputChanged(iBan: String) {
-        if (isIBanValid(iBan)) {
-            notifyIBanStateChanged(IBanState.VALID)
-        }
-    }
-
-    private fun isIBanValid(iBan: String): Boolean {
-        return Pattern.compile(IBAN_PATTERN).matcher(iBan).matches()
-    }
-
-    fun validationIBan(iBan: String): Boolean {
-        val isValid = isIBanValid(iBan)
-        notifyIBanStateChanged(if (isValid) IBanState.VALID else IBanState.INVALID)
-        return isValid
-    }
-
     enum class IBanState(val value: Int) {
         INVALID(2), VALID(1), NONE(0);
-    }
-
-    companion object {
-        private const val IBAN_PATTERN = "^[A-Z]{2} ?[0-9]{2} ?[0-9]{4} ?[0-9]{4} ?[0-9]{4} ?[0-9]{4} ?[0-9]{2,8}$"
     }
 }
