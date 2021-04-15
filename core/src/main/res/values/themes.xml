@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="IdentHubTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="IdentHubTheme" parent="Theme.AppCompat.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/ident_hub_color_primary</item>
         <item name="color">@color/ident_hub_color_primaryVariant</item>

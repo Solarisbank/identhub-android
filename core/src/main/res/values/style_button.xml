@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="IdentHubPrimaryButton" parent="Widget.MaterialComponents.Button">
+    <style name="IdentHubPrimaryButton" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/ident_hub_color_onPrimary</item>
         <item name="backgroundTint">@color/button_background_primary_selector</item>
         <item name="rippleColor">@color/ident_hub_color_primaryVariant</item>
         <item name="iconTint">@color/ident_hub_color_onPrimary</item>
         <item name="textAllCaps">false</item>
     </style>
-    <style name="IdentHubLightButton" parent="Widget.MaterialComponents.Button">
+    <style name="IdentHubLightButton" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/button_text_light_selector</item>
         <item name="backgroundTint">@color/button_background_light_selector</item>
         <item name="rippleColor">@color/ident_hub_color_black10</item>
@@ -21,7 +21,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="IdentHubIconOnly" parent="Widget.MaterialComponents.Button">
+    <style name="IdentHubIconOnly" parent="Widget.AppCompat.Button">
         <item name="iconPadding">0dp</item>
         <item name="backgroundTint">@color/button_background_light_selector</item>
         <item name="rippleColor">@color/ident_hub_color_black10</item>

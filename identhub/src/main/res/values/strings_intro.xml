@@ -8,6 +8,6 @@
     <string name="onboarding_intro_step_3">3. electronically sign documents</string>
     <string name="onboarding_intro_phone_number"></string>
 
-    <string name="onboarding_intro_verify_button">Send identification</string>
+    <string name="onboarding_intro_verify_button">Start identification</string>
     <string name="onboarding_intro_quit">Return to site</string>
 </resources>
