@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="IdentHubEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="IdentHubEditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/edittext_level_list_drawable</item>
+        <item name="android:textColor">@color/edittext_color_selector</item>
     </style>
 
-    <style name="IdentHubEditTextOneDigit" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="IdentHubEditTextOneDigit" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@color/edittext_color_selector</item>
         <item name="android:background">@drawable/edittext_level_list_drawable</item>
         <item name="android:layout_width">32dp</item>

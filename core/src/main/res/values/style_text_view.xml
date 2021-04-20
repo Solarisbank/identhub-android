@@ -55,4 +55,8 @@
     <style name="IdentHubTextView.Tiny.Error">
         <item name="android:textColor">@color/ident_hub_color_error</item>
     </style>
+
+    <style name="IdentHubTextView.Info">
+        <item name="android:textColor">@color/ident_hub_color_info_text</item>
+    </style>
 </resources>

@@ -13,15 +13,19 @@
     <color name="ident_hub_color_error">#E23636</color>
     <color name="ident_hub_color_onError">#FFFFFFFF</color>
     <color name="ident_hub_color_errorSurface">#fff5f5</color>
-    <color name="ident_hub_color_surface">#FFFFFFFF</color>
-    <color name="ident_hub_color_background">#F7F8FA</color>
+    <color name="ident_hub_color_surface">#303030</color>
+    <color name="ident_hub_color_background">#414D5D</color>
+    <color name="ident_hub_color_light_button">#C9CFD6</color>
+    <color name="ident_hub_color_info_text">#C9CFD6</color>
+    <color name="ident_hub_color_info_background">#7E8794</color>
+    <color name="ident_hub_color_edit_text">#BCBCBC</color>
 
-    <color name="ident_hub_color_black">#FF000000</color>
+    <color name="ident_hub_color_black">#FCFCFC</color> <!-- Text View -->
     <color name="ident_hub_color_black30">#4D000000</color>
-    <color name="ident_hub_color_black50">#7E8794</color>
+    <color name="ident_hub_color_black50">#C9CFD6</color> <!-- Powered by -->
     <color name="ident_hub_color_black25">#BFBFBF</color>
     <color name="ident_hub_color_black10">#E9EDF2</color>
-    <color name="ident_hub_color_black05">#F7F8FA</color>
+    <color name="ident_hub_color_black05">#7E8794</color>
     <color name="ident_hub_color_disable">#f2f2f2</color>
     <color name="ident_hub_color_white">#FFFFFFFF</color>
 

@@ -7,9 +7,5 @@
         <item name="colorControlNormal">@color/ident_hub_color_onPrimary</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/ident_hub_color_secondary</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-<!--        <item name="checkboxStyle">@style/Primary.CheckBox</item>-->
-        <!-- Customize your theme here. -->
     </style>
 </resources>
