@@ -1,6 +1,10 @@
 package de.solarisbank.identhub.session
 
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import androidx.fragment.app.FragmentActivity
+import timber.log.Timber
 
 class IdentHubSession(private val sessionUrl: String) {
     private var mainProcess: IdentHubSessionObserver? = null
@@ -19,6 +23,7 @@ class IdentHubSession(private val sessionUrl: String) {
             successCallback: ((IdentHubSessionResult) -> Unit),
             errorCallback: ((IdentHubSessionFailure) -> Unit)
     ) {
+        loadAppName(fragmentActivity)
 
         this.identificationErrorCallback = errorCallback
         this.identificationSuccessCallback = successCallback
@@ -84,6 +89,21 @@ class IdentHubSession(private val sessionUrl: String) {
         mainProcess = null
     }
 
+    private fun loadAppName(context: Context) {
+        val packageManager = context.packageManager
+        var appInfo: ApplicationInfo? = null
+
+        try {
+            appInfo = packageManager.getApplicationInfo(context.applicationInfo.packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.tag("IdentHub").w(e, "Could not read application name")
+        }
+
+        if (appInfo != null) {
+            appName =  packageManager.getApplicationLabel(appInfo).toString()
+        }
+    }
+
     enum class Step(val index: Int) {
         VERIFICATION_PHONE(1), VERIFICATION_BANK(2), CONTRACT_SIGNING(3);
 
@@ -102,6 +122,9 @@ class IdentHubSession(private val sessionUrl: String) {
     companion object {
         @kotlin.jvm.JvmField
         var hasPhoneVerification: Boolean = false
+
+        @kotlin.jvm.JvmField
+        var appName: String = "Unknown"
     }
 }
 

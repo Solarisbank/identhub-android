@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor;
+import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -43,9 +44,10 @@ public final class NetworkModule {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
                 .addInterceptor(dynamicBaseUrlInterceptor)
+                .addInterceptor(new UserAgentInterceptor())
+                .addInterceptor(logging)
                 .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(logging)
                 .build();
     }
 

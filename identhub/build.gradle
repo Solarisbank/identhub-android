@@ -15,6 +15,13 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        def githubRef = System.getenv("GITHUB_REF")
+        if (githubRef != null) {
+            buildConfigField("String", "SDK_VERSION", "\"${githubRef.split('/')?.getAt(2)}\"")
+        } else {
+            buildConfigField("String", "SDK_VERSION", "\"dev\"")
+        }
     }
 
     buildTypes {
