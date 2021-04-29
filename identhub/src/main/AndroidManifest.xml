@@ -8,6 +8,12 @@
 
     <application tools:node="merge">
         <activity
+            android:name="de.solarisbank.identhub.verfication.bank.VerificationBankActivity"
+            android:theme="@style/IdentHubTheme" />
+        <activity
+            android:name="de.solarisbank.identhub.contract.ContractActivity"
+            android:theme="@style/IdentHubTheme" />
+        <activity
             android:name="de.solarisbank.identhub.identity.IdentityActivity"
             android:theme="@style/IdentHubTheme" />
         <activity

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import de.solarisbank.identhub.contract.ContractModule;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModelFactory;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
@@ -18,8 +19,9 @@ import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhon
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 import de.solarisbank.identhub.identity.IdentityActivityViewModelFactory;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
-import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModelFactory;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
@@ -36,6 +38,8 @@ import de.solarisbank.sdk.core.di.internal.Provider;
 public final class ViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> {
 
     private final IdentityModule identityModule;
+    private final VerificationBankModule verificationBankModule;
+    private final ContractModule contractModule;
 
     private final Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider;
     private final Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider;
@@ -47,6 +51,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
 
     public ViewModelMapProvider(
             IdentityModule identityModule,
+            VerificationBankModule verificationBankModule,
+            ContractModule contractModule,
             Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider,
             Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider,
@@ -55,6 +61,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider) {
         this.identityModule = identityModule;
+        this.verificationBankModule = verificationBankModule;
+        this.contractModule = contractModule;
         this.authorizeVerificationPhoneUseCaseProvider = authorizeVerificationPhoneUseCaseProvider;
         this.confirmVerificationPhoneUseCaseProvider = confirmVerificationPhoneUseCaseProvider;
         this.getDocumentsFromVerificationBankUseCaseProvider = getDocumentsFromVerificationBankUseCaseProvider;
@@ -66,6 +74,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
 
     public static ViewModelMapProvider create(
             IdentityModule identityModule,
+            VerificationBankModule verificationBankModule,
+            ContractModule contractModule,
             Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider,
             Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider,
@@ -76,6 +86,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     ) {
         return new ViewModelMapProvider(
                 identityModule,
+                verificationBankModule,
+                contractModule,
                 authorizeVerificationPhoneUseCaseProvider,
                 confirmVerificationPhoneUseCaseProvider,
                 getDocumentsFromVerificationBankUseCaseProvider,
@@ -90,14 +102,14 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     public Map<Class<? extends ViewModel>, Provider<ViewModel>> get() {
         Map<Class<? extends ViewModel>, Provider<ViewModel>> map = new LinkedHashMap<>(10);
 
-        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(identityModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider));
+        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider));
         map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(VerificationPhoneViewModel.class, VerificationPhoneViewModelFactory.create(identityModule, authorizeVerificationPhoneUseCaseProvider, confirmVerificationPhoneUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
         map.put(VerificationPhoneErrorViewModel.class, VerificationPhoneErrorViewModelFactory.create(identityModule));
-        map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(identityModule, verifyIBanUseCaseProvider));
-        map.put(VerificationBankErrorViewModel.class, VerificationBankErrorViewModelFactory.create(identityModule));
-        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(identityModule));
+        map.put(VerificationBankIbanViewModel.class, VerificationBankIbanViewModelFactory.create(verificationBankModule, verifyIBanUseCaseProvider));
+        map.put(VerificationBankErrorViewModel.class, VerificationBankErrorViewModelFactory.create(verificationBankModule));
+        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule));
 
         return map;
     }

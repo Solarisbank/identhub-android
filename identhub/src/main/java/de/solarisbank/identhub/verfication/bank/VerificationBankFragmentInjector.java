@@ -4,7 +4,7 @@ import de.solarisbank.sdk.core.di.internal.MembersInjector;
 import de.solarisbank.sdk.core.di.internal.Provider;
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
 
-public final class VerificationBankFragmentInjector implements MembersInjector<VerificationBankFragment> {
+public final class VerificationBankFragmentInjector implements MembersInjector<VerificationBankIbanFragment> {
 
     private final Provider<AssistedViewModelFactory> assistedViewModelFactory;
 
@@ -12,12 +12,12 @@ public final class VerificationBankFragmentInjector implements MembersInjector<V
         this.assistedViewModelFactory = assistedViewModelFactory;
     }
 
-    public static void injectAssistedViewModelFactory(VerificationBankFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
+    public static void injectAssistedViewModelFactory(VerificationBankIbanFragment instance, AssistedViewModelFactory assistedViewModelFactory) {
         instance.assistedViewModelFactory = assistedViewModelFactory;
     }
 
     @Override
-    public void injectMembers(VerificationBankFragment instance) {
+    public void injectMembers(VerificationBankIbanFragment instance) {
         injectAssistedViewModelFactory(instance, assistedViewModelFactory.get());
     }
 }

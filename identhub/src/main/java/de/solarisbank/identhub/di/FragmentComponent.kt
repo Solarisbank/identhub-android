@@ -4,8 +4,9 @@ import de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment
 import de.solarisbank.identhub.contract.sign.ContractSigningFragment
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment
 import de.solarisbank.identhub.intro.IntroFragment
+import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
-import de.solarisbank.identhub.verfication.bank.VerificationBankFragment
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragment
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment
 import de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessMessageFragment
@@ -17,7 +18,7 @@ interface FragmentComponent {
     fun inject(verificationPhoneFragment: VerificationPhoneFragment)
     fun inject(successMessageFragment: VerificationPhoneSuccessMessageFragment)
     fun inject(errorMessageFragment: VerificationPhoneErrorMessageFragment)
-    fun inject(verificationBankFragment: VerificationBankFragment)
+    fun inject(verificationBankIbanFragment: VerificationBankIbanFragment)
     fun inject(verificationBankExternalGatewayFragment: VerificationBankExternalGatewayFragment)
     fun inject(verificationBankSuccessMessageFragment: VerificationBankSuccessMessageFragment)
     fun inject(verificationBankErrorMessageFragment: VerificationBankErrorMessageFragment)
@@ -26,6 +27,7 @@ interface FragmentComponent {
     fun inject(identitySummaryFragment: IdentitySummaryFragment)
     fun inject(progressIndicatorFragment: ProgressIndicatorFragment)
     fun inject(introFragment: IntroFragment)
+    fun inject(verificationBankIntroFragment: VerificationBankIntroFragment)
 
     interface Factory {
         fun create(): FragmentComponent

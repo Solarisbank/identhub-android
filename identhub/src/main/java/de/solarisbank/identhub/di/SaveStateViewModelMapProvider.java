@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import de.solarisbank.identhub.contract.ContractModule;
+import de.solarisbank.identhub.contract.ContractViewModel;
+import de.solarisbank.identhub.contract.ContractViewModelFactory;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModelFactory;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
@@ -26,6 +29,9 @@ import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModelFactory;
 import de.solarisbank.identhub.intro.IntroActivityViewModel;
 import de.solarisbank.identhub.intro.IntroActivityViewModelFactory;
 import de.solarisbank.identhub.intro.IntroModule;
+import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
+import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
 import de.solarisbank.sdk.core.di.internal.Factory2;
@@ -36,6 +42,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
 
     private final IntroModule introModule;
     private final IdentityModule identityModule;
+    private final VerificationBankModule verificationBankModule;
+    private final ContractModule contractModule;
     private final Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
     private final Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
@@ -56,7 +64,9 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                                          IdentityModule identityModule,
                                          Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
                                          Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-                                         IntroModule introModule) {
+                                         IntroModule introModule,
+                                         VerificationBankModule verificationBankModule,
+                                         ContractModule contractModule) {
         this.authorizeContractSignUseCaseProvider = authorizeContractSignUseCaseProvider;
         this.confirmContractSignUseCaseProvider = confirmContractSignUseCaseProvider;
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
@@ -68,6 +78,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.introModule = introModule;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
+        this.verificationBankModule = verificationBankModule;
+        this.contractModule = contractModule;
     }
 
     public static SaveStateViewModelMapProvider create(
@@ -81,7 +93,9 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            IntroModule introModule) {
+            IntroModule introModule,
+            VerificationBankModule verificationBankModule,
+            ContractModule contractModule) {
         return new SaveStateViewModelMapProvider(
                 authorizeContractSignUseCaseProvider,
                 confirmContractSignUseCaseProvider,
@@ -93,18 +107,22 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 identityModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
-                introModule);
+                introModule,
+                verificationBankModule,
+                contractModule);
     }
 
     @Override
     public Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> get() {
         Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> map = new LinkedHashMap<>(3);
 
-        map.put(ContractSigningViewModel.class, ContractSigningViewModelFactory.create(identityModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, getIdentificationUseCaseProvider));
+        map.put(ContractSigningViewModel.class, ContractSigningViewModelFactory.create(contractModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, getIdentificationUseCaseProvider));
         map.put(IntroActivityViewModel.class, IntroActivityViewModelFactory.create(introModule, identificationStepPreferencesProvider, sessionUrlRepositoryProvider));
-        map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(identityModule, fetchingAuthorizedIBanStatusUseCaseProvider, getIdentificationUseCaseProvider));
+        map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(verificationBankModule, fetchingAuthorizedIBanStatusUseCaseProvider, getIdentificationUseCaseProvider));
         map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(identityModule, deleteAllLocalStorageUseCaseProvider, getDocumentsUseCaseProvider, fetchPdfUseCaseProvider, identificationStepPreferencesProvider));
         map.put(IdentitySummaryViewModel.class, IdentitySummaryViewModelFactory.create(identityModule, getIdentificationUseCaseProvider));
+        map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(verificationBankModule, identificationStepPreferencesProvider, getIdentificationUseCaseProvider, sessionUrlRepositoryProvider));
+        map.put(ContractViewModel.class, ContractViewModelFactory.create(contractModule, identificationStepPreferencesProvider, sessionUrlRepositoryProvider));
 
         return map;
     }

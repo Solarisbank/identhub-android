@@ -11,13 +11,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxTextView
-import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel.IBanState
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel.IBanState
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.result.Type.ResourceNotFound
@@ -25,10 +22,10 @@ import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class VerificationBankFragment : IdentHubFragment() {
+class VerificationBankIbanFragment : IdentHubFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
-    private val viewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { viewModels() }
+    private val sharedViewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { activityViewModels() }
+    private val ibanViewModel: VerificationBankIbanViewModel by lazy<VerificationBankIbanViewModel> { viewModels() }
 
     private lateinit var ibanNumber: EditText
     private lateinit var errorMessage: TextView
@@ -39,7 +36,7 @@ class VerificationBankFragment : IdentHubFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_verification_bank, container, false)
+        return inflater.inflate(R.layout.fragment_verification_bank_iban, container, false)
                 .also {
                     ibanNumber = it.findViewById(R.id.ibanNumber)
                     errorMessage = it.findViewById(R.id.errorMessage)
@@ -55,7 +52,7 @@ class VerificationBankFragment : IdentHubFragment() {
     }
 
     private fun observeVerifyResult() {
-        viewModel.getVerifyResultLiveData().observe(viewLifecycleOwner, Observer { onResultVerifyIBanChanged(it) })
+        ibanViewModel.getVerifyResultLiveData().observe(viewLifecycleOwner, Observer { onResultVerifyIBanChanged(it) })
     }
 
     private fun onResultVerifyIBanChanged(result: Result<String>) {
@@ -81,13 +78,13 @@ class VerificationBankFragment : IdentHubFragment() {
         compositeDisposable.add(RxView.clicks(submitButton)
                 .map { ibanNumber.text.toString().trim { it <= ' ' } }
                 .subscribe(
-                        { iBan: String -> viewModel.onSubmitButtonClicked(iBan) },
+                        { iBan: String -> ibanViewModel.onSubmitButtonClicked(iBan) },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
     }
 
     private fun observeInputsState() {
-        viewModel.iBanState.observe(viewLifecycleOwner, Observer { event: Event<IBanState> -> onIBanInputValidationStateChanged(event) })
+        ibanViewModel.iBanState.observe(viewLifecycleOwner, Observer { event: Event<IBanState> -> onIBanInputValidationStateChanged(event) })
     }
 
     private fun onIBanInputValidationStateChanged(event: Event<IBanState>) {
@@ -102,7 +99,7 @@ class VerificationBankFragment : IdentHubFragment() {
 
     companion object {
         fun newInstance(): Fragment {
-            return VerificationBankFragment()
+            return VerificationBankIbanFragment()
         }
     }
 }

@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
-import de.solarisbank.identhub.identity.IdentityActivityViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 
 public abstract class SuccessMessageFragment extends IdentHubFragment {
 
     protected SuccessViewModel viewModel;
-    protected IdentityActivityViewModel sharedViewModel;
+    protected VerificationBankViewModel sharedViewModel;
 
     protected TextView title;
     protected TextView description;
@@ -44,7 +44,7 @@ public abstract class SuccessMessageFragment extends IdentHubFragment {
     protected void initViewModel() {
         super.initViewModel();
         sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
-                .get(IdentityActivityViewModel.class);
+                .get(VerificationBankViewModel.class);
     }
 
     protected void initViews() {

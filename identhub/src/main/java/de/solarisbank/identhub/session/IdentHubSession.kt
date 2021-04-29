@@ -68,21 +68,15 @@ class IdentHubSession(private val sessionUrl: String) {
             throw NullPointerException("You need to call create method first")
         }
 
-        mainProcess?.start(sessionUrl)
+        mainProcess?.start(sessionUrl, "bank/iban")
     }
 
     fun resume() {
-        if (lastCompetedStep == null) {
-            throw IllegalStateException("Identity flow is not started yet")
-        }
-        if (!isPaymentProcessAvailable) {
-            throw IllegalStateException("Resuming identification flow is not available")
-        }
         if (mainProcess == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
 
-        mainProcess?.start(sessionUrl)
+        mainProcess?.start(sessionUrl, "qes")
     }
 
     fun stop() {

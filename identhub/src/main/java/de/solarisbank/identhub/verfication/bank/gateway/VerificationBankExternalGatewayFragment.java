@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.di.FragmentComponent;
-import de.solarisbank.identhub.identity.IdentityActivityViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
 import de.solarisbank.sdk.core.result.Event;
 import de.solarisbank.sdk.core.result.Result;
@@ -24,7 +24,7 @@ import timber.log.Timber;
 
 public final class VerificationBankExternalGatewayFragment extends IdentHubFragment {
 
-    private IdentityActivityViewModel sharedViewModel;
+    private VerificationBankViewModel sharedViewModel;
     private VerificationBankExternalGateViewModel verificationBankExternalGateViewModel;
     private WebView webView;
 
@@ -56,7 +56,7 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
     protected void initViewModel() {
         super.initViewModel();
         sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
-                .get(IdentityActivityViewModel.class);
+                .get(VerificationBankViewModel.class);
 
         verificationBankExternalGateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
                 .get(VerificationBankExternalGateViewModel.class);

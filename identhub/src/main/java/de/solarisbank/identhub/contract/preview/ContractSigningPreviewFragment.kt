@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
+import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
@@ -29,7 +29,7 @@ import java.io.File
 class ContractSigningPreviewFragment : IdentHubFragment() {
     private val adapter = DocumentAdapter()
     private var clickDisposable = Disposables.disposed()
-    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
     private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
 
     private lateinit var documentsList: RecyclerView

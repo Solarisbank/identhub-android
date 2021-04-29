@@ -117,6 +117,9 @@ ext {
             "androidx.test.espresso:espresso-intents:$espressoVersion",
             "androidx.test:runner:1.2.0",
             "androidx.test:rules:1.2.0",
+            "androidx.test:core-ktx:1.2.0",
+            "androidx.test.ext:junit:1.1.2",
+            "androidx.test.ext:junit-ktx:1.1.2"
     ]
 
     libs = [

@@ -8,7 +8,7 @@ import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository;
 import retrofit2.Retrofit;
 
-public final class VerificationBankModule {
+public final class VerificationBankDataModule {
     public VerificationBankApi provideVerificationBankApi(final Retrofit retrofit) {
         return retrofit.create(VerificationBankApi.class);
     }

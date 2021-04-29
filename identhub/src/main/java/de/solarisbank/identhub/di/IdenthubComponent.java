@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import de.solarisbank.identhub.contract.ContractActivity;
+import de.solarisbank.identhub.contract.ContractActivityInjector;
+import de.solarisbank.identhub.contract.ContractModule;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragmentInjector;
 import de.solarisbank.identhub.contract.sign.ContractSigningFragment;
@@ -40,7 +43,7 @@ import de.solarisbank.identhub.data.session.factory.ProvideSessionUrlRepositoryF
 import de.solarisbank.identhub.data.session.factory.SessionUrlLocalDataSourceFactory;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankApi;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
-import de.solarisbank.identhub.data.verification.bank.VerificationBankModule;
+import de.solarisbank.identhub.data.verification.bank.VerificationBankDataModule;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankNetworkDataSource;
 import de.solarisbank.identhub.data.verification.bank.factory.ProvideVerificationBankApiFactory;
 import de.solarisbank.identhub.data.verification.bank.factory.ProvideVerificationBankRepositoryFactory;
@@ -98,12 +101,17 @@ import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentInjector;
 import de.solarisbank.identhub.intro.IntroActivity;
 import de.solarisbank.identhub.intro.IntroActivityInjector;
 import de.solarisbank.identhub.intro.IntroFragment;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragmentInjector;
+import de.solarisbank.identhub.verfication.bank.VerificationBankActivity;
+import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment;
 import de.solarisbank.identhub.intro.IntroFragmentInjector;
 import de.solarisbank.identhub.intro.IntroModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
-import de.solarisbank.identhub.verfication.bank.VerificationBankFragment;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment;
 import de.solarisbank.identhub.verfication.bank.VerificationBankFragmentInjector;
+import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragment;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment;
@@ -132,6 +140,8 @@ public class IdenthubComponent {
     private static final Object lock = new Object();
     private static IdenthubComponent identhubComponent = null;
 
+    private final VerificationBankModule verficationBankModule;
+    private final ContractModule contractModule;
     private final IdentityModule identityModule;
     private final IntroModule introModule;
     private final ActivitySubModule activitySubModule;
@@ -187,14 +197,18 @@ public class IdenthubComponent {
             MapperModule mapperModule,
             VerificationPhoneModule verificationPhoneModule,
             SessionModule sessionModule,
-            VerificationBankModule verificationBankModule) {
+            VerificationBankDataModule verificationBankDataModule,
+            VerificationBankModule verficationBankModule,
+            ContractModule contractModule) {
         this.identityModule = identityModule;
         this.introModule = introModule;
         this.activitySubModule = activitySubModule;
         this.networkModule = networkModule;
         this.databaseModule = databaseModule;
+        this.verficationBankModule = verficationBankModule;
+        this.contractModule = contractModule;
         initializeMapper(mapperModule);
-        initialize(libraryComponent, contractSignModule, sessionModule, verificationBankModule, verificationPhoneModule);
+        initialize(libraryComponent, contractSignModule, sessionModule, verificationBankDataModule, verificationPhoneModule);
     }
 
     @NotNull
@@ -218,7 +232,7 @@ public class IdenthubComponent {
         identificationEntityMapperProvider = DoubleCheck.provider(IdentificationEntityMapperFactory.create(mapperModule));
     }
 
-    private void initialize(LibraryComponent libraryComponent, ContractSignModule contractSignModule, SessionModule sessionModule, VerificationBankModule verificationBankModule, VerificationPhoneModule verificationPhoneModule) {
+    private void initialize(LibraryComponent libraryComponent, ContractSignModule contractSignModule, SessionModule sessionModule, VerificationBankDataModule verificationBankDataModule, VerificationPhoneModule verificationPhoneModule) {
         applicationContextProvider = new ApplicationContextProvider(libraryComponent);
 
         identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider));
@@ -242,10 +256,10 @@ public class IdenthubComponent {
         contractSignLocalDataSourceProvider = ContractSignLocalDataSourceFactory.create(contractSignModule, documentDaoProvider, identificationDaoProvider);
         contractSignRepositoryProvider = DoubleCheck.provider(ProvideContractSignRepositoryFactory.create(contractSignModule, contractSignNetworkDataSourceProvider, contractSignLocalDataSourceProvider, identificationEntityMapperProvider));
 
-        verificationBankApiProvider = DoubleCheck.provider(ProvideVerificationBankApiFactory.create(verificationBankModule, retrofitProvider));
-        verificationBankNetworkDataSourceProvider = VerificationBankNetworkDataSourceFactory.create(verificationBankModule, verificationBankApiProvider);
-        verificationBankLocalDataSourceProvider = VerificationBankLocalDataSourceFactory.create(documentDaoProvider, identificationDaoProvider, verificationBankModule);
-        verificationBankRepositoryProvider = DoubleCheck.provider(ProvideVerificationBankRepositoryFactory.create(identificationEntityMapperProvider, verificationBankModule, verificationBankNetworkDataSourceProvider, verificationBankLocalDataSourceProvider));
+        verificationBankApiProvider = DoubleCheck.provider(ProvideVerificationBankApiFactory.create(verificationBankDataModule, retrofitProvider));
+        verificationBankNetworkDataSourceProvider = VerificationBankNetworkDataSourceFactory.create(verificationBankDataModule, verificationBankApiProvider);
+        verificationBankLocalDataSourceProvider = VerificationBankLocalDataSourceFactory.create(documentDaoProvider, identificationDaoProvider, verificationBankDataModule);
+        verificationBankRepositoryProvider = DoubleCheck.provider(ProvideVerificationBankRepositoryFactory.create(identificationEntityMapperProvider, verificationBankDataModule, verificationBankNetworkDataSourceProvider, verificationBankLocalDataSourceProvider));
 
         authorizeContractSignUseCaseProvider = AuthorizeContractSignUseCaseFactory.create(contractSignRepositoryProvider);
         confirmContractSignUseCaseProvider = ConfirmContractSignUseCaseFactory.create(contractSignRepositoryProvider);
@@ -317,7 +331,9 @@ public class IdenthubComponent {
                     new MapperModule(),
                     new VerificationPhoneModule(),
                     new SessionModule(),
-                    new VerificationBankModule());
+                    new VerificationBankDataModule(),
+                    new VerificationBankModule(),
+                    new ContractModule());
         }
     }
 
@@ -368,6 +384,8 @@ public class IdenthubComponent {
             this.fileControllerProvider = DoubleCheck.provider(FileControllerFactory.create(contextProvider));
             this.fetchPdfUseCaseProvider = FetchPdfUseCaseFactory.create(contractSignRepositoryProvider, fileControllerProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(identityModule,
+                    verficationBankModule,
+                    contractModule,
                     IdenthubComponent.this.authorizeVerificationPhoneUseCaseProvider,
                     IdenthubComponent.this.confirmVerificationPhoneUseCaseProvider,
                     IdenthubComponent.this.getDocumentsUseCaseProvider,
@@ -387,9 +405,21 @@ public class IdenthubComponent {
                     IdenthubComponent.this.identityModule,
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.sessionUrlRepositoryProvider,
-                    IdenthubComponent.this.introModule
+                    IdenthubComponent.this.introModule,
+                    IdenthubComponent.this.verficationBankModule,
+                    IdenthubComponent.this.contractModule
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
+        }
+
+        @Override
+        public void inject(@NotNull VerificationBankActivity verificationBankActivity) {
+            VerificationBankActivityInjector.injectAssistedViewModelFactory(verificationBankActivity, assistedViewModelFactoryProvider.get());
+        }
+
+        @Override
+        public void inject(@NotNull ContractActivity contractActivity) {
+            ContractActivityInjector.injectAssistedViewModelFactory(contractActivity, assistedViewModelFactoryProvider.get());
         }
 
         @Override
@@ -474,8 +504,8 @@ public class IdenthubComponent {
             }
 
             @Override
-            public void inject(VerificationBankFragment verificationBankFragment) {
-                VerificationBankFragmentInjector.injectAssistedViewModelFactory(verificationBankFragment, fragmentAssistedViewModelFactoryProvider.get());
+            public void inject(VerificationBankIbanFragment verificationBankIbanFragment) {
+                VerificationBankFragmentInjector.injectAssistedViewModelFactory(verificationBankIbanFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
             @Override
@@ -516,6 +546,11 @@ public class IdenthubComponent {
             @Override
             public void inject(IntroFragment introFragment) {
                 IntroFragmentInjector.injectAssistedViewModelFactory(introFragment, fragmentAssistedViewModelFactoryProvider.get());
+            }
+
+            @Override
+            public void inject(VerificationBankIntroFragment verificationBankIntroFragment) {
+                VerificationBankIntroFragmentInjector.injectAssistedViewModelFactory(verificationBankIntroFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
         }
     }

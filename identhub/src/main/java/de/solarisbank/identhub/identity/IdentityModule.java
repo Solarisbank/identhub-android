@@ -18,7 +18,7 @@ import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPh
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel;
-import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
@@ -52,8 +52,8 @@ public final class IdentityModule {
     }
 
     @NonNull
-    public VerificationBankViewModel provideVerificationBankViewModel(final VerifyIBanUseCase verifyIBanUseCase) {
-        return new VerificationBankViewModel(verifyIBanUseCase);
+    public VerificationBankIbanViewModel provideVerificationBankViewModel(final VerifyIBanUseCase verifyIBanUseCase) {
+        return new VerificationBankIbanViewModel(verifyIBanUseCase);
     }
 
     @NonNull

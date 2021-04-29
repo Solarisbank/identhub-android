@@ -15,13 +15,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
-import de.solarisbank.identhub.identity.IdentityActivityViewModel;
+import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 
 public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     private static final int NO_RESOURCE = -1;
 
-    protected IdentityActivityViewModel sharedViewModel;
+    protected VerificationBankViewModel sharedViewModel;
 
     protected ImageView icon;
     protected TextView title;
@@ -74,6 +74,6 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     @Override
     protected void initViewModel() {
         super.initViewModel();
-        sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(IdentityActivityViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(VerificationBankViewModel.class);
     }
 }

@@ -16,9 +16,9 @@ import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
+import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.ui.DefaultTextWatcher
 import de.solarisbank.identhub.verfication.phone.CountDownTime
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
@@ -39,7 +39,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private val digitsEditTexts: MutableList<EditText> = ArrayList()
     private var disposable = Disposables.disposed()
     private val listLevelDrawables: MutableList<LevelListDrawable> = ArrayList()
-    private val sharedViewModel: IdentityActivityViewModel by lazy<IdentityActivityViewModel> { activityViewModels() }
+    private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
     private val viewModel: ContractSigningViewModel by lazy<ContractSigningViewModel> { viewModels() }
 
     private lateinit var firstDigit: EditText

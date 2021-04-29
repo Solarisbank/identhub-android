@@ -11,13 +11,13 @@ class IdentHubSessionObserver(private val fragmentActivity: FragmentActivity,
                               private val successCallback: (IdentHubSessionResult) -> Unit,
                               private val errorCallback: (IdentHubSessionFailure) -> Unit
 ) : DefaultLifecycleObserver {
-    private lateinit var mainActivity: ActivityResultLauncher<String>
+    private lateinit var mainActivity: ActivityResultLauncher<IdentHubSessionDescription>
 
     override fun onCreate(owner: LifecycleOwner) {
         mainActivity = createResultLauncher(owner)
     }
 
-    private fun createResultLauncher(owner: LifecycleOwner): ActivityResultLauncher<String> {
+    private fun createResultLauncher(owner: LifecycleOwner): ActivityResultLauncher<IdentHubSessionDescription> {
         return ActivityResultRegistry.register("de.solarisbank.identhub", fragmentActivity, IdentHubResultContract()) { result ->
             if (!result.data.isNullOrEmpty()) {
                 successCallback(IdentHubSessionResult(result.data, result.step))
@@ -27,7 +27,8 @@ class IdentHubSessionObserver(private val fragmentActivity: FragmentActivity,
         }
     }
 
-    fun start(sessionUrl: String) {
-        mainActivity.launch(sessionUrl, fragmentActivity.supportFragmentManager)
+    fun start(sessionUrl: String, firstStep: String) {
+        val description = IdentHubSessionDescription(sessionUrl, firstStep)
+        mainActivity.launch(description, fragmentActivity.supportFragmentManager)
     }
 }

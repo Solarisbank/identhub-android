@@ -24,14 +24,12 @@ public final class IntroFragment extends IdentHubFragment {
         return new IntroFragment();
     }
 
-    private TextView phoneNumber;
     private Button startVerifyButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_onboarding_intro, container, false);
-        phoneNumber = root.findViewById(R.id.phone_number);
+        View root = inflater.inflate(R.layout.fragment_verification_bank_intro, container, false);
         startVerifyButton = root.findViewById(R.id.startVerifyButton);
         return root;
     }
@@ -43,7 +41,6 @@ public final class IntroFragment extends IdentHubFragment {
     }
 
     private void initViews() {
-        phoneNumber.setText(String.format(getString(R.string.onboarding_intro_phone_number), ""));
         startVerifyButton.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), IdentityActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);

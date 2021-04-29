@@ -8,6 +8,7 @@ data class IdentificationDto(
         var reference: String? = null,
         var url: String,
         var status: String,
+        @Json(name = "next_step") var nextStep: String? = null,
         @Json(name = "completed_at") var completedAt: Date? = null,
         @Json(name = "proof_of_address_type") var proofOfAddressType: String? = null,
         @Json(name = "proof_of_address_issued_at") var proofOfAddressIssuedAt: Date? = null,
