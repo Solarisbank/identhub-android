@@ -47,7 +47,8 @@ public final class NetworkModuleProvideRetrofitFactory implements Factory<Retrof
                 networkModule.provideRetrofit(
                         moshiConverterFactoryProvider.get(),
                         okHttpClientProvider.get(),
-                        rxJavaCallAdapterFactoryProvider.get()
+                        rxJavaCallAdapterFactoryProvider.get(),
+                        null
                 ),
                 "Cannot return null from provider method"
         );

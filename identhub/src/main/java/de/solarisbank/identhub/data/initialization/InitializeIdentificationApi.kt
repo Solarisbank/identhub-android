@@ -5,6 +5,6 @@ import io.reactivex.Single
 import retrofit2.http.GET
 
 interface InitializeIdentificationApi {
-    @GET
+    @GET(".")
     fun getInitialization(): Single<InitializationDto>
 }

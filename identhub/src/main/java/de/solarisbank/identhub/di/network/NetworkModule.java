@@ -42,8 +42,11 @@ public final class NetworkModule {
     public OkHttpClient provideOkHttpClient(final DynamicBaseUrlInterceptor dynamicBaseUrlInterceptor) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return new OkHttpClient.Builder()
-                .addInterceptor(dynamicBaseUrlInterceptor)
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (dynamicBaseUrlInterceptor != null) {
+            builder.addInterceptor(dynamicBaseUrlInterceptor);
+        }
+        return builder
                 .addInterceptor(new UserAgentInterceptor())
                 .addInterceptor(logging)
                 .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -54,13 +57,27 @@ public final class NetworkModule {
     public Retrofit provideRetrofit(
             final MoshiConverterFactory moshiConverterFactory,
             final OkHttpClient okHttpClient,
-            final CallAdapter.Factory rxJava2CallAdapterFactory
+            final CallAdapter.Factory rxJava2CallAdapterFactory,
+            final String url
     ) {
-        return new Retrofit.Builder()
-                .baseUrl(DUMMY_BASE_URL)
+        Retrofit.Builder builder = new Retrofit.Builder();
+        if (url != null) {
+            builder.baseUrl(url);
+        } else {
+            builder.baseUrl(DUMMY_BASE_URL);
+        }
+        return builder
                 .addConverterFactory(moshiConverterFactory)
                 .addCallAdapterFactory(rxJava2CallAdapterFactory)
                 .client(okHttpClient)
                 .build();
+    }
+
+    public static Retrofit provideSimpleRetrofit(String url) {
+        NetworkModule networkModule = new NetworkModule();
+        OkHttpClient okHttpClient = networkModule.provideOkHttpClient(null);
+        MoshiConverterFactory moshiConverterFactory = networkModule.provideMoshiConverterFactory();
+        CallAdapter.Factory callAdapterFactory = networkModule.provideRxJavaCallAdapterFactory();
+        return networkModule.provideRetrofit(moshiConverterFactory, okHttpClient, callAdapterFactory, url);
     }
 }
