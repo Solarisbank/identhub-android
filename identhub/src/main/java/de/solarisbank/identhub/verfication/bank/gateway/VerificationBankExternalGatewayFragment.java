@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.verfication.bank.gateway;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
@@ -69,6 +72,7 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
         Preconditions.checkNotNull(verificationBankUrl);
 
         webView.getSettings().setJavaScriptEnabled(true);
+        enableWebViewDarkModeSupport();
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -76,6 +80,18 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
             }
         });
         webView.loadUrl(verificationBankUrl);
+    }
+
+    private void enableWebViewDarkModeSupport() {
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                    WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+                }
+                WebSettingsCompat.setForceDarkStrategy(webView.getSettings(), WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY);
+            }
+        }
     }
 
     private void observeVerificationStatus() {
