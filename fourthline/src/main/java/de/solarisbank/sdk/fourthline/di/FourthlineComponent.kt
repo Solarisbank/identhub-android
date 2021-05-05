@@ -120,20 +120,17 @@ class FourthlineComponent private constructor(
     }
 
     companion object {
-        private val lock = Any()
         private var fourthlineComponent: FourthlineComponent? = null
 
-        fun getInstance(): FourthlineComponent {
-            synchronized(lock) {
-                if (fourthlineComponent == null) {
-                    fourthlineComponent = FourthlineComponent(
-                            FourthlineModule(),
-                            FourthlineActivitySubModule()
-                    )
-                }
-
-                return fourthlineComponent!!
+        @Synchronized fun getInstance(): FourthlineComponent {
+            if (fourthlineComponent == null) {
+                fourthlineComponent = FourthlineComponent(
+                        FourthlineModule(),
+                        FourthlineActivitySubModule()
+                )
             }
+
+            return fourthlineComponent!!
         }
     }
 }

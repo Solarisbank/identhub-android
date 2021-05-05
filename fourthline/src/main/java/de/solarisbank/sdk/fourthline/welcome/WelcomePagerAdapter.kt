@@ -17,8 +17,10 @@ class WelcomePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 
     override fun getItem(position: Int): Fragment {
-        return WelcomePageFragment().apply {
-            arguments = Bundle().apply { putInt(ARG_POSITION, position + 1) }
-        }
+        val welcomePageFragment = WelcomePageFragment()
+        val bundle = Bundle()
+        bundle.putInt(ARG_POSITION, position + 1)
+        welcomePageFragment.arguments = bundle
+        return welcomePageFragment
     }
 }

@@ -25,12 +25,11 @@ class WelcomeContainerFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_welcome_container, container, false)
-                .also {
-                    welcomeTitle = it.findViewById(R.id.welcomeTitle)
-                    welcomePager = it.findViewById(R.id.welcomePager)
-                    welcomeTabLayout = it.findViewById(R.id.welcomeTabLayout)
-                }
+        val view = inflater.inflate(R.layout.fragment_welcome_container, container, false)
+        welcomeTitle = view.findViewById(R.id.welcomeTitle)
+        welcomePager = view.findViewById(R.id.welcomePager)
+        welcomeTabLayout = view.findViewById(R.id.welcomeTabLayout)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,23 +39,21 @@ class WelcomeContainerFragment : FourthlineFragment() {
 
     private fun initView() {
         val savedPosition = viewModel.pagerPosition
-        welcomePager.also {
-            it!!.adapter = WelcomePagerAdapter(childFragmentManager)
-            it.setCurrentItem(savedPosition, false)
-            it.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        welcomePager!!.adapter = WelcomePagerAdapter(childFragmentManager)
+        welcomePager!!.setCurrentItem(savedPosition, false)
+        welcomePager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
-                }
+            }
 
-                override fun onPageSelected(position: Int) {
-                    viewModel.pagerPosition = position
-                }
+            override fun onPageSelected(position: Int) {
+                viewModel.pagerPosition = position
+            }
 
-                override fun onPageScrollStateChanged(state: Int) {
+            override fun onPageScrollStateChanged(state: Int) {
 
-                }
-            })
-        }
+            }
+        })
 
         welcomeTabLayout!!.setupWithViewPager(welcomePager)
     }

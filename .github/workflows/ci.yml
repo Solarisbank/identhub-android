@@ -27,6 +27,8 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Run tests
-        run: ./gradlew :core:test :identhub:test
+        run: ./gradlew :core:test :identhub:test :fourthline:test
+        env:
+          FOURTHLINE_GRADLE_TOKEN: ${{ secrets.FOURTHLINE_GRADLE_TOKEN }}
       - name: Build example
         run: ./gradlew :example:build

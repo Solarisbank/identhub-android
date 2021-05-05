@@ -23,6 +23,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Publish artifact to Github Packages
-        run: ./gradlew :core:publish :identhub:publish
+        run: ./gradlew :core:publish :identhub:publish :fourthline:publish
         env:
+          FOURTHLINE_GRADLE_TOKEN: ${{ secrets.FOURTHLINE_GRADLE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -21,12 +21,11 @@ class SelfieResultFragment : FourthlineFragment() {
     private val viewModel: SelfieSharedViewModel by lazy<SelfieSharedViewModel> { activityViewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_selfie_result, container, false)
-                .also {
-                    imageResult = it.findViewById(R.id.imageResult)
-                    submitButton = it.findViewById(R.id.submitButton)
-                    retryButton = it.findViewById(R.id.retryButton)
-                }
+        val view = inflater.inflate(R.layout.fragment_selfie_result, container, false)
+        imageResult = view.findViewById(R.id.imageResult)
+        submitButton = view.findViewById(R.id.submitButton)
+        retryButton = view.findViewById(R.id.retryButton)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

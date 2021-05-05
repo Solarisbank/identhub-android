@@ -26,11 +26,10 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     private val viewModel: TermsAndConditionsViewModel by lazy<TermsAndConditionsViewModel> { viewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_terms_and_condition, container, false)
-                .also {
-                    submitButton = it.findViewById(R.id.submitButton)
-                    termsAndConditionCheckbox = it.findViewById(R.id.termsAndConditionCheckbox)
-                }
+        val view = inflater.inflate(R.layout.fragment_terms_and_condition, container, false)
+        submitButton = view.findViewById(R.id.submitButton)
+        termsAndConditionCheckbox = view.findViewById(R.id.termsAndConditionCheckbox)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,9 +100,9 @@ fun CheckBox.makeLinks(vararg links: Pair<String, () -> Unit>) {
 fun CheckBox.removeLink() {
     val spannable = text as SpannableString
     val spannableArray = spannable.getSpans(0, spannable.length, CheckboxClickableSpan::class.java)
-    spannableArray.forEach {
-        spannable.removeSpan(it)
-        it.clear()
+    for (s in spannableArray) {
+        spannable.removeSpan(s)
+        s.clear()
     }
     this.movementMethod = null
     this.text = null

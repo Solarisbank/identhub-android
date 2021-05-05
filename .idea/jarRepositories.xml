@@ -26,5 +26,10 @@
       <option name="name" value="mavencentral" />
       <option name="url" value="http://localhost:8080/repository/internal/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://maven.pkg.github.com/Fourthline-com/FourthlineSDK-Android" />
+    </remote-repository>
   </component>
 </project>

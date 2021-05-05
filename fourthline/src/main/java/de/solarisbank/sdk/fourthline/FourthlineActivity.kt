@@ -55,9 +55,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
-        event.content?.let {
-            Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-        }
+        Navigation.findNavController(navHostFragment).navigate(event.content?.actionId!!, event.content?.args)
     }
 
 }

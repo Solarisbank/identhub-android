@@ -14,10 +14,12 @@ class PunchholeView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     var punchholeRect = Rect(0, 0, 0, 0)
 
-    private val transparentPaint = Paint(ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
-        xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    }
+    private val transparentPaint = {
+        val paint = Paint(ANTI_ALIAS_FLAG)
+        paint.style = Paint.Style.FILL
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        paint
+    }()
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)

@@ -78,16 +78,13 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun getOverlayView(): View? {
-        return LayoutInflater
+        val view = LayoutInflater
                 .from(requireContext())
                 .inflate(R.layout.fragment_selfie, requireActivity().findViewById(R.id.content))
-                .also {
-                    takeSnapshot = it.findViewById(R.id.takeSnapshot)
-                    punchhole = it.findViewById(R.id.punchhole)
-                    selfieMask = it.findViewById(R.id.selfieMask)
-                    stepLabel
-
-                }
+        takeSnapshot = view.findViewById(R.id.takeSnapshot)
+        punchhole = view.findViewById(R.id.punchhole)
+        selfieMask = view.findViewById(R.id.selfieMask)
+        return view
     }
 
     override fun onFail(error: SelfieScannerError) {
