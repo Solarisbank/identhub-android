@@ -19,8 +19,9 @@ class ContractViewModel(savedStateHandle: SavedStateHandle, private val identifi
     private val navigationActionId = MutableLiveData<Event<NaviDirection>>()
 
     init {
-        check(savedStateHandle.contains(IdentHub.SESSION_URL_KEY)) { "You have to initialize SDK with partner token" }
-        sessionUrlRepository.save(savedStateHandle.get<String>(IdentHub.SESSION_URL_KEY))
+        if (savedStateHandle.contains(IdentHub.SESSION_URL_KEY)) {
+            sessionUrlRepository.save(savedStateHandle.get<String>(IdentHub.SESSION_URL_KEY))
+        }
     }
 
     fun getLastCompletedStep(): IdentHubSession.Step? {

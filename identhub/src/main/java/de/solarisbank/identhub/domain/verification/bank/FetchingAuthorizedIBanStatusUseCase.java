@@ -25,9 +25,9 @@ public class FetchingAuthorizedIBanStatusUseCase implements CompletableUseCase<S
                 .repeatWhen(flowable -> flowable.delay(3, TimeUnit.SECONDS))
                 .map(identificationEntityMapper::to)
                 .takeUntil(identificationWithDocument -> {
-                    return identificationWithDocument.getIdentification().isAuthorizationRequired();
+                    return identificationWithDocument.getIdentification().isAuthorizationRequiredOrFailed();
                 })
-                .filter(identificationWithDocument -> identificationWithDocument.getIdentification().isAuthorizationRequired())
+                .filter(identificationWithDocument -> identificationWithDocument.getIdentification().isAuthorizationRequiredOrFailed())
                 .flatMapCompletable(identification -> verificationBankRepository.save(identificationEntityMapper.from(identification)))
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -31,18 +31,19 @@ class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val 
     private val compositeDisposable = CompositeDisposable()
 
     init {
-        check(savedStateHandle.contains(SESSION_URL_KEY)) { "You have to initialize SDK with partner token" }
-        sessionUrlRepository.save(savedStateHandle.get<String>(SESSION_URL_KEY))
+        if (savedStateHandle.contains(SESSION_URL_KEY)) {
+            sessionUrlRepository.save(savedStateHandle.get<String>(SESSION_URL_KEY))
+        }
     }
 
     fun getNaviDirectionEvent(): LiveData<Event<NaviDirection>> {
         return navigationActionId
     }
 
-    fun moveToEstablishSecureConnection(bankIdentificationUrl: String?) {
+    fun moveToEstablishSecureConnection(bankIdentificationUrl: String?, nextStep: String? = null) {
         val bundle = Bundle()
         bundle.putString(Identification.VERIFICATION_BANK_URL_KEY, bankIdentificationUrl)
-        navigateTo(R.id.action_verificationBankFragment_to_establishConnectionFragment, bundle)
+        navigateTo(R.id.action_verificationBankFragment_to_establishConnectionFragment, bundle, nextStep)
     }
 
     fun moveToExternalGate() {
@@ -71,16 +72,21 @@ class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val 
         navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment)
     }
 
-    private fun navigateTo(actionId: Int, bundle: Bundle?) {
-        navigationActionId.postValue(Event(NaviDirection(actionId, bundle)))
+    private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
+        if (nextStep != null) {
+            bundle?.putString(IdentHubSession.NEXT_STEP, nextStep)
+            navigationActionId.postValue(Event(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, bundle)))
+        } else {
+            navigationActionId.postValue(Event(NaviDirection(actionId, bundle)))
+        }
     }
 
-    fun navigateToProcessingVerification() {
-        navigateTo(R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment)
+    fun navigateToProcessingVerification(nextStep: String?) {
+        navigateTo(R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment, nextStep)
     }
 
-    private fun navigateTo(actionId: Int) {
-        navigateTo(actionId, null)
+    private fun navigateTo(actionId: Int, nextStep: String? = null) {
+        navigateTo(actionId, null, nextStep)
     }
 
     fun navigateToVerficationBankIban() {

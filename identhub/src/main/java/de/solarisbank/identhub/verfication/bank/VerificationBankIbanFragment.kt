@@ -57,8 +57,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
 
     private fun onResultVerifyIBanChanged(result: Result<String>) {
         if (result.succeeded) {
-            val resultData = result.data
-            sharedViewModel.moveToEstablishSecureConnection(resultData)
+            sharedViewModel.moveToEstablishSecureConnection(result.data, result.nextStep)
         } else if (result is Result.Error) {
             val type = result.typ
             if (type is Type.ServerError || type is ResourceNotFound) {

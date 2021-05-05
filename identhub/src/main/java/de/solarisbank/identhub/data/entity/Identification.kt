@@ -9,13 +9,17 @@ data class Identification(
         @PrimaryKey
         var id: String,
         var url: String,
-        var status: String) {
+        var status: String,
+        var nextStep: String? = null) {
 
     val isCompleted: Boolean
         get() = Status.CONFIRMED == Status.getEnum(status)
 
-    val isAuthorizationRequired: Boolean
-        get() = Status.AUTHORIZATION_REQUIRED == Status.getEnum(status)
+    val isAuthorizationRequiredOrFailed: Boolean
+        get() {
+            val currentStatus = Status.getEnum(status)
+            return Status.AUTHORIZATION_REQUIRED == currentStatus || Status.FAILED == currentStatus
+        }
 
 
     companion object {

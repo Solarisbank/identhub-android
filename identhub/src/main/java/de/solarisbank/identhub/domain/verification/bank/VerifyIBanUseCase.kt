@@ -1,6 +1,7 @@
 package de.solarisbank.identhub.domain.verification.bank
 
 import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
@@ -13,12 +14,12 @@ class VerifyIBanUseCase(
         private val verificationBankRepository: VerificationBankRepository
 ) : SingleUseCase<String, String>() {
 
-    override fun invoke(iBan: String): Single<String> {
+    override fun invoke(iBan: String): Single<NavigationalResult<String>> {
         return verificationBankRepository.postVerify(IBan(iBan))
-                .flatMapCompletable { identificationDto: IdentificationDto -> verificationBankRepository.save(identificationDto!!) }
+                .flatMapCompletable { identificationDto: IdentificationDto -> verificationBankRepository.save(identificationDto) }
                 .andThen(
                         getIdentificationUseCase.execute(Unit)
-                                .map { it.data!!.url }
+                                .map { NavigationalResult(it.data!!.url, it.data!!.nextStep) }
                 ).observeOn(AndroidSchedulers.mainThread())
     }
 }

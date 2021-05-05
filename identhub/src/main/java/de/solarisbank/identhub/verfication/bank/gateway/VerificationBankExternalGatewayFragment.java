@@ -100,7 +100,8 @@ public final class VerificationBankExternalGatewayFragment extends IdentHubFragm
 
     private void onVerificationStatusChanged(Result<Object> result) {
         if (result instanceof Result.Success) {
-            sharedViewModel.navigateToProcessingVerification();
+            String nextStep = ((Result.Success<Object>) result).getNextStep();
+            sharedViewModel.navigateToProcessingVerification(nextStep);
         } else if (result instanceof Result.Error) {
             Timber.d("Could not find verification result");
         }

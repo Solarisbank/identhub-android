@@ -74,9 +74,7 @@ class IdentHubSession(private val sessionUrl: String) {
             throw NullPointerException("You need to call create method first")
         }
 
-        withInitialization {
-            mainProcess?.start(sessionUrl, it.firstStep)
-        }
+        mainProcess?.start(sessionUrl, "bank/iban")
     }
 
     fun resume() {
@@ -134,6 +132,12 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     companion object {
+        @kotlin.jvm.JvmStatic
+        val ACTION_NEXT_STEP: Int = 99
+
+        @kotlin.jvm.JvmStatic
+        val NEXT_STEP: String = "NEXT_STEP"
+
         @kotlin.jvm.JvmField
         var hasPhoneVerification: Boolean = false
 

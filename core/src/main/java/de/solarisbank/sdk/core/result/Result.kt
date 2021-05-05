@@ -2,7 +2,7 @@ package de.solarisbank.sdk.core.result
 
 sealed class Result<out R> {
 
-    data class Success<out T>(val data: T) : Result<T>()
+    data class Success<out T>(val data: T, val nextStep: String? = null) : Result<T>()
     data class Error(val typ: Type, val throwable: Throwable) : Result<Nothing>()
     object Loading : Result<Nothing>()
 
@@ -30,6 +30,9 @@ val Result<*>.succeeded
 
 val <T> Result<T>.data: T?
     get() = (this as? Result.Success)?.data
+
+val <T> Result<T>.nextStep: String?
+    get() = (this as? Result.Success)?.nextStep
 
 val <T> Result<T>.throwable: Throwable?
     get() = (this as? Result.Error)?.throwable

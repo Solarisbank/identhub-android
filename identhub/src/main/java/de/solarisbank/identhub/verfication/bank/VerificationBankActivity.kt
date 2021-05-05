@@ -10,7 +10,7 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity
+import de.solarisbank.identhub.router.Router
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.ui.StepIndicatorView
 import de.solarisbank.sdk.core.navigation.NaviDirection
@@ -64,8 +64,8 @@ class VerificationBankActivity : IdentHubActivity() {
         if (naviDirection != null) {
             viewModel.doOnNavigationChanged(naviDirection.actionId)
             val naviActionId = naviDirection.actionId
-            if (naviActionId == IdentityActivityViewModel.ACTION_SUMMARY_WITH_RESULT) {
-                startSummaryActivity()
+            if (naviActionId == IdentHubSession.ACTION_NEXT_STEP) {
+                forwardTo(naviDirection.args!!)
             } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
                     naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.args)
@@ -81,9 +81,11 @@ class VerificationBankActivity : IdentHubActivity() {
         }
     }
 
-    private fun startSummaryActivity() {
-        val intent = Intent(this, IdentitySummaryActivity::class.java)
+    private fun forwardTo(args: Bundle) {
+        val nextStep = args.getString(IdentHubSession.NEXT_STEP)
+        val intent = Router().to(this, nextStep!!)
         intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+        intent.putExtras(args)
         startActivity(intent)
         finish()
     }

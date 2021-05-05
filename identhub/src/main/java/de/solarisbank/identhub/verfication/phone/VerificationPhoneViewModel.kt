@@ -45,7 +45,7 @@ class VerificationPhoneViewModel(
         compositeDisposable.add(
                 clickEventRelay.doOnNext { authorizeResultLiveData.postValue(Result.Loading) }
                         .switchMap {
-                            authorizeVerificationPhoneUseCase.execute(null)
+                            authorizeVerificationPhoneUseCase.execute(Unit)
                                     .toObservable()
                         }
                         .subscribe({ onAuthorizedReceived(it) }) { onAuthorizedError(it) })

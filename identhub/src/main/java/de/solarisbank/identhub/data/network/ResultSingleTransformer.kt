@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.data.network
 
+import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.Type
 import io.reactivex.Single
@@ -8,9 +9,9 @@ import io.reactivex.SingleTransformer
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 
-class ResultSingleTransformer<U> : SingleTransformer<U, Result<U>> {
-    override fun apply(upstream: Single<U>): SingleSource<Result<U>> {
-        return upstream.map<Result<U>> { Result.Success(it) }
+class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Result<U>> {
+    override fun apply(upstream: Single<NavigationalResult<U>>): SingleSource<Result<U>> {
+        return upstream.map<Result<U>> { Result.Success(it.data, it.nextStep) }
                 .onErrorReturn {
                     var errorType: Type = Type.Unknown
                     if (it is HttpException) {
@@ -28,6 +29,6 @@ class ResultSingleTransformer<U> : SingleTransformer<U, Result<U>> {
     }
 }
 
-fun <T> Single<T>.transformResult(): Single<Result<T>> {
+fun <T> Single<NavigationalResult<T>>.transformResult(): Single<Result<T>> {
     return compose(ResultSingleTransformer())
 }
