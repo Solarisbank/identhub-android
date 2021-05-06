@@ -80,8 +80,10 @@
 
     <CheckBox
         android:id="@+id/termsAndConditionCheckbox"
+        android:buttonTint="@color/ident_hub_color_primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_16"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"

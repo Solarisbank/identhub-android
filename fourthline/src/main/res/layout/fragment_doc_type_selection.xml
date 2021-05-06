@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp"/>
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/IdentHubTextView.HeadLine24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_id_document"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/topGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0"
+        />
+
+    <TextView
+        android:id="@+id/hint"
+        style="@style/IdentHubTextView.Small_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintHorizontal_bias="0"
+        android:text="choose your docyment type"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        />
+
+    <LinearLayout
+        android:id="@+id/radio_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/hint"
+        app:layout_constraintBottom_toTopOf="@id/confirmButton"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/passportType"
+            layout="@layout/view_id_doc_type_holder"
+            />
+
+        <include
+            android:id="@+id/idType"
+            layout="@layout/view_id_doc_type_holder"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirmButton"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        tools:enabled="true"
+        android:enabled="false"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

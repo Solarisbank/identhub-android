@@ -2,10 +2,18 @@ package de.solarisbank.sdk.fourthline
 
 import android.view.View
 import android.view.ViewTreeObserver
+import com.fourthline.core.DocumentFileSide
+import com.fourthline.vision.document.DocumentScannerError
+import com.fourthline.vision.document.DocumentScannerStep
+import com.fourthline.vision.document.DocumentScannerStepWarning
 import com.fourthline.vision.selfie.SelfieScannerError
 import com.fourthline.vision.selfie.SelfieScannerStep
 import com.fourthline.vision.selfie.SelfieScannerWarning
 import kotlinx.coroutines.*
+import timber.log.Timber
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGlobalLayoutListener(
         object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -54,4 +62,58 @@ fun CoroutineScope.scheduleCleanup(block: () -> Unit) {
         delay(500)
         block()
     }
+}
+
+fun DocumentScannerStep.prettify() =
+        "Step: fileSide = $fileSide, isAngled = $isAngled, isAutoDetectAvailable = $isAutoDetectAvailable"
+
+fun List<DocumentScannerStepWarning>.asString() = when (first()) {
+    DocumentScannerStepWarning.DOCUMENT_TOO_DARK -> "Document too dark"
+    DocumentScannerStepWarning.DEVICE_NOT_STEADY -> "Device not steady"
+    DocumentScannerStepWarning.RECOGNITION_MODELS_NOT_DOWNLOADED ->
+        "Check internet connection and/or free space available"
+}
+
+fun DocumentScannerError.asString() = when (this) {
+    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> "Please allow camera usage"
+    DocumentScannerError.RECORDING_FAILED -> "Image recording failed"
+    DocumentScannerError.SCANNER_INTERRUPTED -> "Document scanner was interrupted"
+    DocumentScannerError.UNKNOWN -> "Unexpected scanner error occurred"
+    DocumentScannerError.TIMEOUT -> "Document scanner timed out"
+}
+
+fun DocumentScannerStep.asString(): String {
+    val side = when (fileSide) {
+        DocumentFileSide.FRONT -> "front"
+        DocumentFileSide.BACK -> "back"
+        DocumentFileSide.INSIDE_LEFT -> "inside left"
+        DocumentFileSide.INSIDE_RIGHT -> "inside right"
+    }
+
+    return "Scan $side${if (isAngled) " tilted" else ""} side of id card"
+}
+
+fun View.hide() {
+    visibility = View.GONE
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun String.getDateFromMRZ(): Date? {
+
+    val formats = listOf("yyMMdd", "MMM dd, yyyy")
+    var date: Date? = null
+
+    for (format in formats) {
+        try {
+            date = SimpleDateFormat(format).parse(this)
+            break
+        } catch (pE: ParseException){
+            Timber.d("getDateFromMRZ() string value: $this, format: $format")
+        }
+    }
+    Timber.d("String.getDateFromMRZ() date value: $this")
+    return date
 }

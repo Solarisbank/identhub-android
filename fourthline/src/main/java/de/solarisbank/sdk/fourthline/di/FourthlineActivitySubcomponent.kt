@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.di
 
 import de.solarisbank.sdk.core.di.CoreActivityComponent
-import de.solarisbank.sdk.fourthline.FourthlineActivity
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 
 interface FourthlineActivitySubcomponent {
 

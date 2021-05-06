@@ -83,7 +83,8 @@ afterEvaluate {
 }
 
 dependencies {
-    api project(":core")
+    implementation timber
+    implementation project(":identhub")
     implementation kotlinCore
     implementation navigation
     implementation support
@@ -91,6 +92,8 @@ dependencies {
     implementation activity
     implementation viewmodel
     implementation fourthline
+    implementation networking.libs
+    implementation rxJava
     testImplementation baseTest
     androidTestImplementation espresso
 }

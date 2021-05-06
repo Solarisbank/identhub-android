@@ -3,9 +3,9 @@
 
     <item>
         <shape
-            android:innerRadiusRatio="2.5"
+            android:innerRadiusRatio="2.9"
             android:shape="ring"
-            android:thickness="2dp"
+            android:thickness="7.5dp"
             android:useLevel="false">
             <solid android:color="@color/ident_hub_color_secondaryTint" />
         </shape>
@@ -17,8 +17,8 @@
         android:top="12dp">
         <shape android:shape="oval">
             <size
-                android:width="24dp"
-                android:height="24dp" />
+                android:width="75dp"
+                android:height="75dp" />
             <solid android:color="@color/ident_hub_color_primaryVariant" />
         </shape>
     </item>

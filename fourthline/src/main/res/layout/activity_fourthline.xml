@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -33,26 +34,26 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="16dp"/>
 
-<!--    <de.solarisbank.identhub.ui.StepIndicatorView-->
-<!--        android:id="@+id/stepIndicator"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/guideline5"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/guideline4"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/title" />-->
+    <de.solarisbank.sdk.fourthline.feature.ui.custom.FourthlineStepIndicatorView
+        android:id="@+id/stepIndicator"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@color/ident_hub_color_surface"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
         app:defaultNavHost="true"
-        app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stepIndicator"
         app:layout_constraintBottom_toTopOf="@id/logo_solaris"/>
 
     <LinearLayout

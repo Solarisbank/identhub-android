@@ -4,7 +4,7 @@ import android.content.Context
 import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Preconditions
 
-class LibraryModuleContextFactory(private val libraryModule: LibraryModule) : Factory<Context?> {
+class LibraryModuleContextFactory(private val libraryModule: LibraryModule) : Factory<Context> {
     override fun get(): Context {
         return Preconditions.checkNotNull(
                 libraryModule.provideApplicationContext(),

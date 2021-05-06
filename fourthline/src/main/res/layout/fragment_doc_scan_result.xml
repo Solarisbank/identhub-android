@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="16dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:text="Document information"
+        style="@style/IdentHubTextView.HeadLine1"
+        android:gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_24"
+        android:layout_marginBottom="@dimen/margin_32"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintBottom_toTopOf="@id/docNumberInputLayout"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/docNumberInputLayout"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/docNumberTextInput"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:inputType="text"
+            android:hint="document number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/issueDateInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/docNumberInputLayout"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
+            android:id="@+id/issueDateTextInput"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:inputType="text"
+            android:hint="Issue date"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expireDateInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/issueDateInputLayout"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
+            android:id="@+id/expireDateTextInput"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:inputType="text"
+            android:hint="document expire date"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/warningCard"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/expireDateInputLayout"
+        app:layout_constraintBottom_toTopOf="@+id/continueButton"
+        android:layout_marginBottom="@dimen/margin_16"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_baseline_warning_24"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please confirm if your data derived properly from the document scan"
+                />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/continueButton"
+        android:text="Continue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/expireDateInputLayout"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginBottom="@dimen/margin_24"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

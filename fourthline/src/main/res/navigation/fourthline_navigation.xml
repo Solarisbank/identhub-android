@@ -6,18 +6,25 @@
 
     <fragment
         android:id="@+id/termsAndConditionsFragment"
-        android:name="de.solarisbank.sdk.fourthline.terms.TermsAndConditionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment"
         android:label="TermsAndConditionsFragment"
         >
-
         <action
             android:id="@+id/action_termsAndConditionsFragment_to_welcomeContainerFragment"
             app:destination="@id/welcomeContainerFragment" />
+        <action
+            android:id="@+id/action_termsAndConditionsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment">
+            <argument
+                android:name="WEB_VIEW_URL_KEY"
+                app:argType="string"
+                />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/welcomeContainerFragment"
-        android:name="de.solarisbank.sdk.fourthline.welcome.WelcomeContainerFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeContainerFragment"
         android:label="WelcomeContainerFragment"
         >
         <action
@@ -27,18 +34,82 @@
 
     <fragment
         android:id="@+id/selfieFragment"
-        android:name="de.solarisbank.sdk.fourthline.selfie.SelfieFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragment"
         android:label="SelfieFragment"
         >
         <action
-            android:id="@+id/action_selfieFragment_to_SelfieResultFragment"
-            app:destination="@id/SelfieResultFragment" />
+            android:id="@+id/action_selfieFragment_to_selfieResultFragment"
+            app:destination="@id/selfieResultFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/SelfieResultFragment"
-        android:name="de.solarisbank.sdk.fourthline.selfie.SelfieResultFragment"
+        android:id="@+id/selfieResultFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragment"
         android:label="SelfieResultFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_selfieResultFragment_to_documentTypeSelectionFragment"
+            app:destination="@id/documentTypeSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/documentTypeSelectionFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionFragment"
+        android:label="DocumentTypeSelectionFragment"
+        >
+        <action
+            android:id="@+id/action_documentTypeSelectionFragment_to_documentScanFragment"
+            app:destination="@id/documentScanFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/documentScanFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment"
+        android:label="DocumentScanFragment"
+        >
+        <argument
+            android:name="docType"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_documentScanFragment_to_documentResultFragment"
+            app:destination="@id/documentResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/documentResultFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResultFragment"
+        android:label="DocumentResultFragment"
+        >
+        <action
+            android:id="@+id/action_documentResultFragment_to_locationAccessFragment"
+            app:destination="@id/locationAccessFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/locationAccessFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessFragment"
+        android:label="LocationAccessFragment"
+        >
+        <action
+            android:id="@+id/action_locationAccessFragment_to_kycUploadFragment"
+            app:destination="@id/kycUploadFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/kycUploadFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment"
+        android:label="KycUploadFragment"
+        >
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment"
+        android:label="WebViewFragment"
+        >
+
+    </fragment>
 
 </navigation>

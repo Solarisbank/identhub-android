@@ -11,7 +11,7 @@ class IdentificationEntityMapper : Mapper<IdentificationDto, IdentificationWithD
     override fun to(input: IdentificationDto): IdentificationWithDocument {
         return input.run {
             val documents = documents?.map { Document(it.id, it.name, it.contentType, it.documentType, it.size, it.isCustomerAccessible, it.createdAt, it.deletedAt, this.id) }
-            IdentificationWithDocument(Identification(id, url, status, nextStep), documents
+            IdentificationWithDocument(Identification(id, url?:"", status, nextStep), documents
                     ?: listOf())
         }
     }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_location_title">Device location</string>
+    <string name="device_location_subtitle">We need your device location to continue</string>
+    <string name="continue_button_text"><![CDATA[Continube & upload]]></string>
+</resources>

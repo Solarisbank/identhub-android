@@ -27,10 +27,11 @@ ext {
 
     fourthlineVersion = "2.2.7"
     fourthline = [
-            "com.fourthline:fourthline-nfc:$fourthlineVersion",
-            "com.fourthline:fourthline-sdk:$fourthlineVersion",
-            "com.fourthline:fourthline-vision:$fourthlineVersion",
             "com.fourthline:fourthline-kyc:$fourthlineVersion",
+//            "com.fourthline:fourthline-core:$fourthlineVersion",
+//            "com.fourthline:fourthline-internal:2.0.1",
+//            "com.fourthline:fourthline-sdk:$fourthlineVersion",
+            "com.fourthline:fourthline-vision:$fourthlineVersion"
     ]
 
     lifecycleVersion = "2.2.0"

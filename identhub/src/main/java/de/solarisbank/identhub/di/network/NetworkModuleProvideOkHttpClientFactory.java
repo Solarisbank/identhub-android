@@ -1,35 +1,46 @@
 package de.solarisbank.identhub.di.network;
 
-import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
 import de.solarisbank.sdk.core.di.internal.Provider;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
 public final class NetworkModuleProvideOkHttpClientFactory implements Factory<OkHttpClient> {
 
     private final NetworkModule networkModule;
-    private final Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptor;
+    private final List<? extends @NotNull Interceptor> interceptors;
 
     public NetworkModuleProvideOkHttpClientFactory(
             NetworkModule networkModule,
-            Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptor
+            Provider<? extends @NotNull Interceptor>... interceptorProviders
     ) {
         this.networkModule = networkModule;
-        this.dynamicBaseUrlInterceptor = dynamicBaseUrlInterceptor;
+
+        List<Interceptor> tempInterceptors = new ArrayList<>();
+        for (Provider<? extends @NotNull Interceptor> provider: interceptorProviders) {
+            tempInterceptors.add(provider.get());
+        }
+
+        this.interceptors = tempInterceptors;
     }
 
     public static NetworkModuleProvideOkHttpClientFactory create(
             NetworkModule networkModule,
-            Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptor
+            @NotNull Provider<@NotNull ? extends @NotNull Interceptor>... interceptorProviders
     ) {
-        return new NetworkModuleProvideOkHttpClientFactory(networkModule, dynamicBaseUrlInterceptor);
+        return new NetworkModuleProvideOkHttpClientFactory(networkModule, interceptorProviders);
     }
 
     @Override
     public OkHttpClient get() {
         return Preconditions.checkNotNull(
-                networkModule.provideOkHttpClient(dynamicBaseUrlInterceptor.get()),
+                networkModule.provideOkHttpClient(interceptors),
                 "Cannot return null from provider method"
         );
     }

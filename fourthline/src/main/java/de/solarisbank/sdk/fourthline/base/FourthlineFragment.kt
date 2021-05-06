@@ -1,9 +1,10 @@
 package de.solarisbank.sdk.fourthline.base
 
 import android.os.Bundle
+import android.widget.Toast
 import de.solarisbank.sdk.core.BaseFragment
-import de.solarisbank.sdk.fourthline.FourthlineActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 
 
 abstract class FourthlineFragment : BaseFragment() {
@@ -15,4 +16,9 @@ abstract class FourthlineFragment : BaseFragment() {
     }
 
     protected abstract fun inject(component: FourthlineFragmentComponent)
+
+    private fun showErrorToast(message: String = "") {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
 }

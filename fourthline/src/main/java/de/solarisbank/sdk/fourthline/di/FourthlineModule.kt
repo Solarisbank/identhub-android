@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.FourthlineViewModel
-import de.solarisbank.sdk.fourthline.selfie.SelfieSharedViewModel
-import de.solarisbank.sdk.fourthline.terms.TermsAndConditionsViewModel
-import de.solarisbank.sdk.fourthline.welcome.WelcomeSharedViewModel
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class FourthlineModule {
@@ -27,11 +30,20 @@ class FourthlineModule {
         return WelcomeSharedViewModel(savedStateHandle)
     }
 
-    fun provideSelfieSharedViewModel(savedStateHandle: SavedStateHandle): ViewModel {
-        return SelfieSharedViewModel(savedStateHandle)
+    fun provideFourthlineViewModel(
+            savedStateHandle: SavedStateHandle
+    ): ViewModel {
+        return FourthlineViewModel(savedStateHandle)
     }
 
-    fun provideFourthlineViewModel(savedStateHandle: SavedStateHandle): ViewModel {
-        return FourthlineViewModel(savedStateHandle)
+    fun provideDocScanSharedViewModel(
+            savedStateHandle: SavedStateHandle,
+            personDataUseCase: PersonDataUseCase,
+            kycInfoUseCase: KycInfoUseCase): ViewModel {
+        return KycSharedViewModel(savedStateHandle, personDataUseCase, kycInfoUseCase)
+    }
+
+    fun provideLocationAccessViewModel(savedStateHandle: SavedStateHandle): ViewModel {
+        return LocationAccessViewModel(savedStateHandle)
     }
 }

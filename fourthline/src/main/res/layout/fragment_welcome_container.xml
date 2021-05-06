@@ -49,8 +49,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/welcomeTabLayout"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/start_button"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toTopOf="@id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tabBackground="@drawable/welcome_tab_selector"
@@ -58,7 +58,7 @@
         app:tabIndicatorHeight="0dp" />
 
     <Button
-        android:id="@+id/start_button"
+        android:id="@+id/startButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
