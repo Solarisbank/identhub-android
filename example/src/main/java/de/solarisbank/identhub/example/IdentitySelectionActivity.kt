@@ -70,11 +70,16 @@ class IdentitySelectionActivity : AppCompatActivity() {
             }
         })
 
-        urlPreferences.getString(URL_VALUE, null)?.let {
-            binding.sessionInputField.setText(it)
-        }.run {
-            binding.sessionInputField.setText(BuildConfig.SESSION_URL)
+        if (intent.dataString.isNullOrEmpty()) {
+            urlPreferences.getString(URL_VALUE, null)?.let {
+                binding.sessionInputField.setText(it)
+            }.run {
+                binding.sessionInputField.setText(BuildConfig.SESSION_URL)
+            }
+        } else {
+            binding.sessionInputField.setText(intent.dataString)
         }
+
         binding.identHubFlowButton.setOnClickListener {
             startActivity(Intent(this, IdentHubInteractionActivity::class.java)
                     .apply {
