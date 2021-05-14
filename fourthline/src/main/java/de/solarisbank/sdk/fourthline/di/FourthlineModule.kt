@@ -10,7 +10,6 @@ import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
@@ -41,9 +40,5 @@ class FourthlineModule {
             personDataUseCase: PersonDataUseCase,
             kycInfoUseCase: KycInfoUseCase): ViewModel {
         return KycSharedViewModel(savedStateHandle, personDataUseCase, kycInfoUseCase)
-    }
-
-    fun provideLocationAccessViewModel(savedStateHandle: SavedStateHandle): ViewModel {
-        return LocationAccessViewModel(savedStateHandle)
     }
 }

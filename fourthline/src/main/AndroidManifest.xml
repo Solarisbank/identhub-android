@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application tools:node="merge">
         <activity
             android:name="de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity"
@@ -17,7 +18,8 @@
             </intent-filter>
         </activity>
         <service android:name="de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService"
-            android:exported="false">
+            android:exported="false"
+            android:foregroundServiceType="location">
         </service>
     </application>
 </manifest>

@@ -4,6 +4,13 @@
     android:id="@+id/fourthline_navigation"
     app:startDestination="@id/termsAndConditionsFragment">
 
+    <action
+        android:id="@+id/action_reset_to_welcome_screen"
+        app:destination="@id/welcomeContainerFragment"
+        app:popUpTo="@+id/termsAndConditionsFragment"
+        app:popUpToInclusive="true"
+        />
+
     <fragment
         android:id="@+id/termsAndConditionsFragment"
         android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment"

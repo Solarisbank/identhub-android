@@ -151,7 +151,9 @@
 
     <Button
         android:id="@+id/continueButton"
+        style="@style/IdentHubPrimaryButton"
         android:text="Continue"
+        android:enabled="false"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"

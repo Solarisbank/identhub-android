@@ -37,4 +37,8 @@ class PersonDataUseCase(
                             )
                 }
     }
+
+    fun getIdentificationId(): Single<String> {
+        return fourthlineIdentificationRepository.getLastSavedLocalIdentification().map { it.id }
+    }
 }

@@ -18,7 +18,7 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         val view: ConstraintLayout = binding.root
         setContentView(view)
 
-        val identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
+        var identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
                 .apply {
                     onCompletionCallback(this@IdentHubInteractionActivity, this@IdentHubInteractionActivity::onSuccess, this@IdentHubInteractionActivity::onFailure)
                     onPaymentCallback(this@IdentHubInteractionActivity::onSuccess)

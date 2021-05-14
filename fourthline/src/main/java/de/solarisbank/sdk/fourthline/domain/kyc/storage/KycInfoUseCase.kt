@@ -21,33 +21,36 @@ import java.net.URI
 
 class KycInfoUseCase {
 
-    private val kycInfo = KycInfo()
-            .also {
-                it.person = Person()
-//                todo add contacts and address data
-
-            }
-    data class DocPageKey(val docType: DocumentType, val docSide: DocumentFileSide, val isAngled: Boolean)
-
-
+    private val kycInfo = KycInfo().also { it.person = Person() }
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _selfieResultCroppedBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
     var selfieResultCroppedBitmapLiveData = _selfieResultCroppedBitmapLiveData as LiveData<Bitmap>
-
     fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
         Timber.d("updateWithPersonDataDto : ${personDataDto}")
         kycInfo.provider = Provider(
-                name = SOLARISBANK_CLIENT_NAME,
+                name = "SolarisBankCanB", //todo should be different for different types of staging
                 clientNumber = personDataDto.personUid
         )
 
-//        todo check is it needed
-//        kycInfo.person.apply{
-//            personDataDto.nationality
-//            personDataDto.birthDate
-//            personDataDto.firstName
-//            personDataDto.latName
-//        }
+        kycInfo.address = Address().also {
+            personDataDto.address?.apply{
+                it.street = street
+                it.streetNumber = streetNumber
+                it.city = city
+                it.countryCode = personDataDto.nationality //todo change with country
+                it.postalCode = postalCode
+            }
+        }
+
+        kycInfo.contacts = Contacts().also {
+            it.mobile = personDataDto.mobileNumber
+            it.email = personDataDto.email
+        }
+
+        kycInfo.person.also {
+            it.nationalityCode = personDataDto.nationality
+
+        }
     }
 
     fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
@@ -69,7 +72,6 @@ class KycInfoUseCase {
         return kycInfo.selfie?.image
     }
 
-
     /**
      * Retains document pages' photos and stores them to map
      * Called from DocScanFragment.onStepSuccess()
@@ -90,6 +92,7 @@ class KycInfoUseCase {
                         location = result.metadata.location
                 )
     }
+
 
     /**
      * Retains recognized String data of the documents
@@ -125,12 +128,9 @@ class KycInfoUseCase {
         )
 
         kycInfo.person.apply {
-            birthCountryCode = "UKR"
-            nationalityCode = mrtd.nationality
             firstName = mrtd.firstNames.joinToString(separator = " ")
             lastName = mrtd.lastNames.joinToString(separator = " ")
             gender = mrtd.gender
-                birthPlace = "Dnipro"
             birthDate = mrtd.birthDate.getDateFromMRZ()
         }
 
@@ -146,13 +146,6 @@ class KycInfoUseCase {
     fun updateKycLocation(resultLocation: Location) {
         kycInfo.metadata = DeviceMetadata()
                 .apply { location = Pair(resultLocation.latitude, resultLocation.longitude) }
-    }
-
-    /**
-     * Updates document field in kycInfo
-     */
-    fun updateKycDocument(document: Document) {
-        kycInfo.document = document
     }
 
     fun getKycUriZip(applicationContext: Context): URI? {
@@ -177,8 +170,5 @@ class KycInfoUseCase {
         }
     }
 
-    companion object {
-        const val SOLARISBANK_CLIENT_NAME = "SolarisBankCanB"
-    }
-
+    private data class DocPageKey(val docType: DocumentType, val docSide: DocumentFileSide, val isAngled: Boolean)
 }

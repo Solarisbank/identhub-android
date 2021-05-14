@@ -2,6 +2,7 @@ package de.solarisbank.sdk.fourthline.feature.ui.scan
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.getDateFromMRZ
+import timber.log.Timber
 
 
 class DocScanResultFragment : FourthlineFragment() {
@@ -41,6 +43,24 @@ class DocScanResultFragment : FourthlineFragment() {
     private var expireDateTextInput: DateInputEditText? = null
     private var continueButton: Button? = null
 
+    private val textValidationWatcher = object : TextWatcher{
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            continueButton!!.isEnabled = issueDateTextInput?.getDate() != null
+                    && expireDateTextInput?.getDate() != null
+                    && !issueDateTextInput!!.text.isNullOrEmpty()
+                    && !expireDateTextInput!!.text.isNullOrEmpty()
+                    && !docNumberTextInput!!.text.isNullOrEmpty()
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+    }
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
@@ -65,13 +85,22 @@ class DocScanResultFragment : FourthlineFragment() {
         initView()
     }
 
-
     private fun initView() {
-        kycSharedViewModel.getKycDocument().let{
-            docNumberTextInput!!.text = Editable.Factory.getInstance().newEditable(it.number)
-            it.issueDate?.let { issueDateTextInput!!.setDate(it) }
-            it.expirationDate?.let { expireDateTextInput!!.setDate(it) }
+        issueDateTextInput!!.addTextChangedListener(textValidationWatcher)
+        expireDateTextInput!!.addTextChangedListener(textValidationWatcher)
+        docNumberTextInput!!.addTextChangedListener(textValidationWatcher)
+
+        kycSharedViewModel.getKycDocument().let { doc ->
+            docNumberTextInput!!.text = Editable.Factory.getInstance().newEditable(doc.number)
+            doc.issueDate?.let { issueDateTextInput!!.setDate(it) }?:let {
+                doc.expirationDate?.let {
+                    Timber.d("count issue date")
+                    issueDateTextInput!!.countIssueDate(it)
+                }
+            }
+            doc.expirationDate?.let { expireDateTextInput!!.setDate(it) }
         }
+
         continueButton!!.setOnClickListener {
             val doc = kycSharedViewModel.getKycDocument()
             doc.issueDate = issueDateTextInput!!.text.toString().getDateFromMRZ()
@@ -82,6 +111,9 @@ class DocScanResultFragment : FourthlineFragment() {
     }
 
     override fun onDestroyView() {
+        issueDateTextInput?.removeTextChangedListener(textValidationWatcher)
+        expireDateTextInput?.removeTextChangedListener(textValidationWatcher)
+        docNumberTextInput?.removeTextChangedListener(textValidationWatcher)
         title = null
         docNumberInputLayout = null
         docNumberTextInput = null

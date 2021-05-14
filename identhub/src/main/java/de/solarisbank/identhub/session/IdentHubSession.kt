@@ -4,12 +4,6 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.fragment.app.FragmentActivity
-import de.solarisbank.identhub.data.dto.InitializationDto
-import de.solarisbank.identhub.data.initialization.InitializeIdentificationApi
-import de.solarisbank.identhub.di.network.*
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class IdentHubSession(private val sessionUrl: String) {
@@ -34,7 +28,7 @@ class IdentHubSession(private val sessionUrl: String) {
         this.identificationErrorCallback = errorCallback
         this.identificationSuccessCallback = successCallback
 
-        mainProcess = IdentHubSessionObserver(fragmentActivity, ::onResultSuccess, ::onResultFailure)
+        mainProcess = IdentHubSessionObserver(fragmentActivity, ::onResultSuccess, ::onResultFailure, sessionUrl)
         fragmentActivity.lifecycle.addObserver(mainProcess!!)
     }
 
@@ -74,7 +68,7 @@ class IdentHubSession(private val sessionUrl: String) {
             throw NullPointerException("You need to call create method first")
         }
 
-        mainProcess?.start(sessionUrl, "bank/iban")
+        mainProcess?.obtainLocalIdentificationState()
     }
 
     fun resume() {
@@ -82,23 +76,11 @@ class IdentHubSession(private val sessionUrl: String) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
 
-        mainProcess?.start(sessionUrl, "qes")
+        mainProcess?.obtainLocalIdentificationState()
     }
 
     fun stop() {
         mainProcess = null
-    }
-
-    private fun withInitialization(onSuccess: (InitializationDto) -> Unit) {
-        val retrofitFactory = NetworkModule.provideSimpleRetrofit(sessionUrl)
-        val api = retrofitFactory.create(InitializeIdentificationApi::class.java)
-
-        Single.defer { api.getInitialization() }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onSuccess, { t ->
-                    Timber.e(t)
-                })
     }
 
     private fun loadAppName(context: Context) {

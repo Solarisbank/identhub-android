@@ -8,10 +8,11 @@ import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 
-class FourthlineModuleAssistedViewModelFactory(
+class FourthlineModuleAssistedViewModelFactory private constructor(
         private val fourthlineModule: FourthlineModule,
         private val mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>>,
-        private val mapOfClassOfAndProviderOfSavedViewModelProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>) : Factory<AssistedViewModelFactory> {
+        private val mapOfClassOfAndProviderOfSavedViewModelProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>
+        ) : Factory<AssistedViewModelFactory> {
 
     override fun get(): AssistedViewModelFactory {
         return Preconditions.checkNotNull(

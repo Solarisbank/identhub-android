@@ -9,13 +9,11 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.identhub.session.IdentHub
+import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
@@ -47,19 +45,21 @@ class KycUploadFragment : FourthlineFragment() {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            binder?.uploadingStatus?.removeObserver(uploadingObserver)
             bound = false
         }
 
     }
 
-    private val uploadingObserver = Observer<KycUploadServiceBinder.Companion.UPLOADING_STATUS> {
+    private val uploadingObserver = Observer<UPLOAD_STATE> {
         setUiState(it)
     }
 
     private var title: TextView? = null
     private var subtitle:  TextView? = null
     private var progressBar: ProgressBar? = null
-    private var quitButton: Button? = null
+    private var resultImageView: ImageView? = null
+    private var submitButton: Button? = null
 
     private var bound: Boolean = false
     private var binder: KycUploadServiceBinder? = null
@@ -76,32 +76,46 @@ class KycUploadFragment : FourthlineFragment() {
                     title = it.findViewById(R.id.title)
                     subtitle = it.findViewById(R.id.subtitle)
                     progressBar = it.findViewById(R.id.progressBar)
-                    quitButton = it.findViewById(R.id.quitButton)
+                    resultImageView = it.findViewById(R.id.resultImageView)
+                    submitButton = it.findViewById(R.id.quitButton)
                 }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startKycUploadService()
+        if (!isServiceRunning(requireContext())) {
+            startKycUploadService()
+        }
         bindKycUploadService()
     }
 
-    private fun setUiState(state: KycUploadServiceBinder.Companion.UPLOADING_STATUS) {
-        when (state) {
-            KycUploadServiceBinder.Companion.UPLOADING_STATUS.UPLOADING -> progressBar!!.visibility = View.VISIBLE
-            KycUploadServiceBinder.Companion.UPLOADING_STATUS.DONE -> {
-                //todo add call to activity's step indicators
-                progressBar!!.visibility = View.INVISIBLE
-            }
-            KycUploadServiceBinder.Companion.UPLOADING_STATUS.ERROR -> {
-                //todo add call to activity's step indicator
-                progressBar!!.visibility = View.INVISIBLE
-            }
+    private fun setUiState(state: UPLOAD_STATE) {
+        title!!.text = state.titleText
+        subtitle!!.text = state.subtitleText
+        submitButton!!.text = state.submitButtonLabel
+        resultImageView!!.setImageResource(state.uploadResultImageName.getDrawableRes())
+        resultImageView!!.visibility = if (state.isResultImageViewVisible) View.VISIBLE else View.GONE
+        progressBar!!.visibility = if (state.isProgressBarVisible) View.VISIBLE else View.INVISIBLE
+        if (state.submitButtonActionSendsResult) {
+            submitButton!!.setOnClickListener { sendActivityResult() }
+        } else if (state.submitButtonActionResetsFlow){
+            submitButton!!.setOnClickListener { activityViewModel.resetFourthlineFlow() }
+        } else {
+            submitButton!!.setOnClickListener(null)
         }
+        submitButton!!.isEnabled = state.isSubmitButtonEnabled
+    }
+
+    private fun String.getDrawableRes(): Int {
+        return requireContext().resources.getIdentifier(this, "drawable", requireContext().packageName)
+    }
+
+    private fun sendActivityResult() {
+        kycSharedViewModel.sendCompletedResult(requireActivity())
     }
 
     private fun startKycUploadService() {
-        progressBar!!.visibility = View.VISIBLE
+        Timber.d("startKycUploadService")
         kycSharedViewModel.getKycUriZip(requireContext().applicationContext)?.let {
             val intent = Intent(requireActivity(), KycUploadService::class.java)
                     .apply {
@@ -128,11 +142,60 @@ class KycUploadFragment : FourthlineFragment() {
     }
 
     override fun onDestroyView() {
+        binder?.uploadingStatus?.removeObserver(uploadingObserver)
         title = null
         subtitle = null
         progressBar = null
-        quitButton = null
+        resultImageView = null
+        submitButton = null
         super.onDestroyView()
     }
 
+    interface UploadState {
+        val titleText: String
+        val subtitleText: String
+        val submitButtonLabel: String
+        val uploadResultImageName: String
+        val isResultImageViewVisible: Boolean
+        val isProgressBarVisible: Boolean
+        val submitButtonActionSendsResult: Boolean
+        val submitButtonActionResetsFlow: Boolean
+        val isSubmitButtonEnabled: Boolean
+    }
+
+    enum class UPLOAD_STATE : UploadState {
+        SUCCESSFUL {
+            override val titleText = "Congratulation"
+            override val subtitleText = "Your data was confirmed"
+            override val submitButtonLabel: String = "Submit"
+            override val uploadResultImageName = "ic_upload_successful"
+            override val isResultImageViewVisible = true
+            override val isProgressBarVisible = false
+            override val submitButtonActionSendsResult = true
+            override val submitButtonActionResetsFlow = false
+            override val isSubmitButtonEnabled = true
+        },
+        FAIL {
+            override val titleText = "Please try again ..."
+            override val subtitleText = "Identification process failed"
+            override val submitButtonLabel: String = "Retry"
+            override val uploadResultImageName = "ic_upload_failed"
+            override val isResultImageViewVisible = true
+            override val isProgressBarVisible = false
+            override val submitButtonActionSendsResult = false
+            override val submitButtonActionResetsFlow = true
+            override val isSubmitButtonEnabled = true
+        },
+        UPLOADING {
+            override val titleText = "Verification"
+            override val subtitleText = "Please wait for verification"
+            override val submitButtonLabel: String = "Uploading ..."
+            override val uploadResultImageName = "ic_upload_failed"
+            override val isResultImageViewVisible = false
+            override val isProgressBarVisible = true
+            override val submitButtonActionSendsResult = false
+            override val submitButtonActionResetsFlow = false
+            override val isSubmitButtonEnabled = false
+        }
+    }
 }

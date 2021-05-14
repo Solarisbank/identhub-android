@@ -39,7 +39,7 @@ public final class NetworkModule {
         );
     }
 
-    public HttpLoggingInterceptor provideHttpLoggingInterceptor() {
+    public static HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         return new HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
     }
@@ -78,30 +78,4 @@ public final class NetworkModule {
                 .build();
     }
 
-    public Retrofit provideRetrofit(
-            final MoshiConverterFactory moshiConverterFactory,
-            final OkHttpClient okHttpClient,
-            final CallAdapter.Factory rxJava2CallAdapterFactory,
-            final String url
-    ) {
-        Retrofit.Builder builder = new Retrofit.Builder();
-        if (url != null) {
-            builder.baseUrl(url);
-        } else {
-            builder.baseUrl(DUMMY_BASE_URL);
-        }
-        return builder
-                .addConverterFactory(moshiConverterFactory)
-                .addCallAdapterFactory(rxJava2CallAdapterFactory)
-                .client(okHttpClient)
-                .build();
-    }
-
-    public static Retrofit provideSimpleRetrofit(String url) {
-        NetworkModule networkModule = new NetworkModule();
-        OkHttpClient okHttpClient = networkModule.provideOkHttpClient(null);
-        MoshiConverterFactory moshiConverterFactory = networkModule.provideMoshiConverterFactory();
-        CallAdapter.Factory callAdapterFactory = networkModule.provideRxJavaCallAdapterFactory();
-        return networkModule.provideRetrofit(moshiConverterFactory, okHttpClient, callAdapterFactory, url);
-    }
 }

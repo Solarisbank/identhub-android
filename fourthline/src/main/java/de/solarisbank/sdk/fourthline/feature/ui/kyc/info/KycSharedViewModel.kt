@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.location.Location
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -12,6 +15,8 @@ import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
+import de.solarisbank.identhub.session.IdentHub
+import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseViewModel
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
@@ -87,6 +92,26 @@ class KycSharedViewModel(
 
     fun getKycUriZip(applicationContext: Context): URI? {
         return kycInfoUseCase.getKycUriZip(applicationContext)
+    }
+
+    fun sendCompletedResult(activity: FragmentActivity) {
+        compositeDisposable.add(
+                personDataUseCase
+                        .getIdentificationId()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
+                                    val bundle = Bundle()
+                                    bundle.putInt(IdentHub.LAST_COMPLETED_STEP_KEY, IdentHubSession.Step.CONTRACT_SIGNING.index)
+                                    bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, it)
+                                    activity.setResult(AppCompatActivity.RESULT_OK, Intent().apply { putExtras(bundle) })
+                                },
+                                {
+                                    _errorLiveData.value = "Failed to send activity result"
+                                }
+                        )
+        )
     }
 
     override fun onCleared() {

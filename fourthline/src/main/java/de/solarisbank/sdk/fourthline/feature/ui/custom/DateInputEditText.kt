@@ -36,6 +36,23 @@ class DateInputEditText : TextInputEditText {
         updateLabel()
     }
 
+    fun setDate(date: Date) {
+        calendar = Calendar.getInstance().apply { time = date }
+        updateLabel()
+    }
+
+    fun getDate(): Date? {
+        return calendar?.time
+    }
+
+    fun countIssueDate(expireDate: Date, subtractYears: Int = -10) {
+        calendar = Calendar.getInstance().apply {
+            time = expireDate
+            add(Calendar.YEAR, subtractYears)
+        }
+//        updateLabel()
+    }
+
     private fun showDialog() {
         if (text.toString().isNotBlank()) {
             Timber.d("showDialog(): ${DateFormat.getDateFormat(context)}")
@@ -59,7 +76,8 @@ class DateInputEditText : TextInputEditText {
                     calendar = null
                 }
             }
-        } else {
+
+        } else if (text.toString().isNullOrBlank() && calendar == null) {
             calendar = Calendar.getInstance()
         }
 
@@ -85,19 +103,6 @@ class DateInputEditText : TextInputEditText {
             }
         })
 
-//        setOnTouchListener { _, event ->
-//            val inType = inputType; // backup the input type
-//            inputType = InputType.TYPE_NULL; // disable soft input
-//            onTouchEvent(event); // call native handler
-//            inputType = inType; // restore input type
-//            true
-//        }
-
-    }
-
-    fun setDate(date: Date) {
-        calendar = Calendar.getInstance().apply { time = date }
-        updateLabel()
     }
 
     private fun updateLabel() {

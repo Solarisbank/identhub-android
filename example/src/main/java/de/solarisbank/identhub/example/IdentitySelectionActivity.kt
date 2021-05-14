@@ -71,6 +71,8 @@ class IdentitySelectionActivity : AppCompatActivity() {
 
         urlPreferences.getString(URL_VALUE, null)?.let {
             binding.sessionInputField.setText(it)
+        }.run {
+            binding.sessionInputField.setText(BuildConfig.SESSION_URL)
         }
         binding.identHubFlowButton.setOnClickListener {
             startActivity(Intent(this, IdentHubInteractionActivity::class.java)
@@ -81,9 +83,9 @@ class IdentitySelectionActivity : AppCompatActivity() {
 
         binding.fourthlineFlowButton.setOnClickListener {
             startActivity(Intent().apply {
-                action = FOURTHLINE_FLOW_ACTIVITY_ACTION
-                putExtra(SESSION_URL_KEY, urlPreferences.getString(URL_VALUE,""))
-            })
+                    action = FOURTHLINE_FLOW_ACTIVITY_ACTION
+                    putExtra(SESSION_URL_KEY, urlPreferences.getString(URL_VALUE,""))
+                })
         }
 
     }

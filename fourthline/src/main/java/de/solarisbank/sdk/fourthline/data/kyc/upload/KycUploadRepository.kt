@@ -47,8 +47,8 @@ class KycUploadRepository(
                                 Timber.d("pollIdentificationStatus(), status : ${getEnum(t.status)}")
                                 t
                             }
-                            .filter { getEnum(it.status) != Status.CONFIRMED }
-                            .takeWhile{ getEnum(it.status) != Status.CONFIRMED }
+                            .filter { getEnum(it.status) != Status.SUCCESSFUL }
+                            .takeWhile{ getEnum(it.status) == Status.SUCCESSFUL || getEnum(it.status) == Status.FAILED}
                             .toList()
                             .map { it[0] }
                 }
