@@ -1,7 +1,6 @@
 package de.solarisbank.identhub.session
 
-import android.net.Uri
-import java.net.URI
+import de.solarisbank.identhub.session.utils.buildApiUrl
 
 
 object IdentHub {
@@ -11,26 +10,7 @@ object IdentHub {
         get() = instance?.isPaymentProcessAvailable ?: false
 
     fun sessionWithUrl(url: String): IdentHubSession {
-        val uri = URI.create(url)
-        val apiURL = buildUrl(uri)
-
-        return IdentHubSession(apiURL).apply { instance = this }
-    }
-
-    private fun buildUrl(uri: URI): String {
-        val domain = uri.authority.replaceFirst(".", "-api.")
-        val apiUri = Uri.Builder().authority(domain)
-                .scheme(uri.scheme)
-                .appendEncodedPath("person_onboarding")
-                .appendEncodedPath(uri.path.substring(1))
-                .build()
-
-        var apiStringUrl = apiUri.toString()
-        if (apiStringUrl.last() != '/') {
-            apiStringUrl = "$apiStringUrl/"
-        }
-
-        return apiStringUrl
+        return IdentHubSession(buildApiUrl(url)).apply { instance = this }
     }
 
     fun clear() {

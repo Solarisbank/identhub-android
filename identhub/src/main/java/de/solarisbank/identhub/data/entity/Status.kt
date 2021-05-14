@@ -5,8 +5,10 @@ enum class Status(val label: String) {
     PENDING("pending"),
     AUTHORIZATION_REQUIRED("authorization_required"),
     CONFIRMATION_REQUIRED("confirmation_required"),
+    PROCESSED("processed"),
     CONFIRMED("confirmed"),
-    SUCCESSFUL("successful"), FAILED("failed");
+    SUCCESSFUL("successful"),
+    FAILED("failed");
 
     companion object {
         fun getEnum(label: String?): Status? {

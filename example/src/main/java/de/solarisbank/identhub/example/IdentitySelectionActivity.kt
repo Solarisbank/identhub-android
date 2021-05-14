@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdentitySelectionBinding
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
+import de.solarisbank.identhub.session.utils.buildApiUrl
 import timber.log.Timber
 
 
@@ -84,7 +85,7 @@ class IdentitySelectionActivity : AppCompatActivity() {
         binding.fourthlineFlowButton.setOnClickListener {
             startActivity(Intent().apply {
                     action = FOURTHLINE_FLOW_ACTIVITY_ACTION
-                    putExtra(SESSION_URL_KEY, urlPreferences.getString(URL_VALUE,""))
+                    putExtra(SESSION_URL_KEY, buildApiUrl(urlPreferences.getString(URL_VALUE,"")!!))
                 })
         }
 
