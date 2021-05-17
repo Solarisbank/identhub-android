@@ -35,7 +35,7 @@ class KycUploadRepository(
                             .doOnNext {
                                 count = it
                             }
-                            .takeUntil { count > 10}
+                            .takeUntil { count > 30}
                             .timeout(30, TimeUnit.SECONDS)
                             .flatMap {
                                 return@flatMap Observable.create<IdentificationDto> { emitter ->

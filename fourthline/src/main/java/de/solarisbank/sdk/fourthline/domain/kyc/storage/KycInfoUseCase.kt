@@ -37,7 +37,7 @@ class KycInfoUseCase {
                 it.street = street
                 it.streetNumber = streetNumber
                 it.city = city
-                it.countryCode = personDataDto.nationality //todo change with country
+                it.countryCode = personDataDto.address?.country //todo change with country
                 it.postalCode = postalCode
             }
         }
@@ -49,7 +49,7 @@ class KycInfoUseCase {
 
         kycInfo.person.also {
             it.nationalityCode = personDataDto.nationality
-
+            it.birthPlace = personDataDto.birthPlace
         }
     }
 
@@ -154,7 +154,7 @@ class KycInfoUseCase {
         Timber.d("getKycUriZip : ${kycInfo.document}")
         val errorList = kycInfo.validate()
         if (errorList.isNullOrEmpty()) {
-            errorList.forEach { Timber.d("errotList: ${it.name}") }
+            errorList.forEach { Timber.d("errorList: ${it.name}") }
         }
 
         return try {

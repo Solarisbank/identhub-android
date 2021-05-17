@@ -11,6 +11,7 @@ data class PersonDataDto(
         @Json(name = "mobile_number") var mobileNumber: String?,
         var nationality: String?,
         @Json(name = "birth_date") var birthDate: String?,
+        @Json(name = "place_of_birth") var birthPlace: String?,
         @Json(name = "person_uid") var personUid: String?,
         @Json(name = "supported_documents") var supportedDocuments: List<SupportedDocument?>?,
         var gender: String?
