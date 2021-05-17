@@ -9,8 +9,6 @@
         android:label="ContractSigningPreviewFragment">
         <action
             android:id="@+id/action_contractSigningPreviewFragment_to_contractSigningFragment"
-            app:popUpTo="@+id/contractSigningPreviewFragment"
-            app:popUpToInclusive="true"
             app:destination="@id/contractSigningFragment" />
     </fragment>
     <fragment
@@ -18,3 +16,5 @@
         android:name="de.solarisbank.identhub.contract.sign.ContractSigningFragment"
         android:label="ContractSigningFragment" />
 </navigation>
+
+<!--<include app:graph="@navigation/contract_nav_graph"/>-->

@@ -83,20 +83,9 @@
             app:popUpToInclusive="true"
             app:destination="@id/verificationBankSuccessMessageFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/contractSigningPreviewFragment"
-        android:name="de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment"
-        android:label="ContractSigningPreviewFragment">
-        <action
-            android:id="@+id/action_contractSigningPreviewFragment_to_contractSigningFragment"
-            app:popUpTo="@+id/contractSigningPreviewFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/contractSigningFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/contractSigningFragment"
-        android:name="de.solarisbank.identhub.contract.sign.ContractSigningFragment"
-        android:label="ContractSigningFragment" />
+
+    <!--<include app:graph="@navigation/contract_nav_graph"/>-->
+
     <fragment
         android:id="@+id/verificationPhoneErrorMessageFragment"
         android:name="de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragment"

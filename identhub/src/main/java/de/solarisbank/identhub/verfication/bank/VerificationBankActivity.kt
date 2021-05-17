@@ -8,6 +8,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
+import de.solarisbank.identhub.contract.ContractActivity
+import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.router.Router
@@ -18,24 +20,30 @@ import de.solarisbank.sdk.core.result.Event
 
 class VerificationBankActivity : IdentHubActivity() {
     private lateinit var viewModel: VerificationBankViewModel
+    private lateinit var cViewModel: ContractViewModel
     private lateinit var stepIndicator: StepIndicatorView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification_bank)
         initGraph()
-        initView()
     }
 
     private fun initGraph() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
-        val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
         val lastCompletedStep = viewModel.getLastCompletedStep()
         if (lastCompletedStep === IdentHubSession.Step.VERIFICATION_BANK) {
-            navGraph.startDestination = R.id.contractSigningPreviewFragment
+//            val navGraph = navInflater.inflate(R.navigation.contract_nav_graph)
+//            navGraph.startDestination = R.id.contractSigningPreviewFragment
+//            navHostFragment.navController.setGraph(navGraph, intent.extras)
+            startContractSigningActivity()
+            return
+        } else {
+            val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
+            navHostFragment.navController.setGraph(navGraph, intent.extras)
+            initView()
         }
-        navHostFragment.navController.setGraph(navGraph, intent.extras)
     }
 
     private fun initView() {
@@ -56,7 +64,10 @@ class VerificationBankActivity : IdentHubActivity() {
         super.initViewModel()
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
-        viewModel.getNaviDirectionEvent()!!.observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
+        cViewModel = ViewModelProvider(this, viewModelFactory)
+                .get(ContractViewModel::class.java)
+        viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
+        cViewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
@@ -79,6 +90,11 @@ class VerificationBankActivity : IdentHubActivity() {
                 stepIndicator.setStep(StepIndicatorView.THIRD_STEP)
             }
         }
+    }
+
+    private fun startContractSigningActivity() {
+        startActivity(Intent(this, ContractActivity::class.java))
+        finish()
     }
 
     private fun forwardTo(args: Bundle) {

@@ -28,7 +28,7 @@ class KycInfoUseCase {
     fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
         Timber.d("updateWithPersonDataDto : ${personDataDto}")
         kycInfo.provider = Provider(
-                name = "SolarisBankCanB", //todo should be different for different types of staging
+                name = "SolarisBankSamsung", //todo should be different for different types of staging
                 clientNumber = personDataDto.personUid
         )
 
