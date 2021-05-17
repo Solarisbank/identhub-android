@@ -10,12 +10,12 @@
     <string name="welcome_page_2_guide_title">Scan your ID document</string>
     <string name="welcome_page_2_guide">
         "With this we can make sure that you're really who
-        you say you are and avoid identity therf."
+        you say you are and avoid identity theft."
     </string>
     <string name="welcome_page_3_guide_title">Submit your case</string>
     <string name="welcome_page_3_guide">
         Last thing you need to do is enabling your location
-        &amp; submiting your case!
+        &amp; submitting your case!
         How easy is that?
     </string>
 </resources>
