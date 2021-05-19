@@ -27,6 +27,7 @@ class KycUploadRepository(
 
     fun pollIdentificationStatus(): Single<IdentificationDto> {
         var count = 0L
+        var isResultObtainer = false
         return fourthlineIdentificationRoomDataSource
                 .getLastIdentification()
                 .flatMap { identification ->
@@ -47,10 +48,18 @@ class KycUploadRepository(
                                 Timber.d("pollIdentificationStatus(), status : ${getEnum(t.status)}")
                                 t
                             }
-                            .takeWhile{ getEnum(it.status) != Status.SUCCESSFUL && getEnum(it.status) != Status.FAILED}
+                            .takeWhile { !isResultObtainer }
+                            .doOnNext{ isResultObtainer = checkResult(it) }
                             .toList()
-                            .map { it[0] }
+                            .map {
+                                Timber.d("pollIdentificationStatus(), it.last() ${ it.last().status }")
+                                it.last()
+                            }
                 }
+    }
+    
+    private fun checkResult(dto: IdentificationDto): Boolean {
+        return getEnum(dto.status) == Status.SUCCESSFUL || getEnum(dto.status) == Status.FAILED
     }
 
 }

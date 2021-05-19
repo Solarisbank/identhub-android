@@ -106,6 +106,7 @@ class KycSharedViewModel(
                                     bundle.putInt(IdentHub.LAST_COMPLETED_STEP_KEY, IdentHubSession.Step.CONTRACT_SIGNING.index)
                                     bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, it)
                                     activity.setResult(AppCompatActivity.RESULT_OK, Intent().apply { putExtras(bundle) })
+                                    activity.finish()
                                 },
                                 {
                                     _errorLiveData.value = "Failed to send activity result"
