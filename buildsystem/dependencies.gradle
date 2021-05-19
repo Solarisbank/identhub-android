@@ -25,7 +25,7 @@ ext {
             "androidx.fragment:fragment-ktx:$fragmentVersion",
     ]
 
-    fourthlineVersion = "2.2.7"
+    fourthlineVersion = "2.2.8"
     fourthline = [
             "com.fourthline:fourthline-kyc:$fourthlineVersion",
 //            "com.fourthline:fourthline-core:$fourthlineVersion",

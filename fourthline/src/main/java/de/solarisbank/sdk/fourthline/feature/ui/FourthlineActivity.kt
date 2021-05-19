@@ -41,9 +41,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fourthline)
+        initView()
         initViewModel()
         initGraph()
-        initView()
     }
 
     private fun initView() {
