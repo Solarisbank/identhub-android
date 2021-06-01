@@ -93,6 +93,7 @@ class KycUploadFragment : FourthlineFragment() {
     }
 
     private fun setUiState(state: UPLOAD_STATE) {
+        Timber.d("setUiState: ${state.name}")
         title!!.text = state.titleText
         subtitle!!.text = state.subtitleText
         submitButton!!.text = state.submitButtonLabel

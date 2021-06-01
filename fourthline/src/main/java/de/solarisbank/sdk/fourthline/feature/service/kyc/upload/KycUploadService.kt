@@ -156,9 +156,9 @@ class KycUploadService : Service() {
                     isRunning = false
                     Timber.d("pollKycProcessingResult(), identificationDto : $result ")
                     if (
-                            (result.succeeded && result.data!!.status == Status.SUCCESSFUL.label
-                            || result.data!!.status == Status.AUTHORIZATION_REQUIRED.label)
-                            && result.data!!.nextStep != null
+                            result.succeeded && result.data!!.status == Status.SUCCESSFUL.label
+                            || (result.data!!.status == Status.AUTHORIZATION_REQUIRED.label && result.data!!.nextStep != null)
+
                     ) {
                         binder.uploadingStatus.value =
                                 Pair(KycUploadFragment.UPLOAD_STATE.SUCCESSFUL, result.data!!.nextStep)
@@ -174,7 +174,9 @@ class KycUploadService : Service() {
                         binder.uploadingStatus.value =
                                 Pair(KycUploadFragment.UPLOAD_STATE.FAIL, null)
                         killService()
-                    }}
+                    }
+                }
+
                 ))
     }
 
