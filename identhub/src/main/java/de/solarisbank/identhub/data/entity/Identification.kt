@@ -10,6 +10,7 @@ data class Identification(
         var id: String,
         var url: String,
         var status: String,
+        var method: String? = null,
         var nextStep: String? = null) {
 
     val isCompleted: Boolean
@@ -18,7 +19,7 @@ data class Identification(
     val isAuthorizationRequiredOrFailed: Boolean
         get() {
             val currentStatus = Status.getEnum(status)
-            return Status.AUTHORIZATION_REQUIRED == currentStatus || Status.FAILED == currentStatus
+            return Status.AUTHORIZATION_REQUIRED == currentStatus || Status.IDENTIFICATION_DATA_REQUIRED == currentStatus || Status.FAILED == currentStatus
         }
 
 

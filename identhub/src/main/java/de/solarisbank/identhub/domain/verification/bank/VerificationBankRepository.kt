@@ -8,5 +8,6 @@ import io.reactivex.Single
 interface VerificationBankRepository {
     fun getVerificationStatus(identificationId: String): Single<IdentificationDto>
     fun postVerify(iBan: IBan): Single<IdentificationDto>
+    fun postBankIdIdentification(iBan: IBan): Single<IdentificationDto>
     fun save(identificationDto: IdentificationDto): Completable
 }

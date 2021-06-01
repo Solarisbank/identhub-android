@@ -20,6 +20,12 @@ public final class VerificationBankRetrofitDataSource implements VerificationBan
     }
 
     @Override
+    public Single<IdentificationDto> postBankIdIdentification(final IBan iBan) {
+        return verificationBankApi.postBankIdIdentification(iBan)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
     public Single<IdentificationDto> getVerificationStatus(final String identificationId) {
         return verificationBankApi.getVerification(identificationId)
                 .subscribeOn(Schedulers.io());

@@ -108,6 +108,17 @@ import de.solarisbank.identhub.intro.IntroFragmentInjector;
 import de.solarisbank.identhub.intro.IntroModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
+import de.solarisbank.identhub.session.data.identification.IdentificationApi;
+import de.solarisbank.identhub.session.data.identification.IdentificationApiFactory;
+import de.solarisbank.identhub.session.data.identification.IdentificationModule;
+import de.solarisbank.identhub.session.data.identification.IdentificationRepository;
+import de.solarisbank.identhub.session.data.identification.IdentificationRepositoryFactory;
+import de.solarisbank.identhub.session.data.identification.IdentificationRetrofitDataSource;
+import de.solarisbank.identhub.session.data.identification.IdentificationRetrofitDataSourceFactory;
+import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource;
+import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSourceFactory;
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivity;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankFragmentInjector;
@@ -151,6 +162,7 @@ public class IdenthubComponent {
     private final ActivitySubModule activitySubModule;
     private final NetworkModule networkModule;
     private final DatabaseModule databaseModule;
+    private final IdentificationModule identificationModule;
 
     private Provider<Context> applicationContextProvider;
     private Provider<IdentityRoomDatabase> identityRoomDatabaseProvider;
@@ -192,6 +204,13 @@ public class IdenthubComponent {
     private Provider<ContractSignLocalDataSource> contractSignLocalDataSourceProvider;
     private Provider<Mapper<IdentificationDto, IdentificationWithDocument>> identificationEntityMapperProvider;
 
+    private Provider<IdentificationApi> identificationApiProvider;
+    private Provider<IdentificationRetrofitDataSource> identificationRetrofitDataSourceProvider;
+    private Provider<IdentificationRoomDataSource> identificationRoomDataSourceProvider;
+    private Provider<IdentificationRepository> identificationRepositoryProvider;
+    private Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
+
+
     private IdenthubComponent(
             LibraryComponent libraryComponent,
             IdentityModule identityModule,
@@ -205,7 +224,8 @@ public class IdenthubComponent {
             SessionModule sessionModule,
             VerificationBankDataModule verificationBankDataModule,
             VerificationBankModule verficationBankModule,
-            ContractModule contractModule) {
+            ContractModule contractModule,
+            IdentificationModule identificationModule) {
         this.identityModule = identityModule;
         this.introModule = introModule;
         this.activitySubModule = activitySubModule;
@@ -213,6 +233,7 @@ public class IdenthubComponent {
         this.databaseModule = databaseModule;
         this.verficationBankModule = verficationBankModule;
         this.contractModule = contractModule;
+        this.identificationModule = identificationModule;
         initializeMapper(mapperModule);
         initialize(libraryComponent, contractSignModule, sessionModule, verificationBankDataModule, verificationPhoneModule);
     }
@@ -341,7 +362,9 @@ public class IdenthubComponent {
                     new SessionModule(),
                     new VerificationBankDataModule(),
                     new VerificationBankModule(),
-                    new ContractModule());
+                    new ContractModule(),
+                    new IdentificationModule()
+            );
         }
     }
 
@@ -391,7 +414,14 @@ public class IdenthubComponent {
 
             this.fileControllerProvider = DoubleCheck.provider(FileControllerFactory.create(contextProvider));
             this.fetchPdfUseCaseProvider = FetchPdfUseCaseFactory.create(contractSignRepositoryProvider, fileControllerProvider);
-            this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(identityModule,
+
+            identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()));
+            identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
+            identificationRoomDataSourceProvider = DoubleCheck.provider(IdentificationRoomDataSourceFactory.create(identificationModule, identificationDaoProvider.get()));
+            identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()));
+            identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()));
+            this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
+                    identityModule,
                     verficationBankModule,
                     contractModule,
                     IdenthubComponent.this.authorizeVerificationPhoneUseCaseProvider,
@@ -400,7 +430,8 @@ public class IdenthubComponent {
                     IdenthubComponent.this.getIdentificationUseCaseProvider,
                     fetchPdfUseCaseProvider,
                     identificationStepPreferencesProvider,
-                    IdenthubComponent.this.verifyIBanUseCaseProvider
+                    IdenthubComponent.this.verifyIBanUseCaseProvider,
+                    identificationPollingStatusUseCaseProvider
             );
             this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
                     IdenthubComponent.this.authorizeContractSignUseCaseProvider,
@@ -418,6 +449,9 @@ public class IdenthubComponent {
                     IdenthubComponent.this.contractModule
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
+
+
+
         }
 
         @Override

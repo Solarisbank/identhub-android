@@ -5,13 +5,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.data.dto.IdentificationDto
-import de.solarisbank.identhub.router.Router
+import de.solarisbank.identhub.data.entity.NavigationalResult
+import de.solarisbank.identhub.router.FIRST_STEP_DIRECTION
+import de.solarisbank.identhub.router.FIRST_STEP_KEY
+import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.core.ActivityResultLauncher
 import de.solarisbank.identhub.session.core.ActivityResultRegistry
 import de.solarisbank.identhub.session.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel
-import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel.LOCAL_IDENTIFICATION_STATE
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -51,14 +52,19 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
 
     private fun processInitializationStateResult(
             // todo create typeAlias
-            result: Pair<IdentHubSessionViewModel.LOCAL_IDENTIFICATION_STATE, IdentificationDto?>
+            result: Result<NavigationalResult<String>>
     ) {
         Timber.d("processInitializationStateResult: ")
-        when (result.first) {
-            LOCAL_IDENTIFICATION_STATE.ABSENT -> result.second?.let{ start(sessionUrl, it.nextStep!!) }
-            LOCAL_IDENTIFICATION_STATE.PROCESSING -> result.second?.let{ start(sessionUrl, Router.Companion.FLOW_DIRECTION.FOURTHLINE_UPLOADING.destination) }
-            LOCAL_IDENTIFICATION_STATE.OBTAINED -> result.second?.let{
-                successCallback.invoke(IdentHubSessionResult(it.id, null))
+        if (result.isSuccess) {
+            val navResult = result.getOrNull()!!
+            if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
+                start(sessionUrl, navResult.nextStep, navResult.data)
+            } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
+                start(sessionUrl, navResult.nextStep, navResult.data)
+            } else if (navResult.data != "") {
+                successCallback.invoke(IdentHubSessionResult(navResult.data, null))
+            } else {
+                start(sessionUrl, FIRST_STEP_DIRECTION.FOURTHLINE_UPLOADING.destination, "")
             }
         }
     }
@@ -73,9 +79,9 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
         }
     }
 
-    private fun start(sessionUrl: String, firstStep: String) {
-        val description = IdentHubSessionDescription(sessionUrl, firstStep)
-        mainActivity.launch(description, fragmentActivity.supportFragmentManager)
+    private fun start(sessionUrl: String, step: String, stepType: String) {
+        val description = IdentHubSessionDescription(sessionUrl, step)
+        mainActivity.launch(description, fragmentActivity.supportFragmentManager, stepType)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {

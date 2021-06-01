@@ -24,7 +24,7 @@ class ContractSignRoomDataSource(
     }
 
     override fun getIdentification(): Single<Identification> {
-        return identificationDao.getFirst().subscribeOn(Schedulers.io())
+        return identificationDao.get().subscribeOn(Schedulers.io())
     }
 
     override fun insert(identificationWithDocument: IdentificationWithDocument): Completable {

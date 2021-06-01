@@ -22,7 +22,7 @@ import de.solarisbank.identhub.session.IdentHubSessionObserver
 import de.solarisbank.identhub.session.IdentHubSessionObserverInjector
 import de.solarisbank.identhub.session.data.DynamicIdetityRetrofitDataSource
 import de.solarisbank.identhub.session.data.IdentHubSessionRepository
-import de.solarisbank.identhub.session.data.IdentificationRoomDataSource
+import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModelFactory

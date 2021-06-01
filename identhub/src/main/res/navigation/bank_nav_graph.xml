@@ -61,6 +61,9 @@
             app:popUpTo="@+id/processingVerificationFragment"
             app:popUpToInclusive="true"
             app:destination="@id/verificationBankSuccessMessageFragment" />
+        <action
+            android:id="@+id/action_processingVerificationFragment_to_verificationBankErrorMessageFragment"
+            app:destination="@id/verificationBankErrorMessageFragment" />
     </fragment>
     <fragment
         android:id="@+id/verificationBankErrorMessageFragment"

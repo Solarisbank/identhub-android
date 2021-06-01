@@ -6,7 +6,7 @@ import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
 
-class KycUploadUseCaseFactory(
+class KycUploadUseCaseFactory private constructor(
         private val kycUploadRepositoryProvider: Provider<KycUploadRepository>,
         private val sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
 ) : Factory<KycUploadUseCase> {

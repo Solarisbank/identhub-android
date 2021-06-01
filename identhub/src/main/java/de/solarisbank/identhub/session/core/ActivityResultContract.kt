@@ -7,7 +7,9 @@ import androidx.annotation.RestrictTo
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 interface ActivityResultContract<Input, Output> {
 
-    fun createIntent(context: Context, input: Input): Intent
+    fun createFirstStepIntent(context: Context, input: Input): Intent
+
+    fun createNextStepIntent(context: Context, input: Input): Intent
 
     fun parseResult(resultCode: Int, intent: Intent?): Output
 }

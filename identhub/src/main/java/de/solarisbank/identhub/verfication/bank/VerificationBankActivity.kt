@@ -9,23 +9,25 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.contract.ContractActivity
-import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.router.Router
+import de.solarisbank.identhub.router.NEXT_STEP_KEY
+import de.solarisbank.identhub.router.toNextStep
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.ui.StepIndicatorView
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
+import timber.log.Timber
 
 class VerificationBankActivity : IdentHubActivity() {
     private lateinit var viewModel: VerificationBankViewModel
-    private lateinit var cViewModel: ContractViewModel
     private lateinit var stepIndicator: StepIndicatorView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification_bank)
+        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph()
     }
 
@@ -34,9 +36,6 @@ class VerificationBankActivity : IdentHubActivity() {
         val navInflater = navHostFragment!!.navController.navInflater
         val lastCompletedStep = viewModel.getLastCompletedStep()
         if (lastCompletedStep === IdentHubSession.Step.VERIFICATION_BANK) {
-//            val navGraph = navInflater.inflate(R.navigation.contract_nav_graph)
-//            navGraph.startDestination = R.id.contractSigningPreviewFragment
-//            navHostFragment.navController.setGraph(navGraph, intent.extras)
             startContractSigningActivity()
             return
         } else {
@@ -64,23 +63,24 @@ class VerificationBankActivity : IdentHubActivity() {
         super.initViewModel()
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
-        cViewModel = ViewModelProvider(this, viewModelFactory)
-                .get(ContractViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
-        cViewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         val naviDirection = event.content
+
         if (naviDirection != null) {
             viewModel.doOnNavigationChanged(naviDirection.actionId)
             val naviActionId = naviDirection.actionId
             if (naviActionId == IdentHubSession.ACTION_NEXT_STEP) {
                 forwardTo(naviDirection.args!!)
-            } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
+            } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT && //todo refactor
                     naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.args)
-            } else {
+            } else if (naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
+                quit(naviDirection.args)
+                return
+            }  else {
                 quit(naviDirection.args)
                 return
             }
@@ -92,17 +92,19 @@ class VerificationBankActivity : IdentHubActivity() {
         }
     }
 
+    //todo
     private fun startContractSigningActivity() {
         startActivity(Intent(this, ContractActivity::class.java))
         finish()
     }
 
-    private fun forwardTo(args: Bundle) {
-        val nextStep = args.getString(IdentHubSession.NEXT_STEP)
-        val intent = Router().to(this, nextStep!!)
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-        intent.putExtras(args)
-        startActivity(intent)
+    fun forwardTo(args: Bundle) {
+        val nextStep = args.getString(NEXT_STEP_KEY)
+        val forwardIntent = toNextStep(this, nextStep!!)
+        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+        forwardIntent.putExtras(args)
+        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
+        startActivity(forwardIntent)
         finish()
     }
 

@@ -14,13 +14,15 @@ import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDa
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.session.data.identification.*
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.core.di.LibraryComponent
 import de.solarisbank.sdk.core.di.internal.DoubleCheck
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
-import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRoomDataSource
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
@@ -46,7 +48,8 @@ class KycUploadServiceComponent private constructor(
         private val networkModule: NetworkModule,
         private val sessionModule: SessionModule,
         private val fourthlineIdentificationModule: FourthlineIdentificationModule,
-        private val kycUploadModule: KycUploadModule
+        private val kycUploadModule: KycUploadModule,
+        private val identificationModule: IdentificationModule
 ) {
 
 
@@ -58,7 +61,7 @@ class KycUploadServiceComponent private constructor(
 
     private lateinit var fourthlineIdentificationApiProvider: Provider<FourthlineIdentificationApi>
     private lateinit var identificationDaoProvider: Provider<IdentificationDao>
-    private lateinit var fourthlineIdentificationRoomDataSourceProvider: Provider<FourthlineIdentificationRoomDataSource>
+    private lateinit var identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>
     private lateinit var fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
@@ -71,6 +74,10 @@ class KycUploadServiceComponent private constructor(
     private lateinit var kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
     private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+    private lateinit var identificationApiProvider: Provider<IdentificationApi>
+    private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
+    private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
+    private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
 
     init {
         initialize()
@@ -93,13 +100,18 @@ class KycUploadServiceComponent private constructor(
         kycUploadRetrofitDataSourceProvider = DoubleCheck.provider(ProvideKycUploadDataSourceFactory.create(kycUploadModule, kycUploadApiProvider))
         identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
         identificationDaoProvider = DoubleCheck.provider(DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
-        fourthlineIdentificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
-        kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, fourthlineIdentificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
+        identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
+        kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, identificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(kycUploadRepositoryProvider, sessionUrlRepositoryProvider)
+        identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))
+        identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()))
+        identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()))
+        identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()))
     }
 
     fun inject(kycUploadService: KycUploadService) {
         kycUploadService.kycUploadUseCase = kycUploadUseCaseProvider.get()
+        kycUploadService.identificationPollingStatusUseCase = identificationPollingStatusUseCaseProvider.get()
     }
 
     companion object {
@@ -115,7 +127,8 @@ class KycUploadServiceComponent private constructor(
                             fourthlineIdentificationModule = FourthlineIdentificationModule(),
                             kycUploadModule = KycUploadModule(),
                             databaseModule = DatabaseModule(),
-                            libraryComponent = libraryComponent
+                            libraryComponent = libraryComponent,
+                            identificationModule = IdentificationModule()
                     )
                 }
             }

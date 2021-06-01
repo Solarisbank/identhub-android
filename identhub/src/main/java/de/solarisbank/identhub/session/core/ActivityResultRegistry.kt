@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import de.solarisbank.identhub.router.FIRST_STEP_KEY
 import java.util.*
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -58,8 +59,12 @@ object ActivityResultRegistry {
         keyToLifecycleContainers[key] = lifecycleContainer
 
         return object : ActivityResultLauncher<I>() {
-            override fun launch(input: I, fragmentManager: FragmentManager) {
-                val intent = contract.createIntent(componentActivity, input)
+            override fun launch(input: I, fragmentManager: FragmentManager, stepType: String) {
+                val intent = if (stepType == FIRST_STEP_KEY) {
+                    contract.createFirstStepIntent(componentActivity, input)
+                } else {
+                    contract.createNextStepIntent(componentActivity, input)
+                }
                 val fragment = InlineFragment.newInstance(
                         launchIntent = intent,
                         requestCode = requestCode

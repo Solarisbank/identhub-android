@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.error.ErrorMessageFragment
+import de.solarisbank.identhub.verfication.bank.VerificationBankActivity
 
 class VerificationBankErrorMessageFragment : ErrorMessageFragment() {
 
@@ -18,7 +19,11 @@ class VerificationBankErrorMessageFragment : ErrorMessageFragment() {
 
     override fun initViews() {
         super.initViews()
-        submitButton.setOnClickListener { sharedViewModel.retryBankVerification() }
+        submitButton.setOnClickListener {
+            arguments
+                    ?.let { (requireActivity() as VerificationBankActivity).forwardTo(it) }
+                    ?:run { sharedViewModel.retryBankVerification() }
+        }
     }
 
     override fun inject(component: FragmentComponent) {

@@ -21,6 +21,7 @@ class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Resu
                             HttpURLConnection.HTTP_INTERNAL_ERROR -> Type.ServerError
                             HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
                             HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
+                            HttpURLConnection.HTTP_PRECON_FAILED -> Type.PreconditionFailed
                             else -> Type.Unknown
                         }
                     }

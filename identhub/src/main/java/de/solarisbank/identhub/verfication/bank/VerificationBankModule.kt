@@ -10,6 +10,7 @@ import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanSt
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel
 import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel
@@ -27,8 +28,8 @@ class VerificationBankModule {
         return VerificationBankErrorViewModel()
     }
 
-    fun provideProcessingVerificationViewModel(): ProcessingVerificationViewModel {
-        return ProcessingVerificationViewModel()
+    fun provideProcessingVerificationViewModel(pollingStatusUseCase: IdentificationPollingStatusUseCase): ProcessingVerificationViewModel {
+        return ProcessingVerificationViewModel(pollingStatusUseCase)
     }
 
     fun provideContractSigningViewModel(

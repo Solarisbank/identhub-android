@@ -23,5 +23,5 @@ interface IdentificationDao {
     fun deleteAll(): Completable
 
     @Query("SELECT * FROM ${Identification.TABLE_NAME} LIMIT 1")
-    fun getFirst(): Single<Identification>
+    fun get(): Single<Identification>
 }

@@ -45,9 +45,11 @@ class IdentHubSession(private val sessionUrl: String) {
         lastCompetedStep = identHubSessionResult.step
         val paymentSuccessCallback = this.paymentSuccessCallback
         val identificationSuccessCallback = this.identificationSuccessCallback
-        if (paymentSuccessCallback != null && identHubSessionResult.step == Step.VERIFICATION_BANK) {
+        if (paymentSuccessCallback != null && (identHubSessionResult.step == Step.VERIFICATION_BANK || identHubSessionResult.step == Step.ON_PAYMENT_SUCCESS)) {
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
+            identificationSuccessCallback(identHubSessionResult)
+        } else if (identificationSuccessCallback != null && identHubSessionResult.step == Step.ON_SUCCESS) {
             identificationSuccessCallback(identHubSessionResult)
         }
     }
@@ -99,7 +101,8 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     enum class Step(val index: Int) {
-        VERIFICATION_PHONE(1), VERIFICATION_BANK(2), CONTRACT_SIGNING(3);
+        VERIFICATION_PHONE(1), VERIFICATION_BANK(2), CONTRACT_SIGNING(3),
+        ON_PAYMENT_SUCCESS(4), ON_SUCCESS(5); //todo refactor hot fix
 
         companion object {
             fun getEnum(index: Int): Step? {
@@ -116,9 +119,6 @@ class IdentHubSession(private val sessionUrl: String) {
     companion object {
         @kotlin.jvm.JvmStatic
         val ACTION_NEXT_STEP: Int = 99
-
-        @kotlin.jvm.JvmStatic
-        val NEXT_STEP: String = "NEXT_STEP"
 
         @kotlin.jvm.JvmField
         var hasPhoneVerification: Boolean = false

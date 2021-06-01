@@ -17,6 +17,7 @@ import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
 import de.solarisbank.sdk.core.di.internal.DoubleCheck
@@ -77,7 +78,7 @@ class FourthlineComponent private constructor(
 
     private lateinit var fourthlineIdentificationApiProvider: Provider<FourthlineIdentificationApi>
     private lateinit var fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>
-    private lateinit var fourthlineIdentificationRoomDataSourceProvider: Provider<FourthlineIdentificationRoomDataSource>
+    private lateinit var identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>
     private lateinit var fourthlineIdentificationRepositoryProvider: Provider<FourthlineIdentificationRepository>
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
@@ -110,10 +111,10 @@ class FourthlineComponent private constructor(
             }
         })
 
-        fourthlineIdentificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
+        identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
         identificationIdInterceptorProvider = DoubleCheck.provider(object : Factory<IdentificationIdInterceptor> {
             override fun get(): IdentificationIdInterceptor {
-                return IdentificationIdInterceptor(fourthlineIdentificationRoomDataSourceProvider.get())
+                return IdentificationIdInterceptor(identificationRoomDataSourceProvider.get())
             }
         })
 
@@ -131,7 +132,7 @@ class FourthlineComponent private constructor(
         fourthlineIdentificationRepositoryProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRepositoryFactory.create(
                 fourthlineIdentificationModule,
                 fourthlineIdentificationRetrofitDataSourceProvider,
-                fourthlineIdentificationRoomDataSourceProvider
+                identificationRoomDataSourceProvider
         ))
 
 

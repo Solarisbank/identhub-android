@@ -22,6 +22,10 @@ class VerificationBankDataSourceRepository(
         return verificationBankNetworkDataSource.postVerify(iBan)
     }
 
+    override fun postBankIdIdentification(iBan: IBan): Single<IdentificationDto> {
+        return verificationBankNetworkDataSource.postBankIdIdentification(iBan)
+    }
+
     override fun save(identificationDto: IdentificationDto): Completable {
         val identificationWithDocument = identificationEntityMapper.to(identificationDto)
         return verificationBankLocalDataSource.insert(identificationWithDocument)

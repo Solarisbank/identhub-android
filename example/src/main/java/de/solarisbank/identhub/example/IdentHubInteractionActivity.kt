@@ -1,13 +1,13 @@
 package de.solarisbank.identhub.example
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdenthubInteractionBinding
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSessionFailure
 import de.solarisbank.identhub.session.IdentHubSessionResult
+import timber.log.Timber
 
 class IdentHubInteractionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIdenthubInteractionBinding
@@ -21,7 +21,7 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         var identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
                 .apply {
                     onCompletionCallback(this@IdentHubInteractionActivity, this@IdentHubInteractionActivity::onSuccess, this@IdentHubInteractionActivity::onFailure)
-                    onPaymentCallback(this@IdentHubInteractionActivity::onSuccess)
+                    onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
                 }
 
         binding.button.setOnClickListener { identHubSession.start() }
@@ -30,13 +30,19 @@ class IdentHubInteractionActivity : AppCompatActivity() {
 
     private fun onSuccess(result: IdentHubSessionResult) {
         val identificationId = result.identificationId
-        Log.d(TAG, "IdentHubSessionResult identification id: $identificationId")
+        Timber.d("onSuccess; IdentHubSessionResult identification id: $identificationId")
+        // Do something else.
+    }
+
+    private fun onPayment(result: IdentHubSessionResult) {
+        val identificationId = result.identificationId
+        Timber.d("onPayment; IdentHubSessionResult identification id: $identificationId")
         // Do something else.
     }
 
     private fun onFailure(failure: IdentHubSessionFailure) {
         val message = failure.message
-        Log.e(TAG, "IdentHubSessionFailure identification has not completed: $message")
+        Timber.d("onFailure; IdentHubSessionFailure identification has not completed: $message")
         // Continue after failed identification.
     }
 

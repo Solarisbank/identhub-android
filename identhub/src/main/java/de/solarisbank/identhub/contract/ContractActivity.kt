@@ -11,10 +11,12 @@ import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.ui.StepIndicatorView
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
+import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
     private lateinit var viewModel: ContractViewModel
@@ -23,6 +25,7 @@ class ContractActivity : IdentHubActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contract)
+        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph()
         initView()
     }

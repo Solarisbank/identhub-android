@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.result.throwable
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 
 class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUseCase) : ViewModel() {
     private val iBanStateLiveData: MutableLiveData<Event<IBanState>> = MutableLiveData()
@@ -24,8 +27,19 @@ class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUse
         notifyResultChanged(Result.Loading)
         compositeDisposable.add(verifyIBanUseCase.execute(iBan)
                 .subscribe(
-                        { notifyResultChanged(it) },
-                        { notifyResultChanged(Result.createUnknown(it)) })
+                        { it ->
+                            if (it.succeeded) {
+                                Timber.d("verifyIBanUseCase.execute 1")
+                                notifyResultChanged(it)
+                            } else {
+                                Timber.d("verifyIBanUseCase.execute 2 it.data ${it}")
+                                it.throwable?.let { notifyResultChanged(Result.createUnknown(it)) }
+                            }
+                        },
+                        {
+                            Timber.d("verifyIBanUseCase.execute 3 it.data")
+                            notifyResultChanged(Result.createUnknown(it))
+                        })
         )
     }
 

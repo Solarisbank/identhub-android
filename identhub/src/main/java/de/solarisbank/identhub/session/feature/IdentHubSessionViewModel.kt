@@ -3,7 +3,7 @@ package de.solarisbank.identhub.session.feature
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -12,11 +12,10 @@ import io.reactivex.schedulers.Schedulers
 class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSessionUseCase) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    private val _initializationStateLiveData = MutableLiveData<Pair<LOCAL_IDENTIFICATION_STATE, IdentificationDto?>>()
+    private val _initializationStateLiveData = MutableLiveData<Result<NavigationalResult<String>>>()
     /*todo implement error processing*/
-    private val _errorLiveData = MutableLiveData<Throwable>()
 
-    fun getInitializationStateLiveData(): LiveData<Pair<LOCAL_IDENTIFICATION_STATE, IdentificationDto?>> {
+    fun getInitializationStateLiveData(): LiveData<Result<NavigationalResult<String>>> {
         return _initializationStateLiveData
     }
 
@@ -30,8 +29,8 @@ class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSess
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                {_initializationStateLiveData.value = it},
-                                { _errorLiveData.value = it }
+                                {_initializationStateLiveData.value = Result.success(it)},
+                                { _initializationStateLiveData.value = Result.failure(Throwable()) }
                         )
         )
     }

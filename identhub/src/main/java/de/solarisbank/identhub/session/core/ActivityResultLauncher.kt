@@ -6,5 +6,5 @@ import androidx.fragment.app.FragmentManager
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 abstract class ActivityResultLauncher<I> {
-    abstract fun launch(@SuppressLint("UnknownNullness") input: I, fragmentManager: FragmentManager)
+    abstract fun launch(@SuppressLint("UnknownNullness") input: I, fragmentManager: FragmentManager, stepType: String)
 }

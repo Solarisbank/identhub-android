@@ -1,14 +1,25 @@
 package de.solarisbank.identhub.data.entity
 
+import timber.log.Timber
+
 enum class Status(val label: String) {
-    CREATED("created"),
     PENDING("pending"),
+    PROCESSED("processed"),
+    SUCCESSFUL("successful"),
+    FAILED("failed"),
+    CREATED("created"),
+    PENDING_SUCCESSFUL("pending_successful"),
+    ABORTED("aborted"),
+    CANCELED("canceled"),
+    EXPIRED("expired"),
     AUTHORIZATION_REQUIRED("authorization_required"),
     CONFIRMATION_REQUIRED("confirmation_required"),
-    PROCESSED("processed"),
     CONFIRMED("confirmed"),
-    SUCCESSFUL("successful"),
-    FAILED("failed");
+    SIGNED("signed"),
+    IDENTIFICATION_DATA_REQUIRED("identification_data_required"),
+
+    UPLOAD("upload"),
+    INTERNAL_ERROR("internal_error"); //internal usage for network connection and server errors
 
     companion object {
         fun getEnum(label: String?): Status? {
@@ -17,6 +28,7 @@ enum class Status(val label: String) {
                     return status
                 }
             }
+            Timber.e("Unsupported status label: $label")
             return null
         }
     }

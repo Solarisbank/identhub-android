@@ -2,7 +2,6 @@ package de.solarisbank.identhub.domain.usecase
 
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.network.transformResult
-import de.solarisbank.identhub.data.verification.phone.model.VerificationPhoneResponse
 import de.solarisbank.sdk.core.result.Result
 import io.reactivex.Single
 

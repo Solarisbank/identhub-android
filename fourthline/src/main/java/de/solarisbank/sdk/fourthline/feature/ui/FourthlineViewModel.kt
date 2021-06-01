@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.fourthline.R
@@ -66,6 +67,10 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
 
     private fun navigateTo(actionId: Int, bundle: Bundle? = null) {
         _navigationActionId.value = Event(NaviDirection(actionId, bundle))
+    }
+
+    fun postDynamicNavigationNextStep(arguments: Bundle) {
+        _navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, arguments))
     }
 
 }

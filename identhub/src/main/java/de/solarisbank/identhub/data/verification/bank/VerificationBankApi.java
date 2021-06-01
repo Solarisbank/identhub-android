@@ -12,6 +12,9 @@ public interface VerificationBankApi {
     @POST("iban/verify")
     Single<IdentificationDto> postVerify(@Body final IBan iBan);
 
+    @POST("/bank_id_identification")
+    Single<IdentificationDto> postBankIdIdentification(@Body final IBan iBan);
+
     @GET("identifications/{identification_uid}")
     Single<IdentificationDto> getVerification(@Path("identification_uid") final String identificationId);
 }

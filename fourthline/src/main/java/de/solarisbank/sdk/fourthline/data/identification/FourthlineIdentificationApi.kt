@@ -14,6 +14,7 @@ interface FourthlineIdentificationApi {
     @GET("/identifications/{identification_uid}/person_data")
     fun getPersonData(@Path("identification_uid") identificationId: String): Single<PersonDataDto>
 
+    //todo use IdentificationStatusApi
     @GET("/identifications/{identification_uid}")
     fun getIdentifications(@Path("identification_uid") identificationId: String): Single<IdentificationDto>
     

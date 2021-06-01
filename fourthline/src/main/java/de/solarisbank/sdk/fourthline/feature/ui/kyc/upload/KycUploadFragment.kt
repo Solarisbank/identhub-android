@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity
@@ -51,8 +52,9 @@ class KycUploadFragment : FourthlineFragment() {
 
     }
 
-    private val uploadingObserver = Observer<UPLOAD_STATE> {
-        setUiState(it)
+    private val uploadingObserver = Observer<Pair<UPLOAD_STATE, String?>> {
+        nextStep = it.second
+        setUiState(it.first)
     }
 
     private var title: TextView? = null
@@ -63,6 +65,7 @@ class KycUploadFragment : FourthlineFragment() {
 
     private var bound: Boolean = false
     private var binder: KycUploadServiceBinder? = null
+    private var nextStep: String? = null
 
 
 
@@ -97,7 +100,7 @@ class KycUploadFragment : FourthlineFragment() {
         resultImageView!!.visibility = if (state.isResultImageViewVisible) View.VISIBLE else View.GONE
         progressBar!!.visibility = if (state.isProgressBarVisible) View.VISIBLE else View.INVISIBLE
         if (state.submitButtonActionSendsResult) {
-            submitButton!!.setOnClickListener { sendActivityResult() }
+            submitButton!!.setOnClickListener { moveToNextStep() }
         } else if (state.submitButtonActionResetsFlow){
             submitButton!!.setOnClickListener { activityViewModel.resetFourthlineFlow() }
         } else {
@@ -110,8 +113,14 @@ class KycUploadFragment : FourthlineFragment() {
         return requireContext().resources.getIdentifier(this, "drawable", requireContext().packageName)
     }
 
-    private fun sendActivityResult() {
-        kycSharedViewModel.sendCompletedResult(requireActivity())
+
+    private fun moveToNextStep() {
+        Timber.d("moveToNextStep : ${nextStep}")
+        nextStep?.let { activityViewModel.postDynamicNavigationNextStep(Bundle().apply {
+            putString(NEXT_STEP_KEY, nextStep)
+        })}?:run { //todo check if it is needed
+            kycSharedViewModel.sendCompletedResult(requireActivity())
+        }
     }
 
     private fun startKycUploadService() {

@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.session.data
 
-import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.dto.InitializationDto
-import io.reactivex.Maybe
+import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import io.reactivex.Single
 
 class IdentHubSessionRepository(
@@ -10,8 +10,8 @@ class IdentHubSessionRepository(
         private val identificationRoomDataSource: IdentificationRoomDataSource
         ) {
 
-        fun getSavedIdentificationId(): Maybe<IdentificationDto> {
-                return identificationRoomDataSource.getLastIdentification()
+        fun getSavedIdentificationId(): Single<Identification> {
+                return identificationRoomDataSource.getIdentification()
         }
 
         fun getRequiredIdentificationFlow(url: String): Single<InitializationDto> {

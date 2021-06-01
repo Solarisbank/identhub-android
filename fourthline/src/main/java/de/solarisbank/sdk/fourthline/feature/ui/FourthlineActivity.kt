@@ -15,6 +15,10 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import de.solarisbank.identhub.router.NEXT_STEP_KEY
+import de.solarisbank.identhub.router.toNextStep
+import de.solarisbank.identhub.session.IdentHub
+import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
@@ -41,6 +45,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fourthline)
+        Timber.d("intent: $intent")
+        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
         initViewModel()
         initGraph()
@@ -88,6 +94,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
+        Timber.d("onNavigationChanged; event: ${event}")
         event.content?.let {
             when (it.actionId) {
                 R.id.action_welcomeContainerFragment_to_selfieFragment -> {
@@ -114,11 +121,24 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 FOURTHLINE_IDENTIFICATION_SUCCESSFULL -> {
                     quit(it.args)
                 }
+                IdentHubSession.ACTION_NEXT_STEP -> { //dynamic flow
+                    forwardTo(it.args!!)
+                }
                 else -> {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
             }
         }
+    }
+
+    private fun forwardTo(args: Bundle) {
+        val nextStep = args.getString(NEXT_STEP_KEY)
+        val forwardIntent = toNextStep(this, nextStep!!)
+        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
+        forwardIntent.putExtras(args)
+        startActivity(forwardIntent)
+        finish()
     }
 
     private fun setFourthStep(isSuccessful: Boolean) {
