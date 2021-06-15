@@ -92,6 +92,17 @@ override fun onCreate(savedInstanceState: Bundle?) {
 // …
 ```
 
+### Build with fourthline SDK
+
+FOR being able to download & build the fourthline SDK, ensure you have repo access to https://github.com/Fourthline-com/FourthlineSDK-Android.
+Once granted, issue a developer access token  https://github.com/settings/tokens with scope `read:packages`. Lastly run
+
+```
+FOURTHLINE_GRADLE_TOKEN=<< github token >> ./gradlew :core:build :identhub:build :fourthline:build
+```
+
+The SDK will be in cache afterwards and picked up by Android Studio.
+
 ### Example
 You can open the example app in [Android studio](https://developer.android.com/studio/) to try it out.
 
