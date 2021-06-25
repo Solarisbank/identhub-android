@@ -92,6 +92,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
 // …
 ```
 
+## Failure
+
+The SDK strives to catch any error/failures and offers inline options to recover those. This could be either a re-try of the current process or offering an alternative one (fallback). If in anycase an identification is not possible the SDK will call the callback as defined `::onFailure`. When called, stop the onboarding flow.
+
 ### Build with fourthline SDK
 
 FOR being able to download & build the fourthline SDK, ensure you have repo access to https://github.com/Fourthline-com/FourthlineSDK-Android.
