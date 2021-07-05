@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">IdentHub</string>
+    <string name="copyright">Powered by</string>
+    <string name="session_expire">Your session is about to expire:</string>
+    <string name="identity_activity_first_step_label">Phone verification</string>
+    <string name="identity_activity_second_step_label">Bank verification</string>
+    <string name="identity_activity_third_step_label">Sign documents</string>
+    <string name="identity_activity_next_step">Next: %1$s</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ident_hub_color_primary">#FF6432</color>
+    <color name="ident_hub_color_primaryVariant">#CC5129</color>
+    <color name="ident_hub_color_onPrimary">#FFFFFFFF</color>
+    <color name="ident_hub_color_secondary">#3284FF</color>
+    <color name="ident_hub_color_onSecondary">#FFFFFFFF</color>
+    <color name="ident_hub_color_secondaryVariant">#599CFF</color>
+    <color name="ident_hub_color_secondaryTint">#F2F7FF</color>
+    <color name="ident_hub_color_success">#09AA67</color>
+    <color name="ident_hub_color_onSuccess">#FFFFFFFF</color>
+    <color name="ident_hub_color_successSurface">#F2FFFA</color>
+    <color name="ident_hub_color_error">#E23636</color>
+    <color name="ident_hub_color_onError">#FFFFFFFF</color>
+    <color name="ident_hub_color_errorSurface">#fff5f5</color>
+    <color name="ident_hub_color_surface">#303030</color>
+    <color name="ident_hub_color_background">#414D5D</color>
+    <color name="ident_hub_color_light_button_text_enabled">#C9CFD6</color>
+    <color name="ident_hub_color_info_text">#C9CFD6</color>
+    <color name="ident_hub_color_info_background">#7E8794</color>
+    <color name="ident_hub_color_edit_text">#BCBCBC</color>
+
+    <color name="ident_hub_color_text_box">#3970F3</color>
+    <color name="ident_hub_color_text_box_background">#252525</color>
+    <color name="ident_hub_color_text_box_border">#3970F3</color>
+
+    <color name="ident_hub_color_black">#FCFCFC</color> <!-- Text View -->
+    <color name="ident_hub_color_black30">#4D000000</color>
+    <color name="ident_hub_color_black50">#C9CFD6</color> <!-- Powered by -->
+    <color name="ident_hub_color_black25">#BFBFBF</color>
+    <color name="ident_hub_color_black10">#E9EDF2</color>
+    <color name="ident_hub_color_black05">#7E8794</color>
+    <color name="ident_hub_color_disable">#f2f2f2</color>
+    <color name="ident_hub_color_white">#FFFFFFFF</color>
+    <color name="ident_hub_color_grey">#FAFAFA</color>
+    <color name="ident_hub_color_dark_grey">#FAFAFA</color>
+
+    <color name="ident_hub_color_base">#0F1926</color>
+    <color name="ident_hub_color_base75">#414D5D</color>
+    <color name="ident_hub_color_base50">#7E8794</color>
+    <color name="ident_hub_color_base25">#C9CFD6</color>
+    <color name="ident_hub_color_base05">#F7F8FA</color>
+
+    <!--step_indicator-->
+    <color name="ident_hub_step_disabled_outer_background">#FFE3E3E3</color>
+    <color name="ident_hub_step_disabled_inner_background">#FFFAFAFA</color>
+    <color name="ident_hub_step_disabled_text_color">#3F3F3F</color>
+
+    <color name="ident_hub_step_enabled_outer_background">#FFFAFAFA</color>
+    <color name="ident_hub_step_enabled_inner_background">#FFFAFAFA</color>
+    <color name="ident_hub_step_enabled_text_color">#252525</color>
+
+</resources>

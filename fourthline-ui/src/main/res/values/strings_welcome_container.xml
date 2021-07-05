@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_welcome_container_title">Next, snap a selfie</string>
+    <string name="fourthline_welcome_container_subtitle">Take a picture of yourself, if you wear glasses make sure there is no glare.</string>
+    <string name="fourthline_welcome_container_continue_button">Continue</string>
+</resources>

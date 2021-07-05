@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="radius">4dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+
+    <dimen name="step_round_size">20dp</dimen>
+    <dimen name="step_line_margin">6dp</dimen>
+
+    <dimen name="tab_layout_circle_indicator_size">7dp</dimen>
+
+    <dimen name="step_indicator_side_margin">50dp</dimen>
+</resources>

@@ -36,6 +36,7 @@ android {
 //                    'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -86,9 +87,12 @@ afterEvaluate {
 }
 
 dependencies {
+    implementation project(":core-ui")
     implementation kotlinCore
     implementation support
     implementation activity
+    implementation networking.libs
+    implementation timber
     testImplementation baseTest
     androidTestImplementation espresso
 }

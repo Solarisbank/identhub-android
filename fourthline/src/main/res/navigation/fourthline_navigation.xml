@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/welcomeContainerFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeContainerFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment"
         android:label="WelcomeContainerFragment"
         >
         <action
@@ -76,7 +76,7 @@
         >
         <argument
             android:name="docType"
-            app:argType="integer"
+            app:argType="de.solarisbank.sdk.fourthline.data.entity.AppliedDocument"
             />
         <action
             android:id="@+id/action_documentScanFragment_to_documentResultFragment"

@@ -6,43 +6,43 @@
 
 
     <View
-        android:id="@+id/step1"
+        android:id="@+id/step1Line"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:background="@drawable/item_step_indicator_background_selector"
-        app:layout_constraintEnd_toStartOf="@+id/step2"
+        app:layout_constraintEnd_toStartOf="@+id/step2Line"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
 
     <View
-        android:id="@+id/step2"
+        android:id="@+id/step2Line"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="@dimen/margin_4"
         android:layout_marginEnd="@dimen/margin_4"
         android:background="@drawable/item_step_indicator_background_selector"
-        app:layout_constraintEnd_toStartOf="@+id/step3"
+        app:layout_constraintEnd_toStartOf="@+id/step3Line"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/step1"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintStart_toEndOf="@+id/step1Line"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
 
     <View
-        android:id="@+id/step3"
+        android:id="@+id/step3Line"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:background="@drawable/item_step_indicator_background_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/step2"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintStart_toEndOf="@+id/step2Line"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/topGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/identity_activity_first_step_label"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/topGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/identity_activity_next_step"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/topGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

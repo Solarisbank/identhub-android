@@ -3,22 +3,32 @@ package de.solarisbank.identhub.session.utils
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import timber.log.Timber
 import java.net.URI
 
-fun provideFourthlineActivityIntent(context: Context): Intent {
 
-    val isFourthlineModuleAvailable = context.packageManager.queryIntentActivities(
-            Intent(FOURTHLINE_FLOW_ACTIVITY_ACTION, null).apply { addCategory(Intent.CATEGORY_DEFAULT) }, 0
-    )
-            .last()
-            .activityInfo.name == FOURTHLINE_ACTIVITY_REFERENCE_CLASS
+fun provideFourthlineActivityIntent(context: Context): Intent {
+    val isFourthlineModuleAvailable = isFourthlineModuleAvailable(context)
+
     if (isFourthlineModuleAvailable) {
         return  Intent(context, Class.forName(FOURTHLINE_ACTIVITY_REFERENCE_CLASS))
     } else {
         throw IllegalStateException("Fourthline identification is impossible, module is absent")
     }
+}
+
+fun isFourthlineModuleAvailable(context: Context): Boolean {
+    return context
+            .packageManager
+            .getPackageInfo(
+                    context.applicationContext.packageName,
+                    PackageManager.GET_ACTIVITIES
+            )
+            .activities
+            .toList()
+            .any { it.name == FOURTHLINE_ACTIVITY_REFERENCE_CLASS }
 }
 
 fun isServiceRunning(context: Context): Boolean {

@@ -1,0 +1,40 @@
+<resources>
+    <string name="selfie_scanner_scan_successful">Scan erfolgreich</string>
+    <string name="selfie_scanner_retake">Wiederholen</string>
+    <string name="selfie_scanner_confirm">Bestätigen</string>
+
+    <string name="selfie_intro">Ist Ihr Gesicht deutlich sichtbar und im angezeigten Rahmen?</string>
+    <string name="selfie_manual">Bitte machen Sie ein Selfie-Foto</string>
+    <string name="selfie_turn_left">Bitte drehen Sie Ihren Kopf nach links</string>
+    <string name="selfie_turn_right">Bitte drehen Sie Ihren Kopf nach rechts</string>
+
+    <string name="selfie_step_scanning">Scanning</string>
+    <string name="selfie_step_checking_liveness">Lebendigkeitsprüfung</string>
+    <string name="selfie_result_successful">Scan erfolgreich</string>
+    <string name="selfie_not_steady">Handy ist nicht in einer stabilen Position</string>
+    <string name="selfie_face_detected">Gesicht erfolgreich erkannt</string>
+
+    <string name="selfie_checking_liveliness">Lebendigkeitsprüfung</string>
+    <string name="selfie_scan_successful">Scan erfolgreich</string>
+    <string name="selfie_scan_error">Fehler beim Scannen</string>
+
+    <!-- fourthline selfie scan responses -->
+    <string name="selfie_warning_not_detected">Gesicht nicht erkannt</string>
+    <string name="selfie_warning_multiple_detected">Mehrere Gesichter erkannt</string>
+    <string name="selfie_warning_not_in_frame">Gesicht an den Fotorahmen anpassen</string>
+    <string name="selfie_warning_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>
+    <string name="selfie_warning_too_far">Halten Sie das Handy näher an Ihr Gesicht</string>
+    <string name="selfie_warning_yaw_too_big">Schauen Sie direkt in die Kamera</string>
+    <string name="selfie_warning_eyes_closed">Öffnen Sie beide Augen</string>
+    <string name="selfie_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
+
+    <string name="selfie_error_timeout">Selfie-Scanner Zeitlimit erreicht</string>
+    <string name="selfie_error_face_disappeared">Gesicht nicht erkannt während Lebendigkeitsprüfung</string>
+    <string name="selfie_error_camera_permission">Bitte der Kamera Zugriff erlauben</string>
+    <string name="selfie_error_manual_selfie_not_allowed">Nicht erlaubt wenn nicht im manuellen Selfie-Modus</string>
+    <string name="selfie_error_recording_failed">Videoaufnahme fehlgeschlagen</string>
+    <string name="selfie_error_scanner_interrupted">Selfie-Scanner wurde unterbrochen</string>
+    <string name="selfie_error_recognition_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz</string>
+    <string name="selfie_error_unknown">Unerwarteter Fehler aufgetreten</string>
+
+</resources>

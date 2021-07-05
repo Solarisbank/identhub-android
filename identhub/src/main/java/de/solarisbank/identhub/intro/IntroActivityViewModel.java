@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
-import de.solarisbank.identhub.session.IdentHubSession;
+import de.solarisbank.identhub.router.COMPLETED_STEP;
 
 import static de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY;
 
@@ -24,7 +24,7 @@ public final class IntroActivityViewModel extends ViewModel {
         this.identificationStepPreferences = identificationStepPreferences;
     }
 
-    public IdentHubSession.Step getLastCompletedStep() {
+    public COMPLETED_STEP getLastCompletedStep() {
         return identificationStepPreferences.get();
     }
 }

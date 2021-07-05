@@ -5,32 +5,34 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.phone.CountDownTime
+import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ContractSigningViewModel(
         savedStateHandle: SavedStateHandle?,
         private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
         private val confirmContractSignUseCase: ConfirmContractSignUseCase,
-        private val getIdentificationUseCase: GetIdentificationUseCase
+        private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val countDownTimeEventLiveData: MutableLiveData<Event<CountDownTime>> = MutableLiveData()
     private var countDownTimer = DefaultCountDownTimer(TimeUnit.SECONDS.toMillis(COUNTER_TIME), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SEC))
     private val clickEventRelay = BehaviorRelay.createDefault(ClickEvent())
     private val authorizeResultLiveData: MutableLiveData<Result<Any>> = MutableLiveData<Result<Any>>()
-    private val confirmResultLiveData: MutableLiveData<Result<Any>> = MutableLiveData<Result<Any>>()
-    private val identificationResultLiveData: MutableLiveData<Result<Identification>> = MutableLiveData<Result<Identification>>()
+    private val identificationResultLiveData: MutableLiveData<Result<IdentificationUiModel>> = MutableLiveData<Result<IdentificationUiModel>>()
 
     private val tickListener = object : DefaultCountDownTimer.OnTickListener {
         override fun onTick(millisUntilFinished: Long) {
@@ -77,26 +79,8 @@ class ContractSigningViewModel(
         return authorizeResultLiveData
     }
 
-    fun getConfirmResultLiveData(): MutableLiveData<Result<Any>> {
-        return confirmResultLiveData
-    }
-
-    fun getIdentificationResultLiveData(): MutableLiveData<Result<Identification>> {
-        compositeDisposable.add(getIdentificationUseCase.execute(Unit)
-                .subscribe(
-                        { onDataSucceed(it) },
-                        { onDataError(it) }
-                )
-        )
+    fun getIdentificationResultLiveData(): MutableLiveData<Result<IdentificationUiModel>> {
         return identificationResultLiveData
-    }
-
-    private fun onDataError(throwable: Throwable) {
-        identificationResultLiveData.postValue(Result.createUnknown(throwable))
-    }
-
-    private fun onDataSucceed(result: Result<Identification>) {
-        identificationResultLiveData.postValue(result)
     }
 
     fun getCountDownTimeEventLiveData(): LiveData<Event<CountDownTime>> {
@@ -105,6 +89,7 @@ class ContractSigningViewModel(
 
     fun onSendNewCodeClicked() {
         clickEventRelay.accept(ClickEvent())
+        startTimer()
     }
 
     fun startTimer() {
@@ -116,22 +101,24 @@ class ContractSigningViewModel(
     }
 
     fun onSubmitButtonClicked(confirmToken: String?) {
+        Timber.d("onSubmitButtonClicked, confrimToken: $confirmToken")
         stopTimer()
-        confirmResultLiveData.postValue(Result.Loading)
-        compositeDisposable.add(confirmContractSignUseCase.execute(confirmToken)
+        compositeDisposable.add(
+                confirmContractSignUseCase.execute(confirmToken)
+                        .andThen(identificationPollingStatusUseCase.execute(Unit))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { onConfirmationSucceed() },
-                        { onConfirmationError(it) }
+                        {
+                            Timber.d("onSubmitButtonClicked, success")
+                            identificationResultLiveData.postValue(it)
+                        },
+                        {
+                            Timber.d("onSubmitButtonClicked, fail")
+                            identificationResultLiveData.postValue(Result.createUnknown(it))
+                        }
                 )
         )
-    }
-
-    private fun onConfirmationSucceed() {
-        confirmResultLiveData.postValue(Result.createEmptySuccess())
-    }
-
-    private fun onConfirmationError(throwable: Throwable) {
-        confirmResultLiveData.postValue(Result.createUnknown(throwable))
     }
 
     override fun onCleared() {
@@ -142,6 +129,6 @@ class ContractSigningViewModel(
 
     companion object {
         private const val INTERVAL_IN_SEC = 1L
-        private const val COUNTER_TIME = 20L
+        private const val COUNTER_TIME = 120L
     }
 }

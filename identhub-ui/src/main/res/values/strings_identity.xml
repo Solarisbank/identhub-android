@@ -1,0 +1,7 @@
+<resources>
+    <string name="identity_activity_label_progress">Identification progress</string>
+    <string name="identity_dialog_quit_process_title">Are you sure you want to quit onboarding process?</string>
+    <string name="identity_dialog_quit_process_message">Your progress will be lost. You will be required to repeat the steps next time.</string>
+    <string name="identity_dialog_quit_process_positive_button">Quit</string>
+    <string name="identity_dialog_quit_process_negative_button">Stay</string>
+</resources>

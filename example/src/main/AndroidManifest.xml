@@ -34,7 +34,8 @@
                     android:host="person-onboarding.solaris-staging.de" />
             </intent-filter>
         </activity>
-        <activity android:name=".IdentHubInteractionActivity">
+        <activity android:name=".IdentHubInteractionActivity"
+            android:exported="false">
         </activity>
 
     </application>

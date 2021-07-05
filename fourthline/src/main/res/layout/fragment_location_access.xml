@@ -60,6 +60,7 @@
 
     <ImageView
         android:id="@+id/locationImage"
+        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/subtitle"
@@ -78,7 +79,7 @@
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         />
 
-    <Button
+    <TextView
         android:id="@+id/confirmButton"
         style="@style/IdentHubPrimaryButton"
         android:enabled="false"

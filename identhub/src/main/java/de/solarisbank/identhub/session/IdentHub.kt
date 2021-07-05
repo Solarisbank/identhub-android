@@ -18,7 +18,6 @@ object IdentHub {
         instance = null
     }
 
-    const val LAST_COMPLETED_STEP_KEY = "LAST_COMPLETED_STEP_KEY"
     const val IDENTIFICATION_ID_KEY = "IDENTIFICATION_ID_KEY"
     const val SESSION_URL_KEY = "SESSION_URL_KEY"
 }

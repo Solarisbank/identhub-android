@@ -43,6 +43,7 @@ android {
 //                    'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -95,6 +96,8 @@ afterEvaluate {
 
 dependencies {
     api project(":core")
+    implementation project(":identhub-ui")
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
     implementation kotlinCore
     implementation support
     implementation activity

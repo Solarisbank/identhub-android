@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_doc_scan_result_title">Please confirm your document information is correct</string>
+    <string name="fourthline_doc_scan_document_number">Document number</string>
+    <string name="fourthline_doc_scan_date_of_issue">Date of issue</string>
+    <string name="fourthline_doc_scan_expiry_date">Document expiry date</string>
+    <string name="fourthline_doc_scan_date_placeholder">Select</string>
+    <string name="fourthline_doc_scan_date_past_error">Error, date of issue exceeds expiry date</string>
+    <string name="fourthline_doc_scan_expiry_past_error">Error, expiry date expires in the past</string>
+    <string name="fourthline_doc_scan_deriving_error">There was an error deriving the data</string>
+    <string name="fourthline_doc_scan_continue_button">Continue</string>
+</resources>

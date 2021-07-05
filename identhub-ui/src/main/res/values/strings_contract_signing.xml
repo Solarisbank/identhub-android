@@ -1,0 +1,34 @@
+<resources>
+    <string name="contract_signing_preview_title">Lastly! In the following please sign your application by entering the code that will be send to your phone.n</string>
+    <string name="contract_signing_preview_description">Use Samsung Pay wherever you can make contactless payments with VISA.</string>
+    <string name="contract_signing_preview_description2">Completely free of charge also when used abroad.</string>
+    <string name="contract_signing_preview_description3">Push notification for every transaction.</string>
+
+    <string name="contract_signing_preview_notice">Notice</string>
+    <string name="contract_signing_preview_notice_label">View your documents</string>
+    <string name="contract_signing_preview_download_action">Download all documents</string>
+
+    <string name="contract_signing_preview_send_code_action">Send code to sign</string>
+
+    <string name="contract_signing_description">A verification code was sent to your phone (+**-***-***-****). Enter the code below</string>
+    <string name="contract_signing_notice_title">You couldn\'t complete the process?</string>
+    <string name="contract_signing_notice1">Pleas contact Samsung Pay Customer Support under 06196 – 77 555 30 if you need help with identity verification.</string>
+    <string name="contract_signing_notice2">Charges according to the conditions of the service provider of landline or mobile connections.</string>
+    <string name="contract_signing_sign_action">Sign and Submit</string>
+
+    <string name="contract_signing_code_expires">Expires in %1$s</string>
+    <string name="contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
+    <string name="contract_signing_code_request_new_button">Request new code</string>
+
+    <string name="contract_signing_preview_code_description">Enter the 6-digit code sent to %1$s.</string>
+    <string name="contract_signing_preview_new_code">Send new code</string>
+    <string name="contract_signing_preview_sign_action">Submit and sign</string>
+    <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
+
+    <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
+    <string name="contract_signing_preview_download_error">Could not download all files.</string>
+    <plurals name="contract_signing_preview_downloaded_message">
+        <item quantity="one">1 file has been downloaded.</item>
+        <item quantity="other">%d files has been downloaded.</item>
+    </plurals>
+</resources>

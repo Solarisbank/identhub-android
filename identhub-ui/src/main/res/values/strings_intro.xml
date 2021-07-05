@@ -1,0 +1,13 @@
+<resources>
+    <string name="onboarding_intro_title">Start identification</string>
+    <string name="onboarding_intro_description">
+        You need to enter your bank account information to verify your identity.
+    </string>
+    <string name="onboarding_intro_step_1">1. provide your IBAN</string>
+    <string name="onboarding_intro_step_2">2. transfer €0.05</string>
+    <string name="onboarding_intro_step_3">3. electronically sign documents</string>
+    <string name="onboarding_intro_phone_number"></string>
+
+    <string name="onboarding_intro_verify_button">Start identification</string>
+    <string name="onboarding_intro_quit">Return to site</string>
+</resources>

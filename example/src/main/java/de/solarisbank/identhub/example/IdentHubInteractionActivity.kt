@@ -17,7 +17,7 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         binding = ActivityIdenthubInteractionBinding.inflate(layoutInflater)
         val view: ConstraintLayout = binding.root
         setContentView(view)
-
+        Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         var identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
                 .apply {
                     onCompletionCallback(this@IdentHubInteractionActivity, this@IdentHubInteractionActivity::onSuccess, this@IdentHubInteractionActivity::onFailure)

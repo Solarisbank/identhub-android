@@ -13,14 +13,13 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
+import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel;
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel;
@@ -58,13 +57,8 @@ public final class IdentityModule {
     }
 
     @NonNull
-    public VerificationBankErrorViewModel provideVerificationBankErrorViewModel() {
-        return new VerificationBankErrorViewModel();
-    }
-
-    @NonNull
-    public ProcessingVerificationViewModel provideProcessingVerificationViewModel(IdentificationPollingStatusUseCase identificationPollingStatusUseCase) {
-        return new ProcessingVerificationViewModel(identificationPollingStatusUseCase);
+    public ProcessingVerificationViewModel provideProcessingVerificationViewModel(IdentificationPollingStatusUseCase identificationPollingStatusUseCase, JointAccountBankIdPostUseCase jointAccountBankIdPostUseCase) {
+        return new ProcessingVerificationViewModel(identificationPollingStatusUseCase, jointAccountBankIdPostUseCase);
     }
 
     @NonNull
@@ -72,8 +66,8 @@ public final class IdentityModule {
             final SavedStateHandle savedStateHandle,
             final AuthorizeContractSignUseCase authorizeContractSignUseCase,
             final ConfirmContractSignUseCase confirmContractSignUseCase,
-            final GetIdentificationUseCase getIdentificationUseCase) {
-        return new ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, getIdentificationUseCase);
+            final IdentificationPollingStatusUseCase identificationPollingStatusUseCase) {
+        return new ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, identificationPollingStatusUseCase);
     }
 
     @NonNull
@@ -97,15 +91,9 @@ public final class IdentityModule {
             final GetDocumentsUseCase getDocumentsUseCase,
             final FetchPdfUseCase fetchPdfUseCase,
             final IdentificationStepPreferences identificationStepPreferences,
-            final SavedStateHandle savedStateHandle) {
-        return new IdentitySummaryFragmentViewModel(
-                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, savedStateHandle);
-    }
-
-    @NonNull
-    public IdentitySummaryViewModel provideIdentitySummaryViewModel(
             final GetIdentificationUseCase getIdentificationUseCase,
             final SavedStateHandle savedStateHandle) {
-        return new IdentitySummaryViewModel(getIdentificationUseCase, savedStateHandle);
+        return new IdentitySummaryFragmentViewModel(
+                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, getIdentificationUseCase, savedStateHandle);
     }
 }

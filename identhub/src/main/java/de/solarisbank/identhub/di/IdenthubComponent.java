@@ -84,6 +84,8 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCaseFactory;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCaseFactory;
+import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
+import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCaseFactory;
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCaseFactory;
@@ -97,8 +99,6 @@ import de.solarisbank.identhub.file.FileControllerFactory;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivityInjector;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentInjector;
 import de.solarisbank.identhub.intro.IntroActivity;
@@ -126,12 +126,8 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragmentInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragment;
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragmentInjector;
-import de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessMessageFragment;
-import de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneFragment;
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragment;
@@ -399,6 +395,7 @@ public class IdenthubComponent {
         private Provider<AssistedViewModelFactory> assistedViewModelFactoryProvider;
         private Provider<FileController> fileControllerProvider;
         private Provider<FetchPdfUseCase> fetchPdfUseCaseProvider;
+        private Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider;
 
         private Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> mapOfClassOfAndProviderOfViewModelProvider;
         private Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> saveStateViewModelMapProvider;
@@ -420,6 +417,7 @@ public class IdenthubComponent {
             identificationRoomDataSourceProvider = DoubleCheck.provider(IdentificationRoomDataSourceFactory.create(identificationModule, identificationDaoProvider.get()));
             identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()));
             identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()));
+            bankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
                     identityModule,
                     verficationBankModule,
@@ -431,7 +429,8 @@ public class IdenthubComponent {
                     fetchPdfUseCaseProvider,
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.verifyIBanUseCaseProvider,
-                    identificationPollingStatusUseCaseProvider
+                    identificationPollingStatusUseCaseProvider,
+                    bankIdPostUseCaseProvider
             );
             this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
                     IdenthubComponent.this.authorizeContractSignUseCaseProvider,
@@ -440,6 +439,7 @@ public class IdenthubComponent {
                     fetchPdfUseCaseProvider,
                     IdenthubComponent.this.getDocumentsUseCaseProvider,
                     IdenthubComponent.this.getIdentificationUseCaseProvider,
+                    IdenthubComponent.this.identificationPollingStatusUseCaseProvider,
                     IdenthubComponent.this.fetchingAuthorizedIBanStatusUseCaseProvider,
                     IdenthubComponent.this.identityModule,
                     identificationStepPreferencesProvider,
@@ -472,11 +472,6 @@ public class IdenthubComponent {
         @Override
         public void inject(IdentityActivity identityActivity) {
             IdentityActivityInjector.injectAssistedViewModelFactory(identityActivity, assistedViewModelFactoryProvider.get());
-        }
-
-        @Override
-        public void inject(IdentitySummaryActivity identitySummaryActivity) {
-            IdentitySummaryActivityInjector.injectAssistedViewModelFactory(identitySummaryActivity, assistedViewModelFactoryProvider.get());
         }
 
         @NotNull
@@ -553,16 +548,6 @@ public class IdenthubComponent {
             @Override
             public void inject(VerificationBankExternalGatewayFragment verificationBankExternalGatewayFragment) {
                 VerificationBankExternalGatewayFragmentInjector.injectAssistedViewModelFactory(verificationBankExternalGatewayFragment, fragmentAssistedViewModelFactoryProvider.get());
-            }
-
-            @Override
-            public void inject(VerificationBankSuccessMessageFragment verificationBankSuccessMessageFragment) {
-                VerificationBankSuccessMessageFragmentInjector.injectAssistedViewModelFactory(verificationBankSuccessMessageFragment, fragmentAssistedViewModelFactoryProvider.get());
-            }
-
-            @Override
-            public void inject(VerificationBankErrorMessageFragment verificationBankErrorMessageFragment) {
-                VerificationBankErrorMessageFragmentInjector.injectAssistedViewModelFactory(verificationBankErrorMessageFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
             @Override

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/verificationBankIntroFragment">
+    app:startDestination="@id/verificationBankIbanFragment">
     <fragment
         android:id="@+id/verificationBankIntroFragment"
         android:name="de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment"
@@ -39,10 +39,6 @@
             app:destination="@id/processingVerificationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/verificationBankSuccessMessageFragment"
-        android:name="de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessMessageFragment"
-        android:label="VerificationBankSuccessMessageFragment"/>
-    <fragment
         android:id="@+id/establishConnectionFragment"
         android:name="de.solarisbank.identhub.verfication.bank.gateway.EstablishConnectionFragment"
         android:label="EstablishConnectionFragment">
@@ -56,23 +52,6 @@
         android:id="@+id/processingVerificationFragment"
         android:name="de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationFragment"
         android:label="ProcessingVerificationFragment">
-        <action
-            android:id="@+id/action_processingVerificationFragment_to_verificationBankSuccessMessageFragment"
-            app:popUpTo="@+id/processingVerificationFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/verificationBankSuccessMessageFragment" />
-        <action
-            android:id="@+id/action_processingVerificationFragment_to_verificationBankErrorMessageFragment"
-            app:destination="@id/verificationBankErrorMessageFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/verificationBankErrorMessageFragment"
-        android:name="de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorMessageFragment"
-        android:label="VerificationBankErrorMessageFragment">
-        <action
-            android:id="@+id/action_verificationBankErrorMessageFragment_to_verificationBankFragment"
-            app:destination="@id/verificationBankIbanFragment"
-            app:popUpTo="@+id/verificationBankErrorMessageFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+
 </navigation>

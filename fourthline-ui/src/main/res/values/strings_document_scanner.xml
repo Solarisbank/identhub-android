@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="your_id_document">Choose your document type</string>
+
+   <string name="document_scanner_retake">Retake</string>
+   <string name="document_scanner_confirm">Confirm</string>
+   <string name="document_scanner_take_picture">Take picture</string>
+
+   <string name="document_scanner_warning_too_dark">Document too dark</string>
+   <string name="document_scanner_warning_device_not_steady">Device not steady</string>
+   <string name="document_scanner_warning_recognition_models_not_downloaded">Check internet connection and/or free space available</string>
+
+   <string name="document_scanner_error_no_permission">Please allow camera usage</string>
+   <string name="document_scanner_error_recording_failed">Image recording failed</string>
+   <string name="document_scanner_error_scanner_interrupted">Document scanner was interrupted</string>
+   <string name="document_scanner_error_unknown">Unexpected scanner error occurred</string>
+   <string name="document_scanner_error_timeout">Document scanner timed out</string>
+
+   <string name="document_scanner_file_side_front">front</string>
+   <string name="document_scanner_file_side_back">back</string>
+   <string name="document_scanner_file_side_inside_left">inside left</string>
+   <string name="document_scanner_file_side_inside_right">inside right</string>
+
+   <string name="document_scanner_file_tilted">tilted</string>
+   <string name="document_scanner_file_side">Please take a %1$s %2$s picture of your ID card</string>
+</resources>

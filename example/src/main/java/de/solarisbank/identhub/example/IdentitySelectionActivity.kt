@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdentitySelectionBinding
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
 import de.solarisbank.identhub.session.utils.buildApiUrl
+import de.solarisbank.identhub.session.utils.isFourthlineModuleAvailable
 import timber.log.Timber
 
 
@@ -21,22 +22,20 @@ class IdentitySelectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkIsFourthlineAvailable()
         binding = ActivityIdentitySelectionBinding.inflate(layoutInflater)
         val view: ConstraintLayout = binding.root
         setContentView(view)
         initView()
+        checkIsFourthlineAvailable()
     }
 
     private fun checkIsFourthlineAvailable() {
-        val isFourthlineModuleAvailable =
-                !packageManager.queryIntentActivities(
-                        Intent(FOURTHLINE_FLOW_ACTIVITY_ACTION, null)
-                                .apply { addCategory(Intent.CATEGORY_DEFAULT) }, 0)
-                        .isNullOrEmpty()
-        if (!isFourthlineModuleAvailable) {
+        if (isFourthlineModuleAvailable(this)) {
             startActivity(
                     Intent(this, IdentHubInteractionActivity::class.java)
+                            .apply {
+                                putExtra(SESSION_URL_KEY, urlPreferences.getString(URL_VALUE,""))
+                            }
             )
             finish()
         }
@@ -81,6 +80,7 @@ class IdentitySelectionActivity : AppCompatActivity() {
         }
 
         binding.identHubFlowButton.setOnClickListener {
+            Timber.d("initView(), urlPreferences.getString(URL_VALUE,\"\"): ${urlPreferences.getString(URL_VALUE,"")}")
             startActivity(Intent(this, IdentHubInteractionActivity::class.java)
                     .apply {
                         putExtra(SESSION_URL_KEY, urlPreferences.getString(URL_VALUE,""))

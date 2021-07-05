@@ -12,14 +12,13 @@
             android:screenOrientation="portrait"
             android:exported="false"
             >
-            <intent-filter>
-                <action android:name="de.solarisbank.identhub.FOURTHLINE_FLOW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <service android:name="de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService"
             android:exported="false"
             android:foregroundServiceType="location">
         </service>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 </manifest>

@@ -1,6 +1,0 @@
-<resources>
-    <string name="selfie_scanner_scan_successful">Scan successful</string>
-    <string name="selfie_scanner_retake">Retake</string>
-    <string name="selfie_scanner_confirm">Confirm</string>
-
-</resources>

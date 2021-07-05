@@ -8,12 +8,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
-import com.google.android.material.textfield.TextInputEditText
+import android.widget.EditText
 import de.solarisbank.sdk.fourthline.getDateFromMRZ
 import timber.log.Timber
 import java.util.*
 
-class DateInputEditText : TextInputEditText {
+class DateInputEditText : EditText {
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

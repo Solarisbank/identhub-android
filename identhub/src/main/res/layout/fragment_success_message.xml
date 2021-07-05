@@ -5,38 +5,185 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_splitpay"
+        android:adjustViewBounds="true"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <TextView
         android:id="@+id/title"
         style="@style/IdentHubTextView.HeadLine2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Congratulations, you have unlocked Splitpay on your Samsung Pay Card!"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/image" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/middleGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/verification_phone_success_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
-    <TextView
-        android:id="@+id/description"
-        style="@style/IdentHubTextView"
+    <ImageView
+        android:id="@+id/done1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_24"
-        android:text="@string/verification_phone_success_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        android:src="@drawable/ic_done_pure"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        />
 
-    <Button
+    <TextView
+        android:id="@+id/description"
+        style="@style/IdentHubTextView.Small_15"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:text="Pay purchases over 100 EUR comfortably in installment"
+        app:layout_constraintStart_toEndOf="@id/done1"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="done1, description"
+        />
+
+    <ImageView
+        android:id="@+id/done2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_done_pure"
+        android:layout_marginTop="@dimen/margin_24"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/barrier1"
+        />
+
+    <TextView
+        android:id="@+id/description2"
+        style="@style/IdentHubTextView.Small_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/verification_phone_success_message"
+        app:layout_constraintStart_toEndOf="@id/done2"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/barrier1" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="done2, description2"
+        />
+
+    <TextView
+        android:id="@+id/findOutMore"
+        style="@style/IdentHubTextView.HeadLine3"
+        android:textColor="@color/ident_hub_color_light_button_text_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_32"
+        android:text="Find out more"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/barrier2"
+        />
+
+    <ImageView
+        android:id="@+id/stripe"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/findOutMore"
+        android:src="@drawable/dotted_line"
+        />
+
+    <ImageView
+        android:id="@+id/noticeLabel"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="@dimen/margin_8"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/stripe"
+        android:src="@drawable/ic_info"
+        />
+
+    <TextView
+        android:id="@+id/noticeTitle"
+        app:layout_constraintStart_toEndOf="@+id/noticeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/stripe"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginStart="@dimen/margin_12"
+        style="@style/IdentHubTextView.Small_16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Notice"
+        />
+
+    <ImageView
+        android:id="@+id/point"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/noticeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/noticeLabel"
+        />
+
+    <TextView
+        android:id="@+id/noticeDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/noticeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        android:text="The maximum interest rate for splitpay is 12% Repr. ex. according to Pangv. net loan amount: 1000 EUR, term 6 month, 6 installments of 127.55 EUR each, effective annual interest: 12.68%, fixed borrowing rate 12% p.a, total amount: 1,040.14 EUR.
+Solarisbank AG, Curvystraße 53, 10997 Berlin."
+        />
+
+    <TextView
         android:id="@+id/submitButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/verification_phone_action_next_step"
+        android:layout_marginBottom="18dp"
+        android:text="Continue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

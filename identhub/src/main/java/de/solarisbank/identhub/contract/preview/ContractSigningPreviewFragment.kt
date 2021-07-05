@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,7 +34,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
 
     private lateinit var documentsList: RecyclerView
-    private lateinit var submitButton: Button
+    private lateinit var submitButton: TextView
     private lateinit var downloadButton: Button
 
     override fun inject(component: FragmentComponent) {
@@ -47,7 +48,6 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                     submitButton = it.findViewById(R.id.submitButton)
                     downloadButton = it.findViewById(R.id.downloadButton)
                 }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

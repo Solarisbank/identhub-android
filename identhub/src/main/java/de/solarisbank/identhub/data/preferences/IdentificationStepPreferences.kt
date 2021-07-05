@@ -2,7 +2,7 @@ package de.solarisbank.identhub.data.preferences
 
 import android.content.SharedPreferences
 import androidx.annotation.RestrictTo
-import de.solarisbank.identhub.session.IdentHubSession
+import de.solarisbank.identhub.router.COMPLETED_STEP
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class IdentificationStepPreferences(private val sharedPreferences: SharedPreferences) {
@@ -13,12 +13,12 @@ class IdentificationStepPreferences(private val sharedPreferences: SharedPrefere
         }
     }
 
-    fun get(): IdentHubSession.Step? {
+    fun get(): COMPLETED_STEP? {
         val step = sharedPreferences.getInt(CURRENT_IDENTIFICATION_STEP, -1)
-        return IdentHubSession.Step.getEnum(step)
+        return COMPLETED_STEP.getEnum(step)
     }
 
-    fun save(step: IdentHubSession.Step) {
+    fun save(step: COMPLETED_STEP) {
         with(sharedPreferences.edit()) {
             putInt(CURRENT_IDENTIFICATION_STEP, step.index)
             commit()

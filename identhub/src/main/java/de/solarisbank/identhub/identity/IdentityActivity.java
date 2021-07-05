@@ -14,9 +14,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity;
+import de.solarisbank.identhub.router.COMPLETED_STEP;
 import de.solarisbank.identhub.session.IdentHubSession;
-import de.solarisbank.identhub.ui.StepIndicatorView;
+import de.solarisbank.identhub.ui.SolarisIndicatorView;
 import de.solarisbank.sdk.core.navigation.NaviDirection;
 import de.solarisbank.sdk.core.result.Event;
 
@@ -24,7 +24,7 @@ public final class IdentityActivity extends IdentHubActivity {
 
     private IdentityActivityViewModel viewModel;
 
-    private StepIndicatorView stepIndicator;
+    private SolarisIndicatorView stepIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public final class IdentityActivity extends IdentHubActivity {
             navGraph.setStartDestination(R.id.verificationBankFragment);
         }
 
-        IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
-        if (lastCompletedStep == IdentHubSession.Step.VERIFICATION_BANK) {
+        COMPLETED_STEP lastCompletedStep = viewModel.getLastCompletedStep();
+        if (lastCompletedStep == COMPLETED_STEP.VERIFICATION_BANK) {
             navGraph.setStartDestination(R.id.contractSigningPreviewFragment);
         }
         navHostFragment.getNavController().setGraph(navGraph, getIntent().getExtras());
@@ -52,10 +52,10 @@ public final class IdentityActivity extends IdentHubActivity {
 
     private void initView() {
         stepIndicator = findViewById(R.id.stepIndicator);
-        IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
-        int startStep = IdentHubSession.Step.VERIFICATION_PHONE.getIndex();
+        COMPLETED_STEP lastCompletedStep = viewModel.getLastCompletedStep();
+        int startStep = COMPLETED_STEP.VERIFICATION_PHONE.getIndex();
         if (!IdentHubSession.hasPhoneVerification) {
-            startStep = IdentHubSession.Step.VERIFICATION_BANK.getIndex();
+            startStep = COMPLETED_STEP.VERIFICATION_BANK.getIndex();
         }
         stepIndicator.setStep(lastCompletedStep != null ? lastCompletedStep.getIndex() : startStep);
     }
@@ -83,9 +83,7 @@ public final class IdentityActivity extends IdentHubActivity {
             viewModel.doOnNavigationChanged(naviDirection.getActionId());
             int naviActionId = naviDirection.getActionId();
 
-            if (naviActionId == IdentityActivityViewModel.ACTION_SUMMARY_WITH_RESULT) {
-                startSummaryActivity();
-            } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
+            if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
                     naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.getArgs());
             } else {
@@ -94,18 +92,11 @@ public final class IdentityActivity extends IdentHubActivity {
             }
 
             if (naviDirection.getActionId() == R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment) {
-                stepIndicator.setStep(StepIndicatorView.SECOND_STEP);
-            } else if (naviDirection.getActionId() == R.id.action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment) {
-                stepIndicator.setStep(StepIndicatorView.THIRD_STEP);
+                stepIndicator.setStep(SolarisIndicatorView.SECOND_STEP);
+            } else if (naviDirection.getActionId() == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
+                stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP);
             }
         }
-    }
-
-    private void startSummaryActivity() {
-        Intent intent = new Intent(this, IdentitySummaryActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        startActivity(intent);
-        finish();
     }
 
     private void quit(Bundle bundle) {

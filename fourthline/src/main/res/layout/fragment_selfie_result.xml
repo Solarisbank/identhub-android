@@ -4,48 +4,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageResult"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/guideline11"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_24" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="140dp" />
+        app:layout_constraintGuide_end="@dimen/margin_18"/>
 
-    <Button
-        android:id="@+id/submitButton"
-        style="@style/IdentHubPrimaryButton"
+    <ImageView
+        android:id="@+id/imageResult"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginTop="@dimen/margin_16"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:text="@string/selfie_scanner_confirm"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageResult" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageView
+        android:id="@+id/selfieMask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="50dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_frame_grey"
+        android:background="@drawable/ic_frame_filled"
+        app:layout_constraintStart_toStartOf="@id/imageResult"
+        app:layout_constraintEnd_toEndOf="@id/imageResult"
+        app:layout_constraintTop_toTopOf="@id/imageResult"
+        app:layout_constraintBottom_toBottomOf="@id/imageResult"
+        />
+
+    <LinearLayout
+        android:id="@+id/statusCardView"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toBottomOf="@id/imageResult"
+        app:layout_constraintBottom_toTopOf="@id/retryButton"
+        android:background="@drawable/ic_selfie_status_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <ImageView
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_done_round_blue"
+            android:layout_margin="@dimen/margin_16"
+            />
+        <TextView
+            style="@style/IdentHubTextView.Small_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selfie_result_successful"
+            android:layout_margin="@dimen/margin_16"
+            />
+    </LinearLayout>
+
+    <TextView
         android:id="@+id/retryButton"
-        style="@style/IdentHubLightButton"
+        style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_16"
         android:text="@string/selfie_scanner_retake"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitButton" />
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toStartOf="@id/separator"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="1dp"
+        android:layout_height="18dp"
+        android:background="@drawable/ic_separator_background"
+        app:layout_constraintTop_toTopOf="@id/retryButton"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        />
+
+    <TextView
+        android:id="@+id/submitButton"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:text="@string/selfie_scanner_confirm"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/separator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

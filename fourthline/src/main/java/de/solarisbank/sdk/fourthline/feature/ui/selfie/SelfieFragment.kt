@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -30,12 +29,13 @@ import timber.log.Timber
 
 class SelfieFragment : SelfieScannerFragment() {
 
-    private var takeSnapshot: ImageButton? = null
     private var punchhole: PunchholeView? = null
     private var selfieMask: ImageView? = null
-    private var stepLabel: TextView? = null
+    private var stepName: TextView? = null
+    private var hintTextView: TextView? = null
     private var icon: ImageView? = null
     private var warningsLabel: TextView? = null
+    private var livenessMask: ImageView? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
@@ -69,7 +69,6 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     private fun initView() {
-        takeSnapshot!!.setOnClickListener { takeSnapshot() }
         (view as ViewGroup).onLayoutMeasuredOnce {
             punchhole!!.punchholeRect = getFaceDetectionArea()
             punchhole!!.postInvalidate()
@@ -93,29 +92,40 @@ class SelfieFragment : SelfieScannerFragment() {
                 .from(requireContext())
                 .inflate(R.layout.fragment_selfie, requireActivity().findViewById(R.id.content))
                 .also {
-                    takeSnapshot = it.findViewById(R.id.takeSnapshot)
                     punchhole = it.findViewById(R.id.punchhole)
                     selfieMask = it.findViewById(R.id.selfieMask)
-                    stepLabel = it.findViewById(R.id.stepLabel)
-                    icon = it.findViewById(R.id.icon)
+                    stepName = it.findViewById(R.id.stepName)
+                    icon = it.findViewById(R.id.imageView)
                     warningsLabel = it.findViewById(R.id.warningsLabel)
+                    hintTextView = it.findViewById(R.id.hintTextView)
+                    livenessMask = it.findViewById(R.id.livenessMask)
                 }
     }
 
     override fun onFail(error: SelfieScannerError) {
         Timber.d("onFail: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
-            if (error == SelfieScannerError.TIMEOUT) {
-                takeSnapshot!!.visibility = View.VISIBLE
-            }
-            Toast.makeText(requireContext(), error.asString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), error.asString(requireContext()), Toast.LENGTH_LONG).show()
         }
     }
 
     override fun onStepUpdate(step: SelfieScannerStep) {
         Timber.d("onStepUpdate: ${step.name}")
         lifecycleScope.launch(Dispatchers.Main) {
-            stepLabel!!.text = step.asString()
+            when (step) {
+                SelfieScannerStep.SELFIE -> {
+                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_scanning)
+                }
+                SelfieScannerStep.TURN_HEAD_LEFT -> {
+                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_checking_liveness)
+                    livenessMask!!.setImageResource(R.drawable.ic_liveness_left_direction)
+                }
+                SelfieScannerStep.TURN_HEAD_RIGHT -> {
+                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_checking_liveness)
+                    livenessMask!!.setImageResource(R.drawable.ic_liveness_right_direction)
+                }
+            }
+            hintTextView!!.text = step.asString(requireContext())
         }
     }
 
@@ -136,9 +146,8 @@ class SelfieFragment : SelfieScannerFragment() {
         cleanupJob?.cancel()
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
             icon!!.visibility = View.VISIBLE
-            warningsLabel!!.text = warnings[0].asString()
+            warningsLabel!!.text = warnings[0].asString(requireContext())
             icon!!.setImageLevel(0)
-
             delay(500)
             warningsLabel!!.text = ""
             icon!!.visibility = View.GONE
@@ -146,12 +155,13 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun onDestroyView() {
-        takeSnapshot = null
         punchhole = null
         selfieMask = null
-        stepLabel = null
+        stepName = null
+        hintTextView = null
         icon = null
         warningsLabel = null
+        livenessMask = null
         super.onDestroyView()
     }
 

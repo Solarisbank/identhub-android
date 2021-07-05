@@ -15,8 +15,9 @@ import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
+import de.solarisbank.identhub.router.COMPLETED_STEP
+import de.solarisbank.identhub.router.COMPLETED_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseViewModel
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
@@ -103,7 +104,7 @@ class KycSharedViewModel(
                         .subscribe(
                                 {
                                     val bundle = Bundle()
-                                    bundle.putInt(IdentHub.LAST_COMPLETED_STEP_KEY, IdentHubSession.Step.CONTRACT_SIGNING.index)
+                                    bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.CONTRACT_SIGNING.index)
                                     bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, it)
                                     activity.setResult(AppCompatActivity.RESULT_OK, Intent().apply { putExtras(bundle) })
                                     activity.finish()

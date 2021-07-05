@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -15,17 +16,20 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import de.solarisbank.identhub.router.NEXT_STEP_ACTION
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.router.toNextStep
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
+import de.solarisbank.identhub.ui.FourStepIndicatorView
+import de.solarisbank.identhub.ui.SolarisIndicatorView
+import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
-import de.solarisbank.sdk.fourthline.feature.ui.custom.FourthlineStepIndicatorView
 import timber.log.Timber
 
 class FourthlineActivity : FourthlineBaseActivity() {
@@ -33,7 +37,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private lateinit var viewModel: FourthlineViewModel
 
     private lateinit var navHostFragment: View
-    private lateinit var stepIndicator: FourthlineStepIndicatorView
+    private lateinit var stepIndicator: FourStepIndicatorView
 
     private var awaitedDirection: NaviDirection? = null
     private lateinit var navController: NavController
@@ -55,6 +59,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
         stepIndicator = findViewById(R.id.stepIndicator)
+        stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
     }
 
     private fun initGraph() {
@@ -70,9 +75,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
         navController.graph = navGraph
         navController.addOnDestinationChangedListener{ controller, destination, arguments ->
                 when (destination.id) {
-                    R.id.selfieResultFragment -> {
-                        stepIndicator.visibility = View.GONE
-                    }
                     R.id.documentTypeSelectionFragment -> {
                         stepIndicator.visibility = View.VISIBLE
                     }
@@ -100,21 +102,22 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 R.id.action_welcomeContainerFragment_to_selfieFragment -> {
                     awaitedDirection = it
                     requestCameraPermission()
+                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                 }
                 R.id.action_selfieResultFragment_to_documentTypeSelectionFragment -> {
-                    stepIndicator.visibility = View.VISIBLE
-                    stepIndicator.setStep(1)
+                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
                 R.id.action_documentResultFragment_to_locationAccessFragment -> {
-                    stepIndicator.setStep(2)
+                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
                 R.id.action_locationAccessFragment_to_kycUploadFragment -> {
-                    stepIndicator.setStep(3)
+                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
                 R.id.action_reset_to_welcome_screen -> {
+                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     navGraph.startDestination = R.id.welcomeContainerFragment
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
@@ -129,20 +132,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 }
             }
         }
-    }
-
-    private fun forwardTo(args: Bundle) {
-        val nextStep = args.getString(NEXT_STEP_KEY)
-        val forwardIntent = toNextStep(this, nextStep!!)
-        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
-        forwardIntent.putExtras(args)
-        startActivity(forwardIntent)
-        finish()
-    }
-
-    private fun setFourthStep(isSuccessful: Boolean) {
-        stepIndicator.setFourthStep(isSuccessful)
     }
 
     private fun navigateToAwaitedDirection() {
@@ -197,6 +186,17 @@ class FourthlineActivity : FourthlineBaseActivity() {
         } else {
             navigateToAwaitedDirection()
         }
+    }
+
+    private fun forwardTo(args: Bundle) {
+        val nextStep = args.getString(NEXT_STEP_KEY)
+        val forwardIntent = toNextStep(this, nextStep!!)
+        forwardIntent.action = NEXT_STEP_ACTION
+        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
+        forwardIntent.putExtras(args)
+        setResult(Activity.RESULT_OK, forwardIntent)
+        finish()
     }
 
     private fun quit(bundle: Bundle?) {

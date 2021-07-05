@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.fourthline
 
+import android.content.Context
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
@@ -25,33 +26,33 @@ fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGl
         })
 
 
-fun SelfieScannerStep.asString() = when (this) {
-    SelfieScannerStep.SELFIE -> "Look into camera"
-    SelfieScannerStep.MANUAL_SELFIE -> "Take a selfie"
-    SelfieScannerStep.TURN_HEAD_LEFT -> "Turn your head to the left"
-    SelfieScannerStep.TURN_HEAD_RIGHT -> "Turn your head to the right"
+fun SelfieScannerStep.asString(context: Context) =  when (this) {
+    SelfieScannerStep.SELFIE -> context.resources.getString(R.string.selfie_intro)
+    SelfieScannerStep.MANUAL_SELFIE -> context.resources.getString(R.string.selfie_manual)
+    SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.selfie_turn_left)
+    SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.selfie_turn_right)
 }
 
-fun SelfieScannerWarning.asString() = when (this) {
-    SelfieScannerWarning.FACE_NOT_DETECTED -> "Face not detected"
-    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> "Multiple faces detected"
-    SelfieScannerWarning.FACE_NOT_IN_FRAME -> "Fit face in frame"
-    SelfieScannerWarning.FACE_TOO_CLOSE -> "Move the phone farther"
-    SelfieScannerWarning.FACE_TOO_FAR -> "Move the phone closer"
-    SelfieScannerWarning.FACE_YAW_TOO_BIG -> "Face the camera directly"
-    SelfieScannerWarning.EYES_CLOSED -> "Open both eyes"
-    SelfieScannerWarning.DEVICE_NOT_STEADY -> "Device not steady"
+fun SelfieScannerWarning.asString(context: Context) = when (this) {
+    SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.selfie_warning_not_detected)
+    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.selfie_warning_multiple_detected)
+    SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.selfie_warning_not_in_frame)
+    SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.selfie_warning_too_close)
+    SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.selfie_warning_too_far)
+    SelfieScannerWarning.FACE_YAW_TOO_BIG -> context.resources.getString(R.string.selfie_warning_yaw_too_big)
+    SelfieScannerWarning.EYES_CLOSED -> context.resources.getString(R.string.selfie_warning_eyes_closed)
+    SelfieScannerWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.selfie_warning_device_not_steady)
 }
 
-fun SelfieScannerError.asString() = when (this) {
-    SelfieScannerError.TIMEOUT -> "Selfie scanner timed out"
-    SelfieScannerError.FACE_DISAPPEARED -> "Face disappeared during liveness check"
-    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> "Please grant camera access"
-    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> "Not allowed while not in manual selfie mode"
-    SelfieScannerError.RECORDING_FAILED -> "Video recording failed"
-    SelfieScannerError.SCANNER_INTERRUPTED -> "Selfie scanner was interrupted"
-    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> "Check internet connection and/or free space available"
-    SelfieScannerError.UNKNOWN -> "Unexpected error occurred"
+fun SelfieScannerError.asString(context: Context) = when (this) {
+    SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.selfie_error_timeout)
+    SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.selfie_error_face_disappeared)
+    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.selfie_error_camera_permission)
+    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.selfie_error_manual_selfie_not_allowed)
+    SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.selfie_error_recording_failed)
+    SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.selfie_error_scanner_interrupted)
+    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.selfie_error_recognition_models_not_downloaded)
+    SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.selfie_error_unknown)
 }
 
 private var cleanupJob: Job? = null
@@ -67,30 +68,31 @@ fun CoroutineScope.scheduleCleanup(block: () -> Unit) {
 fun DocumentScannerStep.prettify() =
         "Step: fileSide = $fileSide, isAngled = $isAngled, isAutoDetectAvailable = $isAutoDetectAvailable"
 
-fun List<DocumentScannerStepWarning>.asString() = when (first()) {
-    DocumentScannerStepWarning.DOCUMENT_TOO_DARK -> "Document too dark"
-    DocumentScannerStepWarning.DEVICE_NOT_STEADY -> "Device not steady"
+fun List<DocumentScannerStepWarning>.asString(context: Context) = when (first()) {
+    DocumentScannerStepWarning.DOCUMENT_TOO_DARK -> context.resources.getString(R.string.document_scanner_warning_too_dark)
+    DocumentScannerStepWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.document_scanner_warning_device_not_steady)
     DocumentScannerStepWarning.RECOGNITION_MODELS_NOT_DOWNLOADED ->
-        "Check internet connection and/or free space available"
+        context.resources.getString(R.string.document_scanner_warning_recognition_models_not_downloaded)
 }
 
-fun DocumentScannerError.asString() = when (this) {
-    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> "Please allow camera usage"
-    DocumentScannerError.RECORDING_FAILED -> "Image recording failed"
-    DocumentScannerError.SCANNER_INTERRUPTED -> "Document scanner was interrupted"
-    DocumentScannerError.UNKNOWN -> "Unexpected scanner error occurred"
-    DocumentScannerError.TIMEOUT -> "Document scanner timed out"
+fun DocumentScannerError.asString(context: Context) = when (this) {
+    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.document_scanner_error_no_permission)
+    DocumentScannerError.RECORDING_FAILED -> context.resources.getString(R.string.document_scanner_error_recording_failed)
+    DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.document_scanner_error_scanner_interrupted)
+    DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.document_scanner_error_unknown)
+    DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.document_scanner_error_timeout)
 }
 
-fun DocumentScannerStep.asString(): String {
+fun DocumentScannerStep.asString(context: Context): String {
     val side = when (fileSide) {
-        DocumentFileSide.FRONT -> "front"
-        DocumentFileSide.BACK -> "back"
-        DocumentFileSide.INSIDE_LEFT -> "inside left"
-        DocumentFileSide.INSIDE_RIGHT -> "inside right"
+        DocumentFileSide.FRONT -> context.resources.getString(R.string.document_scanner_file_side_front)
+        DocumentFileSide.BACK -> context.resources.getString(R.string.document_scanner_file_side_back)
+        DocumentFileSide.INSIDE_LEFT -> context.resources.getString(R.string.document_scanner_file_side_inside_left)
+        DocumentFileSide.INSIDE_RIGHT -> context.resources.getString(R.string.document_scanner_file_side_inside_right)
     }
 
-    return "Scan $side${if (isAngled) " tilted" else ""} side of id card"
+    val tilted = if (isAngled) context.resources.getString(R.string.document_scanner_file_tilted) else ""
+    return String.format(context.resources.getString(R.string.document_scanner_file_side), side, tilted)
 }
 
 fun View.hide() {

@@ -13,6 +13,7 @@ import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
@@ -23,8 +24,6 @@ import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel;
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModelFactory;
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel;
@@ -50,6 +49,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider;
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
     private final Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
+    private final Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider;
 
     public ViewModelMapProvider(
             IdentityModule identityModule,
@@ -62,7 +62,9 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider) {
+            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
+            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
+    ) {
         this.identityModule = identityModule;
         this.verificationBankModule = verificationBankModule;
         this.contractModule = contractModule;
@@ -74,6 +76,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.verifyIBanUseCaseProvider = verifyIBanUseCaseProvider;
         this.identificationPollingStatusUseCaseProvider = identificationPollingStatusUseCaseProvider;
+        this.bankIdPostUseCaseProvider = bankIdPostUseCaseProvider;
     }
 
     public static ViewModelMapProvider create(
@@ -87,7 +90,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider
+            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
+            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
     ) {
         return new ViewModelMapProvider(
                 identityModule,
@@ -100,7 +104,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 fetchPdfUseCaseProvider,
                 identificationStepPreferencesProvider,
                 verifyIBanUseCaseProvider,
-                identificationPollingStatusUseCaseProvider
+                identificationPollingStatusUseCaseProvider,
+                bankIdPostUseCaseProvider
         );
     }
 
@@ -114,8 +119,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
         map.put(VerificationPhoneErrorViewModel.class, VerificationPhoneErrorViewModelFactory.create(identityModule));
         map.put(VerificationBankIbanViewModel.class, VerificationBankIbanViewModelFactory.create(verificationBankModule, verifyIBanUseCaseProvider));
-        map.put(VerificationBankErrorViewModel.class, VerificationBankErrorViewModelFactory.create(verificationBankModule));
-        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, identificationPollingStatusUseCaseProvider));
+        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, identificationPollingStatusUseCaseProvider, bankIdPostUseCaseProvider));
 
         return map;
     }

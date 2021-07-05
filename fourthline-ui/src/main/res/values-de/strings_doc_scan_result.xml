@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_doc_scan_result_title">Bitte bestätigen Sie die Korrektheit der Daten ihres Dokuments.</string>
+    <string name="fourthline_doc_scan_document_number">Dokumenten- / Ausweisnummer</string>
+    <string name="fourthline_doc_scan_date_of_issue">Ausstellungsdatum</string>
+    <string name="fourthline_doc_scan_expiry_date">Ablaufdatum / gültig bis</string>
+    <string name="fourthline_doc_scan_date_placeholder">Auswählen</string>
+    <string name="fourthline_doc_scan_date_past_error">Fehler, Ausstellungsdatum ist nach Ablaufdatum</string>
+    <string name="fourthline_doc_scan_expiry_past_error">Fehler, Ablaufdatum ist in der Vergangenheit</string>
+    <string name="fourthline_doc_scan_deriving_error">Fehler, Daten konnten nicht übernommen werden</string>
+    <string name="fourthline_doc_scan_continue_button">Weiter</string>
+</resources>

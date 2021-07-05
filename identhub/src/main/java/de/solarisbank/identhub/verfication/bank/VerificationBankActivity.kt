@@ -1,7 +1,9 @@
 package de.solarisbank.identhub.verfication.bank
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -11,18 +13,22 @@ import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.contract.ContractActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
+import de.solarisbank.identhub.router.COMPLETED_STEP
+import de.solarisbank.identhub.router.NEXT_STEP_ACTION
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.router.toNextStep
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.identhub.ui.StepIndicatorView
+import de.solarisbank.identhub.ui.SolarisIndicatorView
+import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import timber.log.Timber
 
 class VerificationBankActivity : IdentHubActivity() {
+    var iban: String? = null
     private lateinit var viewModel: VerificationBankViewModel
-    private lateinit var stepIndicator: StepIndicatorView
+    private lateinit var stepIndicator: StepIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +41,7 @@ class VerificationBankActivity : IdentHubActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
         val lastCompletedStep = viewModel.getLastCompletedStep()
-        if (lastCompletedStep === IdentHubSession.Step.VERIFICATION_BANK) {
+        if (lastCompletedStep === COMPLETED_STEP.VERIFICATION_BANK) {
             startContractSigningActivity()
             return
         } else {
@@ -48,9 +54,9 @@ class VerificationBankActivity : IdentHubActivity() {
     private fun initView() {
         stepIndicator = findViewById(R.id.stepIndicator)
         val lastCompletedStep = viewModel.getLastCompletedStep()
-        var startStep = IdentHubSession.Step.VERIFICATION_PHONE.index
+        var startStep = COMPLETED_STEP.VERIFICATION_PHONE.index
         if (!IdentHubSession.hasPhoneVerification) {
-            startStep = IdentHubSession.Step.VERIFICATION_BANK.index
+            startStep = COMPLETED_STEP.VERIFICATION_BANK.index
         }
         stepIndicator.setStep(lastCompletedStep?.index ?: startStep)
     }
@@ -68,27 +74,40 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         val naviDirection = event.content
+        Timber.d("onNavigationChanged, naviDirection : $naviDirection")
 
         if (naviDirection != null) {
-            viewModel.doOnNavigationChanged(naviDirection.actionId)
             val naviActionId = naviDirection.actionId
-            if (naviActionId == IdentHubSession.ACTION_NEXT_STEP) {
-                forwardTo(naviDirection.args!!)
-            } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT && //todo refactor
-                    naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.args)
-            } else if (naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-                quit(naviDirection.args)
-                return
-            }  else {
-                quit(naviDirection.args)
-                return
+            viewModel.doOnNavigationChanged(naviActionId)
+
+            when (naviActionId) {
+                IdentHubSession.ACTION_NEXT_STEP -> forwardToNextStep(naviDirection.args!!)
+                IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> stopWithResult(naviDirection.args)
+                else -> {
+                    setSubStep(naviDirection)
+                    Navigation
+                            .findNavController(this, R.id.nav_host_fragment)
+                            .navigate(naviActionId, naviDirection.args)
+                }
             }
-            if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment) {
-                stepIndicator.setStep(StepIndicatorView.SECOND_STEP)
-            } else if (naviDirection.actionId == R.id.action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment) {
-                stepIndicator.setStep(StepIndicatorView.THIRD_STEP)
+        }
+    }
+
+    private fun setSubStep(naviDirection: NaviDirection) {
+        if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment) {
+            stepIndicator.setStep(SolarisIndicatorView.SECOND_STEP)
+        } else if (naviDirection.actionId == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
+            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+        }
+
+        when (naviDirection.actionId) {
+            R.id.action_verificationBankFragment_to_establishConnectionFragment,
+            R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment,
+            R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment
+            -> {
+                stepIndicator.visibility = View.GONE
             }
+            else -> stepIndicator.visibility = View.VISIBLE
         }
     }
 
@@ -98,17 +117,18 @@ class VerificationBankActivity : IdentHubActivity() {
         finish()
     }
 
-    fun forwardTo(args: Bundle) {
+    fun forwardToNextStep(args: Bundle) {
         val nextStep = args.getString(NEXT_STEP_KEY)
         val forwardIntent = toNextStep(this, nextStep!!)
+        forwardIntent.action = NEXT_STEP_ACTION
         forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
         forwardIntent.putExtras(args)
         forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
-        startActivity(forwardIntent)
+        setResult(Activity.RESULT_OK, forwardIntent)
         finish()
     }
 
-    private fun quit(bundle: Bundle?) {
+    private fun stopWithResult(bundle: Bundle?) {
         var intent: Intent? = null
         if (bundle != null) {
             intent = Intent()

@@ -60,39 +60,41 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:indeterminateTint="#599CFF"
+        android:indeterminateDrawable="@drawable/ic_progressbar"
         android:visibility="gone"
-        android:layout_width="228dp"
-        android:layout_height="228dp"
+        android:layout_width="@dimen/kyc_upload_progress_size"
+        android:layout_height="47.2dp"
         app:layout_constraintBottom_toTopOf="@+id/quitButton"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@+id/subtitle"
 
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
         android:id="@+id/resultImageView"
         tools:visibility="visible"
         android:visibility="gone"
-        android:layout_width="228dp"
-        android:layout_height="228dp"
+        android:layout_width="47.2dp"
+        android:layout_height="47.2dp"
         app:layout_constraintBottom_toTopOf="@+id/quitButton"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@+id/subtitle"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.5"
         />
 
-    <Button
+    <TextView
         android:id="@+id/quitButton"
         style="@style/IdentHubPrimaryButton"
+        android:enabled="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:layout_marginBottom="@dimen/margin_18"
+        android:text="Samsung"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
         app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.598"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startGuideline" />
 
 

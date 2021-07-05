@@ -6,7 +6,7 @@ import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.session.data.identification.IdentificationRepository
-import de.solarisbank.sdk.core.presentation.IdentificationUiModel
+import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -15,7 +15,9 @@ import java.util.concurrent.TimeUnit
 class IdentificationPollingStatusUseCase(private val identificationRepository: IdentificationRepository) : SingleUseCase<Unit, IdentificationUiModel>() {
 
     override fun invoke(param: Unit): Single<NavigationalResult<IdentificationUiModel>> {
-        return pollIdentificationStatus().map { NavigationalResult(IdentificationUiModel(id = it.id, status = it.status, nextStep = it.nextStep), it.nextStep) }
+        return pollIdentificationStatus().map { NavigationalResult(IdentificationUiModel(
+                id = it.id, status = it.status, failureReason = it.failureReason, nextStep = it.nextStep), it.nextStep
+        ) }
     }
 
     private fun pollIdentificationStatus(): Single<IdentificationDto> {
@@ -29,8 +31,8 @@ class IdentificationPollingStatusUseCase(private val identificationRepository: I
                             .doOnNext {
                                 count = it
                             }
-                            .takeUntil { count > 30}
-                            .timeout(30, TimeUnit.SECONDS)
+                            .takeUntil { count > 60}
+                            .timeout(60, TimeUnit.SECONDS)
                             .flatMap {
                                 return@flatMap Observable.create<IdentificationDto> { emitter ->
                                     emitter.onNext(identificationRepository.getRemoteIdentificationDto(identification.id).blockingGet())
@@ -69,7 +71,5 @@ class IdentificationPollingStatusUseCase(private val identificationRepository: I
                         || (Status.getEnum(dto.status) == Status.SUCCESSFUL)
                         || (Status.getEnum(dto.status) == Status.FAILED)
                         || (dto.nextStep != null)
-//                || (Status.getEnum(dto.status) != Status.PROCESSED)
     }
-
 }

@@ -7,8 +7,9 @@ import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.succeeded
-import de.solarisbank.sdk.core.result.throwable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUseCase) : ViewModel() {
@@ -26,6 +27,8 @@ class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUse
     fun onSubmitButtonClicked(iBan: String) {
         notifyResultChanged(Result.Loading)
         compositeDisposable.add(verifyIBanUseCase.execute(iBan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { it ->
                             if (it.succeeded) {
@@ -33,7 +36,7 @@ class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUse
                                 notifyResultChanged(it)
                             } else {
                                 Timber.d("verifyIBanUseCase.execute 2 it.data ${it}")
-                                it.throwable?.let { notifyResultChanged(Result.createUnknown(it)) }
+                                notifyResultChanged(it)
                             }
                         },
                         {

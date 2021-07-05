@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="your_id_document">Wählen Sie Ihr Ausweisdokument</string>
+
+   <string name="document_scanner_retake">Wiederholen</string>
+   <string name="document_scanner_confirm">Bestätigen</string>
+   <string name="document_scanner_take_picture">Foto machen</string>
+
+   <string name="document_scanner_warning_too_dark">Dokument ist zu dunkel</string>
+   <string name="document_scanner_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
+   <string name="document_scanner_warning_recognition_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz</string>
+
+   <string name="document_scanner_error_no_permission">Bitte erlauben Sie die Nutzung der Kamera</string>
+   <string name="document_scanner_error_recording_failed">Bildaufnahme fehlgeschlagen</string>
+   <string name="document_scanner_error_scanner_interrupted">Dokumentenscanner wurde unterbrochen</string>
+   <string name="document_scanner_error_unknown">Unerwartetes Problem mit dem Scanner aufgetreten</string>
+   <string name="document_scanner_error_timeout">Dokumentenscanner Zeitlimit erreicht</string>
+
+   <string name="document_scanner_file_side_front">Vorderseite</string>
+   <string name="document_scanner_file_side_back">Rückseite</string>
+   <string name="document_scanner_file_side_inside_left">Innenseite links</string>
+   <string name="document_scanner_file_side_inside_right">Innenseite rechts</string>
+
+   <string name="document_scanner_file_tilted">angewinkeltes</string>
+   <string name="document_scanner_file_side">Bitte machen Sie ein %2$s Foto von der %1$s Ihres Ausweisdokuments.</string>
+</resources>

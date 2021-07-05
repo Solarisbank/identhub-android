@@ -23,7 +23,7 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     protected VerificationBankViewModel sharedViewModel;
 
-    protected ImageView icon;
+    protected View icon;
     protected TextView title;
     protected TextView description;
 
@@ -45,8 +45,8 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     protected void initViews() {
         int iconResource = getIconResource();
-        if (iconResource != NO_RESOURCE) {
-            icon.setImageResource(iconResource);
+        if (icon instanceof ImageView && iconResource != NO_RESOURCE) {
+            ((ImageView) icon).setImageResource(iconResource);
         }
 
         title.setText(getTitleResource());

@@ -1,190 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_above="@+id/buttonLayout">
 
-    <EditText
-        android:id="@+id/firstDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:layout_width="32dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="@dimen/margin_8"
-        android:imeOptions="actionNext"
-        android:nextFocusRight="@+id/secondDigit"
-        app:layout_constraintEnd_toStartOf="@+id/secondDigit"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
 
-    <EditText
-        android:id="@+id/secondDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:layout_marginEnd="@dimen/margin_8"
-        android:imeOptions="actionNext"
-        android:nextFocusRight="@id/thirdDigit"
-        app:layout_constraintEnd_toStartOf="@+id/thirdDigit"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/firstDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="24dp"/>
 
-    <EditText
-        android:id="@+id/thirdDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:layout_marginEnd="@dimen/margin_8"
-        android:imeOptions="actionNext"
-        android:nextFocusRight="@id/fourthDigit"
-        app:layout_constraintEnd_toStartOf="@+id/fourthDigit"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/secondDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="24dp"/>
 
-    <EditText
-        android:id="@+id/fourthDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:layout_marginEnd="@dimen/margin_8"
-        android:imeOptions="actionNext"
-        android:nextFocusRight="@id/fifthDigit"
-        app:layout_constraintEnd_toStartOf="@+id/fifthDigit"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/thirdDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+            <ImageView
+                android:id="@+id/scratch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_termsofservice"
+                android:adjustViewBounds="true"
+                />
 
-    <EditText
-        android:id="@+id/fifthDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:layout_marginEnd="@dimen/margin_8"
-        android:imeOptions="actionNext"
-        android:nextFocusRight="@id/sixthDigit"
-        app:layout_constraintEnd_toStartOf="@+id/sixthDigit"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fourthDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+            <TextView
+                android:id="@+id/description"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/contract_signing_description"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/scratch"
+                />
 
-    <EditText
-        android:id="@+id/sixthDigit"
-        style="@style/IdentHubEditTextOneDigit"
-        android:imeOptions="actionDone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fifthDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+            <EditText
+                android:id="@+id/codeInput"
+                style="@style/IdentHubTextBoxSingle"
+                android:background="@drawable/textbox_drawable_selector"
+                android:layout_width="162dp"
+                android:layout_height="41dp"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/margin_24"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                />
 
+            <TextView
+                android:id="@+id/errorMessage"
+                style="@style/IdentHubTextView.Tiny.Error"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:gravity="center"
+                android:text="@string/contract_signing_code_request_new"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/codeInput"
+                tools:visibility="visible" />
 
-    <TextView
-        android:id="@+id/newCodeCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        tools:text="@string/verification_phone_request_code" />
+            <TextView
+                android:id="@+id/newCodeCounter"
+                style="@style/IdentHubTextView.Small_14"
+                android:text="@string/contract_signing_code_expires"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/codeInput"
+                tools:text="@string/verification_phone_request_code" />
 
-    <TextView
-        android:id="@+id/errorMessage"
-        style="@style/IdentHubTextView.Tiny.Error"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
-        android:gravity="center"
-        android:text="@string/verification_phone_error_message"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/sixthDigit"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/firstDigit"
-        app:layout_constraintTop_toTopOf="@+id/guideline7"
-        tools:visibility="visible" />
+            <LinearLayout
+                android:id="@+id/noticeLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/newCodeCounter"
+                app:layout_constraintVertical_bias="1">
 
-    <Button
-        android:id="@+id/submitButton"
-        style="@style/IdentHubPrimaryButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/contract_signing_preview_sign_action"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:src="@drawable/ic_info" />
 
-    <Button
-        android:id="@+id/sendNewCode"
-        style="@style/IdentHubTextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/verification_phone_action_new_code"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newCodeCounter" />
+                <TextView
+                    android:id="@+id/transactionDescription"
+                    style="@style/IdentHubTextView.Small_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:text="@string/contract_signing_preview_notice"
+                    app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                    app:layout_constraintStart_toEndOf="@+id/noticeLabel" />
+            </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="48dp" />
+            <LinearLayout
+                android:id="@+id/noticeSubtitleLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/noticeLayout"
+                app:layout_constraintVertical_bias="1">
+                <TextView
+                    android:id="@+id/point"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:text="∙"
+                    app:layout_constraintStart_toStartOf="@id/startGuideline"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/noticeTitle" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="96dp" />
+                <TextView
+                    android:id="@+id/noticeTitle"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contract_signing_notice_title"
+                    app:layout_constraintStart_toStartOf="@+id/noticeIconTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/noticeDescription"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/contract_signing_notice1"
+                app:layout_constraintTop_toBottomOf="@+id/noticeSubtitleLayout"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="139dp" />
+            <TextView
+                android:id="@+id/noticeDescription2"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_16"                    app:layout_constraintTop_toBottomOf="@+id/noticeDescription"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"                     android:text="@string/contract_signing_notice2" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+    android:id="@+id/buttonLayout"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/submitButton"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/rounded_base05_background_selector"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8">
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginBottom="@dimen/margin_4"
+        android:text="@string/contract_signing_sign_action"
+        android:enabled="false"
+        />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginEnd="@dimen/margin_8"
-            app:srcCompat="@drawable/ic_alert_16_black"
-            app:tint="@color/ident_hub_color_black50" />
-
-        <TextView
-            android:id="@+id/transactionDescription"
-            style="@style/IdentHubTextView.Info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/contract_signing_preview_transaction_info"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="@+id/view2"
-            app:layout_constraintTop_toTopOf="@+id/view2" />
-
+    <TextView
+        android:id="@+id/sendNewCode"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginBottom="@dimen/margin_4"
+        android:text="@string/contract_signing_code_request_new_button"
+        android:visibility="gone"
+        />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

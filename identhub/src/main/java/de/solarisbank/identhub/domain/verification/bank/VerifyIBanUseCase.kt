@@ -9,6 +9,7 @@ import de.solarisbank.sdk.core.result.data
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import retrofit2.HttpException
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 class VerifyIBanUseCase(
@@ -20,15 +21,23 @@ class VerifyIBanUseCase(
         return verificationBankRepository.postVerify(IBan(iBan))
                 .onErrorResumeNext { t ->
                     if (t is HttpException && t.code() == HttpURLConnection.HTTP_PRECON_FAILED) {
-                        return@onErrorResumeNext verificationBankRepository.postBankIdIdentification(IBan(iBan))
+                        Timber.d("onErrorResumeNext 1")
+                        val bankIdIdentification = verificationBankRepository.postBankIdIdentification(IBan(iBan))
+                        Timber.d("onErrorResumeNext 2")
+                        return@onErrorResumeNext bankIdIdentification
                     } else {
+                        Timber.d("onErrorResumeNext 3")
                         return@onErrorResumeNext Single.error(t)
                     }
                 }
                 .flatMapCompletable { identificationDto: IdentificationDto -> verificationBankRepository.save(identificationDto) }
                 .andThen(
                         getIdentificationUseCase.execute(Unit)
-                                .map { NavigationalResult(it.data!!.url, it.data!!.nextStep) }
-                ).observeOn(AndroidSchedulers.mainThread())
+                                .map {
+                                    Timber.d("andThen")
+                                    return@map NavigationalResult(it.data!!.url, it.data!!.nextStep)
+                                }
+                )
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

@@ -54,16 +54,20 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
             // todo create typeAlias
             result: Result<NavigationalResult<String>>
     ) {
-        Timber.d("processInitializationStateResult: ")
+        Timber.d("processInitializationStateResult, result: $result ")
         if (result.isSuccess) {
             val navResult = result.getOrNull()!!
             if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
+                Timber.d("processInitializationStateResult 1")
                 start(sessionUrl, navResult.nextStep, navResult.data)
             } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
+                Timber.d("processInitializationStateResult 2")
                 start(sessionUrl, navResult.nextStep, navResult.data)
-            } else if (navResult.data != "") {
+            } else if (navResult.data.isNullOrEmpty()) {
+                Timber.d("processInitializationStateResult 3")
                 successCallback.invoke(IdentHubSessionResult(navResult.data, null))
             } else {
+                Timber.d("processInitializationStateResult 4")
                 start(sessionUrl, FIRST_STEP_DIRECTION.FOURTHLINE_UPLOADING.destination, "")
             }
         }
@@ -71,6 +75,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
 
     private fun createResultLauncher(owner: LifecycleOwner): ActivityResultLauncher<IdentHubSessionDescription> {
         return ActivityResultRegistry.register("de.solarisbank.identhub", fragmentActivity, IdentHubResultContract()) { result ->
+            Timber.d("ResultLauncher callback; result: $result")
             if (!result.data.isNullOrEmpty()) {
                 successCallback(IdentHubSessionResult(result.data, result.step))
             } else {

@@ -53,16 +53,7 @@
             app:popUpToInclusive="true"
             app:destination="@id/processingVerificationFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/verificationBankSuccessMessageFragment"
-        android:name="de.solarisbank.identhub.verfication.bank.success.VerificationBankSuccessMessageFragment"
-        android:label="VerificationBankSuccessMessageFragment">
-        <action
-            android:id="@+id/action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment"
-            app:popUpTo="@+id/verificationBankSuccessMessageFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/contractSigningPreviewFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/establishConnectionFragment"
         android:name="de.solarisbank.identhub.verfication.bank.gateway.EstablishConnectionFragment"
@@ -78,10 +69,10 @@
         android:name="de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationFragment"
         android:label="ProcessingVerificationFragment">
         <action
-            android:id="@+id/action_processingVerificationFragment_to_verificationBankSuccessMessageFragment"
+            android:id="@+id/action_processingVerificationFragment_to_contractSigningPreviewFragment"
             app:popUpTo="@+id/processingVerificationFragment"
             app:popUpToInclusive="true"
-            app:destination="@id/verificationBankSuccessMessageFragment" />
+            app:destination="@id/contractSigningPreviewFragment" />
     </fragment>
 
     <!--<include app:graph="@navigation/contract_nav_graph"/>-->

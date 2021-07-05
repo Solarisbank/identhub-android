@@ -6,6 +6,11 @@ import android.os.Bundle
 import androidx.annotation.CheckResult
 import androidx.annotation.RestrictTo
 import androidx.fragment.app.Fragment
+import de.solarisbank.identhub.router.NEXT_STEP_ACTION
+import de.solarisbank.identhub.router.NEXT_STEP_KEY
+import de.solarisbank.identhub.router.toNextStep
+import de.solarisbank.identhub.session.IdentHub
+import timber.log.Timber
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class InlineFragment : Fragment() {
@@ -26,11 +31,23 @@ class InlineFragment : Fragment() {
             resultCode: Int,
             data: Intent?
     ) {
+        Timber.d("onActivityResult, requestCode : $requestCode, resultCode : $resultCode, data : $data")
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestCode()) {
-            ActivityResultRegistry.dispatchResult(requestCode = requestCode,
-                    resultCode = resultCode,
-                    data = data ?: Intent())
+            if (data?.action == NEXT_STEP_ACTION) {
+                data.getStringExtra(IdentHub.SESSION_URL_KEY)?.let {
+                startActivityForResult(
+                        toNextStep(requireContext(), data.getStringExtra(NEXT_STEP_KEY)!!, it),
+                        requestCode()
+                )
+                }?: kotlin.run {
+                    Timber.d("onActivityResult, SESSION_URL is null")
+                }
+            } else {
+                ActivityResultRegistry.dispatchResult(requestCode = requestCode,
+                        resultCode = resultCode,
+                        data = data ?: Intent())
+            }
         }
     }
 

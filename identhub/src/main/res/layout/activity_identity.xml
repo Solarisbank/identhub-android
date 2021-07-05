@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <de.solarisbank.identhub.ui.StepIndicatorView
+        <de.solarisbank.identhub.ui.SolarisIndicatorView
             android:id="@+id/stepIndicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

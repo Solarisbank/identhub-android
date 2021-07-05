@@ -9,7 +9,7 @@ import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent;
 import de.solarisbank.identhub.identity.IdentityActivity;
-import de.solarisbank.identhub.session.IdentHubSession;
+import de.solarisbank.identhub.router.COMPLETED_STEP;
 
 public final class IntroActivity extends IdentHubActivity {
 
@@ -21,9 +21,9 @@ public final class IntroActivity extends IdentHubActivity {
         IntroActivityViewModel viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(IntroActivityViewModel.class);
 
-        IdentHubSession.Step lastCompletedStep = viewModel.getLastCompletedStep();
+        COMPLETED_STEP lastCompletedStep = viewModel.getLastCompletedStep();
 
-        if (lastCompletedStep == IdentHubSession.Step.VERIFICATION_BANK) {
+        if (lastCompletedStep == COMPLETED_STEP.VERIFICATION_BANK) {
             Intent intent = new Intent(this, IdentityActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             startActivity(intent);

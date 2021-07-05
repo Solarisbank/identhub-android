@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
@@ -24,30 +23,10 @@ import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment.Companion.D
 
 class DocTypeSelectionFragment: FourthlineFragment() {
 
-    private var pasRB: RadioButton? = null
-    private var idRB: RadioButton? = null
-    private var confirmButton: Button? = null
-    private var passportTitle: TextView? = null
-    private var idTitle: TextView? = null
-    private var pasWrapperCardView: CardView? = null
-    private var idWrapperCardView: CardView? = null
+    private lateinit var docTypeAdapter: DocTypeAdapter
+    private lateinit var documentTypeList: RecyclerView
 
-    private val clickListener = View.OnClickListener { view ->
-        when (view) {
-            pasWrapperCardView -> {
-                pasRB!!.isChecked = true
-                idRB!!.post { idRB!!.isChecked = false }
-                confirmButton!!.isEnabled = true
-                kycSharedViewModel.type = DocScanFragment.TYPE_PASSPORT
-            }
-            idWrapperCardView -> {
-                idRB!!.isChecked = true
-                pasRB!!.post { pasRB!!.isChecked = false }
-                confirmButton!!.isEnabled = true
-                kycSharedViewModel.type = DocScanFragment.TYPE_ID
-            }
-        }
-    }
+    private var confirmButton: TextView? = null
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
         activityViewModels()
@@ -63,27 +42,15 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_doc_type_selection, container, false).also {
-
-            val typePassportViewGroup: ViewGroup = it.findViewById(R.id.passportType)
-            val typeIdViewGroup: ViewGroup = it.findViewById(R.id.idType)
-
-            pasWrapperCardView = typePassportViewGroup.findViewById(R.id.cardWrapper)
-            idWrapperCardView = typeIdViewGroup.findViewById(R.id.cardWrapper)
-
-            pasRB = typePassportViewGroup.findViewById(R.id.typeRadiobutton)
-            idRB = typeIdViewGroup.findViewById(R.id.typeRadiobutton)
-
-            passportTitle = typePassportViewGroup.findViewById(R.id.idTypeTV)
-            idTitle = typeIdViewGroup.findViewById(R.id.idTypeTV)
-
+            documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
         initViewModel()
-        initView()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -96,44 +63,21 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         viewModelFactory = assistedViewModelFactory.create(this, arguments)
     }
 
-    private fun initView() {
-        passportTitle!!.text = "Passport"
-        idTitle!!.text = "ID"
-        pasWrapperCardView!!.setOnClickListener(clickListener)
-        idWrapperCardView!!.setOnClickListener(clickListener)
-        confirmButton!!.setOnClickListener {
-            if (pasRB!!.isChecked && !idRB!!.isChecked) {
-                moveToDocScanFragment(DocScanFragment.Companion.TYPE_PASSPORT)
-            } else if(idRB!!.isChecked && !pasRB!!.isChecked) {
-                moveToDocScanFragment(DocScanFragment.Companion.TYPE_ID)
-            }
-        }
-
-        kycSharedViewModel.type?.let {
-            when (it) {
-                DocScanFragment.TYPE_PASSPORT -> {
-                    pasRB!!.isEnabled = true
-                    idRB!!.isEnabled = false
-                }
-                DocScanFragment.TYPE_ID -> {
-                    idRB!!.isEnabled = true
-                    pasRB!!.isEnabled = false
-                }
-            }
-        }
+    private fun initRecyclerView() {
+        documentTypeList.layoutManager = LinearLayoutManager(requireContext())
+        documentTypeList.setHasFixedSize(true)
+        docTypeAdapter = DocTypeAdapter { type -> confirmButton!!.isEnabled = (type != null) }
+        documentTypeList.adapter = docTypeAdapter
+        confirmButton!!.setOnClickListener { moveToDocScanFragment() }
     }
 
     private fun appearAvailableDocTypes(docs: List<AppliedDocument>){
-        docs.forEach {
-            when (it) {
-                AppliedDocument.PASSPORT -> pasWrapperCardView!!.visibility = View.VISIBLE
-                AppliedDocument.ID_CARD -> idWrapperCardView!!.visibility = View.VISIBLE
-            }
-        }
+        docTypeAdapter.add(docs.filter { it.isSupported })
+        docTypeAdapter.notifyDataSetChanged()
     }
 
-    private fun moveToDocScanFragment(docType: Int) {
-        activityViewModel.navigateToDocScanFragment(Bundle().apply { putInt(DOC_TYPE_KEY, docType) })
+    private fun moveToDocScanFragment() {
+        activityViewModel.navigateToDocScanFragment(Bundle().apply { putSerializable(DOC_TYPE_KEY, docTypeAdapter.getSelectedDocType()) })
     }
 
     override fun onResume() {
@@ -150,19 +94,13 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == 32 && (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED)) {
             Toast.makeText(requireContext(), "Camera permission is required to proceed", Toast.LENGTH_SHORT)
-                    .show()
+                .show()
             requestCameraPermission()
         }
     }
 
     override fun onDestroyView() {
-        pasRB = null
-        idRB = null
         confirmButton = null
-        passportTitle = null
-        idTitle = null
-        pasWrapperCardView = null
-        idWrapperCardView = null
         super.onDestroyView()
     }
 }

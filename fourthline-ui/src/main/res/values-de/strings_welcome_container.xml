@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_welcome_container_title">Als nächstes, machen Sie ein Foto von sich selbst (Selfie)</string>
+    <string name="fourthline_welcome_container_subtitle">Wenn Sie eine Brille tragen, stellen Sie sicher, dass sie kein grelles Licht reflektiert.</string>
+    <string name="fourthline_welcome_container_continue_button">Weiter</string>
+</resources>

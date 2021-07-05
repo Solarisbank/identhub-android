@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,26 +13,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
+import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.SignedDocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.data.model.StateUiModel
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.Disposables
+import timber.log.Timber
 import java.io.File
 
 class IdentitySummaryFragment : IdentHubFragment() {
     private var clickDisposable = Disposables.disposed()
     private val adapter = SignedDocumentAdapter()
     private val viewModel: IdentitySummaryFragmentViewModel by lazy<IdentitySummaryFragmentViewModel> { viewModels() }
-    private val sharedViewModel: IdentitySummaryViewModel by lazy<IdentitySummaryViewModel> { activityViewModels() }
+    private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
 
     private lateinit var documentsList: RecyclerView
     private lateinit var downloadButton: Button
-    private lateinit var submitButton: Button
+    private lateinit var submitButton: TextView
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -59,8 +63,15 @@ class IdentitySummaryFragment : IdentHubFragment() {
         documentsList.layoutManager = LinearLayoutManager(context)
         documentsList.setHasFixedSize(true)
         documentsList.adapter = adapter
+        viewModel.getUiState().observe(viewLifecycleOwner, { onIdentificationStatusChanged(it) })
         downloadButton.setOnClickListener { viewModel.onDownloadAllDocumentClicked(adapter.items) }
-        submitButton.setOnClickListener { sharedViewModel.onSubmitButtonClicked() }
+        submitButton.setOnClickListener { viewModel.onSubmitButtonClicked() }
+        //todo too many observer; should be refactored with state pattern
+    }
+
+    private fun onIdentificationStatusChanged(model: StateUiModel<Bundle?>) {
+        Timber.d("onIdentificationStatusChanged, model : ${model.data}")
+        sharedViewModel.sendResult(model.data)
     }
 
     private fun onDocumentActionError(throwable: Throwable) {}

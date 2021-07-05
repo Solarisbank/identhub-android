@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_terms_button_submit">Next</string>
+    <string name="fourthline_terms_verify_title">Verify your identity</string>
+    <string name="fourthline_terms_description_start">Take a selfie and scan your ID or Passport to verify your identity. No VideoIdent or PostIdent required. \n\nPlease allow Samsung Pay access to:</string>
+    <string name="fourthline_terms_description_list_item1">Your location</string>
+    <string name="fourthline_terms_description_list_item2">Your camera</string>
+    <string name="fourthline_terms_description_end">in order to perform the identification.</string>
+</resources>

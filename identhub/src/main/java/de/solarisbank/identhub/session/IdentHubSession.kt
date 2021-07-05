@@ -4,13 +4,14 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.fragment.app.FragmentActivity
+import de.solarisbank.identhub.router.COMPLETED_STEP
 import timber.log.Timber
 
 class IdentHubSession(private val sessionUrl: String) {
     private var mainProcess: IdentHubSessionObserver? = null
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
-    private var lastCompetedStep: Step? = null
+    private var lastCompetedStep: COMPLETED_STEP? = null
 
     private var paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
@@ -45,11 +46,9 @@ class IdentHubSession(private val sessionUrl: String) {
         lastCompetedStep = identHubSessionResult.step
         val paymentSuccessCallback = this.paymentSuccessCallback
         val identificationSuccessCallback = this.identificationSuccessCallback
-        if (paymentSuccessCallback != null && (identHubSessionResult.step == Step.VERIFICATION_BANK || identHubSessionResult.step == Step.ON_PAYMENT_SUCCESS)) {
+        if (paymentSuccessCallback != null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
-            identificationSuccessCallback(identHubSessionResult)
-        } else if (identificationSuccessCallback != null && identHubSessionResult.step == Step.ON_SUCCESS) {
             identificationSuccessCallback(identHubSessionResult)
         }
     }
@@ -58,7 +57,7 @@ class IdentHubSession(private val sessionUrl: String) {
         lastCompetedStep = identHubSessionFailure.step
         val paymentErrorCallback = this.paymentErrorCallback
         val identificationErrorCallback = this.identificationErrorCallback
-        if (paymentErrorCallback != null && identHubSessionFailure.step == Step.VERIFICATION_BANK) {
+        if (paymentErrorCallback != null && identHubSessionFailure.step == COMPLETED_STEP.VERIFICATION_BANK) {
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
             identificationErrorCallback(identHubSessionFailure)
@@ -100,22 +99,6 @@ class IdentHubSession(private val sessionUrl: String) {
         }
     }
 
-    enum class Step(val index: Int) {
-        VERIFICATION_PHONE(1), VERIFICATION_BANK(2), CONTRACT_SIGNING(3),
-        ON_PAYMENT_SUCCESS(4), ON_SUCCESS(5); //todo refactor hot fix
-
-        companion object {
-            fun getEnum(index: Int): Step? {
-                for (step in Step.values()) {
-                    if (step.index == index) {
-                        return step
-                    }
-                }
-                return null
-            }
-        }
-    }
-
     companion object {
         @kotlin.jvm.JvmStatic
         val ACTION_NEXT_STEP: Int = 99
@@ -128,5 +111,5 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 }
 
-data class IdentHubSessionResult(val identificationId: String, val step: IdentHubSession.Step?)
-data class IdentHubSessionFailure(val message: String? = null, val step: IdentHubSession.Step?)
+data class IdentHubSessionResult(val identificationId: String, val step: COMPLETED_STEP?)
+data class IdentHubSessionFailure(val message: String? = null, val step: COMPLETED_STEP?)

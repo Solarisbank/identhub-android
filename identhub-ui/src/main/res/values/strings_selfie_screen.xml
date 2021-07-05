@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="selfie_step_scanning">Scanning</string>
+    <string name="selfie_step_checking_liveness">Checking liveness</string>
+    <string name="selfie_result_successful">Scan successful</string>
+</resources>

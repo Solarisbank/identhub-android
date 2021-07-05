@@ -7,6 +7,7 @@ import io.reactivex.Single
 import io.reactivex.SingleSource
 import io.reactivex.SingleTransformer
 import retrofit2.HttpException
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Result<U>> {
@@ -25,7 +26,8 @@ class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Resu
                             else -> Type.Unknown
                         }
                     }
-                    Result.Error(errorType, it)
+                    Timber.d("apply, it: $it")
+                        return@onErrorReturn Result.Error(errorType, it)
                 }
     }
 }
@@ -33,3 +35,5 @@ class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Resu
 fun <T> Single<NavigationalResult<T>>.transformResult(): Single<Result<T>> {
     return compose(ResultSingleTransformer())
 }
+
+

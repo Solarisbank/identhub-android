@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/step1"
+        android:id="@+id/step1Line"
         style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/step2"
+        android:id="@+id/step2Line"
         style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,11 +56,11 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/step1"
+        app:layout_constraintTop_toBottomOf="@+id/step1Line"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/step3"
+        android:id="@+id/step3Line"
         style="@style/IdentHubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/step2"
+        app:layout_constraintTop_toBottomOf="@+id/step2Line"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/step3"
+        app:layout_constraintTop_toBottomOf="@+id/step3Line"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline

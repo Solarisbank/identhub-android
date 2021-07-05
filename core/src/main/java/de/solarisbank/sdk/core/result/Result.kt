@@ -2,8 +2,10 @@ package de.solarisbank.sdk.core.result
 
 sealed class Result<out R> {
 
-    data class Success<out T>(val data: T, val nextStep: String? = null) : Result<T>()
-    data class Error(val typ: Type, val throwable: Throwable) : Result<Nothing>()
+    open val nextStep: String? = null
+
+    data class Success<out T>(val data: T, override val nextStep: String? = null) : Result<T>()
+    data class Error(val type: Type, val throwable: Throwable, override val nextStep: String? = null) : Result<Nothing>()
     object Loading : Result<Nothing>()
 
     override fun toString(): String {
@@ -31,13 +33,12 @@ val Result<*>.succeeded
 val <T> Result<T>.data: T?
     get() = (this as? Result.Success)?.data
 
-val <T> Result<T>.nextStep: String?
-    get() = (this as? Result.Success)?.nextStep
-
 val <T> Result<T>.throwable: Throwable?
     get() = (this as? Result.Error)?.throwable
 
 fun <T> Result<T>.successOr(fallback: T): T {
     return (this as? Result.Success<T>)?.data ?: fallback
 }
+
+
 

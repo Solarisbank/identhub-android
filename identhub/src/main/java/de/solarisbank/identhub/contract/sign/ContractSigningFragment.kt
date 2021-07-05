@@ -2,13 +2,12 @@ package de.solarisbank.identhub.contract.sign
 
 import android.graphics.drawable.LevelListDrawable
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextWatcher
-import android.view.FocusFinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -17,13 +16,13 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
-import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.ui.DefaultTextWatcher
 import de.solarisbank.identhub.verfication.phone.CountDownTime
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
@@ -42,18 +41,13 @@ class ContractSigningFragment : IdentHubFragment() {
     private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
     private val viewModel: ContractSigningViewModel by lazy<ContractSigningViewModel> { viewModels() }
 
-    private lateinit var firstDigit: EditText
-    private lateinit var secondDigit: EditText
-    private lateinit var thirdDigit: EditText
-    private lateinit var fourthDigit: EditText
-    private lateinit var fifthDigit: EditText
-    private lateinit var sixthDigit: EditText
+    private lateinit var codeInput: EditText
     private lateinit var description: TextView
-    private lateinit var sendNewCode: Button
+    private lateinit var sendNewCode: TextView
     private lateinit var newCodeCounter: TextView
     private lateinit var transactionDescription: TextView
     private lateinit var errorMessage: TextView
-    private lateinit var submitButton: Button
+    private lateinit var submitButton: TextView
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -62,12 +56,7 @@ class ContractSigningFragment : IdentHubFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_contract_signing, container, false)
                 .also {
-                    firstDigit = it.findViewById(R.id.firstDigit)
-                    secondDigit = it.findViewById(R.id.secondDigit)
-                    thirdDigit = it.findViewById(R.id.thirdDigit)
-                    fourthDigit = it.findViewById(R.id.fourthDigit)
-                    fifthDigit = it.findViewById(R.id.fifthDigit)
-                    sixthDigit = it.findViewById(R.id.sixthDigit)
+                    codeInput = it.findViewById(R.id.codeInput)
                     description = it.findViewById(R.id.description)
                     sendNewCode = it.findViewById(R.id.sendNewCode)
                     newCodeCounter = it.findViewById(R.id.newCodeCounter)
@@ -81,7 +70,6 @@ class ContractSigningFragment : IdentHubFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeAuthorizeResult()
-        observeConfirmationResult()
         observeIdentificationResult()
         observableInputs()
         observeCountDownTimeEvent()
@@ -89,10 +77,10 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun initViews() {
         initFocusListener()
-        initTextWatcher()
         initStateOfDigitInputField()
-        description.text = String.format(getString(R.string.verification_phone_description), "")
+        viewModel.startTimer()
         sendNewCode.setOnClickListener { viewModel.onSendNewCodeClicked() }
+        codeInput.addTextChangedListener(codeInputValidator)
     }
 
     private fun initFocusListener() {
@@ -101,48 +89,11 @@ class ContractSigningFragment : IdentHubFragment() {
                 currentFocusedEditText = view
             }
         }
-        firstDigit.onFocusChangeListener = onFocusChangeListener
-        secondDigit.onFocusChangeListener = onFocusChangeListener
-        thirdDigit.onFocusChangeListener = onFocusChangeListener
-        fourthDigit.onFocusChangeListener = onFocusChangeListener
-        fifthDigit.onFocusChangeListener = onFocusChangeListener
-        sixthDigit.onFocusChangeListener = onFocusChangeListener
-        firstDigit.requestFocus()
-    }
-
-    private fun initTextWatcher() {
-        val textWatcher: TextWatcher = object : DefaultTextWatcher() {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                if (after > count && after == 1) {
-                    changeFocusToNextInput()
-                }
-            }
-        }
-        firstDigit.addTextChangedListener(textWatcher)
-        secondDigit.addTextChangedListener(textWatcher)
-        thirdDigit.addTextChangedListener(textWatcher)
-        fourthDigit.addTextChangedListener(textWatcher)
-        fifthDigit.addTextChangedListener(textWatcher)
-    }
-
-    private fun changeFocusToNextInput() {
-        val view = FocusFinder.getInstance().findNextFocus(view as ViewGroup, currentFocusedEditText, View.FOCUS_RIGHT)
-        view.requestFocus()
+        codeInput.requestFocus()
     }
 
     private fun initStateOfDigitInputField() {
-        digitsEditTexts.add(firstDigit)
-        digitsEditTexts.add(secondDigit)
-        digitsEditTexts.add(thirdDigit)
-        digitsEditTexts.add(fourthDigit)
-        digitsEditTexts.add(fifthDigit)
-        digitsEditTexts.add(sixthDigit)
-        listLevelDrawables.add(firstDigit.background as LevelListDrawable)
-        listLevelDrawables.add(secondDigit.background as LevelListDrawable)
-        listLevelDrawables.add(thirdDigit.background as LevelListDrawable)
-        listLevelDrawables.add(fourthDigit.background as LevelListDrawable)
-        listLevelDrawables.add(fifthDigit.background as LevelListDrawable)
-        listLevelDrawables.add(sixthDigit.background as LevelListDrawable)
+        digitsEditTexts.add(codeInput)
     }
 
     private fun observeAuthorizeResult() {
@@ -153,11 +104,11 @@ class ContractSigningFragment : IdentHubFragment() {
         when (result) {
             is Result.Success -> {
                 sendNewCode.visibility = View.VISIBLE
-                newCodeCounter.visibility = View.GONE
+                submitButton.visibility = View.GONE
             }
             is Result.Error -> {
                 sendNewCode.visibility = View.GONE
-                newCodeCounter.visibility = View.VISIBLE
+                submitButton.visibility = View.VISIBLE
             }
             else -> {
                 defaultState()
@@ -169,28 +120,15 @@ class ContractSigningFragment : IdentHubFragment() {
         viewModel.getIdentificationResultLiveData().observe(viewLifecycleOwner, Observer { onIdentificationResultChanged(it) })
     }
 
-    private fun onIdentificationResultChanged(result: Result<Identification>) {
-        if (result.succeeded) {
+    private fun onIdentificationResultChanged(result: Result<IdentificationUiModel>) {
+        Timber.d("onIdentificationResultChanged, result: ${result.data}")
+        if (result.succeeded && Status.getEnum(result.data?.status) == Status.SUCCESSFUL) {
             transactionDescription.text = String.format(getString(R.string.contract_signing_preview_transaction_info), result.data?.id)
-        }
-    }
-
-    private fun observeConfirmationResult() {
-        viewModel.getConfirmResultLiveData().observe(viewLifecycleOwner, Observer { onConfirmationResultChanged(it) })
-    }
-
-    private fun onConfirmationResultChanged(result: Result<Any>) {
-        when (result) {
-            is Result.Success<*> -> {
-                onStateOfDigitInputChanged(SUCCESS_STATE)
-                sharedViewModel.navigateToSummary()
-            }
-            is Result.Error -> {
-                onStateOfDigitInputChanged(ERROR_STATE)
-            }
-            else -> {
-                onStateOfDigitInputChanged(LOADING_STATE)
-            }
+            onStateOfDigitInputChanged(SUCCESS_STATE)
+            sharedViewModel.navigateToSummary()
+        } else if (Status.getEnum(result.data?.status) == Status.FAILED || Status.getEnum(result.data?.status) == Status.CONFIRMED) {
+            onStateOfDigitInputChanged(ERROR_STATE)
+            sharedViewModel.callOnFailureResult()
         }
     }
 
@@ -201,15 +139,21 @@ class ContractSigningFragment : IdentHubFragment() {
     private fun onCountDownTimeState(event: Event<CountDownTime>) {
         val countDownTime = event.content
         if (countDownTime != null) {
-            newCodeCounter.visibility = if (countDownTime.isFinish) View.GONE else View.VISIBLE
             sendNewCode.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
-            newCodeCounter.text = String.format(getString(R.string.verification_phone_request_code), countDownTime.format())
+            errorMessage.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
+            codeInput.isEnabled = !countDownTime.isFinish
+            submitButton.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.GONE
+            newCodeCounter.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.INVISIBLE
+            newCodeCounter.text = String.format(getString(R.string.contract_signing_code_expires), countDownTime.format())
+
         }
     }
 
     private fun observableInputs() {
+        Timber.d("observableInputs, Samsung")
         disposable = RxView.clicks(submitButton)
                 .flatMapSingle {
+                    onStateOfDigitInputChanged(LOADING_STATE)
                     Observable.fromIterable(digitsEditTexts)
                             .map { editText: EditText -> editText.text.toString() }
                             .toList()
@@ -223,33 +167,39 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun onStateOfDigitInputChanged(state: Int) {
-        newCodeCounter.visibility = if (state == DEFAULT_STATE) View.VISIBLE else View.GONE
         errorMessage.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
         sendNewCode.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
-        sendNewCode.isEnabled = state != LOADING_STATE
+        submitButton.visibility = if (state != ERROR_STATE) View.VISIBLE else View.GONE
+        newCodeCounter.visibility = if (state != ERROR_STATE) View.VISIBLE else View.GONE
+
         submitButton.isEnabled = state != LOADING_STATE
         submitButton.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.contract_signing_preview_sign_action)
-        firstDigit.isEnabled = state != LOADING_STATE
-        secondDigit.isEnabled = state != LOADING_STATE
-        thirdDigit.isEnabled = state != LOADING_STATE
-        fourthDigit.isEnabled = state != LOADING_STATE
-        fifthDigit.isEnabled = state != LOADING_STATE
-        sixthDigit.isEnabled = state != LOADING_STATE
+        codeInput.isEnabled = state != LOADING_STATE && state != ERROR_STATE
         listLevelDrawables.forEach { it.level = state }
     }
 
     private fun defaultState() {
         listLevelDrawables.forEach { it.level = 0 }
         currentFocusedEditText?.clearFocus()
-        firstDigit.requestFocus()
+        codeInput.requestFocus()
+        newCodeCounter.visibility = View.VISIBLE
         errorMessage.visibility = View.GONE
-        firstDigit.text = null
-        secondDigit.text = null
-        thirdDigit.text = null
-        fourthDigit.text = null
-        fifthDigit.text = null
-        sixthDigit.text = null
-        sixthDigit.invalidate()
+        codeInput.text = null
+    }
+
+    private val codeInputValidator = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            submitButton.isEnabled = !codeInput.text.isNullOrEmpty() && codeInput.text.length == CODE_LENGTH
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
     }
 
     override fun onDestroyView() {
@@ -260,6 +210,9 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     companion object {
+
+        const val CODE_LENGTH = 6
+
         const val DEFAULT_STATE = 0
         const val SUCCESS_STATE = 1
         const val ERROR_STATE = 2

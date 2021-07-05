@@ -7,12 +7,11 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +21,8 @@ import com.fourthline.vision.document.*
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
+import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
+import de.solarisbank.sdk.fourthline.data.entity.toDocumentType
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -45,14 +46,14 @@ class DocScanFragment : DocumentScannerFragment() {
     }
 
     private var documentMask: AppCompatImageView? = null
-    private var takeSnapshot: ImageButton? = null
+    private var takeSnapshot: View? = null
     private var scanPreview: AppCompatImageView? = null
     private var stepLabel: AppCompatTextView? = null
     private var warningsLabel: AppCompatTextView? = null
-    private var resultBlock: CardView? = null
+    private var resultBlock: ViewGroup? = null
     private var punchhole: PunchholeView? = null
-    private var retakeButton: AppCompatButton? = null
-    private var confirmButton: AppCompatButton? = null
+    private var retakeButton: TextView? = null
+    private var confirmButton: TextView? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -69,12 +70,8 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("onCreate")
         val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
         inject(activityComponent.fragmentComponent().create())
-        arguments?.getInt(DOC_TYPE_KEY).let {
-            when (it) {
-                //todo replace with info from network request
-                TYPE_PASSPORT -> currentDocumentType = DocumentType.PASSPORT
-                TYPE_ID -> currentDocumentType = DocumentType.ID_CARD
-            }
+        (arguments?.getSerializable(DOC_TYPE_KEY) as? AppliedDocument)?.let {
+            currentDocumentType = it.toDocumentType()
         }
         super.onCreate(savedInstanceState)
         Timber.d("onCreate end")
@@ -125,7 +122,7 @@ class DocScanFragment : DocumentScannerFragment() {
                     takeSnapshot = it.findViewById(R.id.takeSnapshot)
                     takeSnapshot!!.setOnClickListener { takeSnapshot() }
                     scanPreview = it.findViewById(R.id.scanPreview)
-                    stepLabel = it.findViewById(R.id.stepLabel)
+                    stepLabel = it.findViewById(R.id.stepName)
                     warningsLabel = it.findViewById(R.id.warningsLabel)
                     resultBlock = it.findViewById(R.id.resultBlock)
                     punchhole = it.findViewById(R.id.punchhole)
@@ -154,15 +151,17 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("onStepUpdate: ${step.prettify()}")
         step.fileSide.ordinal
         requireActivity().runOnUiThread(Runnable {
-            stepLabel!!.text = step.asString()
+            stepLabel!!.text = step.asString(requireContext())
             documentMask!!.setImageDrawable(step.findMaskDrawable(requireContext()))
             punchhole!!.punchholeRect = getDocumentDetectionArea()
             punchhole!!.postInvalidate()
             syncUi(UiState.SCANNING)
-// You can add code to show snapshot button after some delay, e.g 5-15 seconds, as step
-// timeout is set to 30 seconds.
-            if (step.isAutoDetectAvailable){
+            if (step.isAutoDetectAvailable && currentDocumentType != DocumentType.ID_CARD) {
                 takeSnapshot!!.visibility = View.GONE
+                lifecycleScope.launch(Dispatchers.Main) {
+                    delay(5000)
+                    takeSnapshot!!.visibility = View.VISIBLE
+                }
             } else {
                 takeSnapshot!!.visibility = View.VISIBLE
             }
@@ -170,19 +169,33 @@ class DocScanFragment : DocumentScannerFragment() {
     }
 
     private fun DocumentScannerStep.findMaskDrawable(context: Context): Drawable? {
-        Timber.d("findMaskDrawable")
-        return ContextCompat.getDrawable(
-                context,
-                when (fileSide) {
-                    DocumentFileSide.FRONT ->
+        Timber.d("findMaskDrawable, fileSide: $fileSide")
+        val frameResource: Int
+
+        when (fileSide) {
+            DocumentFileSide.FRONT ->
+                frameResource = when (currentDocumentType) {
+                    DocumentType.ID_CARD ->
+                        if (isAngled) R.drawable.ic_idcard_front_tilted_success_frame
+                        else R.drawable.ic_idcard_front_success_frame
+                    DocumentType.PASSPORT ->
                         if (isAngled) R.drawable.ic_passport_angled_success_frame
                         else R.drawable.ic_passport_front_success_frame
-                    DocumentFileSide.BACK ->
-                        if (isAngled) R.drawable.ic_idcard_front_success_frame
-                        else R.drawable.ic_idcard_front_success_frame
-                    else -> throw RuntimeException("ID cards do not have document side: $fileSide")
+                    else -> R.drawable.ic_idcard_front_success_frame
                 }
-        )
+
+            DocumentFileSide.BACK ->
+                frameResource = when (currentDocumentType) {
+                    DocumentType.ID_CARD ->
+                        if (isAngled) R.drawable.ic_idcard_back_tilted_success_frame
+                        else R.drawable.ic_idcard_back_success_frame
+                    else -> R.drawable.ic_idcard_back_success_frame
+                }
+            else -> throw RuntimeException("ID cards do not have document side: $fileSide")
+        }
+
+
+        return ContextCompat.getDrawable(context, frameResource)
     }
 
     override fun onWarnings(warnings: List<DocumentScannerStepWarning>) {
@@ -190,7 +203,7 @@ class DocScanFragment : DocumentScannerFragment() {
         cleanupJob?.cancel()
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
 //            binding.icon.visibility = View.VISIBLE
-            warningsLabel!!.text = warnings.asString()
+            warningsLabel!!.text = warnings.asString(requireContext())
 //            binding.icon.setImageLevel(0)
 
             delay(500)
@@ -223,7 +236,7 @@ class DocScanFragment : DocumentScannerFragment() {
     override fun onFail(error: DocumentScannerError) {
         Timber.d("onFail")
         lifecycleScope.launch(Dispatchers.Main) {
-            Toast.makeText(requireContext(), error.asString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), error.asString(requireContext()), Toast.LENGTH_LONG).show()
             requireActivity().onBackPressed()
         }
     }

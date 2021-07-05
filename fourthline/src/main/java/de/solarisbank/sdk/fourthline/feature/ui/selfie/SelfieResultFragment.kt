@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core.BaseActivity
@@ -19,8 +19,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 class SelfieResultFragment : FourthlineFragment() {
 
     private var imageResult: ImageView? = null
-    private var submitButton: Button? = null
-    private var retryButton: Button? = null
+    private var submitButton: TextView? = null
+    private var retryButton: TextView? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)

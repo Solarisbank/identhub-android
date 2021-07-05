@@ -12,19 +12,20 @@
 <!--        android:networkSecurityConfig="@xml/network_security_config"-->
         <activity
             android:name="de.solarisbank.identhub.verfication.bank.VerificationBankActivity"
-            android:theme="@style/IdentHubTheme" />
+            android:theme="@style/IdentHubTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name="de.solarisbank.identhub.contract.ContractActivity"
-            android:theme="@style/IdentHubTheme" />
+            android:theme="@style/IdentHubTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name="de.solarisbank.identhub.identity.IdentityActivity"
-            android:theme="@style/IdentHubTheme" />
+            android:theme="@style/IdentHubTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name="de.solarisbank.identhub.intro.IntroActivity"
-            android:theme="@style/IdentHubTheme" />
-        <activity
-            android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryActivity"
-            android:theme="@style/IdentHubTheme" />
+            android:theme="@style/IdentHubTheme"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".feature.provider.IdentHubFileProvider"
@@ -35,6 +36,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

@@ -61,7 +61,7 @@ class KycUploadFragment : FourthlineFragment() {
     private var subtitle:  TextView? = null
     private var progressBar: ProgressBar? = null
     private var resultImageView: ImageView? = null
-    private var submitButton: Button? = null
+    private var submitButton: TextView? = null
 
     private var bound: Boolean = false
     private var binder: KycUploadServiceBinder? = null

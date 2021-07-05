@@ -33,6 +33,7 @@ android {
                     'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -84,6 +85,7 @@ afterEvaluate {
 
 dependencies {
     implementation timber
+    implementation project(":fourthline-ui")
     implementation project(":identhub")
     implementation kotlinCore
     implementation navigation

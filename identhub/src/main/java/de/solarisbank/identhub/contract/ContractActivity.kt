@@ -10,17 +10,17 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.identhub.ui.StepIndicatorView
+import de.solarisbank.identhub.ui.SolarisIndicatorView
+import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
     private lateinit var viewModel: ContractViewModel
-    private lateinit var stepIndicator: StepIndicatorView
+    private lateinit var solarisIndicator: StepIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +38,8 @@ class ContractActivity : IdentHubActivity() {
     }
 
     private fun initView() {
-        stepIndicator = findViewById(R.id.stepIndicator)
-        val lastCompletedStep = viewModel.getLastCompletedStep()
-        stepIndicator.setStep(lastCompletedStep?.index ?: IdentHubSession.Step.VERIFICATION_PHONE.index)
+        solarisIndicator = findViewById(R.id.stepIndicator)
+        solarisIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {
@@ -58,27 +57,16 @@ class ContractActivity : IdentHubActivity() {
         val naviDirection = event.content
         if (naviDirection != null) {
             viewModel.doOnNavigationChanged(naviDirection.actionId)
-            val naviActionId = naviDirection.actionId
-            if (naviActionId == IdentityActivityViewModel.ACTION_SUMMARY_WITH_RESULT) {
-                startSummaryActivity()
-            } else if (naviActionId != IdentityActivityViewModel.ACTION_QUIT &&
-                    naviActionId != IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviActionId, naviDirection.args)
-            } else {
-                quit(naviDirection.args)
-                return
-            }
-            if (naviDirection.actionId == R.id.action_verificationBankSuccessMessageFragment_to_contractSigningPreviewFragment) {
-                stepIndicator.setStep(StepIndicatorView.THIRD_STEP)
+            when (naviDirection.actionId) {
+                IdentityActivityViewModel.ACTION_QUIT, IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> {
+                    Timber.d("onNavigationChanged 1")
+                    quit(naviDirection.args)
+                }
+                else -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviDirection.actionId, naviDirection.args)
+                }
             }
         }
-    }
-
-    private fun startSummaryActivity() {
-        val intent = Intent(this, IdentitySummaryActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-        startActivity(intent)
-        finish()
     }
 
     private fun quit(bundle: Bundle?) {

@@ -46,8 +46,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragmentInjector.Companion.injectAssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsInjector
-import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeContainerFragment
-import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeContainerFragmentInjector.Companion.injectAssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragmentInjector.Companion.injectAssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector.Companion.injectAssistedViewModelFactory
 import okhttp3.Interceptor

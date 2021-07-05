@@ -6,11 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
@@ -35,13 +33,10 @@ class DocScanResultFragment : FourthlineFragment() {
     }
 
     private var title: TextView? = null
-    private var docNumberInputLayout: TextInputLayout? = null
-    private var docNumberTextInput: TextInputEditText? = null
-    private var issueDateInputLayout: TextInputLayout? = null
+    private var docNumberTextInput: EditText? = null
     private var issueDateTextInput: DateInputEditText? = null
-    private var expireDateInputLayout: TextInputLayout? = null
     private var expireDateTextInput: DateInputEditText? = null
-    private var continueButton: Button? = null
+    private var continueButton: TextView? = null
 
     private val textValidationWatcher = object : TextWatcher{
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -70,11 +65,8 @@ class DocScanResultFragment : FourthlineFragment() {
         return inflater.inflate(R.layout.fragment_doc_scan_result, container, false)
                 .also {
                     title = it.findViewById(R.id.title)
-                    docNumberInputLayout = it.findViewById(R.id.docNumberInputLayout)
                     docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
-                    issueDateInputLayout = it.findViewById(R.id.issueDateInputLayout)
                     issueDateTextInput = it.findViewById(R.id.issueDateTextInput)
-                    expireDateInputLayout = it.findViewById(R.id.expireDateInputLayout)
                     expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
                     continueButton = it.findViewById(R.id.continueButton)
                 }
@@ -91,7 +83,7 @@ class DocScanResultFragment : FourthlineFragment() {
         docNumberTextInput!!.addTextChangedListener(textValidationWatcher)
 
         kycSharedViewModel.getKycDocument().let { doc ->
-            docNumberTextInput!!.text = Editable.Factory.getInstance().newEditable(doc.number)
+            docNumberTextInput!!.setText(doc.number)
             doc.issueDate?.let { issueDateTextInput!!.setDate(it) }?:let {
                 doc.expirationDate?.let {
                     Timber.d("count issue date")
@@ -115,11 +107,8 @@ class DocScanResultFragment : FourthlineFragment() {
         expireDateTextInput?.removeTextChangedListener(textValidationWatcher)
         docNumberTextInput?.removeTextChangedListener(textValidationWatcher)
         title = null
-        docNumberInputLayout = null
         docNumberTextInput = null
-        issueDateInputLayout = null
         issueDateTextInput = null
-        expireDateInputLayout = null
         expireDateTextInput = null
         continueButton = null
         super.onDestroyView()

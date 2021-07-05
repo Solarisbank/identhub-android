@@ -1,66 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintWrapper"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="40dp"
+    android:layout_marginTop="22dp"
     >
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardWrapper"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_margin="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="@dimen/margin_8"
-        android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginBottom="@dimen/margin_4"
-        >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <RadioButton
-                android:id="@+id/typeRadiobutton"
-                android:clickable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/ident_hub_color_base75"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="@dimen/margin_16"
-                />
+        <RadioButton
+            android:id="@+id/typeRadiobutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/ident_hub_color_light_button_text_enabled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/idTypeTV"
-                style="@style/IdentHubTextView.Small_24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Some text"
-                app:layout_constraintStart_toEndOf="@id/typeRadiobutton"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/idImage"
-                android:layout_marginStart="25dp"
-                app:layout_constraintHorizontal_bias="0"
-                />
+        <TextView
+            android:id="@+id/textView"
+            style="@style/IdentHubTextView.Small_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Some text"
+            app:layout_constraintStart_toEndOf="@id/typeRadiobutton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="25dp"
+            app:layout_constraintHorizontal_bias="0"
+            />
 
-            <ImageView
-                android:id="@+id/idImage"
-                android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_margin="@dimen/margin_8"
-                android:layout_marginEnd="@dimen/margin_16"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:src="@drawable/ic_welcome_page_location"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,9 +9,9 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
+import de.solarisbank.identhub.router.COMPLETED_STEP
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHub.isPaymentResultAvailable
-import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 
@@ -24,7 +24,7 @@ class ContractViewModel(savedStateHandle: SavedStateHandle, private val identifi
         }
     }
 
-    fun getLastCompletedStep(): IdentHubSession.Step? {
+    fun getLastCompletedStep(): COMPLETED_STEP? {
         return identificationStepPreferences.get()
     }
 
@@ -34,10 +34,14 @@ class ContractViewModel(savedStateHandle: SavedStateHandle, private val identifi
 
     fun doOnNavigationChanged(actionId: Int) {
         if (isPaymentResultAvailable && actionId == IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-            identificationStepPreferences.save(IdentHubSession.Step.VERIFICATION_BANK)
-        } else if (actionId == IdentityActivityViewModel.ACTION_SUMMARY_WITH_RESULT) {
-            identificationStepPreferences.save(IdentHubSession.Step.CONTRACT_SIGNING)
+            identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK)
+        } else if (actionId == R.id.action_contractSigningFragment_to_identitySummaryFragment) {
+            identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)
         }
+    }
+
+    fun callOnFailureResult() {
+        navigationActionId.value = Event<NaviDirection>(NaviDirection(actionId = IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, null))
     }
 
     fun navigateToContractSigningProcess() {
@@ -45,7 +49,11 @@ class ContractViewModel(savedStateHandle: SavedStateHandle, private val identifi
     }
 
     fun navigateToSummary() {
-        navigateTo(IdentityActivityViewModel.ACTION_SUMMARY_WITH_RESULT)
+        navigateTo(R.id.action_contractSigningFragment_to_identitySummaryFragment)
+    }
+
+    fun sendResult(bundle: Bundle?) {
+        navigateTo(IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, bundle)
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle?) {

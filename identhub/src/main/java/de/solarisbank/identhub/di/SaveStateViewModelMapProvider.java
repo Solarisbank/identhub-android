@@ -24,11 +24,10 @@ import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanSt
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModelFactory;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModelFactory;
 import de.solarisbank.identhub.intro.IntroActivityViewModel;
 import de.solarisbank.identhub.intro.IntroActivityViewModelFactory;
 import de.solarisbank.identhub.intro.IntroModule;
+import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
@@ -49,6 +48,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
     private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
+    private final Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
     private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
     private final Provider<FetchPdfUseCase> fetchPdfUseCaseProvider;
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
@@ -59,6 +59,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                                          Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider,
                                          Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
                                          Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
+                                         Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
                                          Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
                                          Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
                                          IdentityModule identityModule,
@@ -72,6 +73,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
         this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
         this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
+        this.identificationPollingStatusUseCaseProvider = identificationPollingStatusUseCaseProvider;
         this.fetchPdfUseCaseProvider = fetchPdfUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
@@ -89,6 +91,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
             Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
+            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
             Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
@@ -102,6 +105,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 deleteAllLocalStorageUseCaseProvider,
                 getDocumentsUseCaseProvider,
                 getIdentificationUseCaseProvider,
+                identificationPollingStatusUseCaseProvider,
                 fetchingAuthorizedIBanStatusUseCaseProvider,
                 fetchPdfUseCaseProvider,
                 identityModule,
@@ -116,13 +120,41 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     public Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> get() {
         Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> map = new LinkedHashMap<>(3);
 
-        map.put(ContractSigningViewModel.class, ContractSigningViewModelFactory.create(contractModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, getIdentificationUseCaseProvider));
-        map.put(IntroActivityViewModel.class, IntroActivityViewModelFactory.create(introModule, identificationStepPreferencesProvider, sessionUrlRepositoryProvider));
-        map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(verificationBankModule, fetchingAuthorizedIBanStatusUseCaseProvider, getIdentificationUseCaseProvider));
-        map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(identityModule, deleteAllLocalStorageUseCaseProvider, getDocumentsUseCaseProvider, fetchPdfUseCaseProvider, identificationStepPreferencesProvider));
-        map.put(IdentitySummaryViewModel.class, IdentitySummaryViewModelFactory.create(identityModule, getIdentificationUseCaseProvider));
-        map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(verificationBankModule, identificationStepPreferencesProvider, getIdentificationUseCaseProvider, sessionUrlRepositoryProvider));
-        map.put(ContractViewModel.class, ContractViewModelFactory.create(contractModule, identificationStepPreferencesProvider, sessionUrlRepositoryProvider));
+        map.put(ContractSigningViewModel.class, ContractSigningViewModelFactory.create(
+                contractModule,
+                authorizeContractSignUseCaseProvider,
+                confirmContractSignUseCaseProvider,
+                identificationPollingStatusUseCaseProvider
+        ));
+        map.put(IntroActivityViewModel.class, IntroActivityViewModelFactory.create(
+                introModule,
+                identificationStepPreferencesProvider,
+                sessionUrlRepositoryProvider
+        ));
+        map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(
+                verificationBankModule,
+                fetchingAuthorizedIBanStatusUseCaseProvider,
+                getIdentificationUseCaseProvider
+        ));
+        map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(
+                identityModule,
+                deleteAllLocalStorageUseCaseProvider,
+                getDocumentsUseCaseProvider,
+                fetchPdfUseCaseProvider,
+                identificationStepPreferencesProvider,
+                getIdentificationUseCaseProvider
+        ));
+        map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(
+                verificationBankModule,
+                identificationStepPreferencesProvider,
+                getIdentificationUseCaseProvider,
+                sessionUrlRepositoryProvider
+        ));
+        map.put(ContractViewModel.class, ContractViewModelFactory.create(
+                contractModule,
+                identificationStepPreferencesProvider,
+                sessionUrlRepositoryProvider
+        ));
 
         return map;
     }

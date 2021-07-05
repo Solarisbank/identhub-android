@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
@@ -31,7 +34,7 @@ class LocationAccessFragment : FourthlineFragment() {
     private var title: TextView? = null
     private var subtitle: TextView? = null
     private var locationImage: ImageView? = null
-    private var confirmButton: Button? = null
+    private var confirmButton: TextView? = null
     private var progressBar: ProgressBar? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {

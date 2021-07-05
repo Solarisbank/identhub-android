@@ -2,6 +2,7 @@ package de.solarisbank.identhub.data.verification.bank
 
 import de.solarisbank.identhub.data.Mapper
 import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository
@@ -14,6 +15,10 @@ class VerificationBankDataSourceRepository(
         private val verificationBankNetworkDataSource: VerificationBankNetworkDataSource,
         private val verificationBankLocalDataSource: VerificationBankLocalDataSource
 ) : VerificationBankRepository {
+    override fun getIdentification(): Single<Identification> {
+        return verificationBankLocalDataSource.getIdentificationDto()
+    }
+
     override fun getVerificationStatus(identificationId: String): Single<IdentificationDto> {
         return verificationBankNetworkDataSource.getVerificationStatus(identificationId)
     }
@@ -30,5 +35,9 @@ class VerificationBankDataSourceRepository(
         val identificationWithDocument = identificationEntityMapper.to(identificationDto)
         return verificationBankLocalDataSource.insert(identificationWithDocument)
                 .subscribeOn(Schedulers.io())
+    }
+
+    override fun deleteAll(): Completable {
+        return verificationBankLocalDataSource.deleteALl()
     }
 }

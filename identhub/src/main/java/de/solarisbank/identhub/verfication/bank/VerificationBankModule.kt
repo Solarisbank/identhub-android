@@ -7,11 +7,10 @@ import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.*
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
+import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel
-import de.solarisbank.identhub.identity.summary.IdentitySummaryViewModel
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.identhub.verfication.bank.error.VerificationBankErrorViewModel
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel
 
@@ -24,19 +23,15 @@ class VerificationBankModule {
         return VerificationBankIbanViewModel(verifyIBanUseCase)
     }
 
-    fun provideVerificationBankErrorViewModel(): VerificationBankErrorViewModel {
-        return VerificationBankErrorViewModel()
-    }
-
-    fun provideProcessingVerificationViewModel(pollingStatusUseCase: IdentificationPollingStatusUseCase): ProcessingVerificationViewModel {
-        return ProcessingVerificationViewModel(pollingStatusUseCase)
+    fun provideProcessingVerificationViewModel(pollingStatusUseCase: IdentificationPollingStatusUseCase, bandIdPostUseCaseJointAccount: JointAccountBankIdPostUseCase): ProcessingVerificationViewModel {
+        return ProcessingVerificationViewModel(pollingStatusUseCase, bandIdPostUseCaseJointAccount)
     }
 
     fun provideContractSigningViewModel(
             savedStateHandle: SavedStateHandle,
             authorizeContractSignUseCase: AuthorizeContractSignUseCase,
             confirmContractSignUseCase: ConfirmContractSignUseCase,
-            getIdentificationUseCase: GetIdentificationUseCase): ContractSigningViewModel {
+            getIdentificationUseCase: IdentificationPollingStatusUseCase): ContractSigningViewModel {
         return ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, getIdentificationUseCase)
     }
 
@@ -58,14 +53,9 @@ class VerificationBankModule {
             getDocumentsUseCase: GetDocumentsUseCase,
             fetchPdfUseCase: FetchPdfUseCase,
             identificationStepPreferences: IdentificationStepPreferences,
+            getIdentificationUseCase: GetIdentificationUseCase,
             savedStateHandle: SavedStateHandle): IdentitySummaryFragmentViewModel {
         return IdentitySummaryFragmentViewModel(
-                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, savedStateHandle)
-    }
-
-    fun provideIdentitySummaryViewModel(
-            getIdentificationUseCase: GetIdentificationUseCase?,
-            savedStateHandle: SavedStateHandle?): IdentitySummaryViewModel {
-        return IdentitySummaryViewModel(getIdentificationUseCase!!, savedStateHandle)
+                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, getIdentificationUseCase, savedStateHandle)
     }
 }

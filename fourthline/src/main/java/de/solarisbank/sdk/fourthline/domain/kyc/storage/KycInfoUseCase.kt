@@ -103,12 +103,12 @@ class KycInfoUseCase {
     }
 
     private fun obtainDocument(docType: DocumentType, result: DocumentScannerResult) {
-        val mrtd = (result.mrzInfo as MrtdMrzInfo)
+        val mrtd = (result.mrzInfo as? MrtdMrzInfo)
         kycInfo.document = Document(
                 images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
                 videoUrl = result.videoUrl,
-                number = mrtd.documentNumber,
-                expirationDate = mrtd.expirationDate.getDateFromMRZ(),
+                number = mrtd?.documentNumber,
+                expirationDate = mrtd?.expirationDate?.getDateFromMRZ(),
                 type = docType
         )
     }
@@ -118,20 +118,20 @@ class KycInfoUseCase {
      * Here provides person data that has been recognized from document scanning
      */
     private fun updateKycPerson(result: DocumentScannerResult) {
-        val mrtd = result.mrzInfo as MrtdMrzInfo
+        val mrtd = result.mrzInfo as? MrtdMrzInfo
         Timber.d("updateKycPerson : " +
-                "\nmrtd.nationality:${mrtd.nationality}" +
-                "\nlmrtd.gender: ${mrtd.gender}" +
-                "\nlmrtd.firstNames: ${mrtd.firstNames.joinToString(separator = " ")}" +
-                "\nlmrtd.lastNames: ${mrtd.lastNames.joinToString(separator = " ")}" +
-                "\nlmrtd.birthDate.getDate(): ${mrtd.birthDate.getDateFromMRZ()}"
+                "\nmrtd.nationality:${mrtd?.nationality}" +
+                "\nlmrtd.gender: ${mrtd?.gender}" +
+                "\nlmrtd.firstNames: ${mrtd?.firstNames?.joinToString(separator = " ")}" +
+                "\nlmrtd.lastNames: ${mrtd?.lastNames?.joinToString(separator = " ")}" +
+                "\nlmrtd.birthDate.getDate(): ${mrtd?.birthDate?.getDateFromMRZ()}"
         )
 
         kycInfo.person.apply {
-            firstName = mrtd.firstNames.joinToString(separator = " ")
-            lastName = mrtd.lastNames.joinToString(separator = " ")
-            gender = mrtd.gender
-            birthDate = mrtd.birthDate.getDateFromMRZ()
+            firstName = mrtd?.firstNames?.joinToString(separator = " ")
+            lastName = mrtd?.lastNames?.joinToString(separator = " ")
+            gender = mrtd?.gender
+            birthDate = mrtd?.birthDate?.getDateFromMRZ()
         }
 
     }

@@ -1,10 +1,7 @@
 package de.solarisbank.identhub.contract.sign;
 
-import android.content.Intent;
-
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.di.FragmentComponent;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryActivity;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 
 public class ApplicationProcessingFragment extends ProgressIndicatorFragment {
@@ -28,9 +25,10 @@ public class ApplicationProcessingFragment extends ProgressIndicatorFragment {
     protected void initViews() {
         super.initViews();
         icon.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), IdentitySummaryActivity.class);
-            startActivity(intent);
-            getActivity().finish();
+            //todo could be navigated with deeplink
+//            Intent intent = new Intent(getContext(), IdentitySummaryActivity.class);
+//            startActivity(intent);
+//            getActivity().finish();
         });
     }
 }
