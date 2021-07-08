@@ -81,6 +81,8 @@ import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCaseFactory;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCaseFactory;
+import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
+import de.solarisbank.identhub.domain.contract.GetPersonDataUseCaseFactory;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCaseFactory;
@@ -205,6 +207,7 @@ public class IdenthubComponent {
     private Provider<IdentificationRoomDataSource> identificationRoomDataSourceProvider;
     private Provider<IdentificationRepository> identificationRepositoryProvider;
     private Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
+    private Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider;
 
 
     private IdenthubComponent(
@@ -416,6 +419,7 @@ public class IdenthubComponent {
             identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
             identificationRoomDataSourceProvider = DoubleCheck.provider(IdentificationRoomDataSourceFactory.create(identificationModule, identificationDaoProvider.get()));
             identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()));
+            getMobileNumberUseCaseProvider = GetPersonDataUseCaseFactory.create(identificationRepositoryProvider);
             identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()));
             bankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
@@ -446,7 +450,8 @@ public class IdenthubComponent {
                     IdenthubComponent.this.sessionUrlRepositoryProvider,
                     IdenthubComponent.this.introModule,
                     IdenthubComponent.this.verficationBankModule,
-                    IdenthubComponent.this.contractModule
+                    IdenthubComponent.this.contractModule,
+                    getMobileNumberUseCaseProvider
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
 

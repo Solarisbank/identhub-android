@@ -10,7 +10,7 @@
 
     <string name="contract_signing_preview_send_code_action">Send code to sign</string>
 
-    <string name="contract_signing_description">A verification code was sent to your phone (+**-***-***-****). Enter the code below</string>
+    <string name="contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
     <string name="contract_signing_notice_title">You couldn\'t complete the process?</string>
     <string name="contract_signing_notice1">Pleas contact Samsung Pay Customer Support under 06196 – 77 555 30 if you need help with identity verification.</string>
     <string name="contract_signing_notice2">Charges according to the conditions of the service provider of landline or mobile connections.</string>

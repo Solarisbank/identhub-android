@@ -31,8 +31,16 @@ class VerificationBankModule {
             savedStateHandle: SavedStateHandle,
             authorizeContractSignUseCase: AuthorizeContractSignUseCase,
             confirmContractSignUseCase: ConfirmContractSignUseCase,
-            getIdentificationUseCase: IdentificationPollingStatusUseCase): ContractSigningViewModel {
-        return ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, getIdentificationUseCase)
+            getIdentificationUseCase: IdentificationPollingStatusUseCase,
+            getMobileNumberUseCase: GetMobileNumberUseCase
+    ): ContractSigningViewModel {
+        return ContractSigningViewModel(
+                savedStateHandle,
+                authorizeContractSignUseCase,
+                confirmContractSignUseCase,
+                getIdentificationUseCase,
+                getMobileNumberUseCase
+        )
     }
 
     fun provideContractSigningPreviewViewModel(

@@ -12,6 +12,7 @@ import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
@@ -66,14 +67,23 @@ public final class IdentityModule {
             final SavedStateHandle savedStateHandle,
             final AuthorizeContractSignUseCase authorizeContractSignUseCase,
             final ConfirmContractSignUseCase confirmContractSignUseCase,
-            final IdentificationPollingStatusUseCase identificationPollingStatusUseCase) {
-        return new ContractSigningViewModel(savedStateHandle, authorizeContractSignUseCase, confirmContractSignUseCase, identificationPollingStatusUseCase);
+            final IdentificationPollingStatusUseCase identificationPollingStatusUseCase,
+            final GetMobileNumberUseCase getMobileNumberUseCase
+    ) {
+        return new ContractSigningViewModel(
+                savedStateHandle,
+                authorizeContractSignUseCase,
+                confirmContractSignUseCase,
+                identificationPollingStatusUseCase,
+                getMobileNumberUseCase
+        );
     }
 
     @NonNull
     public ContractSigningPreviewViewModel provideContractSigningPreviewViewModel(
             final GetDocumentsUseCase getDocumentsUseCase,
-            final FetchPdfUseCase fetchPdfUseCase
+            final FetchPdfUseCase fetchPdfUseCase,
+            final GetMobileNumberUseCase getMobileNumberUseCase
     ) {
         return new ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase);
     }

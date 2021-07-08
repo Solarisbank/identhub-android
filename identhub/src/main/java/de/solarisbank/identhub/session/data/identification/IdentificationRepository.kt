@@ -1,6 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
 import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.data.dto.MobileNumberDto
 import de.solarisbank.identhub.data.entity.Identification
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -20,6 +21,10 @@ class IdentificationRepository(
 
         fun insertIdentification(identification: Identification): Completable {
                 return identificationRoomDataSource.insert(identification)
+        }
+
+        fun getMobileNumber(): Single<MobileNumberDto> {
+                return identificationRetrofitDataSource.getMobileNumber()
         }
 
 

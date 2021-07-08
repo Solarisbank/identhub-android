@@ -16,6 +16,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
+import de.solarisbank.identhub.data.dto.MobileNumberDto
 import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.verfication.phone.CountDownTime
@@ -81,6 +82,7 @@ class ContractSigningFragment : IdentHubFragment() {
         viewModel.startTimer()
         sendNewCode.setOnClickListener { viewModel.onSendNewCodeClicked() }
         codeInput.addTextChangedListener(codeInputValidator)
+        observePhoneNumberResult()
     }
 
     private fun initFocusListener() {
@@ -94,6 +96,17 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun initStateOfDigitInputField() {
         digitsEditTexts.add(codeInput)
+    }
+
+    private fun observePhoneNumberResult() {
+        viewModel.getPhoneNumberResultLiveData().observe(viewLifecycleOwner, Observer { onPhoneNumberResult(it) })
+    }
+
+    private fun onPhoneNumberResult(result: Result<MobileNumberDto>) {
+        if (result.succeeded && result.data != null) {
+            description.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), result.data!!.number)
+            description.visibility = View.VISIBLE
+        }
     }
 
     private fun observeAuthorizeResult() {
