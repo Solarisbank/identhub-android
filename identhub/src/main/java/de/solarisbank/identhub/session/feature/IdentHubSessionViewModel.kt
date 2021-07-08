@@ -8,6 +8,7 @@ import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSessionUseCase) : ViewModel() {
 
@@ -29,8 +30,14 @@ class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSess
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                {_initializationStateLiveData.value = Result.success(it)},
-                                { _initializationStateLiveData.value = Result.failure(Throwable()) }
+                                {
+                                    Timber.d("obtainLocalIdentificationState success")
+                                    _initializationStateLiveData.value = Result.success(it)
+                                },
+                                {
+                                    Timber.e(it, "obtainLocalIdentificationState fail")
+                                    _initializationStateLiveData.value = Result.failure(it)
+                                }
                         )
         )
     }

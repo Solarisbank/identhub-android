@@ -9,7 +9,6 @@ import de.solarisbank.identhub.data.dao.DocumentDao
 import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.data.entity.Document
 import de.solarisbank.identhub.data.entity.Identification
-import io.reactivex.Observable
 
 @Database(entities = [Document::class, Identification::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)
@@ -38,9 +37,8 @@ abstract class IdentityRoomDatabase : RoomDatabase() {
             }
         }
 
-        fun clearDatabase(): Observable<Boolean> {
-            INSTANCE?.clearAllTables()
-            return Observable.just(true)
+        fun clearDatabase(context: Context) {
+            context.deleteDatabase(DATABASE_NAME)
         }
     }
 }

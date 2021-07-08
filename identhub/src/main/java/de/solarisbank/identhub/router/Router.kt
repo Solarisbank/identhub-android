@@ -20,7 +20,6 @@ import timber.log.Timber
 const val STATUS_KEY = "STATUS_KEY"
 const val FIRST_STEP_KEY = "FIRST_STEP_KEY"
 const val NEXT_STEP_KEY = "NEXT_STEP_KEY"
-const val NEXT_STEP_ACTION = "NEXT_STEP_ACTION"
 const val COMPLETED_STEP_KEY = "COMPLETED_STEP_KEY"
 
 fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): Intent {

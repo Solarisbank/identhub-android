@@ -6,6 +6,7 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.DiLibraryComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
@@ -37,6 +38,20 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected open fun initViewModel() {
         viewModelFactory = assistedViewModelFactory.create(this, intent.extras)
+    }
+
+    protected fun quit(bundle: Bundle?) {
+        Timber.d("quit, bundle : ${bundle}")
+        LocalBroadcastManager.getInstance(this)
+                .sendBroadcast(
+                        Intent(IDENTHUB_STEP_ACTION)
+                                .apply { bundle?.let { putExtras(it) } }
+                )
+        finish()
+    }
+
+    companion object {
+        const val IDENTHUB_STEP_ACTION = "IDENTHUB_STEP_ACTION"
     }
 
     private fun initBackButtonBehavior() {

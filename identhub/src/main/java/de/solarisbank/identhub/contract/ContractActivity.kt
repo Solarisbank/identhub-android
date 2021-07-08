@@ -1,6 +1,5 @@
 package de.solarisbank.identhub.contract
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +10,6 @@ import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.navigation.NaviDirection
@@ -67,15 +65,5 @@ class ContractActivity : IdentHubActivity() {
                 }
             }
         }
-    }
-
-    private fun quit(bundle: Bundle?) {
-        var intent: Intent? = null
-        if (bundle != null) {
-            intent = Intent()
-            intent.putExtras(bundle)
-        }
-        setResult(RESULT_OK, intent)
-        finish()
     }
 }

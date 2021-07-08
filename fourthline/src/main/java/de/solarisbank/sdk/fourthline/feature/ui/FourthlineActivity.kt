@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,15 +15,11 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import de.solarisbank.identhub.router.NEXT_STEP_ACTION
-import de.solarisbank.identhub.router.NEXT_STEP_KEY
-import de.solarisbank.identhub.router.toNextStep
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.identhub.ui.FourStepIndicatorView
 import de.solarisbank.identhub.ui.SolarisIndicatorView
-import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.fourthline.R
@@ -121,11 +116,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     navGraph.startDestination = R.id.welcomeContainerFragment
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
-                FOURTHLINE_IDENTIFICATION_SUCCESSFULL -> {
+                FOURTHLINE_IDENTIFICATION_SUCCESSFULL, IdentHubSession.ACTION_NEXT_STEP -> {
                     quit(it.args)
-                }
-                IdentHubSession.ACTION_NEXT_STEP -> { //dynamic flow
-                    forwardTo(it.args!!)
                 }
                 else -> {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
@@ -186,27 +178,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
         } else {
             navigateToAwaitedDirection()
         }
-    }
-
-    private fun forwardTo(args: Bundle) {
-        val nextStep = args.getString(NEXT_STEP_KEY)
-        val forwardIntent = toNextStep(this, nextStep!!)
-        forwardIntent.action = NEXT_STEP_ACTION
-        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
-        forwardIntent.putExtras(args)
-        setResult(Activity.RESULT_OK, forwardIntent)
-        finish()
-    }
-
-    private fun quit(bundle: Bundle?) {
-        var intent: Intent? = null
-        if (bundle != null) {
-            intent = Intent()
-            intent.putExtras(bundle)
-        }
-        setResult(RESULT_OK, intent)
-        finish()
     }
 
     companion object {

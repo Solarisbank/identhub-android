@@ -1,7 +1,5 @@
 package de.solarisbank.identhub.identity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -97,15 +95,5 @@ public final class IdentityActivity extends IdentHubActivity {
                 stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP);
             }
         }
-    }
-
-    private void quit(Bundle bundle) {
-        Intent intent = null;
-        if (bundle != null) {
-            intent = new Intent();
-            intent.putExtras(bundle);
-        }
-        setResult(Activity.RESULT_OK, intent);
-        finish();
     }
 }

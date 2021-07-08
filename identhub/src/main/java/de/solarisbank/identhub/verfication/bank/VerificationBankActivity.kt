@@ -1,7 +1,5 @@
 package de.solarisbank.identhub.verfication.bank
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -10,13 +8,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
-import de.solarisbank.identhub.contract.ContractActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.router.COMPLETED_STEP
-import de.solarisbank.identhub.router.NEXT_STEP_ACTION
-import de.solarisbank.identhub.router.NEXT_STEP_KEY
-import de.solarisbank.identhub.router.toNextStep
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.ui.SolarisIndicatorView
@@ -40,15 +34,9 @@ class VerificationBankActivity : IdentHubActivity() {
     private fun initGraph() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
-        val lastCompletedStep = viewModel.getLastCompletedStep()
-        if (lastCompletedStep === COMPLETED_STEP.VERIFICATION_BANK) {
-            startContractSigningActivity()
-            return
-        } else {
-            val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
-            navHostFragment.navController.setGraph(navGraph, intent.extras)
-            initView()
-        }
+        val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
+        navHostFragment.navController.setGraph(navGraph, intent.extras)
+        initView()
     }
 
     private fun initView() {
@@ -81,8 +69,8 @@ class VerificationBankActivity : IdentHubActivity() {
             viewModel.doOnNavigationChanged(naviActionId)
 
             when (naviActionId) {
-                IdentHubSession.ACTION_NEXT_STEP -> forwardToNextStep(naviDirection.args!!)
-                IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> stopWithResult(naviDirection.args)
+                IdentHubSession.ACTION_NEXT_STEP -> quit(naviDirection.args!!)
+                IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> quit(naviDirection.args)
                 else -> {
                     setSubStep(naviDirection)
                     Navigation
@@ -109,32 +97,5 @@ class VerificationBankActivity : IdentHubActivity() {
             }
             else -> stepIndicator.visibility = View.VISIBLE
         }
-    }
-
-    //todo
-    private fun startContractSigningActivity() {
-        startActivity(Intent(this, ContractActivity::class.java))
-        finish()
-    }
-
-    fun forwardToNextStep(args: Bundle) {
-        val nextStep = args.getString(NEXT_STEP_KEY)
-        val forwardIntent = toNextStep(this, nextStep!!)
-        forwardIntent.action = NEXT_STEP_ACTION
-        forwardIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-        forwardIntent.putExtras(args)
-        forwardIntent.putExtra(IdentHub.SESSION_URL_KEY, intent.getStringExtra(IdentHub.SESSION_URL_KEY))
-        setResult(Activity.RESULT_OK, forwardIntent)
-        finish()
-    }
-
-    private fun stopWithResult(bundle: Bundle?) {
-        var intent: Intent? = null
-        if (bundle != null) {
-            intent = Intent()
-            intent.putExtras(bundle)
-        }
-        setResult(RESULT_OK, intent)
-        finish()
     }
 }

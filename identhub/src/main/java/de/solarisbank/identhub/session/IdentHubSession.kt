@@ -43,30 +43,37 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     private fun onResultSuccess(identHubSessionResult: IdentHubSessionResult) {
+        Timber.d("onResultSuccess")
         lastCompetedStep = identHubSessionResult.step
         val paymentSuccessCallback = this.paymentSuccessCallback
         val identificationSuccessCallback = this.identificationSuccessCallback
         if (paymentSuccessCallback != null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
+            Timber.d("onResultSuccess 1")
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
+            Timber.d("onResultSuccess 2")
             mainProcess?.clearDataOnCompletion()
             identificationSuccessCallback(identHubSessionResult)
         }
     }
 
     private fun onResultFailure(identHubSessionFailure: IdentHubSessionFailure) {
+        Timber.d("onResultFailure")
         lastCompetedStep = identHubSessionFailure.step
         val paymentErrorCallback = this.paymentErrorCallback
         val identificationErrorCallback = this.identificationErrorCallback
         if (paymentErrorCallback != null && identHubSessionFailure.step == COMPLETED_STEP.VERIFICATION_BANK) {
+            Timber.d("onResultFailure 1")
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
+            Timber.d("onResultFailure 2")
             mainProcess?.clearDataOnCompletion()
             identificationErrorCallback(identHubSessionFailure)
         }
     }
 
     fun start() {
+        Timber.d("start")
         if (mainProcess == null) {
             throw NullPointerException("You need to call create method first")
         }
@@ -75,6 +82,7 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     fun resume() {
+        Timber.d("resume")
         if (mainProcess == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
