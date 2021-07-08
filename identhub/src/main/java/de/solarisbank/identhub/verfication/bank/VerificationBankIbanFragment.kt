@@ -94,7 +94,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         errorMessage.visibility = View.INVISIBLE
         ibanNumber.setText("")
         ibanNumber.isEnabled = true
-        submitButton.isEnabled = true
     }
 
     private fun showIbanErrorLabel() {

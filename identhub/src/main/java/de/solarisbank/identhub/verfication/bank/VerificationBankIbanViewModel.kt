@@ -53,7 +53,7 @@ class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUse
                             val initializationDto = verifyIBanUseCase.getInitializationDto()
                             if (
                                     initializationDto?.allowedRetries != null &&
-                                    ibanAttemts <= verifyIBanUseCase.getInitializationDto()!!.allowedRetries
+                                    ibanAttemts < verifyIBanUseCase.getInitializationDto()!!.allowedRetries
                             ) {
                                 Timber.d("Iban verification result 3")
                                 return@map IbanVerificationState.BankIdDialogRetry(initializationDto!!.fallbackStep)
