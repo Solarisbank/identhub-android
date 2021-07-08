@@ -2,6 +2,7 @@ package de.solarisbank.identhub.session.domain
 
 import android.content.Context
 import de.solarisbank.identhub.data.entity.NavigationalResult
+import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
@@ -15,6 +16,7 @@ import timber.log.Timber
 class IdentHubSessionUseCase(
         private val identHubSessionRepository: IdentHubSessionRepository,
         private val sessionUrlRepository: SessionUrlRepository,
+        private val identityInitializationRepository: IdentityInitializationRepository,
         private val context: Context
         ) {
 
@@ -35,19 +37,14 @@ class IdentHubSessionUseCase(
                                 .getSavedIdentificationId()
                                 .map {
                                     Timber.d("obtainLocalIdentificationState() 1")
-                                    //todo keep, it is mocked
                                     NavigationalResult(NEXT_STEP_KEY, it.nextStep)
-//                                    identHubSessionRepository.getRequiredIdentificationFlow(sessionUrlRepository.get()!!)
-//                                            .map {
-//                                                Timber.d("obtainLocalIdentificationState() 2")
-//                                                NavigationalResult(it.firstStep)
-//                                            }.blockingGet()
                                 }
                                 .onErrorReturnItem(
 
                                         identHubSessionRepository.getRequiredIdentificationFlow(sessionUrlRepository.get()!!)
                                                 .map {
                                                     Timber.d("obtainLocalIdentificationState() 3")
+                                                    identityInitializationRepository.saveInitializationDto(it)
                                                     NavigationalResult(FIRST_STEP_KEY, it.firstStep)
                                                 }.blockingGet()
                                 )

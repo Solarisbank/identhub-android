@@ -31,6 +31,8 @@ import de.solarisbank.identhub.data.dao.DocumentDao;
 import de.solarisbank.identhub.data.dao.IdentificationDao;
 import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
+import de.solarisbank.identhub.data.iban.IdentityInitializationRepositoryImpl;
+import de.solarisbank.identhub.data.iban.IdentityInitializationSharedPrefsDataSource;
 import de.solarisbank.identhub.data.mapper.MapperModule;
 import de.solarisbank.identhub.data.mapper.factory.IdentificationEntityMapperFactory;
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor;
@@ -83,6 +85,7 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCaseFactory;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.contract.GetPersonDataUseCaseFactory;
+import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCaseFactory;
@@ -139,6 +142,7 @@ import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSucces
 import de.solarisbank.sdk.core.di.CoreActivityComponent;
 import de.solarisbank.sdk.core.di.LibraryComponent;
 import de.solarisbank.sdk.core.di.internal.DoubleCheck;
+import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Factory2;
 import de.solarisbank.sdk.core.di.internal.Provider;
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
@@ -208,6 +212,9 @@ public class IdenthubComponent {
     private Provider<IdentificationRepository> identificationRepositoryProvider;
     private Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
     private Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider;
+    private Provider<SharedPreferences> sharedPreferencesProvider;
+    private Provider<IdentityInitializationSharedPrefsDataSource> identityInitializationSharedPrefsDataSourceProvider;
+    private Provider<IdentityInitializationRepository> identityInitializationRepositoryProvider;
 
 
     private IdenthubComponent(
@@ -267,6 +274,24 @@ public class IdenthubComponent {
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule));
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider));
+        sharedPreferencesProvider = DoubleCheck.provider(new Factory<SharedPreferences>() {
+            @Override
+            public SharedPreferences get() {
+                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE);
+            }
+        });
+        identityInitializationSharedPrefsDataSourceProvider = DoubleCheck.provider(new Factory<IdentityInitializationSharedPrefsDataSource>() {
+            @Override
+            public IdentityInitializationSharedPrefsDataSource get() {
+                return new IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get());
+            }
+        });
+        identityInitializationRepositoryProvider = DoubleCheck.provider(new Factory<IdentityInitializationRepository>() {
+            @Override
+            public IdentityInitializationRepository get() {
+                return new IdentityInitializationRepositoryImpl(identityInitializationSharedPrefsDataSourceProvider.get());
+            }
+        });
 
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider));
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule));
@@ -298,7 +323,7 @@ public class IdenthubComponent {
         fetchingAuthorizedIBanStatusUseCaseProvider = FetchingAuthorizedIBanStatusUseCaseFactory.create(identificationEntityMapperProvider, verificationBankRepositoryProvider);
         getDocumentsUseCaseProvider = GetDocumentsUseCaseFactory.create(contractSignRepositoryProvider);
         getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider);
-        verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(getIdentificationUseCaseProvider, verificationBankRepositoryProvider);
+        verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(getIdentificationUseCaseProvider, verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
     }
 
 

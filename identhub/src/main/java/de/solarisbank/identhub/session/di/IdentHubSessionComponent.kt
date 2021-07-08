@@ -1,9 +1,12 @@
 package de.solarisbank.identhub.session.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.dao.IdentificationDao
+import de.solarisbank.identhub.data.iban.IdentityInitializationRepositoryImpl
+import de.solarisbank.identhub.data.iban.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.data.initialization.InitializeIdentificationApi
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
@@ -16,6 +19,7 @@ import de.solarisbank.identhub.di.database.DatabaseModule
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDaoFactory
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
+import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.IdentHubObserverSubcomponent
 import de.solarisbank.identhub.session.IdentHubSessionObserver
@@ -63,6 +67,9 @@ class IdentHubSessionComponent private constructor(
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
     private lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
+    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
+    private lateinit var identityInitializationSharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
+    private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 
     init {
         initialize()
@@ -77,6 +84,21 @@ class IdentHubSessionComponent private constructor(
         userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create(networkModule))
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
+        sharedPreferencesProvider = DoubleCheck.provider(object : Factory<SharedPreferences> {
+            override fun get(): SharedPreferences {
+                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
+            }
+        })
+        identityInitializationSharedPrefsDataSourceProvider = DoubleCheck.provider(object : Factory<IdentityInitializationSharedPrefsDataSource> {
+            override fun get(): IdentityInitializationSharedPrefsDataSource {
+                return IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get())
+            }
+        })
+        identityInitializationRepositoryProvider = DoubleCheck.provider(object : Factory<IdentityInitializationRepository> {
+            override fun get(): IdentityInitializationRepository {
+                return IdentityInitializationRepositoryImpl(identityInitializationSharedPrefsDataSourceProvider.get())
+            }
+        })
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
@@ -114,7 +136,11 @@ class IdentHubSessionComponent private constructor(
 
         identHubSessionUseCaseProvider = DoubleCheck.provider(object : Factory<IdentHubSessionUseCase> {
             override fun get(): IdentHubSessionUseCase {
-                return IdentHubSessionUseCase(identHubSessionRepositoryProvider.get(), sessionUrlRepositoryProvider.get(), applicationContextProvider.get())
+                return IdentHubSessionUseCase(
+                        identHubSessionRepositoryProvider.get(),
+                        sessionUrlRepositoryProvider.get(),
+                        identityInitializationRepositoryProvider.get(),
+                        applicationContextProvider.get())
             }
         })
     }

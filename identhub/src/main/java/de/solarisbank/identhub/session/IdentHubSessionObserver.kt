@@ -64,6 +64,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
     }
 
     override fun onCreate(owner: LifecycleOwner) {
+        Timber.d("onCreate")
         identHubObserverSubcomponent.inject(this)
         initBroadcastReceiver()
         initViewModel()
@@ -81,10 +82,12 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
     }
 
     fun obtainLocalIdentificationState() {
+        Timber.d("obtainLocalIdentificationState")
         viewModel.obtainLocalIdentificationState()
     }
 
     fun clearDataOnCompletion() {
+        Timber.d("clearDataOnCompletion")
         clearDatabase(fragmentActivity)
     }
 
@@ -108,6 +111,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
+        Timber.d("onDestroy")
         LocalBroadcastManager.getInstance(fragmentActivity).unregisterReceiver(receiver)
         super.onDestroy(owner)
     }

@@ -1,9 +1,11 @@
 package de.solarisbank.identhub.domain.verification.bank
 
 import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.data.dto.InitializationDto
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
+import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.core.result.data
 import io.reactivex.Single
@@ -14,7 +16,8 @@ import java.net.HttpURLConnection
 
 class VerifyIBanUseCase(
         private val getIdentificationUseCase: GetIdentificationUseCase,
-        private val verificationBankRepository: VerificationBankRepository
+        private val verificationBankRepository: VerificationBankRepository,
+        private val identityInitializationRepository: IdentityInitializationRepository
 ) : SingleUseCase<String, String>() {
 
     override fun invoke(iBan: String): Single<NavigationalResult<String>> {
@@ -39,5 +42,9 @@ class VerifyIBanUseCase(
                                 }
                 )
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getInitializationDto(): InitializationDto? {
+        return identityInitializationRepository.getInitializationDto()
     }
 }

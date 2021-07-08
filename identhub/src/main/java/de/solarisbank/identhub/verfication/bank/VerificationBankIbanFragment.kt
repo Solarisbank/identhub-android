@@ -9,20 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.router.NEXT_STEP_DIRECTION
-import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel.IBanState
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.network.utils.parseErrorResponseDto
-import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.CompositeDisposable
-import retrofit2.HttpException
 import timber.log.Timber
 
 class VerificationBankIbanFragment : IdentHubFragment() {
@@ -50,7 +44,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        observeInputsState()
         observeVerifyResult()
     }
 
@@ -58,35 +51,56 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         ibanViewModel.getVerifyResultLiveData().observe(viewLifecycleOwner, Observer { onResultVerifyIBanChanged(it) })
     }
 
-    private fun onResultVerifyIBanChanged(result: Result<String>) {
-        //todo move out
-        if (result.succeeded) {
-            sharedViewModel.moveToEstablishSecureConnection(result.data, result.nextStep)
-        } else if (result is Result.Error) {
-            val type = result.type
-            var errorDtoCode: String? = null
-            if (result.throwable is HttpException) {
-                try {
-                    errorDtoCode = (result.throwable as HttpException).parseErrorResponseDto()?.errors?.get(0)?.code.toString()
-                    Timber.d("errorDto: $errorDtoCode")
-                } catch (e: Exception) {
-                    Timber.d("Error during errorDto parsing")
-                }
+    private fun onResultVerifyIBanChanged(state: IbanVerificationState) {
+        when (state) {
+            is IbanVerificationState.Loading -> {
+                ibanNumber.isEnabled = false
+                submitButton.isEnabled = false
             }
+            is IbanVerificationState.BankSuccessful -> {
+                sharedViewModel.moveToEstablishSecureConnection(state.bankIdentificationUrl, state.nextStep)
+            }
+            is IbanVerificationState.BankIdDialogRetry -> {
+                showIbanErrorLabel()
+                (requireActivity() as VerificationBankActivity)
+                        .showDialog(
+                                title = "Wrong IBAN",
+                                message = "Unfortunately the IBAN you entered is invalid or not supported",
+                                positiveLabel = "Alternative identifying",
+                                negativeLabel = "Retry",
+                                positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
+                                negativeAction = { retryInputIBan() }
+                        )
+            }
+            is IbanVerificationState.BankIdDialogAlterOnly -> {
+                showIbanErrorLabel()
+                (requireActivity() as VerificationBankActivity)
+                        .showDialog(
+                                title = "Wrong IBAN",
+                                message = "Unfortunately the IBAN you entered is invalid or not supported",
+                                positiveLabel = "Alternative identifying",
+                                positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                        )
+            }
+            is IbanVerificationState.Error -> {
 
-            if (type is Type.PreconditionFailed && result.nextStep != null) {
-                sharedViewModel.postDynamicNavigationNextStep(result.nextStep)
-            } else if (type is Type.BadRequest && (errorDtoCode == INVALID_IBAN)) {
-                sharedViewModel.postDynamicNavigationNextStep(NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination)
-            } else {
-                updateIBanInputState(IBanState.INVALID)
             }
         }
     }
 
-    private fun updateIBanInputState(iBanState: IBanState) {
-        (ibanNumber.background as StateListDrawable).level = iBanState.value
-        errorMessage.visibility = if (iBanState === IBanState.INVALID) View.VISIBLE else View.GONE
+    private fun retryInputIBan() {
+        Timber.d("retryInputIBan()")
+        (ibanNumber.background as StateListDrawable).level = 1
+        errorMessage.visibility = View.INVISIBLE
+        ibanNumber.setText("")
+        ibanNumber.isEnabled = true
+        submitButton.isEnabled = true
+    }
+
+    private fun showIbanErrorLabel() {
+        ibanNumber.isEnabled = false
+        (ibanNumber.background as StateListDrawable).level = 2
+        errorMessage.visibility = View.VISIBLE
     }
 
     private fun initViews() {
@@ -102,15 +116,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
-    }
-
-    private fun observeInputsState() {
-        ibanViewModel.iBanState.observe(viewLifecycleOwner, Observer { event: Event<IBanState> -> onIBanInputValidationStateChanged(event) })
-    }
-
-    private fun onIBanInputValidationStateChanged(event: Event<IBanState>) {
-        val iBanState = event.content
-        iBanState?.let { updateIBanInputState(it) }
     }
 
     private val ibanTextValidator = object : TextWatcher {
@@ -134,12 +139,14 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     companion object {
-
         private const val MIN_IBAN_LENGTH = 15
-        private const val INVALID_IBAN = "invalid_iban"
-
-        fun newInstance(): Fragment {
-            return VerificationBankIbanFragment()
-        }
     }
+}
+
+sealed class IbanVerificationState {
+    class Loading : IbanVerificationState()
+    class BankSuccessful(val bankIdentificationUrl: String?, val nextStep: String?) : IbanVerificationState()
+    class Error : IbanVerificationState()
+    class BankIdDialogRetry(val nextStep: String) : IbanVerificationState()
+    class BankIdDialogAlterOnly(val nextStep: String): IbanVerificationState()
 }
