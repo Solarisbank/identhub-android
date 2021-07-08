@@ -49,6 +49,7 @@ class IdentHubSession(private val sessionUrl: String) {
         if (paymentSuccessCallback != null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
+            mainProcess?.clearDataOnCompletion()
             identificationSuccessCallback(identHubSessionResult)
         }
     }
@@ -60,6 +61,7 @@ class IdentHubSession(private val sessionUrl: String) {
         if (paymentErrorCallback != null && identHubSessionFailure.step == COMPLETED_STEP.VERIFICATION_BANK) {
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
+            mainProcess?.clearDataOnCompletion()
             identificationErrorCallback(identHubSessionFailure)
         }
     }

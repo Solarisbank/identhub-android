@@ -6,6 +6,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.identhub.data.entity.NavigationalResult
+import de.solarisbank.identhub.data.room.IdentityRoomDatabase.Companion.clearDatabase
 import de.solarisbank.identhub.router.FIRST_STEP_DIRECTION
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
@@ -13,7 +14,10 @@ import de.solarisbank.identhub.session.core.ActivityResultLauncher
 import de.solarisbank.identhub.session.core.ActivityResultRegistry
 import de.solarisbank.identhub.session.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
@@ -48,6 +52,16 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
 
     fun obtainLocalIdentificationState() {
         viewModel.obtainLocalIdentificationState()
+    }
+
+    fun clearDataOnCompletion() {
+        compositeDisposable.add(Observable.defer { clearDatabase() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { Timber.d("Database successfully cleared") },
+                { Timber.e(it) })
+        )
     }
 
     private fun processInitializationStateResult(
