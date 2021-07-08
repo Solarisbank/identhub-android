@@ -24,6 +24,8 @@ import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
+import de.solarisbank.sdk.core.result.*
+import de.solarisbank.sdk.core.result.Result.*
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
@@ -79,8 +81,17 @@ class ContractSigningFragment : IdentHubFragment() {
     private fun initViews() {
         initFocusListener()
         initStateOfDigitInputField()
+        sendNewCode.setOnClickListener {
+            sendNewCodeClickListener()
+        }
+        codeInput.addTextChangedListener(codeInputValidator)
+        onStateOfDigitInputChanged(DEFAULT_STATE)
+    }
+
+    private fun sendNewCodeClickListener() {
+        viewModel.onSendNewCodeClicked()
         viewModel.startTimer()
-        sendNewCode.setOnClickListener { viewModel.onSendNewCodeClicked() }
+        codeInput.text.clear()
         codeInput.addTextChangedListener(codeInputValidator)
         observePhoneNumberResult()
     }
@@ -124,7 +135,7 @@ class ContractSigningFragment : IdentHubFragment() {
                 submitButton.visibility = View.VISIBLE
             }
             else -> {
-                defaultState()
+                onStateOfDigitInputChanged(DEFAULT_STATE)
             }
         }
     }
@@ -142,6 +153,9 @@ class ContractSigningFragment : IdentHubFragment() {
         } else if (Status.getEnum(result.data?.status) == Status.FAILED || Status.getEnum(result.data?.status) == Status.CONFIRMED) {
             onStateOfDigitInputChanged(ERROR_STATE)
             sharedViewModel.callOnFailureResult()
+        // TODO: implement later error state on 422
+        //} else if (result is Error) {
+        //    onStateOfDigitInputChanged(ERROR_STATE)
         }
     }
 
@@ -180,24 +194,17 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun onStateOfDigitInputChanged(state: Int) {
-        errorMessage.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
-        sendNewCode.visibility = if (state == ERROR_STATE) View.VISIBLE else View.GONE
-        submitButton.visibility = if (state != ERROR_STATE) View.VISIBLE else View.GONE
-        newCodeCounter.visibility = if (state != ERROR_STATE) View.VISIBLE else View.GONE
-
-        submitButton.isEnabled = state != LOADING_STATE
+        val error = state == ERROR_STATE || viewModel.getCounterFinished()
         submitButton.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.contract_signing_preview_sign_action)
-        codeInput.isEnabled = state != LOADING_STATE && state != ERROR_STATE
-        listLevelDrawables.forEach { it.level = state }
-    }
+        submitButton.isEnabled = state != LOADING_STATE && isSubmitButtonEnabled()
 
-    private fun defaultState() {
-        listLevelDrawables.forEach { it.level = 0 }
-        currentFocusedEditText?.clearFocus()
-        codeInput.requestFocus()
-        newCodeCounter.visibility = View.VISIBLE
-        errorMessage.visibility = View.GONE
-        codeInput.text = null
+        errorMessage.visibility = if (error) View.VISIBLE else View.GONE
+        sendNewCode.visibility = if (error) View.VISIBLE else View.GONE
+        submitButton.visibility = if (!error) View.VISIBLE else View.GONE
+        newCodeCounter.visibility = if (!error) View.VISIBLE else View.GONE
+
+        codeInput.isEnabled = state != LOADING_STATE && !error
+        listLevelDrawables.forEach { it.level = state }
     }
 
     private val codeInputValidator = object : TextWatcher {
@@ -206,15 +213,18 @@ class ContractSigningFragment : IdentHubFragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            submitButton.isEnabled = !codeInput.text.isNullOrEmpty() && codeInput.text.length == CODE_LENGTH
+            submitButton.isEnabled = isSubmitButtonEnabled()
         }
 
         override fun afterTextChanged(s: Editable?) {
-
-        }
+       }
 
     }
 
+    private fun isSubmitButtonEnabled(): Boolean {
+        return !codeInput.text.isNullOrEmpty() && codeInput.text.length == CODE_LENGTH
+
+    }
     override fun onDestroyView() {
         digitsEditTexts.clear()
         disposable.dispose()

@@ -46,6 +46,7 @@ class ContractSigningViewModel(
 
         override fun onFinish(millisUntilFinished: Long) {
             countDownTimeEventLiveData.postValue(Event(CountDownTime(millisUntilFinished, true)))
+            counterFinished = true
         }
     }
 
@@ -68,11 +69,11 @@ class ContractSigningViewModel(
     }
 
     private fun onAuthorizedLoading() {
+        startTimer()
         authorizeResultLiveData.postValue(Result.Loading)
     }
 
     private fun onAuthorizedSucceed() {
-        startTimer()
         authorizeResultLiveData.postValue(Result.createEmptySuccess())
     }
 
@@ -119,11 +120,16 @@ class ContractSigningViewModel(
     }
 
     fun startTimer() {
+        counterFinished = false
         countDownTimer.start()
     }
 
     fun stopTimer() {
         countDownTimer.cancel()
+    }
+
+    fun getCounterFinished(): Boolean {
+        return counterFinished
     }
 
     fun onSubmitButtonClicked(confirmToken: String?) {
@@ -155,6 +161,7 @@ class ContractSigningViewModel(
 
     companion object {
         private const val INTERVAL_IN_SEC = 1L
-        private const val COUNTER_TIME = 120L
+        private const val COUNTER_TIME = 45L
+        private var counterFinished = false
     }
 }
