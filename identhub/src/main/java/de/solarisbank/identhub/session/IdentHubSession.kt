@@ -8,7 +8,6 @@ import de.solarisbank.identhub.router.COMPLETED_STEP
 import timber.log.Timber
 
 class IdentHubSession(private val sessionUrl: String) {
-    private var mainProcess: IdentHubSessionObserver? = null
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null
@@ -29,8 +28,21 @@ class IdentHubSession(private val sessionUrl: String) {
         this.identificationErrorCallback = errorCallback
         this.identificationSuccessCallback = successCallback
 
-        mainProcess = IdentHubSessionObserver(fragmentActivity, ::onResultSuccess, ::onResultFailure, sessionUrl)
-        fragmentActivity.lifecycle.addObserver(mainProcess!!)
+        initMainProcess(fragmentActivity)
+        fragmentActivity.lifecycle.addObserver(MAIN_PROCESS!!)
+    }
+
+    private fun initMainProcess(fragmentActivity: FragmentActivity) {
+        synchronized(this) {
+            if (MAIN_PROCESS == null) {
+                MAIN_PROCESS = IdentHubSessionObserver(
+                    fragmentActivity,
+                    ::onResultSuccess,
+                    ::onResultFailure,
+                    sessionUrl
+                )
+            }
+        }
     }
 
     fun onPaymentCallback(
@@ -52,7 +64,7 @@ class IdentHubSession(private val sessionUrl: String) {
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
             Timber.d("onResultSuccess 2")
-            mainProcess?.clearDataOnCompletion()
+            MAIN_PROCESS?.clearDataOnCompletion()
             identificationSuccessCallback(identHubSessionResult)
         }
     }
@@ -67,31 +79,41 @@ class IdentHubSession(private val sessionUrl: String) {
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
             Timber.d("onResultFailure 2")
-            mainProcess?.clearDataOnCompletion()
+            MAIN_PROCESS?.clearDataOnCompletion()
             identificationErrorCallback(identHubSessionFailure)
         }
     }
 
     fun start() {
         Timber.d("start")
-        if (mainProcess == null) {
+        if (MAIN_PROCESS == null) {
             throw NullPointerException("You need to call create method first")
         }
 
-        mainProcess?.obtainLocalIdentificationState()
+        synchronized(this) {
+            if (!STARTED) {
+                MAIN_PROCESS?.obtainLocalIdentificationState()
+                STARTED = true
+            }
+        }
     }
 
     fun resume() {
         Timber.d("resume")
-        if (mainProcess == null) {
+        if (MAIN_PROCESS == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
 
-        mainProcess?.obtainLocalIdentificationState()
+        synchronized(this) {
+            if (STARTED && !RESUMED) {
+                MAIN_PROCESS?.obtainLocalIdentificationState()
+                RESUMED = true
+            }
+        }
     }
 
     fun stop() {
-        mainProcess = null
+        MAIN_PROCESS = null
     }
 
     private fun loadAppName(context: Context) {
@@ -118,6 +140,13 @@ class IdentHubSession(private val sessionUrl: String) {
 
         @kotlin.jvm.JvmField
         var appName: String = "Unknown"
+
+        @Volatile
+        private var MAIN_PROCESS: IdentHubSessionObserver? = null
+
+        private var STARTED: Boolean = false
+
+        private var RESUMED: Boolean = false
     }
 }
 
