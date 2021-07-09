@@ -61,8 +61,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 setMessage(R.string.identity_dialog_quit_process_message)
                 setPositiveButton(R.string.identity_dialog_quit_process_positive_button) { _, _ ->
                     Timber.d("Quit IdentHub SDK after back button pressed")
-                    setResult(RESULT_OK, null as Intent?)
-                    finish()
+                    quit(null)
                 }
                 setNegativeButton(R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
             }.show()

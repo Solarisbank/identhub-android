@@ -37,8 +37,8 @@ abstract class IdentityRoomDatabase : RoomDatabase() {
             }
         }
 
-        fun clearDatabase(context: Context) {
-            context.deleteDatabase(DATABASE_NAME)
+        fun clearDatabase() {
+            INSTANCE?.clearAllTables()
         }
     }
 }
