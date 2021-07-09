@@ -33,6 +33,7 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     private fun initMainProcess(fragmentActivity: FragmentActivity) {
+        Timber.d("initMainProcess, fragmentActivity : $fragmentActivity, this : $this")
         synchronized(this) {
             if (MAIN_PROCESS == null) {
                 MAIN_PROCESS = IdentHubSessionObserver(
@@ -85,7 +86,7 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     fun start() {
-        Timber.d("start")
+        Timber.d("start, MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You need to call create method first")
         }
@@ -99,7 +100,7 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     fun resume() {
-        Timber.d("resume")
+        Timber.d("resume, MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
@@ -113,6 +114,7 @@ class IdentHubSession(private val sessionUrl: String) {
     }
 
     fun stop() {
+        Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         MAIN_PROCESS = null
     }
 

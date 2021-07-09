@@ -1,9 +1,13 @@
 package de.solarisbank.identhub.session
 
 import de.solarisbank.identhub.session.utils.buildApiUrl
+import timber.log.Timber
 
 
 object IdentHub {
+    init {
+        Timber.d("init, this: $this")
+    }
     private var SESSION: IdentHubSession? = null
 
     val isPaymentResultAvailable: Boolean
@@ -18,6 +22,7 @@ object IdentHub {
     }
 
     fun clear() {
+        Timber.d("clear(), this: $this")
         SESSION?.stop()
         SESSION = null
     }
