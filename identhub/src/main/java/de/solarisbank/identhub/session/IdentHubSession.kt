@@ -65,7 +65,7 @@ class IdentHubSession(private val sessionUrl: String) {
             paymentSuccessCallback(identHubSessionResult)
         } else if (identificationSuccessCallback != null) {
             Timber.d("onResultSuccess 2")
-            MAIN_PROCESS?.clearDataOnCompletion()
+            reset()
             identificationSuccessCallback(identHubSessionResult)
         }
     }
@@ -80,7 +80,7 @@ class IdentHubSession(private val sessionUrl: String) {
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
             Timber.d("onResultFailure 2")
-            MAIN_PROCESS?.clearDataOnCompletion()
+            reset()
             identificationErrorCallback(identHubSessionFailure)
         }
     }
@@ -113,8 +113,18 @@ class IdentHubSession(private val sessionUrl: String) {
         }
     }
 
+    fun reset() {
+        Timber.d("reset(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
+        synchronized(this) {
+            MAIN_PROCESS?.clearDataOnCompletion()
+            STARTED = false
+            RESUMED = false
+        }
+    }
+
     fun stop() {
         Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
+        reset()
         MAIN_PROCESS = null
     }
 
