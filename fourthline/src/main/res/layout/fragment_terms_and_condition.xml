@@ -84,7 +84,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/condition1ImageView"
-                android:src="@drawable/ic_tick_blue"
+                android:src="@drawable/ic_perm_group_location"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 />
@@ -112,7 +112,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/condition2ImageView"
-                android:src="@drawable/ic_tick_blue"
+                android:src="@drawable/ic_perm_group_camera"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 />
