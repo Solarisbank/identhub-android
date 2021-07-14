@@ -59,6 +59,7 @@ class VerificationBankActivity : IdentHubActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
+        viewModel.cancelState.observe(this, Observer { onCancel(it) })
     }
 
     override fun onResume() {
@@ -102,6 +103,12 @@ class VerificationBankActivity : IdentHubActivity() {
                 stepIndicator.visibility = View.GONE
             }
             else -> stepIndicator.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onCancel(state: Boolean?) {
+        if(state == true) {
+            quit(null)
         }
     }
 

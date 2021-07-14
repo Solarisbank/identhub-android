@@ -26,6 +26,7 @@ class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val 
     val ACTION_STOP_WITH_RESULT = 1
     val ACTION_SUMMARY_WITH_RESULT = 2
 
+    val cancelState = MutableLiveData<Boolean>()
     private val navigationActionId = MutableLiveData<Event<NaviDirection>>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -98,5 +99,9 @@ class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val 
 
     fun getLastCompletedStep(): COMPLETED_STEP? {
         return identificationStepPreferences.get()
+    }
+
+    fun cancelIdentification() {
+        cancelState.value = true
     }
 }
