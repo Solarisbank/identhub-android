@@ -16,6 +16,7 @@ import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.data.entity.Document
+import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.Result
@@ -36,6 +37,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private lateinit var documentsList: RecyclerView
     private lateinit var submitButton: TextView
     private lateinit var downloadButton: Button
+    private lateinit var termsAndConditionsString: TextView
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -47,12 +49,14 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
                     downloadButton = it.findViewById(R.id.downloadButton)
+                    termsAndConditionsString = it.findViewById(R.id.termsAndConditionsString)
                 }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        observeIdentification()
         observeContracts()
         observeDownloadPdfFile()
         observeDownloadingPdfFiles()
@@ -68,6 +72,20 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         documentsList.adapter = adapter
         submitButton.setOnClickListener { sharedViewModel.navigateToContractSigningProcess() }
         downloadButton.setOnClickListener { viewModel.onDownloadAllDocumentClicked(adapter.items) }
+    }
+
+    private fun observeIdentification() {
+        viewModel.getIdentificationData().observe(viewLifecycleOwner, Observer { onIdentification(it) } )
+    }
+
+    private fun onIdentification(result: Result<Identification>) {
+        if (result.succeeded) {
+            if (result.data!!.method == "bank_id") {
+                termsAndConditionsString.setText(R.string.contract_signing_terms_bank_id_label)
+            } else if (result.data!!.method == "bank") {
+                termsAndConditionsString.setText(R.string.contract_signing_terms_bank_ident_label)
+            }
+        }
     }
 
     private fun observeDownloadingPdfFiles() {

@@ -25,6 +25,10 @@
     <string name="contract_signing_preview_sign_action">Submit and sign</string>
     <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
 
+    <string name="contract_signing_terms_label">The T&amp;Cs apply</string>
+    <string name="contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
+    <string name="contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
+
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>
     <plurals name="contract_signing_preview_downloaded_message">

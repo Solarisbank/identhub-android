@@ -83,9 +83,9 @@ public final class IdentityModule {
     public ContractSigningPreviewViewModel provideContractSigningPreviewViewModel(
             final GetDocumentsUseCase getDocumentsUseCase,
             final FetchPdfUseCase fetchPdfUseCase,
-            final GetMobileNumberUseCase getMobileNumberUseCase
+            final GetIdentificationUseCase getIdentificationUseCase
     ) {
-        return new ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase);
+        return new ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase);
     }
 
     @NonNull

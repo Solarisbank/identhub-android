@@ -23,9 +23,10 @@ class ContractModule {
 
     fun provideContractSigningPreviewViewModel(
             getDocumentsUseCase: GetDocumentsUseCase,
-            fetchPdfUseCase: FetchPdfUseCase
+            fetchPdfUseCase: FetchPdfUseCase,
+            getIdentificationUseCase: GetIdentificationUseCase
     ): ContractSigningPreviewViewModel {
-        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase)
+        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase)
     }
 
 

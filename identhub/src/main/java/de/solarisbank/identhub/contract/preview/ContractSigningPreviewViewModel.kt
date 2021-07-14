@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.entity.Document
+import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase
+import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.sdk.core.Optional
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
@@ -16,12 +18,23 @@ import java.io.File
 
 class ContractSigningPreviewViewModel(
         private val getDocumentsUseCase: GetDocumentsUseCase,
-        private val fetchPdfUseCase: FetchPdfUseCase
+        private val fetchPdfUseCase: FetchPdfUseCase,
+        private val getIdentificationUseCase: GetIdentificationUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val documentsResultLiveData: MutableLiveData<Result<List<Document>>> = MutableLiveData()
+    private val identificationResultLiveData: MutableLiveData<Result<Identification>> = MutableLiveData()
     private val fetchPdfResultLiveData: MutableLiveData<Result<Optional<File>>> = MutableLiveData()
     private val fetchPdfFilesResultLiveData: MutableLiveData<Result<List<File>>> = MutableLiveData()
+
+
+    fun getIdentificationData(): LiveData<Result<Identification>> {
+        compositeDisposable.add(getIdentificationUseCase.execute(Unit)
+            .subscribe({ identificationResultLiveData.postValue(it) }, {
+                identificationResultLiveData.postValue(Result.createUnknown(it))
+            }))
+        return identificationResultLiveData
+    }
 
     fun getDocumentsResultLiveData(): LiveData<Result<List<Document>>> {
         compositeDisposable.add(getDocumentsUseCase.execute(Unit)

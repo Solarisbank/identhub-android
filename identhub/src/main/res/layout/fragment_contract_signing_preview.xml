@@ -187,7 +187,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/termsAndConditionsLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_16"
@@ -195,6 +195,39 @@
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/noticeLayout"
+                app:layout_constraintVertical_bias="1">
+                <TextView
+                    android:id="@+id/pointTerms"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:text="∙"
+                    app:layout_constraintStart_toStartOf="@id/startGuideline"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/noticeTitle" />
+
+                <TextView
+                    android:id="@+id/termsAndConditionsString"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    app:layout_constraintStart_toStartOf="@+id/notice"
+                    app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/noticeLayout"
+                    android:text="@string/contract_signing_terms_label"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/termsAndConditionsLayout"
                 app:layout_constraintVertical_bias="1">
                 <TextView
                     android:id="@+id/point"
@@ -211,6 +244,7 @@
                     style="@style/IdentHubTextView.Small_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_8"
                     app:layout_constraintStart_toStartOf="@+id/notice"
                     app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                     app:layout_constraintTop_toBottomOf="@+id/noticeLayout"

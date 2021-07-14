@@ -20,6 +20,10 @@
     <string name="contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
     <string name="contract_signing_code_request_new_button">Neuen Code erfragen</string>
 
+    <string name="contract_signing_terms_label">Es gelten die AGBs</string>
+    <string name="contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
+    <string name="contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
+
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>
     <plurals name="contract_signing_preview_downloaded_message">
