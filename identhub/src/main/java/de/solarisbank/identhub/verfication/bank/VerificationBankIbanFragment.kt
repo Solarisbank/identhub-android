@@ -146,6 +146,6 @@ sealed class IbanVerificationState {
     class Loading : IbanVerificationState()
     class BankSuccessful(val bankIdentificationUrl: String?, val nextStep: String?) : IbanVerificationState()
     class Error : IbanVerificationState()
-    class BankIdDialogRetry(val nextStep: String) : IbanVerificationState()
-    class BankIdDialogAlterOnly(val nextStep: String): IbanVerificationState()
+    class BankIdDialogRetry(val nextStep: String?) : IbanVerificationState()
+    class BankIdDialogAlterOnly(val nextStep: String?): IbanVerificationState()
 }

@@ -56,10 +56,10 @@ class VerificationBankIbanViewModel(private val verifyIBanUseCase: VerifyIBanUse
                                     ibanAttemts < verifyIBanUseCase.getInitializationDto()!!.allowedRetries
                             ) {
                                 Timber.d("Iban verification result 3")
-                                return@map IbanVerificationState.BankIdDialogRetry(initializationDto!!.fallbackStep)
+                                return@map IbanVerificationState.BankIdDialogRetry(initializationDto.fallbackStep)
                             } else {
                                 Timber.d("Iban verification result 4")
-                                return@map IbanVerificationState.BankIdDialogAlterOnly(initializationDto!!.fallbackStep)
+                                return@map IbanVerificationState.BankIdDialogAlterOnly(initializationDto?.fallbackStep)
                             }
                         } else {
                             Timber.d("Iban verification result 5")
