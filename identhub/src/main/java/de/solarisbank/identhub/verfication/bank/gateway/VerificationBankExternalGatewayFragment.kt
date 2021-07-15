@@ -80,16 +80,18 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                 nativePort.setWebMessageCallback(object : WebMessageCallbackCompat() {
                     override fun onMessage(port: WebMessagePortCompat, message: WebMessageCompat?) {
                         super.onMessage(port, message)
-                        Timber.d("Message from JavaScript received: %s", message)
-                        AlertDialog.Builder(requireActivity()).apply {
-                            setTitle(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_title)
-                            setMessage(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_message)
-                            setPositiveButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_positive_button) { _, _ ->
-                                Timber.d("Quit IdentHub SDK after back button pressed")
-                                sharedViewModel?.cancelIdentification()
-                            }
-                            setNegativeButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
-                        }.show()
+                        Timber.d("Message from JavaScript received: %s", message?.data)
+                        if (message?.data == "abort") {
+                            AlertDialog.Builder(requireActivity()).apply {
+                                setTitle(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_title)
+                                setMessage(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_message)
+                                setPositiveButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_positive_button) { _, _ ->
+                                    Timber.d("Quit IdentHub SDK after back button pressed")
+                                    sharedViewModel?.cancelIdentification()
+                                }
+                                setNegativeButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
+                            }.show()
+                        }
                     }
                 })
                 val script = """
