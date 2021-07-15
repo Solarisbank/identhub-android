@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginBottom="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_16"
             android:text="@string/fourthline_doc_type_selection_next_button"
             />
 

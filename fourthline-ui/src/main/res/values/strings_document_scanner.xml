@@ -23,4 +23,6 @@
 
    <string name="document_scanner_file_tilted">tilted</string>
    <string name="document_scanner_file_side">Please take a %1$s %2$s picture of your ID card</string>
+
+   <string name="document_scanner_scan_success">Scan successful</string>
 </resources>

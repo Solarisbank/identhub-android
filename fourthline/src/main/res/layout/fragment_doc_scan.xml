@@ -4,107 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="HardcodedText"
-    >
+    android:background="@color/ident_hub_color_surface"
+    tools:ignore="HardcodedText">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp"
-        />
+        app:layout_constraintGuide_begin="24dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="24dp"/>
+        app:layout_constraintGuide_end="24dp" />
 
     <de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
         android:id="@+id/punchhole"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        tools:visibility="gone"
-        />
+        tools:visibility="gone" />
 
     <ImageButton
         android:id="@+id/buttonClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_close_grey"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/ident_hub_color_white"
-        android:adjustViewBounds="true"
-        android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:adjustViewBounds="true"
+        android:background="@color/ident_hub_color_white"
+        android:src="@drawable/ic_close_grey"
         android:visibility="gone"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/scanPreview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@id/documentMask"
-        app:layout_constraintEnd_toEndOf="@id/documentMask"
         app:layout_constraintBottom_toBottomOf="@id/documentMask"
-        app:layout_constraintTop_toTopOf="@id/documentMask"
-        />
+        app:layout_constraintEnd_toEndOf="@id/documentMask"
+        app:layout_constraintStart_toStartOf="@id/documentMask"
+        app:layout_constraintTop_toTopOf="@id/documentMask" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/documentMask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:indeterminateDrawable="@drawable/ic_progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/documentMask" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/resultImageView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        android:src="@drawable/ic_done_round_blue"
+        app:layout_constraintTop_toBottomOf="@+id/documentMask" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/warningsLabel"
         style="@style/IdentHubTextView.Small_16"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        android:layout_marginTop="8dp"
+        app:layout_goneMarginTop="32dp"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/documentMask"
-        app:layout_constraintHorizontal_bias="0"
-        tools:text="Warnings Label"
-        />
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        tools:text="Warnings Label" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/stepName"
         style="@style/IdentHubTextView.Small_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="24dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@id/warningsLabel"
         app:layout_constraintHorizontal_bias="0"
-        tools:text="Step Label"
-        />
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/documentMask"
+        tools:text="Step Label" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resultBlock"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="36dp"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="73dp"
-        >
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        tools:visibility="visible">
 
         <View
             android:id="@+id/separator"
@@ -112,46 +123,44 @@
             android:layout_height="match_parent"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="9dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/ic_separator_background"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/retakeButton"
             style="@style/IdentHubTextView.Small_16"
-            android:textColor="@color/ident_hub_color_light_button_text_enabled"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/separator"
-            android:text="@string/document_scanner_retake"
             android:gravity="center"
-            />
+            android:text="@string/document_scanner_retake"
+            android:textColor="@color/ident_hub_color_light_button_text_enabled"
+            app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/confirmButton"
             style="@style/IdentHubTextView.Small_16"
-            android:textColor="@color/ident_hub_color_light_button_text_enabled"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/separator"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/document_scanner_confirm"
             android:gravity="center"
-            />
+            android:text="@string/document_scanner_confirm"
+            android:textColor="@color/ident_hub_color_light_button_text_enabled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/separator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/takeSnapshot"
-        android:textColor="@color/ident_hub_color_white"
         android:layout_width="216dp"
         android:layout_height="36dp"
-        android:layout_marginBottom="@dimen/margin_18"
+        android:layout_marginBottom="@dimen/margin_16"
         android:background="@drawable/ic_scan_snapshot_button_background"
-        android:visibility="gone"
         android:text="@string/document_scanner_take_picture"
-        android:textSize="15sp"
         android:textAllCaps="false"
+        android:textColor="@color/ident_hub_color_white"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/punchhole"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

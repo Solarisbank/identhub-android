@@ -84,13 +84,12 @@
         <TextView
             android:id="@+id/startButton"
             style="@style/IdentHubPrimaryButton"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
             android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginBottom="@dimen/margin_4"
-            android:text="@string/fourthline_welcome_container_continue_button"
-            />
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_weight="1"
+            android:text="@string/fourthline_welcome_container_continue_button" />
 
     </LinearLayout>
 </RelativeLayout>

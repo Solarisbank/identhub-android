@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,9 +13,6 @@
         android:layout_above="@+id/buttonLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true">
@@ -138,6 +136,49 @@
             android:layout_height="wrap_content"
             android:text="@string/fourthline_terms_description_end"
             />
+
+            <ImageView
+                android:id="@+id/noticeImage"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="@dimen/margin_24"
+                android:src="@drawable/ic_info"
+                app:layout_constraintTop_toBottomOf="@+id/selectAll"
+                app:layout_constraintStart_toStartOf="@+id/selectAll"/>
+
+            <TextView
+                android:id="@+id/noticeTitle"
+                style="@style/IdentHubTextView.Small_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fourthline_terms_notice_title"
+                app:layout_constraintStart_toEndOf="@+id/noticeImage"
+                app:layout_constraintTop_toTopOf="@+id/noticeImage"
+                app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
+                android:layout_marginLeft="@dimen/margin_4" />
+
+            <TextView
+                android:id="@+id/noticeDot"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="∙"
+                app:layout_constraintStart_toStartOf="@+id/noticeImage"
+                app:layout_constraintEnd_toEndOf="@+id/noticeImage"
+                app:layout_constraintTop_toBottomOf="@+id/noticeImage"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/termsText"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/fourthline_terms_conditions_apply"
+                app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+                app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+                app:layout_constraintTop_toTopOf="@+id/noticeDot" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
@@ -154,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginBottom="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_16"
             android:text="@string/fourthline_terms_button_submit"
             />
 

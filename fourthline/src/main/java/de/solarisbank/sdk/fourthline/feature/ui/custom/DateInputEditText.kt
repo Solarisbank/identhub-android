@@ -9,15 +9,16 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import de.solarisbank.sdk.fourthline.getDateFromMRZ
 import timber.log.Timber
 import java.util.*
 
-class DateInputEditText : EditText {
+class DateInputEditText : AppCompatEditText {
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
 
     init {

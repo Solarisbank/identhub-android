@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
@@ -54,6 +55,8 @@ class DocScanFragment : DocumentScannerFragment() {
     private var punchhole: PunchholeView? = null
     private var retakeButton: TextView? = null
     private var confirmButton: TextView? = null
+    private var progressBar: ProgressBar? = null
+    private var resultImageView: AppCompatImageView? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -92,6 +95,8 @@ class DocScanFragment : DocumentScannerFragment() {
         punchhole = null
         retakeButton = null
         confirmButton = null
+        progressBar = null
+        resultImageView = null
         super.onDestroyView()
     }
 
@@ -130,6 +135,8 @@ class DocScanFragment : DocumentScannerFragment() {
                     retakeButton!!.setOnClickListener { resetCurrentStep() }
                     confirmButton = it.findViewById(R.id.confirmButton)
                     confirmButton!!.setOnClickListener { moveToNextStep() }
+                    progressBar = it.findViewById(R.id.progressBar)
+                    resultImageView = it.findViewById(R.id.resultImageView)
                     it.onLayoutMeasuredOnce {
                         punchhole!!.punchholeRect = getDocumentDetectionArea()
                         punchhole!!.postInvalidate()
@@ -202,13 +209,9 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("onWarnings")
         cleanupJob?.cancel()
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
-//            binding.icon.visibility = View.VISIBLE
             warningsLabel!!.text = warnings.asString(requireContext())
-//            binding.icon.setImageLevel(0)
-
             delay(500)
-            warningsLabel!!.text = ""
-//            binding.icon.visibility = View.GONE
+            warningsLabel!!.text = getString(R.string.selfie_step_scanning)
         }
     }
 
@@ -219,14 +222,12 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun onStepSuccess(result: DocumentScannerStepResult) {
         Timber.d("onStepSuccess: ${step?.fileSide?.name}")
-        step?.isAngled
+        cleanupJob?.cancel()
         if(SHOW_INTERMEDIATR_RESULTS) {
             lifecycleScope.launch(Dispatchers.Main) {
                 showIntermediateResult(result.image.cropped)
                 kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, result)
                 result.metadata.fileSide.name
-//                result.metadata.
-
             }
         } else {
             moveToNextStep()
@@ -260,19 +261,21 @@ class DocScanFragment : DocumentScannerFragment() {
         when (newState) {
             UiState.SCANNING -> {
                 stepLabel!!.show()
-                warningsLabel!!.show()
                 takeSnapshot!!.show()
                 scanPreview!!.hide()
                 resultBlock!!.hide()
+                progressBar!!.show()
+                resultImageView!!.hide()
             }
             UiState.INTERMEDIATE_RESULT -> {
                 stepLabel!!.text = ""
-                warningsLabel!!.text = ""
+                warningsLabel!!.text = getString(R.string.document_scanner_scan_success)
                 stepLabel!!.hide()
-                warningsLabel!!.hide()
                 takeSnapshot!!.hide()
                 scanPreview!!.show()
                 resultBlock!!.show()
+                progressBar!!.hide()
+                resultImageView!!.show()
             }
         }
     }

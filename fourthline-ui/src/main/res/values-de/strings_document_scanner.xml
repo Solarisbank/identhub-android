@@ -23,4 +23,6 @@
 
    <string name="document_scanner_file_tilted">angewinkeltes</string>
    <string name="document_scanner_file_side">Bitte machen Sie ein %2$s Foto von der %1$s Ihres Ausweisdokuments.</string>
+
+   <string name="document_scanner_scan_success">Scan erfolgreich</string>
 </resources>

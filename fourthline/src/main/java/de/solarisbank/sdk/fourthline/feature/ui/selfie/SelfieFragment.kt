@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.setPadding
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
@@ -145,12 +147,11 @@ class SelfieFragment : SelfieScannerFragment() {
         Timber.d("onWarnings: ${warnings[0].name}")
         cleanupJob?.cancel()
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
-            icon!!.visibility = View.VISIBLE
             warningsLabel!!.text = warnings[0].asString(requireContext())
-            icon!!.setImageLevel(0)
+            stepName?.visibility = View.GONE
             delay(500)
             warningsLabel!!.text = ""
-            icon!!.visibility = View.GONE
+            stepName?.visibility = View.VISIBLE
         }
     }
 

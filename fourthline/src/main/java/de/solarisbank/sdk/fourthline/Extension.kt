@@ -53,6 +53,8 @@ fun SelfieScannerError.asString(context: Context) = when (this) {
     SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.selfie_error_scanner_interrupted)
     SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.selfie_error_recognition_models_not_downloaded)
     SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.selfie_error_unknown)
+    SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.selfie_error_unknown)
+    SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.selfie_warning_multiple_detected)
 }
 
 private var cleanupJob: Job? = null
@@ -81,6 +83,7 @@ fun DocumentScannerError.asString(context: Context) = when (this) {
     DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.document_scanner_error_scanner_interrupted)
     DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.document_scanner_error_unknown)
     DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.document_scanner_error_timeout)
+    DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.document_scanner_error_unknown)
 }
 
 fun DocumentScannerStep.asString(context: Context): String {
