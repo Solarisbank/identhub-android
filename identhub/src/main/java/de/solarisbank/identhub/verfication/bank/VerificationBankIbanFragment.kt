@@ -110,7 +110,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                 .map { ibanNumber.text.toString().filter { !it.isWhitespace() } }
                 .subscribe(
                         { iBan: String ->
-                            (activity as VerificationBankActivity).iban = iBan
+                            sharedViewModel.iban = iBan
                             ibanViewModel.onSubmitButtonClicked(iBan)
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })

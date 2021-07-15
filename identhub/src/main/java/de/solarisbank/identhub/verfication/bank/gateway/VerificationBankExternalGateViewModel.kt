@@ -21,7 +21,7 @@ class VerificationBankExternalGateViewModel(
         private val fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase,
         private val getIdentificationUseCase: GetIdentificationUseCase
 ) : ViewModel() {
-    private val verificationBankUrlLiveDataEvent: MutableLiveData<Event<String>>
+    private val verificationBankUrlLiveDataEvent: MutableLiveData<String>
     private val establishSecureConnectionLiveDataEvent: MutableLiveData<Event<Any>> = MutableLiveData()
     private val verificationStatusLiveDataEvent: MutableLiveData<Result<Any>> = MutableLiveData()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -29,10 +29,10 @@ class VerificationBankExternalGateViewModel(
     init {
         val verificationBankUrl = savedStateHandle.get<String>(Identification.VERIFICATION_BANK_URL_KEY)
         Preconditions.checkNotNull(verificationBankUrl, "Verification bank url cannot be null")
-        verificationBankUrlLiveDataEvent = MutableLiveData(Event(verificationBankUrl!!))
+        verificationBankUrlLiveDataEvent = MutableLiveData(verificationBankUrl!!)
     }
 
-    val verificationBankUrl: LiveData<Event<String>>
+    val verificationBankUrl: LiveData<String>
         get() = verificationBankUrlLiveDataEvent
 
     val establishSecureConnectionEvent: LiveData<Event<Any>>

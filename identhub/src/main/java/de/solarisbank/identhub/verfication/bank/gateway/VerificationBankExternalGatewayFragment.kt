@@ -60,10 +60,9 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
     }
 
     private fun initWebView() {
-        val bankVerificationUrlEvent =
+        val bankVerificationUrl =
             verificationBankExternalGateViewModel!!.verificationBankUrl.value!!
-        val verificationBankUrl = bankVerificationUrlEvent.content
-        Preconditions.checkNotNull(verificationBankUrl)
+
         webView!!.settings.javaScriptEnabled = true
         enableWebViewDarkModeSupport()
         webView!!.webViewClient = object : WebViewClient() {
@@ -125,7 +124,7 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                 return true
             }
         }
-        webView!!.loadUrl(verificationBankUrl!!)
+        webView!!.loadUrl(bankVerificationUrl)
     }
 
     private fun enableWebViewDarkModeSupport() {

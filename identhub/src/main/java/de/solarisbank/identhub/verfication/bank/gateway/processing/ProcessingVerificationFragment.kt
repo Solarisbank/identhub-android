@@ -26,7 +26,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     }
 
     private fun observeScreenState() {
-        processingVerificationViewModel.processingVerificationEvent((activity as VerificationBankActivity).iban!!).observe(viewLifecycleOwner, Observer { onProcessingVerificationEvent(it) })
+        processingVerificationViewModel.processingVerificationEvent((sharedViewModel).iban!!).observe(viewLifecycleOwner, Observer { onProcessingVerificationEvent(it) })
     }
 
     private fun onProcessingVerificationEvent(result: Result<IdentificationUiModel>) {

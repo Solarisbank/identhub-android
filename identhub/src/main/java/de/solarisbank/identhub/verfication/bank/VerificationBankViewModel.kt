@@ -21,14 +21,18 @@ import de.solarisbank.sdk.core.result.Event
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val identificationStepPreferences: IdentificationStepPreferences, private val getIdentificationUseCase: GetIdentificationUseCase, private val sessionUrlRepository: SessionUrlRepository) : ViewModel() {
-    val ACTION_QUIT = -1
-    val ACTION_STOP_WITH_RESULT = 1
-    val ACTION_SUMMARY_WITH_RESULT = 2
+class VerificationBankViewModel(private val savedStateHandle: SavedStateHandle, private val identificationStepPreferences: IdentificationStepPreferences, private val getIdentificationUseCase: GetIdentificationUseCase, private val sessionUrlRepository: SessionUrlRepository) : ViewModel() {
+
 
     val cancelState = MutableLiveData<Boolean>()
     private val navigationActionId = MutableLiveData<Event<NaviDirection>>()
     private val compositeDisposable = CompositeDisposable()
+    var iban: String?
+        get() = savedStateHandle.get(KEY_IBAN)
+        set(value) {
+           savedStateHandle[KEY_IBAN] = value
+        }
+
 
     init {
         if (savedStateHandle.contains(SESSION_URL_KEY)) {
@@ -103,5 +107,12 @@ class VerificationBankViewModel(savedStateHandle: SavedStateHandle, private val 
 
     fun cancelIdentification() {
         cancelState.value = true
+    }
+
+    companion object {
+        const val ACTION_QUIT = -1
+        const val ACTION_STOP_WITH_RESULT = 1
+        const val ACTION_SUMMARY_WITH_RESULT = 2
+        const val KEY_IBAN = "key_iban"
     }
 }

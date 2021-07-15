@@ -21,33 +21,40 @@ import de.solarisbank.sdk.core.result.Event
 import timber.log.Timber
 
 class VerificationBankActivity : IdentHubActivity() {
-    var iban: String? = null
     private lateinit var viewModel: VerificationBankViewModel
     private lateinit var stepIndicator: StepIndicator
+    private var stepIndicatorStep = SolarisIndicatorView.FIRST_STEP
+    private var stepIndicatorVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification_bank)
+        loadState(savedInstanceState)
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
-        initGraph()
+        initGraph(savedInstanceState)
     }
 
-    private fun initGraph() {
+    private fun initGraph(savedInstanceState: Bundle?) {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
         val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
         navHostFragment.navController.setGraph(navGraph, intent.extras)
-        initView()
+        initView(savedInstanceState)
     }
 
-    private fun initView() {
+    private fun initView(savedInstanceState: Bundle?) {
         stepIndicator = findViewById(R.id.stepIndicator)
-        val lastCompletedStep = viewModel.getLastCompletedStep()
-        var startStep = COMPLETED_STEP.VERIFICATION_PHONE.index
-        if (!IdentHubSession.hasPhoneVerification) {
-            startStep = COMPLETED_STEP.VERIFICATION_BANK.index
+
+        if (savedInstanceState == null) {
+            val lastCompletedStep = viewModel.getLastCompletedStep()
+            var startStep = COMPLETED_STEP.VERIFICATION_PHONE.index
+            if (!IdentHubSession.hasPhoneVerification) {
+                startStep = COMPLETED_STEP.VERIFICATION_BANK.index
+            }
+            stepIndicatorStep = lastCompletedStep?.index ?: startStep
+            stepIndicatorVisible = true
         }
-        stepIndicator.setStep(lastCompletedStep?.index ?: startStep)
+        updateStepIndicator()
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {
@@ -90,20 +97,31 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun setSubStep(naviDirection: NaviDirection) {
         if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment) {
-            stepIndicator.setStep(SolarisIndicatorView.SECOND_STEP)
+            stepIndicatorStep = SolarisIndicatorView.SECOND_STEP
         } else if (naviDirection.actionId == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
-            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+            stepIndicatorStep = SolarisIndicatorView.THIRD_STEP
         }
 
-        when (naviDirection.actionId) {
+        stepIndicatorVisible = when (naviDirection.actionId) {
             R.id.action_verificationBankFragment_to_establishConnectionFragment,
             R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment,
             R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment
             -> {
-                stepIndicator.visibility = View.GONE
+                false
             }
-            else -> stepIndicator.visibility = View.VISIBLE
+            else -> true
         }
+
+        updateStepIndicator()
+    }
+
+    private fun updateStepIndicator() {
+        stepIndicator.visibility = if (stepIndicatorVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+        stepIndicator.setStep(stepIndicatorStep)
     }
 
     private fun onCancel(state: Boolean?) {
@@ -130,5 +148,23 @@ class VerificationBankActivity : IdentHubActivity() {
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    private fun loadState(saved: Bundle?) {
+        saved?.let {
+            stepIndicatorStep = it.getInt(KEY_STEP)
+            stepIndicatorVisible = it.getBoolean(KEY_STEP_VISIBLE)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_STEP, stepIndicatorStep)
+        outState.putBoolean(KEY_STEP_VISIBLE, stepIndicatorVisible)
+    }
+
+    companion object {
+        const val KEY_STEP = "StepIndicatorStep"
+        const val KEY_STEP_VISIBLE = "StepIndicatorVisible"
     }
 }
