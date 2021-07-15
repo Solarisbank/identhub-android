@@ -24,8 +24,6 @@ import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
-import de.solarisbank.sdk.core.result.*
-import de.solarisbank.sdk.core.result.Result.*
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
@@ -149,7 +147,7 @@ class ContractSigningFragment : IdentHubFragment() {
         if (result.succeeded && Status.getEnum(result.data?.status) == Status.SUCCESSFUL) {
             transactionDescription.text = String.format(getString(R.string.contract_signing_preview_transaction_info), result.data?.id)
             onStateOfDigitInputChanged(SUCCESS_STATE)
-            sharedViewModel.navigateToSummary()
+            sharedViewModel.callOnSuccessResult()
         } else if (Status.getEnum(result.data?.status) == Status.FAILED || Status.getEnum(result.data?.status) == Status.CONFIRMED) {
             onStateOfDigitInputChanged(ERROR_STATE)
             sharedViewModel.callOnFailureResult()

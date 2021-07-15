@@ -23,8 +23,6 @@ import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModelFactory;
 import de.solarisbank.identhub.intro.IntroActivityViewModel;
 import de.solarisbank.identhub.intro.IntroActivityViewModelFactory;
 import de.solarisbank.identhub.intro.IntroModule;
@@ -147,14 +145,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 fetchingAuthorizedIBanStatusUseCaseProvider,
                 getIdentificationUseCaseProvider
         ));
-        map.put(IdentitySummaryFragmentViewModel.class, IdentitySummaryFragmentViewModelFactory.create(
-                identityModule,
-                deleteAllLocalStorageUseCaseProvider,
-                getDocumentsUseCaseProvider,
-                fetchPdfUseCaseProvider,
-                identificationStepPreferencesProvider,
-                getIdentificationUseCaseProvider
-        ));
         map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(
                 verificationBankModule,
                 identificationStepPreferencesProvider,
@@ -164,7 +154,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         map.put(ContractViewModel.class, ContractViewModelFactory.create(
                 contractModule,
                 identificationStepPreferencesProvider,
-                sessionUrlRepositoryProvider
+                sessionUrlRepositoryProvider,
+                getIdentificationUseCaseProvider
         ));
 
         return map;

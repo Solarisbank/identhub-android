@@ -9,7 +9,6 @@ import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel
@@ -55,16 +54,5 @@ class VerificationBankModule {
                                                      fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase,
                                                      getIdentificationUseCase: GetIdentificationUseCase): VerificationBankExternalGateViewModel {
         return VerificationBankExternalGateViewModel(savedStateHandle, fetchingAuthorizedIBanStatusUseCase, getIdentificationUseCase)
-    }
-
-    fun provideIdentitySummaryFragmentViewModel(
-            deleteAllLocalStorageUseCase: DeleteAllLocalStorageUseCase,
-            getDocumentsUseCase: GetDocumentsUseCase,
-            fetchPdfUseCase: FetchPdfUseCase,
-            identificationStepPreferences: IdentificationStepPreferences,
-            getIdentificationUseCase: GetIdentificationUseCase,
-            savedStateHandle: SavedStateHandle): IdentitySummaryFragmentViewModel {
-        return IdentitySummaryFragmentViewModel(
-                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, getIdentificationUseCase, savedStateHandle)
     }
 }

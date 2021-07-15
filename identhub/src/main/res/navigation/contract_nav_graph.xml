@@ -14,16 +14,7 @@
     <fragment
         android:id="@+id/contractSigningFragment"
         android:name="de.solarisbank.identhub.contract.sign.ContractSigningFragment"
-        android:label="ContractSigningFragment" >
-        <action
-            android:id="@+id/action_contractSigningFragment_to_identitySummaryFragment"
-            app:destination="@id/identitySummaryFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/identitySummaryFragment"
-        android:name="de.solarisbank.identhub.identity.summary.IdentitySummaryFragment"
-        android:label="IdentitySummaryFragment"
-        />
+        android:label="ContractSigningFragment" />
 
 </navigation>
 

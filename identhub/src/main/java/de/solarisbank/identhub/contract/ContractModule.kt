@@ -12,12 +12,14 @@ class ContractModule {
     fun provideContractViewModel(
             savedStateHandle: SavedStateHandle,
             identificationStepPreferences: IdentificationStepPreferences,
-            sessionUrlRepository: SessionUrlRepository
+            sessionUrlRepository: SessionUrlRepository,
+            getIdentificationUseCase: GetIdentificationUseCase
     ): ContractViewModel {
         return ContractViewModel(
                 savedStateHandle,
                 identificationStepPreferences,
-                sessionUrlRepository
+                sessionUrlRepository,
+                getIdentificationUseCase
         )
     }
 

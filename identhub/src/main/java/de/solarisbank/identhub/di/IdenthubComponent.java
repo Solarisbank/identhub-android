@@ -104,8 +104,6 @@ import de.solarisbank.identhub.file.FileControllerFactory;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragment;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentInjector;
 import de.solarisbank.identhub.intro.IntroActivity;
 import de.solarisbank.identhub.intro.IntroActivityInjector;
 import de.solarisbank.identhub.intro.IntroFragment;
@@ -588,11 +586,6 @@ public class IdenthubComponent {
             @Override
             public void inject(ContractSigningPreviewFragment contractSigningPreviewFragment) {
                 ContractSigningPreviewFragmentInjector.injectAssistedViewModelFactory(contractSigningPreviewFragment, fragmentAssistedViewModelFactoryProvider.get());
-            }
-
-            @Override
-            public void inject(IdentitySummaryFragment identitySummaryFragment) {
-                IdentitySummaryFragmentInjector.injectAssistedViewModelFactory(identitySummaryFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
             @Override

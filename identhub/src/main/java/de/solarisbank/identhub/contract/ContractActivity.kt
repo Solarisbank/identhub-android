@@ -12,6 +12,7 @@ import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.identhub.ui.StepIndicator
+import de.solarisbank.sdk.core.data.model.StateUiModel
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import timber.log.Timber
@@ -49,6 +50,12 @@ class ContractActivity : IdentHubActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ContractViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
+        viewModel.getUiState().observe(this, { onIdentificationStatusChanged(it) })
+    }
+
+    private fun onIdentificationStatusChanged(model: StateUiModel<Bundle?>) {
+        Timber.d("onIdentificationStatusChanged, model : ${model.data}")
+        viewModel.sendResult(model.data)
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {

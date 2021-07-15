@@ -8,7 +8,6 @@ import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
-import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
@@ -18,7 +17,6 @@ import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUs
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
-import de.solarisbank.identhub.identity.summary.IdentitySummaryFragmentViewModel;
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
@@ -93,17 +91,5 @@ public final class IdentityModule {
                                                                                               final FetchingAuthorizedIBanStatusUseCase fetchingAuthorizedIBanStatusUseCase,
                                                                                               final GetIdentificationUseCase getIdentificationUseCase) {
         return new VerificationBankExternalGateViewModel(savedStateHandle, fetchingAuthorizedIBanStatusUseCase, getIdentificationUseCase);
-    }
-
-    @NonNull
-    public IdentitySummaryFragmentViewModel provideIdentitySummaryFragmentViewModel(
-            final DeleteAllLocalStorageUseCase deleteAllLocalStorageUseCase,
-            final GetDocumentsUseCase getDocumentsUseCase,
-            final FetchPdfUseCase fetchPdfUseCase,
-            final IdentificationStepPreferences identificationStepPreferences,
-            final GetIdentificationUseCase getIdentificationUseCase,
-            final SavedStateHandle savedStateHandle) {
-        return new IdentitySummaryFragmentViewModel(
-                deleteAllLocalStorageUseCase, getDocumentsUseCase, fetchPdfUseCase, identificationStepPreferences, getIdentificationUseCase, savedStateHandle);
     }
 }
