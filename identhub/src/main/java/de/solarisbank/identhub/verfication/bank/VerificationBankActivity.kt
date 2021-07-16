@@ -96,16 +96,16 @@ class VerificationBankActivity : IdentHubActivity() {
     }
 
     private fun setSubStep(naviDirection: NaviDirection) {
-        if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment) {
+      if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment ||
+            naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||
+            naviDirection.actionId == R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment) {
             stepIndicatorStep = SolarisIndicatorView.SECOND_STEP
         } else if (naviDirection.actionId == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
             stepIndicatorStep = SolarisIndicatorView.THIRD_STEP
         }
 
         stepIndicatorVisible = when (naviDirection.actionId) {
-            R.id.action_verificationBankFragment_to_establishConnectionFragment,
-            R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment,
-            R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment
+            R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment
             -> {
                 false
             }
