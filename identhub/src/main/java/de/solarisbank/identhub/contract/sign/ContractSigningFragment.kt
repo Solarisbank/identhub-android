@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -49,6 +50,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private lateinit var transactionDescription: TextView
     private lateinit var errorMessage: TextView
     private lateinit var submitButton: TextView
+    private lateinit var progress: ProgressBar
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -64,6 +66,7 @@ class ContractSigningFragment : IdentHubFragment() {
                     transactionDescription = it.findViewById(R.id.transactionDescription)
                     errorMessage = it.findViewById(R.id.errorMessage)
                     submitButton = it.findViewById(R.id.submitButton)
+                    progress = it.findViewById(R.id.progress)
                 }
     }
 
@@ -79,6 +82,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private fun initViews() {
         initFocusListener()
         initStateOfDigitInputField()
+        observePhoneNumberResult()
         sendNewCode.setOnClickListener {
             sendNewCodeClickListener()
         }
@@ -91,7 +95,6 @@ class ContractSigningFragment : IdentHubFragment() {
         viewModel.startTimer()
         codeInput.text.clear()
         codeInput.addTextChangedListener(codeInputValidator)
-        observePhoneNumberResult()
     }
 
     private fun initFocusListener() {
@@ -115,6 +118,7 @@ class ContractSigningFragment : IdentHubFragment() {
         if (result.succeeded && result.data != null) {
             description.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), result.data!!.number)
             description.visibility = View.VISIBLE
+            progress.visibility = View.INVISIBLE
         }
     }
 

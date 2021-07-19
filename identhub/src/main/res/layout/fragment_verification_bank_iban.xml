@@ -128,6 +128,8 @@
             <EditText
                 android:id="@+id/ibanNumber"
                 style="@style/IdentHubTextBox"
+                android:textSize="22dp"
+                android:inputType="textCapCharacters"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:background="@drawable/textbox_drawable_selector"

@@ -43,13 +43,24 @@
                 android:adjustViewBounds="true"
                 />
 
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="@dimen/margin_32"
+                android:indeterminateDrawable="@drawable/ic_progressbar"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/scratch"
+                />
+
             <TextView
                 android:id="@+id/description"
                 style="@style/IdentHubTextView.Regular"
                 android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/margin_32"
                 android:text="@string/contract_signing_description"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"

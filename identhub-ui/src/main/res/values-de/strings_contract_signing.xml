@@ -13,7 +13,7 @@
     <string name="contract_signing_notice_title">Sie konnten den Prozess nicht abschließen?</string>
     <string name="contract_signing_notice1">Wenden Sie sich unter 06196 – 77 555 30 an den Kundendiest von Samsung Pay, wenn Sie Hilfe bei der Verifizierung benötigen.</string>
     <string name="contract_signing_notice2">Es fallen Kosten für den Anruf gemäß Konditionen des Vertragspartners für Festnetz- oder Mobilfunkanschlüsse an.</string>
-    <string name="contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (+**-***-***-****) gesendet wurde.</string>
+    <string name="contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
     <string name="contract_signing_sign_action">Unterzeichnen und Abschicken</string>
 
     <string name="contract_signing_code_expires">Läuft ab in %1$s</string>
