@@ -84,7 +84,7 @@
         style="@style/IdentHubPrimaryButton"
         android:enabled="false"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_button_height"
         android:text="@string/continue_button_text"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"

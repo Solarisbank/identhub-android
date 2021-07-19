@@ -89,7 +89,7 @@
         style="@style/IdentHubPrimaryButton"
         android:enabled="true"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_button_height"
         android:layout_marginBottom="@dimen/margin_18"
         android:text="Samsung"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"

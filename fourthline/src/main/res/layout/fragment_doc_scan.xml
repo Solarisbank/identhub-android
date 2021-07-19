@@ -109,7 +109,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resultBlock"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/default_button_height"
         android:layout_marginBottom="@dimen/margin_16"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -129,7 +129,7 @@
 
         <TextView
             android:id="@+id/retakeButton"
-            style="@style/IdentHubTextView.Small_16"
+            style="@style/IdentHubPrimaryButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -140,7 +140,7 @@
 
         <TextView
             android:id="@+id/confirmButton"
-            style="@style/IdentHubTextView.Small_16"
+            style="@style/IdentHubPrimaryButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -153,9 +153,9 @@
     <Button
         android:id="@+id/takeSnapshot"
         android:layout_width="216dp"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/default_button_height"
         android:layout_marginBottom="@dimen/margin_16"
-        android:background="@drawable/ic_scan_snapshot_button_background"
+        android:background="@drawable/button_secondary_background"
         android:text="@string/document_scanner_take_picture"
         android:textAllCaps="false"
         android:textColor="@color/ident_hub_color_white"

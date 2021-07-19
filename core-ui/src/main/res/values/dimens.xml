@@ -15,4 +15,5 @@
     <dimen name="tab_layout_circle_indicator_size">7dp</dimen>
 
     <dimen name="step_indicator_side_margin">50dp</dimen>
+    <dimen name="default_button_height">40dp</dimen>
 </resources>

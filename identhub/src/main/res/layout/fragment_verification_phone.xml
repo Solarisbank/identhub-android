@@ -111,7 +111,7 @@
         android:id="@+id/submitButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_button_height"
         android:layout_marginTop="40dp"
         android:text="@string/verification_phone_action_submit"
         app:layout_constraintEnd_toEndOf="parent"

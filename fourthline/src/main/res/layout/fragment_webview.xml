@@ -36,7 +36,7 @@
         android:id="@+id/closeButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/default_button_height"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="@dimen/margin_16"
         android:enabled="true"

@@ -193,7 +193,7 @@
             style="@style/IdentHubPrimaryButton"
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/default_button_height"
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginBottom="@dimen/margin_16"
             android:text="@string/fourthline_terms_button_submit"
