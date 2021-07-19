@@ -207,7 +207,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:text="@string/identity_activity_first_step_label"
         app:layout_constraintBottom_toTopOf="@+id/topGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -219,7 +218,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:text="@string/identity_activity_next_step"
         app:layout_constraintBottom_toTopOf="@+id/topGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

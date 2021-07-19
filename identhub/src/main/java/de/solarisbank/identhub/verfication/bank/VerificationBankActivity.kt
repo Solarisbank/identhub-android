@@ -55,6 +55,7 @@ class VerificationBankActivity : IdentHubActivity() {
             stepIndicatorVisible = true
         }
         updateStepIndicator()
+        setTitle(R.string.identity_activity_second_step_label)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {

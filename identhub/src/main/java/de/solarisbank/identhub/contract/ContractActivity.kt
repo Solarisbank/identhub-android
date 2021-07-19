@@ -39,6 +39,7 @@ class ContractActivity : IdentHubActivity() {
     private fun initView() {
         solarisIndicator = findViewById(R.id.stepIndicator)
         solarisIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+        setTitle(R.string.identity_activity_third_step_label)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {

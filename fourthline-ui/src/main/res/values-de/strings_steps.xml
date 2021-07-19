@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_activity_intro_step_label">Überprüfen der Identität</string>
+    <string name="fourthline_activity_selfie_step_label">Machen Sie ein Selfie</string>
+    <string name="fourthline_activity_select_id_step_label">Wählen Sie Ihr Dokument für die Identifizierung</string>
+    <string name="fourthline_activity_scan_document_step_label">Scannen Sie Ihr Dokument</string>
+    <string name="fourthline_activity_confirm_information_step_label">Bestätigung der Daten</string>
+    <string name="fourthline_activity_verifying_step_label">Verifizierung</string>
+</resources>

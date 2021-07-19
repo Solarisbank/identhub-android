@@ -2,6 +2,7 @@ package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -94,33 +95,55 @@ class FourthlineActivity : FourthlineBaseActivity() {
         Timber.d("onNavigationChanged; event: ${event}")
         event.content?.let {
             when (it.actionId) {
+                R.id.action_selfieFragment_to_selfieResultFragment -> {
+                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_selfie_step_label)
+                }
+                R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment -> {
+                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_selfie_step_label)
+                }
+                R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
+                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_scan_document_step_label)
+                }
+                R.id.action_documentScanFragment_to_documentResultFragment -> {
+                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_confirm_information_step_label)
+                }
                 R.id.action_welcomeContainerFragment_to_selfieFragment -> {
                     awaitedDirection = it
                     requestCameraPermission()
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                    setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
                 R.id.action_selfieResultFragment_to_documentTypeSelectionFragment -> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_select_id_step_label)
                 }
                 R.id.action_documentResultFragment_to_locationAccessFragment -> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_verifying_step_label)
                 }
                 R.id.action_locationAccessFragment_to_kycUploadFragment -> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_verifying_step_label)
                 }
                 R.id.action_reset_to_welcome_screen -> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     navGraph.startDestination = R.id.welcomeContainerFragment
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_intro_step_label)
                 }
                 FOURTHLINE_IDENTIFICATION_SUCCESSFULL, IdentHubSession.ACTION_NEXT_STEP -> {
                     quit(it.args)
                 }
                 else -> {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+                    setTitle(R.string.fourthline_activity_intro_step_label)
                 }
             }
         }
@@ -149,7 +172,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun requestForegroundServicePermission() {
         Timber.d("requestForegroundServicePermission()")
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PermissionChecker.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PermissionChecker.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.FOREGROUND_SERVICE), FOREGROUND_SERVICE_PERMISSION_CODE)
         } else {
             navigateToAwaitedDirection()
