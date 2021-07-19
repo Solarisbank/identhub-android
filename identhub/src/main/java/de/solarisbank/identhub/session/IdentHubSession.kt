@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import de.solarisbank.identhub.router.COMPLETED_STEP
 import timber.log.Timber
 
-class IdentHubSession(private val sessionUrl: String) {
+class IdentHubSession(val sessionUrl: String) {
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null

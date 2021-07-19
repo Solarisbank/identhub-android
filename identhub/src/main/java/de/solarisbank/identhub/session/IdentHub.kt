@@ -14,8 +14,11 @@ object IdentHub {
         get() = SESSION?.isPaymentProcessAvailable ?: false
 
     fun sessionWithUrl(url: String): IdentHubSession {
-        return SESSION ?: synchronized(this) {
-            IdentHubSession(buildApiUrl(url)).apply {
+        synchronized(this) {
+            if (!SESSION?.sessionUrl.equals(url)) {
+                clear()
+            }
+            return SESSION ?: IdentHubSession(buildApiUrl(url)).apply {
                 SESSION = this
             }
         }
