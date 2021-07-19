@@ -104,11 +104,6 @@ import de.solarisbank.identhub.file.FileControllerFactory;
 import de.solarisbank.identhub.identity.IdentityActivity;
 import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.intro.IntroActivity;
-import de.solarisbank.identhub.intro.IntroActivityInjector;
-import de.solarisbank.identhub.intro.IntroFragment;
-import de.solarisbank.identhub.intro.IntroFragmentInjector;
-import de.solarisbank.identhub.intro.IntroModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
 import de.solarisbank.identhub.session.data.identification.IdentificationApi;
@@ -158,7 +153,6 @@ public class IdenthubComponent {
     private final VerificationBankModule verficationBankModule;
     private final ContractModule contractModule;
     private final IdentityModule identityModule;
-    private final IntroModule introModule;
     private final ActivitySubModule activitySubModule;
     private final NetworkModule networkModule;
     private final DatabaseModule databaseModule;
@@ -218,7 +212,6 @@ public class IdenthubComponent {
     private IdenthubComponent(
             LibraryComponent libraryComponent,
             IdentityModule identityModule,
-            IntroModule introModule,
             ActivitySubModule activitySubModule,
             NetworkModule networkModule,
             DatabaseModule databaseModule,
@@ -231,7 +224,6 @@ public class IdenthubComponent {
             ContractModule contractModule,
             IdentificationModule identificationModule) {
         this.identityModule = identityModule;
-        this.introModule = introModule;
         this.activitySubModule = activitySubModule;
         this.networkModule = networkModule;
         this.databaseModule = databaseModule;
@@ -249,7 +241,6 @@ public class IdenthubComponent {
                 identhubComponent = new IdenthubComponent.Builder()
                         .setLibraryComponent(libraryComponent)
                         .setIdentityModule(new IdentityModule())
-                        .setIntroModule(new IntroModule())
                         .setActivitySubModule(new ActivitySubModule())
                         .setNetworkModule(new NetworkModule())
                         .setDatabaseModule(new DatabaseModule())
@@ -332,7 +323,6 @@ public class IdenthubComponent {
     private static class Builder {
         private IdentityModule identityModule;
         private LibraryComponent libraryComponent;
-        private IntroModule introModule;
         private ActivitySubModule activitySubModule;
         private NetworkModule networkModule;
         private DatabaseModule databaseModule;
@@ -347,11 +337,6 @@ public class IdenthubComponent {
 
         Builder setLibraryComponent(LibraryComponent libraryComponent) {
             this.libraryComponent = libraryComponent;
-            return this;
-        }
-
-        Builder setIntroModule(IntroModule introModule) {
-            this.introModule = introModule;
             return this;
         }
 
@@ -374,7 +359,6 @@ public class IdenthubComponent {
             return new IdenthubComponent(
                     libraryComponent,
                     identityModule,
-                    introModule,
                     activitySubModule,
                     networkModule,
                     databaseModule,
@@ -471,7 +455,6 @@ public class IdenthubComponent {
                     IdenthubComponent.this.identityModule,
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.sessionUrlRepositoryProvider,
-                    IdenthubComponent.this.introModule,
                     IdenthubComponent.this.verficationBankModule,
                     IdenthubComponent.this.contractModule,
                     getMobileNumberUseCaseProvider
@@ -490,11 +473,6 @@ public class IdenthubComponent {
         @Override
         public void inject(@NotNull ContractActivity contractActivity) {
             ContractActivityInjector.injectAssistedViewModelFactory(contractActivity, assistedViewModelFactoryProvider.get());
-        }
-
-        @Override
-        public void inject(IntroActivity introActivity) {
-            IntroActivityInjector.injectAssistedViewModelFactory(introActivity, assistedViewModelFactoryProvider.get());
         }
 
         @Override
@@ -591,11 +569,6 @@ public class IdenthubComponent {
             @Override
             public void inject(ProgressIndicatorFragment progressIndicatorFragment) {
                 ProgressIndicatorFragmentInjector.injectAssistedViewModelFactory(progressIndicatorFragment, fragmentAssistedViewModelFactoryProvider.get());
-            }
-
-            @Override
-            public void inject(IntroFragment introFragment) {
-                IntroFragmentInjector.injectAssistedViewModelFactory(introFragment, fragmentAssistedViewModelFactoryProvider.get());
             }
 
             @Override

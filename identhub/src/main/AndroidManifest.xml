@@ -18,14 +18,6 @@
             android:name="de.solarisbank.identhub.contract.ContractActivity"
             android:theme="@style/IdentHubTheme"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="de.solarisbank.identhub.identity.IdentityActivity"
-            android:theme="@style/IdentHubTheme"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="de.solarisbank.identhub.intro.IntroActivity"
-            android:theme="@style/IdentHubTheme"
-            android:screenOrientation="portrait" />
 
         <provider
             android:name=".feature.provider.IdentHubFileProvider"

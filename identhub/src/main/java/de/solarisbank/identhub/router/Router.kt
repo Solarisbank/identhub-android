@@ -5,7 +5,6 @@ import android.content.Intent
 import de.solarisbank.identhub.contract.ContractActivity
 import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.Identification
-import de.solarisbank.identhub.intro.IntroActivity
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.FOURTHLINE_FLOW_ACTIVITY_ACTION
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
@@ -30,7 +29,7 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
                 .apply { action = FOURTHLINE_FLOW_ACTIVITY_ACTION } //todo remove action
         FIRST_STEP_DIRECTION.FOURTHLINE_UPLOADING.destination -> provideFourthlineActivityIntent(context)
                 .also { it.putExtra(SHOW_UPLOADING_SCREEN, true) }
-        else -> Intent(context, IntroActivity::class.java)
+        else -> throw IllegalStateException()
     }.apply {
         if (sessionUrl != null) { putExtra(IdentHub.SESSION_URL_KEY, sessionUrl) }
     }

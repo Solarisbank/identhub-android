@@ -23,9 +23,6 @@ import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.intro.IntroActivityViewModel;
-import de.solarisbank.identhub.intro.IntroActivityViewModelFactory;
-import de.solarisbank.identhub.intro.IntroModule;
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
@@ -38,7 +35,6 @@ import de.solarisbank.sdk.core.di.internal.Provider;
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
-    private final IntroModule introModule;
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
     private final ContractModule contractModule;
@@ -66,7 +62,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            IntroModule introModule,
             VerificationBankModule verificationBankModule,
             ContractModule contractModule,
             Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider
@@ -80,7 +75,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.fetchPdfUseCaseProvider = fetchPdfUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
-        this.introModule = introModule;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
         this.verificationBankModule = verificationBankModule;
@@ -100,7 +94,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            IntroModule introModule,
             VerificationBankModule verificationBankModule,
             ContractModule contractModule,
             Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider
@@ -117,7 +110,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 identityModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
-                introModule,
                 verificationBankModule,
                 contractModule,
                 getMobileNumberUseCaseProvider
@@ -134,11 +126,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 confirmContractSignUseCaseProvider,
                 identificationPollingStatusUseCaseProvider,
                 getMobileNumberUseCaseProvider
-        ));
-        map.put(IntroActivityViewModel.class, IntroActivityViewModelFactory.create(
-                introModule,
-                identificationStepPreferencesProvider,
-                sessionUrlRepositoryProvider
         ));
         map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(
                 verificationBankModule,

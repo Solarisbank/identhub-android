@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/verificationBankFragment"
-        android:name="de.solarisbank.identhub.verfication.bank.VerificationBankFragment"
+        android:name="de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment"
         android:label="VerificationBankFragment">
         <action
             android:id="@+id/action_verificationBankFragment_to_establishConnectionFragment"
