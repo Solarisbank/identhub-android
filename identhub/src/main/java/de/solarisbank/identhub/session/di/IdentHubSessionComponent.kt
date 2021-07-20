@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.iban.IdentityInitializationRepositoryImpl
-import de.solarisbank.identhub.data.iban.IdentityInitializationSharedPrefsDataSource
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepositoryImpl
+import de.solarisbank.identhub.domain.session.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.data.initialization.InitializeIdentificationApi
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
@@ -19,7 +19,7 @@ import de.solarisbank.identhub.di.database.DatabaseModule
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDaoFactory
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
-import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.IdentHubObserverSubcomponent
 import de.solarisbank.identhub.session.IdentHubSessionObserver

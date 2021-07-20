@@ -15,12 +15,13 @@ import com.fourthline.kyc.zipper.ZipperError
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.getDateFromMRZ
 import timber.log.Timber
 import java.net.URI
 
-class KycInfoUseCase {
+class KycInfoUseCase(private val identityInitializationRepository: IdentityInitializationRepository) {
 
     private val kycInfo = KycInfo().also { it.person = Person() }
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
@@ -33,31 +34,39 @@ class KycInfoUseCase {
     fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
         Timber.d("updateWithPersonDataDto : ${personDataDto}")
         _personDataDto = personDataDto
-        kycInfo.provider = Provider(
-                name = "SolarisBankSamsung", //todo should be different for different types of staging
+        withFourthlineProvider {
+            kycInfo.provider = Provider(
+                name = it, //todo should be different for different types of staging
                 clientNumber = personDataDto.personUid
-        )
+            )
 
-        kycInfo.address = Address().also {
-            personDataDto.address?.apply{
-                it.street = street
-                it.streetNumber = streetNumber
-                it.city = city
-                it.countryCode = personDataDto.address?.country //todo change with country
-                it.postalCode = postalCode
+            kycInfo.address = Address().also {
+                personDataDto.address?.apply {
+                    it.street = street
+                    it.streetNumber = streetNumber
+                    it.city = city
+                    it.countryCode = personDataDto.address?.country //todo change with country
+                    it.postalCode = postalCode
+                }
+            }
+
+            kycInfo.contacts = Contacts().also {
+                it.mobile = personDataDto.mobileNumber
+                it.email = personDataDto.email
+            }
+
+            kycInfo.person.also {
+                it.nationalityCode = personDataDto.nationality
+                it.birthPlace = personDataDto.birthPlace
+                fillRecognizablePersonDataFromResponse(personDataDto)
             }
         }
+    }
 
-        kycInfo.contacts = Contacts().also {
-            it.mobile = personDataDto.mobileNumber
-            it.email = personDataDto.email
-        }
-
-        kycInfo.person.also {
-            it.nationalityCode = personDataDto.nationality
-            it.birthPlace = personDataDto.birthPlace
-            fillRecognizablePersonDataFromResponse(personDataDto)
-        }
+    private fun withFourthlineProvider(function: (String) -> Person) {
+        val initializationDto = identityInitializationRepository.getInitializationDto()
+        Timber.d("withFourthlineProvider() initialization data: $initializationDto")
+        function(initializationDto?.fourthlineProvider!!)
     }
 
     fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {

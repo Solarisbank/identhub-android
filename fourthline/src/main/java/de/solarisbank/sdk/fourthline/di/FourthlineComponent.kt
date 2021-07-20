@@ -16,7 +16,7 @@ import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDa
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
-import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.domain.session.*
 import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
@@ -32,6 +32,7 @@ import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthli
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.network.IdentificationIdInterceptor
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivityInjector
@@ -89,6 +90,10 @@ class FourthlineComponent private constructor(
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
     private lateinit var httpLoggingInterceptorProvider: Provider<HttpLoggingInterceptor>
 
+    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
+    private lateinit var identitySharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
+    private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+
     init {
         initialize()
     }
@@ -104,12 +109,16 @@ class FourthlineComponent private constructor(
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
 
-        //todo replace with factory
-        kycInfoUseCaseProvider = DoubleCheck.provider(object : Factory<KycInfoUseCase> {
-            override fun get(): KycInfoUseCase {
-                return KycInfoUseCase()
+        sharedPreferencesProvider = DoubleCheck.provider(object : Factory<SharedPreferences> {
+            override fun get(): SharedPreferences {
+                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
             }
         })
+        identitySharedPrefsDataSourceProvider = DoubleCheck.provider(
+            IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
+        identityInitializationRepositoryProvider = DoubleCheck.provider(
+            IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
+        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider)
 
         identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
         identificationIdInterceptorProvider = DoubleCheck.provider(object : Factory<IdentificationIdInterceptor> {

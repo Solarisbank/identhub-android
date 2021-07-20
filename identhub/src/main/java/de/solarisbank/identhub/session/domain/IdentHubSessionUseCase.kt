@@ -2,7 +2,7 @@ package de.solarisbank.identhub.session.domain
 
 import android.content.Context
 import de.solarisbank.identhub.data.entity.NavigationalResult
-import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
@@ -14,10 +14,10 @@ import timber.log.Timber
 
 //todo add context for service checking
 class IdentHubSessionUseCase(
-        private val identHubSessionRepository: IdentHubSessionRepository,
-        private val sessionUrlRepository: SessionUrlRepository,
-        private val identityInitializationRepository: IdentityInitializationRepository,
-        private val context: Context
+    private val identHubSessionRepository: IdentHubSessionRepository,
+    private val sessionUrlRepository: SessionUrlRepository,
+    private val identityInitializationRepository: IdentityInitializationRepository,
+    private val context: Context
         ) {
 
     fun saveSessionId(url: String?) {

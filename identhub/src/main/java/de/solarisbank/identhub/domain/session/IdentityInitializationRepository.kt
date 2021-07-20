@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.domain.iban
+package de.solarisbank.identhub.domain.session
 
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
 

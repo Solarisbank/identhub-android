@@ -1,9 +1,9 @@
-package de.solarisbank.identhub.data.iban
+package de.solarisbank.identhub.domain.session
 
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
-import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
 
-class IdentityInitializationRepositoryImpl(private val identityInitializationSharedPrefsDataSource: IdentityInitializationSharedPrefsDataSource) : IdentityInitializationRepository {
+class IdentityInitializationRepositoryImpl(private val identityInitializationSharedPrefsDataSource: IdentityInitializationSharedPrefsDataSource) :
+    IdentityInitializationRepository {
 
     override fun saveInitializationDto(initializationDto: InitializationDto) {
         identityInitializationSharedPrefsDataSource.saveInitializationDto(initializationDto)

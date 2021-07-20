@@ -7,7 +7,7 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
-import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.core.network.utils.parseErrorResponseDto
 import de.solarisbank.sdk.core.result.Result

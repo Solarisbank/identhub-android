@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline.feature.service.kyc.upload
 
 import android.content.Context
+import android.content.SharedPreferences
 import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
@@ -13,12 +14,13 @@ import de.solarisbank.identhub.di.database.DatabaseModule
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDaoFactory
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
-import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.domain.session.*
 import de.solarisbank.identhub.session.data.identification.*
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.core.di.LibraryComponent
 import de.solarisbank.sdk.core.di.internal.DoubleCheck
+import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
@@ -34,6 +36,8 @@ import de.solarisbank.sdk.fourthline.data.kyc.upload.factory.ProvideKycUploadDat
 import de.solarisbank.sdk.fourthline.data.kyc.upload.factory.ProviderKycUploadApiFactory
 import de.solarisbank.sdk.fourthline.data.kyc.upload.factory.ProviderKycUploadRepositoryFactory
 import de.solarisbank.sdk.fourthline.di.FourthlineComponent
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCaseFactory
 import okhttp3.OkHttpClient
@@ -74,10 +78,15 @@ class KycUploadServiceComponent private constructor(
     private lateinit var kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
     private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+    private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
     private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
+
+    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
+    private lateinit var identitySharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
+    private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 
     init {
         initialize()
@@ -101,6 +110,14 @@ class KycUploadServiceComponent private constructor(
         identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
         identificationDaoProvider = DoubleCheck.provider(DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
         identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
+        sharedPreferencesProvider = DoubleCheck.provider(object : Factory<SharedPreferences> {
+            override fun get(): SharedPreferences {
+                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
+            }
+        })
+        identitySharedPrefsDataSourceProvider = DoubleCheck.provider(IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
+        identityInitializationRepositoryProvider = DoubleCheck.provider(IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
+        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider)
         kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, identificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(kycUploadRepositoryProvider, sessionUrlRepositoryProvider)
         identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))

@@ -1,8 +1,9 @@
-package de.solarisbank.identhub.data.iban
+package de.solarisbank.identhub.domain.session
 
 import android.content.SharedPreferences
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
+import timber.log.Timber
 
 class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences: SharedPreferences) {
 
@@ -11,18 +12,22 @@ class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences:
             putString(FIRST_STEP_KEY, initializationDto.firstStep)
             putString(FALLBACK_STEP, initializationDto.fallbackStep)
             putInt(ALLOWED_ATTEMPTS_AMOUNT, initializationDto.allowedRetries)
+            putString(FOURTHLINE_PROVIDER, initializationDto.fourthlineProvider)
             commit()
         }
+        Timber.d("saveInitializationDto() data: $initializationDto")
     }
 
     fun getInitializationDto(): InitializationDto? {
         return try {
             InitializationDto(
                     firstStep = sharedPreferences.getString(FIRST_STEP_KEY, null)!!,
-                    fallbackStep = sharedPreferences.getString(FALLBACK_STEP, null)!!,
-                    allowedRetries = sharedPreferences.getInt(ALLOWED_ATTEMPTS_AMOUNT, -1)
+                    fallbackStep = sharedPreferences.getString(FALLBACK_STEP, null),
+                    allowedRetries = sharedPreferences.getInt(ALLOWED_ATTEMPTS_AMOUNT, -1),
+                    fourthlineProvider = sharedPreferences.getString(FOURTHLINE_PROVIDER, null)
                     )
         } catch (npe: NullPointerException) {
+            Timber.d(npe)
             null
         }
 
@@ -38,5 +43,6 @@ class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences:
     companion object {
         private const val ALLOWED_ATTEMPTS_AMOUNT = "ALLOWED_ATTEMPTS_AMOUNT"
         private const val FALLBACK_STEP = "fallback_step"
+        private const val FOURTHLINE_PROVIDER = "fourthline_provider"
     }
 }
