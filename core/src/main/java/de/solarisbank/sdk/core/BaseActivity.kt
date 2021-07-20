@@ -33,11 +33,16 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         injectMe()
         super.onCreate(savedInstanceState)
+        initViewModel()
         initBackButtonBehavior()
     }
 
     protected open fun injectMe() {
         activityComponent = libraryComponent.activityComponent().create(this)
+    }
+
+    protected fun initViewModel() {
+        viewModelFactory = assistedViewModelFactory.create(this, intent.extras)
     }
 
     protected fun quit(bundle: Bundle?) {

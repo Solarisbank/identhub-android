@@ -48,7 +48,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
         Timber.d("intent: $intent")
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
-        initViewModel()
+        observeViewModel()
         initGraph()
     }
 
@@ -78,7 +78,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
         }
     }
 
-    private fun initViewModel() {
+    private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(FourthlineViewModel::class.java)
 

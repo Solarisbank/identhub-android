@@ -30,6 +30,7 @@ public final class IdentityActivity extends IdentHubActivity {
         setContentView(R.layout.activity_identity);
         initGraph();
         initView();
+        observeViewModel();
     }
 
     public void initGraph() {
@@ -63,7 +64,7 @@ public final class IdentityActivity extends IdentHubActivity {
         identHubActivitySubcomponent.inject(this);
     }
 
-    private void initViewModel() {
+    private void observeViewModel() {
         viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(IdentityActivityViewModel.class);
 

@@ -28,6 +28,7 @@ class VerificationBankActivity : IdentHubActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification_bank)
+        observeViewModel()
         loadState(savedInstanceState)
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph(savedInstanceState)
@@ -61,7 +62,7 @@ class VerificationBankActivity : IdentHubActivity() {
         identHubActivitySubcomponent.inject(this)
     }
 
-    fun initViewModel() {
+    private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
