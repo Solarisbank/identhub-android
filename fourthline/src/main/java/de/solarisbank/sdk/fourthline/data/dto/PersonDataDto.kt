@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 data class PersonDataDto(
         @Json(name = "first_name") var firstName: String?,
-        @Json(name = "last_name") var latName: String?,
+        @Json(name = "last_name") var lastName: String?,
         var address: Address?,
         var email: String?,
         @Json(name = "mobile_number") var mobileNumber: String?,

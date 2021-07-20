@@ -78,8 +78,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
         }
     }
 
-    override fun initViewModel() {
-        super.initViewModel()
+    private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(FourthlineViewModel::class.java)
 
@@ -140,6 +139,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 }
                 FOURTHLINE_IDENTIFICATION_SUCCESSFULL, IdentHubSession.ACTION_NEXT_STEP -> {
                     quit(it.args)
+                }
+                FOURTHLINE_IDENTIFICATION_ERROR -> {
+                    quit(null)
                 }
                 else -> {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)

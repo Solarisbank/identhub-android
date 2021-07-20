@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import de.solarisbank.sdk.core.alert.AlertViewModel
 import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.DiLibraryComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
@@ -25,19 +26,18 @@ abstract class BaseActivity : AppCompatActivity() {
 
     lateinit var activityComponent: CoreActivityComponent
 
+    private val alertViewModel: AlertViewModel by lazy {
+        ViewModelProvider(this)[AlertViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectMe()
         super.onCreate(savedInstanceState)
-        initViewModel()
         initBackButtonBehavior()
     }
 
     protected open fun injectMe() {
         activityComponent = libraryComponent.activityComponent().create(this)
-    }
-
-    protected open fun initViewModel() {
-        viewModelFactory = assistedViewModelFactory.create(this, intent.extras)
     }
 
     protected fun quit(bundle: Bundle?) {
@@ -65,7 +65,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 }
                 setNegativeButton(R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
             }.show()
-
         }
     }
 

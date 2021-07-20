@@ -63,10 +63,7 @@ public final class IdentityActivity extends IdentHubActivity {
         identHubActivitySubcomponent.inject(this);
     }
 
-    @Override
-    protected void initViewModel() {
-        super.initViewModel();
-
+    private void initViewModel() {
         viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(IdentityActivityViewModel.class);
 

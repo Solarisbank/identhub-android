@@ -31,7 +31,7 @@ class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSess
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 {
-                                    Timber.d("obtainLocalIdentificationState success")
+                                    Timber.d("obtainLocalIdentificationState success: $it")
                                     _initializationStateLiveData.value = Result.success(it)
                                 },
                                 {

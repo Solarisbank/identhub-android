@@ -104,7 +104,7 @@ class IdentHubSession(val sessionUrl: String) {
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
-
+        Timber.d("STARTED : $STARTED; RESUMED : $RESUMED")
         synchronized(this) {
             if (STARTED && !RESUMED) {
                 MAIN_PROCESS?.obtainLocalIdentificationState()

@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.data.iban
 
 import android.content.SharedPreferences
-import de.solarisbank.identhub.data.dto.InitializationDto
+import de.solarisbank.identhub.domain.data.dto.InitializationDto
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
 
 class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences: SharedPreferences) {

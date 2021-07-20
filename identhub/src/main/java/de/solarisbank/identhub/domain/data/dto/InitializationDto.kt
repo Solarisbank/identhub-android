@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.data.dto
+package de.solarisbank.identhub.domain.data.dto
 
 import com.squareup.moshi.Json
 

@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.data.contract;
 
 import de.solarisbank.identhub.data.TransactionAuthenticationNumber;
-import de.solarisbank.identhub.data.dto.IdentificationDto;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;

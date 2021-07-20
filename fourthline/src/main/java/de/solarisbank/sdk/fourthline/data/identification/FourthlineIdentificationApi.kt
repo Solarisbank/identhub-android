@@ -1,6 +1,6 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
-import de.solarisbank.identhub.data.dto.IdentificationDto
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import io.reactivex.Single
 import retrofit2.http.GET

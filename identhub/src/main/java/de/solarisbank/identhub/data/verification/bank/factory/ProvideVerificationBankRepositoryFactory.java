@@ -1,11 +1,11 @@
 package de.solarisbank.identhub.data.verification.bank.factory;
 
 import de.solarisbank.identhub.data.Mapper;
-import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
-import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankDataModule;
+import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankNetworkDataSource;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository;
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Preconditions;

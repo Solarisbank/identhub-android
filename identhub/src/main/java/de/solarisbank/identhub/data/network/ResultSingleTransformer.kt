@@ -14,20 +14,9 @@ class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Resu
     override fun apply(upstream: Single<NavigationalResult<U>>): SingleSource<Result<U>> {
         return upstream.map<Result<U>> { Result.Success(it.data, it.nextStep) }
                 .onErrorReturn {
-                    var errorType: Type = Type.Unknown
-                    if (it is HttpException) {
-                        errorType = when (it.code()) {
-                            HttpURLConnection.HTTP_BAD_REQUEST -> Type.BadRequest
-                            HttpURLConnection.HTTP_NOT_FOUND -> Type.ResourceNotFound
-                            HttpURLConnection.HTTP_INTERNAL_ERROR -> Type.ServerError
-                            HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
-                            HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
-                            HttpURLConnection.HTTP_PRECON_FAILED -> Type.PreconditionFailed
-                            else -> Type.Unknown
-                        }
-                    }
+                    val errorType = getErrorType(it)
                     Timber.d("apply, it: $it")
-                        return@onErrorReturn Result.Error(errorType, it)
+                    return@onErrorReturn Result.Error(errorType, it)
                 }
     }
 }
@@ -35,5 +24,24 @@ class ResultSingleTransformer<U> : SingleTransformer<NavigationalResult<U>, Resu
 fun <T> Single<NavigationalResult<T>>.transformResult(): Single<Result<T>> {
     return compose(ResultSingleTransformer())
 }
+
+fun getErrorType(throwable: Throwable): Type {
+    var errorType: Type = Type.Unknown
+    if (throwable is HttpException) {
+        errorType = when (throwable.code()) {
+            HttpURLConnection.HTTP_BAD_REQUEST -> Type.BadRequest
+            HttpURLConnection.HTTP_NOT_FOUND -> Type.ResourceNotFound
+            HttpURLConnection.HTTP_INTERNAL_ERROR -> Type.ServerError
+            HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
+            HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
+            HttpURLConnection.HTTP_PRECON_FAILED -> Type.PreconditionFailed
+            UNPROCESSABLE_ENTITY -> Type.UnprocessableEntity
+            else -> Type.Unknown
+        }
+    }
+    return errorType
+}
+
+const val UNPROCESSABLE_ENTITY = 422
 
 

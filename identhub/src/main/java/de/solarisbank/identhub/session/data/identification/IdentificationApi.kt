@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
-import de.solarisbank.identhub.data.dto.IdentificationDto
-import de.solarisbank.identhub.data.dto.MobileNumberDto
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
+import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

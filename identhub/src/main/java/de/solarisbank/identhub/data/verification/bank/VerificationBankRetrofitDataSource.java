@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.data.verification.bank;
 
-import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.verification.bank.model.IBan;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 

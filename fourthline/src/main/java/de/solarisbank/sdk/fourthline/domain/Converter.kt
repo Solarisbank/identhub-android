@@ -6,9 +6,9 @@ import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.*
 
 fun PersonDataDto.appliedDocuments(): List<AppliedDocument>? {
     return this.supportedDocuments
-            ?.map { it?.type?.appliedDocument() }
-            ?.filterNotNull()
-            ?.toList()
+        ?.filter { !(it?.issuingCountries?.isEmpty() ?: true) }
+        ?.mapNotNull { it?.type?.appliedDocument() }
+        ?.toList()
 }
 
 private fun String.appliedDocument(): AppliedDocument {

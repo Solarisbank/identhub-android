@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.data.initialization
 
-import de.solarisbank.identhub.data.dto.InitializationDto
+import de.solarisbank.identhub.domain.data.dto.InitializationDto
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Url

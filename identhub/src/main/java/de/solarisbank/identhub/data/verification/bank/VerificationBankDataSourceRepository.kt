@@ -1,14 +1,15 @@
 package de.solarisbank.identhub.data.verification.bank
 
 import de.solarisbank.identhub.data.Mapper
-import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument
 import de.solarisbank.identhub.data.verification.bank.model.IBan
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class VerificationBankDataSourceRepository(
         private val identificationEntityMapper: Mapper<IdentificationDto, IdentificationWithDocument>,
@@ -32,6 +33,7 @@ class VerificationBankDataSourceRepository(
     }
 
     override fun save(identificationDto: IdentificationDto): Completable {
+        Timber.d("save, identificationDto $identificationDto")
         val identificationWithDocument = identificationEntityMapper.to(identificationDto)
         return verificationBankLocalDataSource.insert(identificationWithDocument)
                 .subscribeOn(Schedulers.io())

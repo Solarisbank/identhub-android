@@ -27,6 +27,7 @@ class ContractActivity : IdentHubActivity() {
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph()
         initView()
+        initViewModel()
     }
 
     fun initGraph() {
@@ -46,8 +47,7 @@ class ContractActivity : IdentHubActivity() {
         identHubActivitySubcomponent.inject(this)
     }
 
-    override fun initViewModel() {
-        super.initViewModel()
+    private fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ContractViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })

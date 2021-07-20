@@ -36,16 +36,20 @@ class IdentHubSessionUseCase(
                         identHubSessionRepository
                                 .getSavedIdentificationId()
                                 .map {
-                                    Timber.d("obtainLocalIdentificationState() 1")
-                                    NavigationalResult(NEXT_STEP_KEY, it.nextStep)
+                                    Timber.d("obtainLocalIdentificationState() 1: $it")
+                                    return@map NavigationalResult(NEXT_STEP_KEY, it.nextStep)
+                                }
+                                .doOnError{
+                                    Timber.e(it,"doOnError")
                                 }
                                 .onErrorReturnItem(
-
                                         identHubSessionRepository.getRequiredIdentificationFlow(sessionUrlRepository.get()!!)
                                                 .map {
                                                     Timber.d("obtainLocalIdentificationState() 3")
                                                     identityInitializationRepository.saveInitializationDto(it)
-                                                    NavigationalResult(FIRST_STEP_KEY, it.firstStep)
+                                                    val result =  NavigationalResult(FIRST_STEP_KEY, it.firstStep)
+                                                    Timber.d("obtainLocalIdentificationState() 4, $result")
+                                                    return@map result
                                                 }.blockingGet()
                                 )
                     }

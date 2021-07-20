@@ -14,6 +14,7 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
@@ -50,6 +51,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
     private final Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
     private final Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider;
+    private final Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider;
 
     public ViewModelMapProvider(
             IdentityModule identityModule,
@@ -63,7 +65,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
             Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
-            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
+            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider,
+            Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider
     ) {
         this.identityModule = identityModule;
         this.verificationBankModule = verificationBankModule;
@@ -77,6 +80,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.verifyIBanUseCaseProvider = verifyIBanUseCaseProvider;
         this.identificationPollingStatusUseCaseProvider = identificationPollingStatusUseCaseProvider;
         this.bankIdPostUseCaseProvider = bankIdPostUseCaseProvider;
+        this.processingVerificationUseCaseProvider = processingVerificationUseCaseProvider;
     }
 
     public static ViewModelMapProvider create(
@@ -91,7 +95,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
             Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
-            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
+            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider,
+            Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider
     ) {
         return new ViewModelMapProvider(
                 identityModule,
@@ -105,7 +110,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 identificationStepPreferencesProvider,
                 verifyIBanUseCaseProvider,
                 identificationPollingStatusUseCaseProvider,
-                bankIdPostUseCaseProvider
+                bankIdPostUseCaseProvider,
+                processingVerificationUseCaseProvider
         );
     }
 
@@ -119,7 +125,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
         map.put(VerificationPhoneErrorViewModel.class, VerificationPhoneErrorViewModelFactory.create(identityModule));
         map.put(VerificationBankIbanViewModel.class, VerificationBankIbanViewModelFactory.create(verificationBankModule, verifyIBanUseCaseProvider));
-        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, identificationPollingStatusUseCaseProvider, bankIdPostUseCaseProvider));
+        map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, processingVerificationUseCaseProvider));
 
         return map;
     }

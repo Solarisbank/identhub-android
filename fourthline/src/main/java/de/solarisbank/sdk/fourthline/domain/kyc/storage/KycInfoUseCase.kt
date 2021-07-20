@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
+import com.fourthline.core.Gender
 import com.fourthline.core.mrz.MrtdMrzInfo
 import com.fourthline.kyc.*
 import com.fourthline.kyc.zipper.Zipper
@@ -24,9 +25,14 @@ class KycInfoUseCase {
     private val kycInfo = KycInfo().also { it.person = Person() }
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _selfieResultCroppedBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
+    private var _personDataDto: PersonDataDto? = null
+
     var selfieResultCroppedBitmapLiveData = _selfieResultCroppedBitmapLiveData as LiveData<Bitmap>
+
+
     fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
         Timber.d("updateWithPersonDataDto : ${personDataDto}")
+        _personDataDto = personDataDto
         kycInfo.provider = Provider(
                 name = "SolarisBankSamsung", //todo should be different for different types of staging
                 clientNumber = personDataDto.personUid
@@ -50,6 +56,7 @@ class KycInfoUseCase {
         kycInfo.person.also {
             it.nationalityCode = personDataDto.nationality
             it.birthPlace = personDataDto.birthPlace
+            fillRecognizablePersonDataFromResponse(personDataDto)
         }
     }
 
@@ -128,10 +135,20 @@ class KycInfoUseCase {
         )
 
         kycInfo.person.apply {
-            firstName = mrtd?.firstNames?.joinToString(separator = " ")
-            lastName = mrtd?.lastNames?.joinToString(separator = " ")
-            gender = mrtd?.gender
-            birthDate = mrtd?.birthDate?.getDateFromMRZ()
+            val firstNames = mrtd?.firstNames?.joinToString(separator = " ")
+            if (!firstNames.isNullOrBlank()) {
+                firstName =firstNames
+            }
+            val lastNames = mrtd?.firstNames?.joinToString(separator = " ")
+            if (!lastNames.isNullOrBlank()) {
+                lastName = mrtd?.lastNames?.joinToString(separator = " ")
+            }
+            mrtd?.gender?.let {
+                gender = it
+            }
+            mrtd?.birthDate?.getDateFromMRZ()?.let {
+                birthDate = it
+            }
         }
 
     }
@@ -157,16 +174,44 @@ class KycInfoUseCase {
             errorList.forEach { Timber.d("errorList: ${it.name}") }
         }
 
-        return try {
-            Zipper().createZipFile(kycInfo, applicationContext)
+        var uri: URI? = null
+        try {
+            uri = Zipper().createZipFile(kycInfo, applicationContext)
         } catch (zipperError: ZipperError) {
             when (zipperError) {
-                ZipperError.KycNotValid -> Timber.d("Error in kyc object")
-                ZipperError.CannotCreateZip -> Timber.d("Error creating zip file")
+                ZipperError.KycNotValid -> { Timber.d("Error in kyc object") }
+                ZipperError.CannotCreateZip -> {
+                    Timber.d("Error creating zip file")
+                    fillRecognizablePersonDataFromResponse(_personDataDto)
+                    try {
+                        uri = Zipper().createZipFile(kycInfo, applicationContext)
+                    } catch (zipperError: ZipperError) {
+                        when (zipperError) {
+                            ZipperError.KycNotValid -> Timber.d("2 Error in kyc object")
+                            ZipperError.CannotCreateZip -> Timber.d("2 Error creating zip file")
+                            ZipperError.NotEnoughSpace -> Timber.d("2 There are not enough space in device")
+                            ZipperError.ZipExceedMaximumSize -> Timber.d("2 Zip file exceed 100MB")
+                        }
+                    }
+                }
                 ZipperError.NotEnoughSpace -> Timber.d("There are not enough space in device")
                 ZipperError.ZipExceedMaximumSize -> Timber.d("Zip file exceed 100MB")
             }
-            null
+        }
+        return uri
+    }
+
+    private fun fillRecognizablePersonDataFromResponse(personDataDto: PersonDataDto?) {
+        Timber.d("fillRecognizablePersonDataFromResponse, $personDataDto")
+        kycInfo.person.apply {
+            firstName = _personDataDto?.firstName
+            lastName = _personDataDto?.lastName
+            gender = when (_personDataDto?.gender?.toLowerCase()) {
+                Gender.MALE.name.toLowerCase() -> Gender.MALE
+                Gender.FEMALE.name.toLowerCase() -> Gender.FEMALE
+                else -> Gender.UNKNOWN
+            }
+            birthDate = _personDataDto?.birthDate?.getDateFromMRZ()
         }
     }
 

@@ -3,9 +3,9 @@ package de.solarisbank.identhub.data.contract
 import de.solarisbank.identhub.data.Mapper
 import de.solarisbank.identhub.data.dao.DocumentDao
 import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument
 import de.solarisbank.identhub.domain.contract.ContractSignRepository
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import retrofit2.Retrofit
 
 class ContractSignModule {

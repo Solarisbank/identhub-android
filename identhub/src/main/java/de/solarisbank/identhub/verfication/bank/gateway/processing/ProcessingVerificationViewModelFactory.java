@@ -2,44 +2,37 @@ package de.solarisbank.identhub.verfication.bank.gateway.processing;
 
 import androidx.lifecycle.ViewModel;
 
-import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Provider;
 
 public final class ProcessingVerificationViewModelFactory implements Factory<ViewModel> {
     private final VerificationBankModule verificationBankModule;
-    private final Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
-    private final Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider;
+    private final Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider;
 
     public ProcessingVerificationViewModelFactory(
             VerificationBankModule verificationBankModule,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
-            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
+            Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider
     ) {
         this.verificationBankModule = verificationBankModule;
-        this.identificationPollingStatusUseCaseProvider = identificationPollingStatusUseCaseProvider;
-        this.bankIdPostUseCaseProvider = bankIdPostUseCaseProvider;
+        this.processingVerificationUseCaseProvider = processingVerificationUseCaseProvider;
     }
 
     public static ProcessingVerificationViewModelFactory create(
             VerificationBankModule verificationBankModule,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
-            Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider
+            Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider
     ) {
         return new ProcessingVerificationViewModelFactory(
                 verificationBankModule,
-                identificationPollingStatusUseCaseProvider,
-                bankIdPostUseCaseProvider
+                processingVerificationUseCaseProvider
         );
     }
 
     @Override
     public ProcessingVerificationViewModel get() {
         return verificationBankModule.provideProcessingVerificationViewModel(
-                identificationPollingStatusUseCaseProvider.get(),
-                bankIdPostUseCaseProvider.get()
+                processingVerificationUseCaseProvider.get()
         );
     }
 }

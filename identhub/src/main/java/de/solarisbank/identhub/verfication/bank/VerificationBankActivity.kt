@@ -2,7 +2,6 @@ package de.solarisbank.identhub.verfication.bank
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -62,8 +61,7 @@ class VerificationBankActivity : IdentHubActivity() {
         identHubActivitySubcomponent.inject(this)
     }
 
-    override fun initViewModel() {
-        super.initViewModel()
+    fun initViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
         viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
@@ -129,26 +127,6 @@ class VerificationBankActivity : IdentHubActivity() {
         if(state == true) {
             quit(null)
         }
-    }
-
-    fun showDialog(
-            title: String,
-            message: String,
-            positiveLabel: String = "Ok",
-            negativeLabel: String = "Cancel",
-            positiveAction: () -> Unit,
-            negativeAction: (() -> Unit)? = null
-    ) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-        builder.setMessage(message)
-        builder.setPositiveButton(positiveLabel) { _, _ -> positiveAction.invoke() }
-
-        negativeAction?.let {
-            builder.setNegativeButton(negativeLabel) { _, _ -> it.invoke() }
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     private fun loadState(saved: Bundle?) {

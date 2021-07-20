@@ -4,17 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.feature.model.ErrorState
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
 import de.solarisbank.identhub.router.COMPLETED_STEP
 import de.solarisbank.identhub.router.COMPLETED_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
-import de.solarisbank.identhub.verfication.bank.VerificationBankActivity
-import de.solarisbank.sdk.core.data.model.IdentificationUiModel
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.core.viewModels
 import timber.log.Timber
 
@@ -26,27 +21,71 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     }
 
     private fun observeScreenState() {
-        processingVerificationViewModel.processingVerificationEvent((sharedViewModel).iban!!).observe(viewLifecycleOwner, Observer { onProcessingVerificationEvent(it) })
+        processingVerificationViewModel.processingVerificationEvent((sharedViewModel).iban!!).observe(viewLifecycleOwner, Observer { setState(it) })
     }
 
-    private fun onProcessingVerificationEvent(result: Result<IdentificationUiModel>) {
-        Timber.d("onProcessingVerificationEvent result.data : ${result.data}")
-        if (result.succeeded && result.data != null) {
-            Timber.d("onProcessingVerificationEvent 1")
-            val model = result.data
-            if (model?.status == Status.AUTHORIZATION_REQUIRED.label || model?.status == Status.IDENTIFICATION_DATA_REQUIRED.label) {
-                Timber.d("onProcessingVerificationEvent 2")
+    private fun setState(result: ProcessingVerificationResult) {
+        Timber.d("setState: $result")
+
+        when (result) {
+            is ProcessingVerificationResult.VerificationSuccessful -> {
                 sharedViewModel.callOnPaymentResult(Bundle().apply {
-                   putString(IDENTIFICATION_ID_KEY, model.id)
-                   putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.VERIFICATION_BANK.index)
+                    putString(IDENTIFICATION_ID_KEY, result.id)
+                    putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.VERIFICATION_BANK.index)
                 })
-            } else if (model!!.nextStep != null) {
-                Timber.d("onProcessingVerificationEvent 3")
-                sharedViewModel.postDynamicNavigationNextStep(model.nextStep)
-                //todo should be the error screen shown?
-            } else {
-                Timber.d("onProcessingVerificationEvent 4 pair.first.label: ${model!!.status}")
             }
+            is ErrorState -> {
+                showAlert(result)
+            }
+        }
+    }
+
+    private fun showAlert(state: ErrorState) {
+        when (state) {
+
+            is ProcessingVerificationResult.PaymentInitAuthPersonError -> {
+                Timber.d("showAlert 1")
+                showAlertFragment(
+                        title = state.dialogTitle.getStringRes(),
+                        message = state.dialogMessage.getStringRes(),
+                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
+                        cancelAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                )
+            }
+
+            is ProcessingVerificationResult.PaymentInitFailedError -> {
+                Timber.d("showAlert 2")
+                showAlertFragment(
+                        title = state.dialogTitle.getStringRes(),
+                        message = state.dialogMessage.getStringRes(),
+                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
+                        cancelAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                )
+            }
+
+            is ProcessingVerificationResult.PaymentInitExpiredError -> {
+                Timber.d("showAlert 3")
+                showAlertFragment(
+                        title = state.dialogTitle.getStringRes(),
+                        message = state.dialogMessage.getStringRes(),
+                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
+                        cancelAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                )
+            }
+            is ProcessingVerificationResult.GenericError -> {
+                Timber.d("showAlert 4")
+                showAlertFragment(
+                        title = state.dialogTitle.getStringRes(),
+                        message = state.dialogMessage.getStringRes(),
+                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        positiveAction = { sharedViewModel.callOnFailure() },
+                        cancelAction = { sharedViewModel.callOnFailure() }
+                )
+            }
+
         }
     }
 
@@ -56,5 +95,42 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
+    }
+
+
+
+    sealed class ProcessingVerificationResult {
+        class VerificationSuccessful(val id: String) : ProcessingVerificationResult()
+
+        class PaymentInitAuthPersonError(val nextStep: String, val retryAvailable: Boolean = false)
+            : ProcessingVerificationResult(), ErrorState {// 8. payment init auth person
+            override val dialogTitle = "payment_init_auth_person_title"
+            override val dialogMessage = "payment_init_auth_person_message"
+            override val dialogPositiveLabel = "ok_button"
+            override val dialogNegativeLabel = null
+        }
+
+        class PaymentInitFailedError(val nextStep: String)
+            : ProcessingVerificationResult(), ErrorState {//  9. payment init failed
+            override val dialogTitle = "payment_init_failed_title"
+            override val dialogMessage = "payment_init_failed_message"
+            override val dialogPositiveLabel = "ok_button"
+            override val dialogNegativeLabel = null
+        }
+
+        class PaymentInitExpiredError(val nextStep: String)
+            : ProcessingVerificationResult(), ErrorState {// 10. payment init expired
+            override val dialogTitle = "payment_init_expired_title"
+            override val dialogMessage = "payment_init_expired_message"
+            override val dialogPositiveLabel = "ok_button"
+            override val dialogNegativeLabel = "invalid_iban_retry_button"
+        }
+
+        object GenericError : ProcessingVerificationResult(), ErrorState {
+            override val dialogTitle = "generic_error_title"
+            override val dialogMessage = "generic_error_message"
+            override val dialogPositiveLabel = "ok_button"
+            override val dialogNegativeLabel = null
+        }
     }
 }

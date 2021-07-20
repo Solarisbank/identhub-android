@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kyc_upload_button_submit">Weiter</string>
+    <string name="failure_fraud_headline">Identifikation fehlgeschlagen</string>
+    <string name="failure_fraud_message">Leider konnten wir sie nicht erfolgreich identifizieren.</string>
+    <string name="failure_fraud_button">OK</string>
+    <string name="failure_no_fraud_headline">Identifikation fehlgeschlagen</string>
+    <string name="failure_no_fraud_message">Leider ist während Ihrer Identifikation etwas schief gelaufen. Bitte versuchen Sie es erneut. Achten Sie darauf, dass die Fotos in guter Qualität aufgenommen wurden und die Dokumente lesbar sind.</string>
+    <string name="failure_no_fraud_positive">erneut versuchen</string>
+    <string name="failure_no_fraud_negative">Identifikation abbrechen</string>
+</resources>

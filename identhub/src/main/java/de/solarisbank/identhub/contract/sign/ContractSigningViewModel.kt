@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
-import de.solarisbank.identhub.data.dto.MobileNumberDto
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
+import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase

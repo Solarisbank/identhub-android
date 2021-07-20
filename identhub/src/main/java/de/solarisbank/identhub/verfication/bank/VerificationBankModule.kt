@@ -7,7 +7,7 @@ import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.*
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel
@@ -22,8 +22,8 @@ class VerificationBankModule {
         return VerificationBankIbanViewModel(verifyIBanUseCase)
     }
 
-    fun provideProcessingVerificationViewModel(pollingStatusUseCase: IdentificationPollingStatusUseCase, bandIdPostUseCaseJointAccount: JointAccountBankIdPostUseCase): ProcessingVerificationViewModel {
-        return ProcessingVerificationViewModel(pollingStatusUseCase, bandIdPostUseCaseJointAccount)
+    fun provideProcessingVerificationViewModel(processingVerificationUseCase: ProcessingVerificationUseCase): ProcessingVerificationViewModel {
+        return ProcessingVerificationViewModel(processingVerificationUseCase)
     }
 
     fun provideContractSigningViewModel(

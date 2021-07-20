@@ -13,7 +13,7 @@ import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
-import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
@@ -56,8 +56,8 @@ public final class IdentityModule {
     }
 
     @NonNull
-    public ProcessingVerificationViewModel provideProcessingVerificationViewModel(IdentificationPollingStatusUseCase identificationPollingStatusUseCase, JointAccountBankIdPostUseCase jointAccountBankIdPostUseCase) {
-        return new ProcessingVerificationViewModel(identificationPollingStatusUseCase, jointAccountBankIdPostUseCase);
+    public ProcessingVerificationViewModel provideProcessingVerificationViewModel(ProcessingVerificationUseCase processingVerificationUseCase) {
+        return new ProcessingVerificationViewModel(processingVerificationUseCase);
     }
 
     @NonNull

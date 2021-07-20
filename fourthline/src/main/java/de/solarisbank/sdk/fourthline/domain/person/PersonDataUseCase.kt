@@ -4,8 +4,6 @@ import android.content.Intent
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
-import de.solarisbank.identhub.router.NEXT_STEP_DIRECTION
-import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.router.isIdentificationIdCreationRequired
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
@@ -43,21 +41,11 @@ class PersonDataUseCase(
                 .map { NavigationalResult<PersonDataDto>(it) }
     }
 
-    //todo remove NEXT_STEP_KEY
-    private fun getIdentificationId(intent: Intent): Single<String> {
-        return if (intent.hasExtra(NEXT_STEP_KEY) && intent.getStringExtra(NEXT_STEP_KEY) == NEXT_STEP_DIRECTION.BANK_ID_FOURTHLINE.destination) {
-            Timber.d("getLastSavedLocalIdentification")
-            fourthlineIdentificationRepository.getLastSavedLocalIdentification().map { it.id }
-        } else {
-            Timber.d("passFourthlineIdentificationCreation")
-            passFourthlineIdentificationCreation()
-        }
-    }
-
     private fun passFourthlineIdentificationCreation(): Single<String> {
-
+        Timber.d("passFourthlineIdentificationCreation()")
         return fourthlineIdentificationRepository.postFourthlineIdentication()
                 .map { identificationDto ->
+                    Timber.d("passFourthlineIdentificationCreation(), identificationDto: $identificationDto")
                     fourthlineIdentificationRepository
                             .save(identificationDto).blockingGet()
                     return@map identificationDto.id

@@ -12,16 +12,19 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.identhub.data.network.getErrorType
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.core.result.Type
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService.Companion.KYC_ZIPPER_URI
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadServiceBinder
+import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadStatus
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -49,12 +52,13 @@ class KycUploadFragment : FourthlineFragment() {
             binder?.uploadingStatus?.removeObserver(uploadingObserver)
             bound = false
         }
-
     }
 
-    private val uploadingObserver = Observer<Pair<UPLOAD_STATE, String?>> {
-        nextStep = it.second
-        setUiState(it.first)
+    private val uploadingObserver = Observer<KycUploadStatus> {
+        if(it is KycUploadStatus.Success) {
+            nextStep = it.nextStep
+        }
+        setUiState(it)
     }
 
     private var title: TextView? = null
@@ -92,8 +96,23 @@ class KycUploadFragment : FourthlineFragment() {
         bindKycUploadService()
     }
 
-    private fun setUiState(state: UPLOAD_STATE) {
-        Timber.d("setUiState: ${state.name}")
+    private fun setUiState(status: KycUploadStatus) {
+        when(status) {
+            is KycUploadStatus.ProviderError -> {
+                showErrorAlert(status.isFraud)
+            }
+            is KycUploadStatus.GenericError -> {
+                status.error?.let {
+                    showErrorAlertIfNeeded(it)
+                }
+            }
+            else -> {}
+        }
+
+        val state = getUploadDataForStatus(status)
+
+        Timber.d("setUiState: $state")
+
         title!!.text = state.titleText
         subtitle!!.text = state.subtitleText
         submitButton!!.text = state.submitButtonLabel
@@ -108,6 +127,37 @@ class KycUploadFragment : FourthlineFragment() {
             submitButton!!.setOnClickListener(null)
         }
         submitButton!!.isEnabled = state.isSubmitButtonEnabled
+    }
+
+    private fun showErrorAlert(isFraud: Boolean) {
+        if (isFraud) {
+            showAlertFragment(
+                    title = getString(R.string.failure_fraud_headline),
+                    message = getString(R.string.failure_fraud_message),
+                    positiveLabel = getString(R.string.failure_fraud_button),
+                    tag = TAG_FAILURE_FRAUD,
+                    positiveAction = { activityViewModel.resetFourthlineFlow() },
+                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                    cancelAction = {  }
+            )
+        } else {
+            showAlertFragment(
+                    title = getString(R.string.failure_no_fraud_headline),
+                    message = getString(R.string.failure_no_fraud_message),
+                    positiveLabel = getString(R.string.failure_no_fraud_positive),
+                    negativeLabel = getString(R.string.failure_no_fraud_negative),
+                    tag = TAG_FAILURE_NO_FRAUD,
+                    positiveAction = { activityViewModel.resetFourthlineFlow() },
+                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                    cancelAction = {  }
+            )
+        }
+    }
+
+    private fun showErrorAlertIfNeeded(throwable: Throwable) {
+        if (getErrorType(throwable) == Type.PreconditionFailed) {
+            //TODO Handle 412 Here
+        }
     }
 
     private fun String.getDrawableRes(): Int {
@@ -161,51 +211,59 @@ class KycUploadFragment : FourthlineFragment() {
         super.onDestroyView()
     }
 
-    interface UploadState {
-        val titleText: String
-        val subtitleText: String
-        val submitButtonLabel: String
-        val uploadResultImageName: String
-        val isResultImageViewVisible: Boolean
-        val isProgressBarVisible: Boolean
-        val submitButtonActionSendsResult: Boolean
-        val submitButtonActionResetsFlow: Boolean
+    data class UploadViewState(
+        val titleText: String,
+        val subtitleText: String,
+        val submitButtonLabel: String,
+        val uploadResultImageName: String,
+        val isResultImageViewVisible: Boolean,
+        val isProgressBarVisible: Boolean,
+        val submitButtonActionSendsResult: Boolean,
+        val submitButtonActionResetsFlow: Boolean,
         val isSubmitButtonEnabled: Boolean
+    )
+
+    private fun getUploadDataForStatus(uploadStatus: KycUploadStatus): UploadViewState {
+        return when (uploadStatus) {
+            is KycUploadStatus.Success -> UploadViewState(
+                    titleText = "Congratulation",
+                    subtitleText = "Your data was confirmed",
+                    submitButtonLabel = "Submit",
+                    uploadResultImageName = "ic_upload_successful",
+                    isResultImageViewVisible = true,
+                    isProgressBarVisible = false,
+                    submitButtonActionSendsResult = true,
+                    submitButtonActionResetsFlow = false,
+                    isSubmitButtonEnabled = true
+                )
+            is KycUploadStatus.Uploading -> UploadViewState(
+                    titleText = "Verification",
+                    subtitleText = "Please wait for verification",
+                    submitButtonLabel = "Uploading...",
+                    uploadResultImageName = "ic_upload_failed",
+                    isResultImageViewVisible = false,
+                    isProgressBarVisible = true,
+                    submitButtonActionSendsResult = false,
+                    submitButtonActionResetsFlow = false,
+                    isSubmitButtonEnabled = false
+                )
+            else -> UploadViewState(
+                titleText = "Please try again ...",
+                subtitleText = "Identification process failed",
+                submitButtonLabel = "Retry",
+                uploadResultImageName = "ic_upload_failed",
+                isResultImageViewVisible = true,
+                isProgressBarVisible = false,
+                submitButtonActionSendsResult = false,
+                submitButtonActionResetsFlow = true,
+                isSubmitButtonEnabled = true
+            )
+
+        }
     }
 
-    enum class UPLOAD_STATE : UploadState {
-        SUCCESSFUL {
-            override val titleText = "Congratulation"
-            override val subtitleText = "Your data was confirmed"
-            override val submitButtonLabel: String = "Submit"
-            override val uploadResultImageName = "ic_upload_successful"
-            override val isResultImageViewVisible = true
-            override val isProgressBarVisible = false
-            override val submitButtonActionSendsResult = true
-            override val submitButtonActionResetsFlow = false
-            override val isSubmitButtonEnabled = true
-        },
-        FAIL {
-            override val titleText = "Please try again ..."
-            override val subtitleText = "Identification process failed"
-            override val submitButtonLabel: String = "Retry"
-            override val uploadResultImageName = "ic_upload_failed"
-            override val isResultImageViewVisible = true
-            override val isProgressBarVisible = false
-            override val submitButtonActionSendsResult = false
-            override val submitButtonActionResetsFlow = true
-            override val isSubmitButtonEnabled = true
-        },
-        UPLOADING {
-            override val titleText = "Verification"
-            override val subtitleText = "Please wait for verification"
-            override val submitButtonLabel: String = "Uploading ..."
-            override val uploadResultImageName = "ic_upload_failed"
-            override val isResultImageViewVisible = false
-            override val isProgressBarVisible = true
-            override val submitButtonActionSendsResult = false
-            override val submitButtonActionResetsFlow = false
-            override val isSubmitButtonEnabled = false
-        }
+    companion object {
+        const val TAG_FAILURE_FRAUD = "FailureFraud"
+        const val TAG_FAILURE_NO_FRAUD = "FailureNoFraud"
     }
 }

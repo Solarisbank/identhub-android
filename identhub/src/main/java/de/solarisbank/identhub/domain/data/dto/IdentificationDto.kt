@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.data.dto
+package de.solarisbank.identhub.domain.data.dto
 
 import com.squareup.moshi.Json
 import java.util.*
@@ -18,5 +18,6 @@ data class IdentificationDto(
         @Json(name = "authorization_expires_at") var authorizationExpiresAt: Date? = null,
         @Json(name = "confirmation_expires_at") var confirmationExpiresAt: Date? = null,
         @Json(name = "estimated_waiting_time") var estimatedWaitingTime: String? = null,
+        @Json(name = "provider_status_code") var providerStatusCode: String? = null,
         val documents: List<DocumentDto>?) {
 }

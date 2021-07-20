@@ -3,4 +3,7 @@
     <string name="fourthline_doc_type_selection_title">Bitte machen Sie 2 Fotos von Ihrem Ausweisdokument, um Ihr Selfie zu bestätigen.</string>
     <string name="fourthline_toc_type_selection_choose_title">Bitte wählen Sie Ihr Ausweisdokument:</string>
     <string name="fourthline_doc_type_selection_next_button">Weiter</string>
+    <string name="fourthline_doc_type_country_not_supported_headline">Identifikationsdokument nicht unterstützt</string>
+    <string name="fourthline_doc_type_country_not_supported_message">Derzeit unterstützen wir Ihre Identifikationsdokumente leider noch nicht.</string>
+    <string name="fourthline_doc_type_country_not_supported_button">OK</string>
 </resources>

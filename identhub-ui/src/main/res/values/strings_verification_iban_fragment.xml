@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="already_identified_title">Already identified successfully</string>
+    <string name="already_identified_message">Looks like you already identified successfully before. Unfortunately you can\'t identify again.</string>
+    <string name="invalid_iban_title">Unfortunately the IBAN you entered is invalid or not supported.</string>
+    <string name="invalid_iban_message">The IBAN you provided cannot be used for identification. Please try again.</string>
+    <string name="excess_attempts_title">Maximum attempts exceeded</string>
+    <string name="excess_attempts_message">Unfortunately you have exceeded the maximum attempts of identification. Unfortunately we cannot identify you successfully. </string>
+    <string name="generic_error_title">Unknown  error</string>
+    <string name="generic_error_message">Could not proceed your verification</string>
+    <string name="retry_button">Retry</string>
+    <string name="ok_button">Ok</string>
+    <string name="invalid_iban_retry_button">Retry with different IBAN</string>
+    <string name="invalid_iban_ok_button">Identify with alternative method</string>
+</resources>

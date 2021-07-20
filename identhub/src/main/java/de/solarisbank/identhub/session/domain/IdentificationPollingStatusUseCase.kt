@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.session.domain
 
-import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.entity.Status
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.session.data.identification.IdentificationRepository
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
@@ -13,14 +13,22 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class IdentificationPollingStatusUseCase(private val identificationRepository: IdentificationRepository) : SingleUseCase<Unit, IdentificationUiModel>() {
-
+    //todo should return IdentificationDto. Convertion to IdentificationUiModel should be in viewmodel
     override fun invoke(param: Unit): Single<NavigationalResult<IdentificationUiModel>> {
-        return pollIdentificationStatus().map { NavigationalResult(IdentificationUiModel(
-                id = it.id, status = it.status, failureReason = it.failureReason, nextStep = it.nextStep), it.nextStep
-        ) }
+        return pollIdentificationStatus().map { convertToNavigationalResult(it) }
     }
 
-    private fun pollIdentificationStatus(): Single<IdentificationDto> {
+    fun convertToNavigationalResult(identification: IdentificationDto): NavigationalResult<IdentificationUiModel> {
+        return NavigationalResult(IdentificationUiModel(
+            id = identification.id,
+            status = identification.status,
+            failureReason = identification.failureReason,
+            nextStep = identification.nextStep),
+            identification.nextStep
+        )
+    }
+
+    fun pollIdentificationStatus(): Single<IdentificationDto> {
         var count = 0L
         var isResultObtainer = false
         return identificationRepository

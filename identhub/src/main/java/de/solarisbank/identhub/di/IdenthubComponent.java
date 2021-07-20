@@ -29,7 +29,6 @@ import de.solarisbank.identhub.data.contract.factory.ProvideContractSignApiFacto
 import de.solarisbank.identhub.data.contract.factory.ProvideContractSignRepositoryFactory;
 import de.solarisbank.identhub.data.dao.DocumentDao;
 import de.solarisbank.identhub.data.dao.IdentificationDao;
-import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
 import de.solarisbank.identhub.data.iban.IdentityInitializationRepositoryImpl;
 import de.solarisbank.identhub.data.iban.IdentityInitializationSharedPrefsDataSource;
@@ -85,12 +84,15 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCaseFactory;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.contract.GetPersonDataUseCaseFactory;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.iban.IdentityInitializationRepository;
 import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCaseFactory;
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCaseFactory;
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
+import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCaseFactory;
 import de.solarisbank.identhub.domain.verification.bank.VerificationBankRepository;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCaseFactory;
@@ -405,7 +407,8 @@ public class IdenthubComponent {
         private Provider<AssistedViewModelFactory> assistedViewModelFactoryProvider;
         private Provider<FileController> fileControllerProvider;
         private Provider<FetchPdfUseCase> fetchPdfUseCaseProvider;
-        private Provider<JointAccountBankIdPostUseCase> bankIdPostUseCaseProvider;
+        private Provider<JointAccountBankIdPostUseCase> jointAccountBankIdPostUseCaseProvider;
+        Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider;
 
         private Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> mapOfClassOfAndProviderOfViewModelProvider;
         private Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> saveStateViewModelMapProvider;
@@ -428,7 +431,8 @@ public class IdenthubComponent {
             identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()));
             getMobileNumberUseCaseProvider = GetPersonDataUseCaseFactory.create(identificationRepositoryProvider);
             identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()));
-            bankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider);
+            jointAccountBankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider);
+            processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, jointAccountBankIdPostUseCaseProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
                     identityModule,
                     verficationBankModule,
@@ -441,7 +445,8 @@ public class IdenthubComponent {
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.verifyIBanUseCaseProvider,
                     identificationPollingStatusUseCaseProvider,
-                    bankIdPostUseCaseProvider
+                    jointAccountBankIdPostUseCaseProvider,
+                    processingVerificationUseCaseProvider
             );
             this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
                     IdenthubComponent.this.authorizeContractSignUseCaseProvider,

@@ -9,6 +9,7 @@ import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_ERROR
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
 
@@ -63,6 +64,10 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
     fun setFourthlineIdentificationSuccessful(identificationId: String) {
         val bundle = Bundle().apply {  }
         navigateTo(FOURTHLINE_IDENTIFICATION_SUCCESSFULL, bundle)
+    }
+
+    fun setFourthlineIdentificationFailure() {
+        navigateTo(FOURTHLINE_IDENTIFICATION_ERROR, null)
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle? = null) {

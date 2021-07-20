@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.domain.contract;
 
 import de.solarisbank.identhub.data.TransactionAuthenticationNumber;
-import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.entity.Identification;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.usecase.CompletableUseCase;
 import io.reactivex.Completable;
 import io.reactivex.SingleSource;

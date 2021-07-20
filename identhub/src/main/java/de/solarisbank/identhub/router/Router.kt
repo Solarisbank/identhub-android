@@ -3,8 +3,8 @@ package de.solarisbank.identhub.router
 import android.content.Context
 import android.content.Intent
 import de.solarisbank.identhub.contract.ContractActivity
-import de.solarisbank.identhub.data.dto.IdentificationDto
 import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.FOURTHLINE_FLOW_ACTIVITY_ACTION
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN

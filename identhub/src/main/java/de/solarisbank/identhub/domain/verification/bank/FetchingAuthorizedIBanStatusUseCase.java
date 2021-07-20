@@ -3,8 +3,8 @@ package de.solarisbank.identhub.domain.verification.bank;
 import java.util.concurrent.TimeUnit;
 
 import de.solarisbank.identhub.data.Mapper;
-import de.solarisbank.identhub.data.dto.IdentificationDto;
 import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.usecase.CompletableUseCase;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

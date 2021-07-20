@@ -63,6 +63,10 @@ class VerificationBankViewModel(private val savedStateHandle: SavedStateHandle, 
         navigationActionId.value = Event<NaviDirection>(NaviDirection(actionId = IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, bundle))
     }
 
+    fun callOnFailure() {
+        navigateTo(IdentityActivityViewModel.ACTION_STOP_WITH_RESULT)
+    }
+
     fun navigateToIBanVerification() {
         navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment)
     }

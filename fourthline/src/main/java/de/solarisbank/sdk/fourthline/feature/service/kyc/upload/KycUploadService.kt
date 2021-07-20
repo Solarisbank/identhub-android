@@ -16,11 +16,8 @@ import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.core.di.DiLibraryComponent
 import de.solarisbank.sdk.core.di.LibraryComponent
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
-import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -69,7 +66,7 @@ class KycUploadService : Service() {
             Timber.d("uploadableFile size = ${ uploadableFile.length() / 1024 / 1024 } mb")
             uploadKyc(uploadableFile)
         }?:run {
-            binder.uploadingStatus.value = Pair(KycUploadFragment.UPLOAD_STATE.FAIL, null)
+            binder.uploadingStatus.value = KycUploadStatus.GenericError()
         }
         Timber.d("onStartCommand2")
         return START_NOT_STICKY
@@ -127,7 +124,7 @@ class KycUploadService : Service() {
 
     private fun uploadKyc(uploadableFile: File) {
         isRunning = true
-        binder.uploadingStatus.value = Pair(KycUploadFragment.UPLOAD_STATE.UPLOADING, null)
+        binder.uploadingStatus.value = KycUploadStatus.Uploading
         Timber.d("uploadKyc()")
         compositeDisposable.add(
                 kycUploadUseCase
@@ -142,41 +139,43 @@ class KycUploadService : Service() {
                             if (t2 != null) {
                                 Timber.d("uploadKyc(), upload failed ${t2.message}")
                                 binder.uploadingStatus.value =
-                                        Pair(KycUploadFragment.UPLOAD_STATE.FAIL, null)
+                                        KycUploadStatus.GenericError(t2)
                                 killService()
                         }}
         ))
     }
 
     private fun pollKycProcessingResult() {
-        compositeDisposable.add(identificationPollingStatusUseCase.execute(Unit)
+        compositeDisposable.add(identificationPollingStatusUseCase.pollIdentificationStatus()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
+                .subscribe({ identification ->
                     isRunning = false
+                    val result = identificationPollingStatusUseCase.convertToNavigationalResult(identification)
                     Timber.d("pollKycProcessingResult(), identificationDto : $result ")
                     if (
-                            result.succeeded && result.data?.status == Status.SUCCESSFUL.label
-                            || (result.data?.status == Status.AUTHORIZATION_REQUIRED.label && result.data?.nextStep != null)
-
+                            result.data.status == Status.SUCCESSFUL.label
+                            || (result.data.status == Status.AUTHORIZATION_REQUIRED.label && result.data.nextStep != null)
                     ) {
-                        binder.uploadingStatus.value =
-                                Pair(KycUploadFragment.UPLOAD_STATE.SUCCESSFUL, result.data?.nextStep)
+                        binder.uploadingStatus.value = KycUploadStatus.Success(result.data.nextStep)
                     } else {
-                        binder.uploadingStatus.value =
-                                Pair(KycUploadFragment.UPLOAD_STATE.FAIL, null)
+                        val providerStatusCode = identification.providerStatusCode?.toIntOrNull()
+                        if (providerStatusCode != null) {
+                            val isFraud = providerStatusCode >= 4000
+                            binder.uploadingStatus.value = KycUploadStatus.ProviderError(isFraud)
+                        } else {
+                            binder.uploadingStatus.value = KycUploadStatus.GenericError()
+                        }
                     }
                     killService()
                 },{ throwable ->
                     isRunning = false
                     if (throwable != null) {
                         Timber.d("pollKycProcessingResult(), error ${throwable.message}")
-                        binder.uploadingStatus.value =
-                                Pair(KycUploadFragment.UPLOAD_STATE.FAIL, null)
+                        binder.uploadingStatus.value = KycUploadStatus.GenericError(throwable)
                         killService()
                     }
                 }
-
                 ))
     }
 
@@ -212,5 +211,12 @@ class KycUploadService : Service() {
 }
 
 class KycUploadServiceBinder : Binder() {
-    val uploadingStatus = MutableLiveData<Pair<KycUploadFragment.UPLOAD_STATE, String?>>()
+    val uploadingStatus = MutableLiveData<KycUploadStatus>()
+}
+
+sealed class KycUploadStatus {
+    object Uploading: KycUploadStatus()
+    data class Success(val nextStep: String?): KycUploadStatus()
+    data class ProviderError(val isFraud: Boolean): KycUploadStatus()
+    data class GenericError(val error: Throwable? = null): KycUploadStatus()
 }

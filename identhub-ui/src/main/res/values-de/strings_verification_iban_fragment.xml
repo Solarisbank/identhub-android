@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="already_identified_title">Bereits erfolgreich identifiziert</string>
+    <string name="already_identified_message">Sie haben sich bereits erfolgreich identifiziert. Daher können Sie sich nicht noch einmal identifizieren</string>
+    <string name="invalid_iban_title">Leider wird die von Ihnen eingegebene IBAN nicht unterstützt</string>
+    <string name="invalid_iban_message">Die von Ihnen eingegebene IBAN kann nicht zur Identifizierung genutzt werden. Bitte versuchen Sie es mit einer anderen IBAN oder wählen Sie Verifizierung mit Ausweis.</string>
+    <string name="excess_attempts_title">Maximale Anzahl an Identifikationsversuchen erreicht</string>
+    <string name="excess_attempts_message">ULeider haben Sie die maximale Anzahl an Identifikationsversuchen erreicht. Wir können Sie leider nicht erfolgreich identifizieren. </string>
+    <string name="generic_error_title">Unknown  error</string>
+    <string name="generic_error_message">Could not proceed your verification</string>
+    <string name="retry_button">Retry</string>
+    <string name="ok_button">Ok</string>
+    <string name="invalid_iban_retry_button">Mit anderer IBAN probieren</string>
+    <string name="invalid_iban_ok_button">Identifizieren mit Ausweis</string>
+</resources>

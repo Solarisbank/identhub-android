@@ -17,9 +17,9 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
-import de.solarisbank.identhub.data.dto.MobileNumberDto
 import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.verfication.phone.CountDownTime
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
