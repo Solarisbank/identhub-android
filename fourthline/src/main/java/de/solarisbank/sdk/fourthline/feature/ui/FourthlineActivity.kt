@@ -157,15 +157,16 @@ class FourthlineActivity : FourthlineBaseActivity() {
         awaitedDirection = null
     }
 
-    private fun requestPermission(permission: String, rationalize: Boolean): Boolean {
+    private fun requestPermission(permissionCode: Int, rationalizeCode: Int?): Boolean {
+        val permission = getPermissionFromCode(permissionCode) ?: return true
         if (ContextCompat.checkSelfPermission(this, permission) != PermissionChecker.PERMISSION_GRANTED) {
-            if (rationalize) {
+            if (permissionCode == rationalizeCode) {
                 showRationale(permission)
             } else {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(permission),
-                    PERMISSION_CODE
+                    permissionCode
                 )
             }
             return false
@@ -174,16 +175,11 @@ class FourthlineActivity : FourthlineBaseActivity() {
         }
     }
 
-    private fun proceedWithPermissions(rationalize: Boolean = false) {
-        if (requestPermission(Manifest.permission.CAMERA, rationalize)
-            && requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, rationalize)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                if (requestPermission(Manifest.permission.FOREGROUND_SERVICE, rationalize)) {
-                    navigateToAwaitedDirection()
-                }
-            } else {
+    private fun proceedWithPermissions(rationalizeCode: Int? = null) {
+        if (requestPermission(PERMISSION_CAMERA_CODE, rationalizeCode)
+            && requestPermission(PERMISSION_LOCATION_CODE, rationalizeCode)
+            && requestPermission(PERMISSION_FOREGROUND_CODE, rationalizeCode)) {
                 navigateToAwaitedDirection()
-            }
         }
     }
 
@@ -202,11 +198,26 @@ class FourthlineActivity : FourthlineBaseActivity() {
                         startActivity(it)
                     }
                 } else {
-                    proceedWithPermissions(false)
+                    proceedWithPermissions()
                 }
             },
             { viewModel.setFourthlineIdentificationFailure() },
         )
+    }
+
+    private fun getPermissionFromCode(permissionCode: Int): String? {
+        return when (permissionCode) {
+            PERMISSION_CAMERA_CODE -> Manifest.permission.CAMERA
+            PERMISSION_LOCATION_CODE -> Manifest.permission.ACCESS_FINE_LOCATION
+            else -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+                    permissionCode == PERMISSION_FOREGROUND_CODE) {
+                    Manifest.permission.FOREGROUND_SERVICE
+                } else {
+                    return null
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -214,10 +225,11 @@ class FourthlineActivity : FourthlineBaseActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == PERMISSION_CODE) {
-            proceedWithPermissions(rationalize = true)
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_LOCATION_CODE, PERMISSION_CAMERA_CODE, PERMISSION_FOREGROUND_CODE -> {
+                proceedWithPermissions(requestCode)
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
@@ -225,7 +237,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
         const val FOURTHLINE_IDENTIFICATION_SUCCESSFULL = -10
         const val FOURTHLINE_IDENTIFICATION_ERROR = -20
 
-        private const val PERMISSION_CODE = 32
+        private const val PERMISSION_CAMERA_CODE = 32
+        private const val PERMISSION_LOCATION_CODE = 52
+        private const val PERMISSION_FOREGROUND_CODE = 72
 
         const val KEY_CODE = "KEY_ERROR_CODE"
         const val FOURTHLINE_SELFIE_SCAN_FAILED = "SelfieScanFailed"

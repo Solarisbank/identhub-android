@@ -177,7 +177,8 @@
                 android:text="@string/fourthline_terms_conditions_apply"
                 app:layout_constraintStart_toStartOf="@+id/noticeTitle"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
-                app:layout_constraintTop_toTopOf="@+id/noticeDot" />
+                app:layout_constraintTop_toTopOf="@+id/noticeDot"
+                android:paddingBottom="@dimen/margin_16"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
