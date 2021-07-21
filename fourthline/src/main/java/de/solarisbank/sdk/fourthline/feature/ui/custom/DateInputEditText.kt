@@ -34,6 +34,7 @@ class DateInputEditText : AppCompatEditText {
         calendar?.set(Calendar.MONTH, month)
         calendar?.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         updateLabel()
+        clearFocus()
     }
 
     fun setDate(date: Date) {

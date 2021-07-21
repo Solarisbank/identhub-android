@@ -124,12 +124,27 @@
                 />
 
             <TextView
-                android:id="@+id/expireDateInputLayout"
+                android:id="@+id/issueDateError"
                 style="@style/IdentHubTextView.Regular"
                 app:layout_constraintTop_toBottomOf="@id/issueDateTextInput"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:text="@string/fourthline_doc_scan_date_past_error"
+                android:textColor="@color/ident_hub_color_error"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/expireDateInputLayout"
+                style="@style/IdentHubTextView.Regular"
+                app:layout_constraintTop_toBottomOf="@id/issueDateError"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                android:layout_marginTop="@dimen/margin_24"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -150,6 +165,21 @@
                 android:layout_height="48dp"
                 android:inputType="text"
                 android:hint="@string/fourthline_doc_scan_date_placeholder"
+                />
+
+            <TextView
+                android:id="@+id/expireDateError"
+                style="@style/IdentHubTextView.Regular"
+                app:layout_constraintTop_toBottomOf="@id/expireDateTextInput"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:text="@string/fourthline_doc_scan_expiry_past_error"
+                android:textColor="@color/ident_hub_color_error"
+                android:visibility="invisible"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

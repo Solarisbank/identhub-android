@@ -20,6 +20,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.parseDateFromMrtd
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
+import java.util.*
 
 
 class DocScanResultFragment : FourthlineFragment() {
@@ -29,14 +30,16 @@ class DocScanResultFragment : FourthlineFragment() {
                 .get(FourthlineViewModel::class.java)
     }
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
+    private val kycSharedViewModel: KycSharedViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
     }
 
     private var title: TextView? = null
     private var docNumberTextInput: EditText? = null
     private var issueDateTextInput: DateInputEditText? = null
+    private var issueDateError: TextView? = null
     private var expireDateTextInput: DateInputEditText? = null
+    private var expiryDateError: TextView? = null
     private var continueButton: TextView? = null
 
     private val textValidationWatcher = object : TextWatcher{
@@ -45,11 +48,7 @@ class DocScanResultFragment : FourthlineFragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            continueButton!!.isEnabled = issueDateTextInput?.getDate() != null
-                    && expireDateTextInput?.getDate() != null
-                    && !issueDateTextInput!!.text.isNullOrEmpty()
-                    && !expireDateTextInput!!.text.isNullOrEmpty()
-                    && !docNumberTextInput!!.text.isNullOrEmpty()
+            continueButton!!.isEnabled = validateDateInputs()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -68,7 +67,9 @@ class DocScanResultFragment : FourthlineFragment() {
                     title = it.findViewById(R.id.title)
                     docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
                     issueDateTextInput = it.findViewById(R.id.issueDateTextInput)
+                    issueDateError = it.findViewById(R.id.issueDateError)
                     expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
+                    expiryDateError = it.findViewById(R.id.expireDateError)
                     continueButton = it.findViewById(R.id.continueButton)
                 }
     }
@@ -115,6 +116,28 @@ class DocScanResultFragment : FourthlineFragment() {
         expireDateTextInput = null
         continueButton = null
         super.onDestroyView()
+    }
+
+    private fun validateDateInputs(): Boolean {
+        val issueDate = issueDateTextInput?.getDate() ?: return false
+        val expiryDate = expireDateTextInput?.getDate() ?: return false
+        var valid = true
+        if (issueDate > expiryDate) {
+            issueDateError!!.visibility = View.VISIBLE
+            valid = false
+        } else {
+            issueDateError!!.visibility = View.INVISIBLE
+        }
+        if (expiryDate <= Date()) {
+            expiryDateError!!.visibility = View.VISIBLE
+            valid = false
+        } else {
+            expiryDateError!!.visibility = View.INVISIBLE
+        }
+        return !issueDateTextInput!!.text.isNullOrEmpty()
+                && !expireDateTextInput!!.text.isNullOrEmpty()
+                && !docNumberTextInput!!.text.isNullOrEmpty()
+                && valid
     }
 }
 
