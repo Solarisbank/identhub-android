@@ -214,8 +214,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
         private const val LOCATION_PERMISSION_CODE = 42
         private const val FOREGROUND_SERVICE_PERMISSION_CODE = 52
 
-        const val KEY_ERROR_CODE = "KEY_ERROR_CODE"
+        const val KEY_CODE = "KEY_ERROR_CODE"
         const val FOURTHLINE_SELFIE_SCAN_FAILED = "SelfieScanFailed"
+        const val FOURTHLINE_SELFIE_RETAKE = "SelfieRetake"
     }
 
 }

@@ -50,7 +50,15 @@ class SelfieResultFragment : FourthlineFragment() {
             imageResult!!.setImageBitmap(it)
         }
 
-        retryButton!!.setOnClickListener { requireActivity().onBackPressed() }
+        retryButton!!.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString(
+                    FourthlineActivity.KEY_CODE,
+                    FourthlineActivity.FOURTHLINE_SELFIE_RETAKE
+                )
+            }
+            activityViewModel.resetFourthlineFlow(bundle)
+        }
         submitButton!!.setOnClickListener { activityViewModel.navigateToDocTypeSelectionFragment() }
     }
 

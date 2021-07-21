@@ -137,8 +137,7 @@ class KycUploadFragment : FourthlineFragment() {
                     positiveLabel = getString(R.string.failure_fraud_button),
                     tag = TAG_FAILURE_FRAUD,
                     positiveAction = { activityViewModel.resetFourthlineFlow() },
-                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
-                    cancelAction = {  }
+                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
         } else {
             showAlertFragment(
@@ -148,8 +147,7 @@ class KycUploadFragment : FourthlineFragment() {
                     negativeLabel = getString(R.string.failure_no_fraud_negative),
                     tag = TAG_FAILURE_NO_FRAUD,
                     positiveAction = { activityViewModel.resetFourthlineFlow() },
-                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
-                    cancelAction = {  }
+                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
         }
     }

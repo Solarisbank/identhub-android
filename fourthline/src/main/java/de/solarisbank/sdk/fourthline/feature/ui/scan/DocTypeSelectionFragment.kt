@@ -61,11 +61,6 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         super.onActivityCreated(savedInstanceState)
         kycSharedViewModel.documentTypesLiveData.observe(viewLifecycleOwner, { appearAvailableDocTypes(it) })
         kycSharedViewModel.fetchPersonData(requireActivity().intent)
-        alertViewModel.events.observe(viewLifecycleOwner) {
-            it?.let {
-                activityViewModel.setFourthlineIdentificationFailure()
-            }
-        }
     }
 
     override fun initViewModel() {
@@ -84,13 +79,14 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         progressBar.visibility = View.INVISIBLE
         val supportedDocs = docs.filter { it.isSupported }
         if (supportedDocs.isEmpty()) {
-            fragmentManager?.let {
-                AlertDialogFragment.newInstance(
-                    getString(R.string.fourthline_doc_type_country_not_supported_headline),
-                    getString(R.string.fourthline_doc_type_country_not_supported_message),
-                    getString(R.string.fourthline_doc_type_country_not_supported_button)
-                ).show(it, "DocumentNotSupported")
-            }
+            showAlertFragment(
+                getString(R.string.fourthline_doc_type_country_not_supported_headline),
+                getString(R.string.fourthline_doc_type_country_not_supported_message),
+                getString(R.string.fourthline_doc_type_country_not_supported_button),
+                positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                tag = "DocScanError"
+            )
+            return
         }
         docTypeAdapter.add(supportedDocs)
         docTypeAdapter.notifyDataSetChanged()

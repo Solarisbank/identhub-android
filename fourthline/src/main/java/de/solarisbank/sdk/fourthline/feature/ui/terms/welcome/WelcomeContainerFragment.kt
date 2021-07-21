@@ -10,8 +10,9 @@ import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_RETAKE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_SCAN_FAILED
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_ERROR_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_CODE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
@@ -52,11 +53,11 @@ class WelcomeContainerFragment : FourthlineFragment() {
     }
 
     private fun handleErrors(saved: Bundle?) {
-        val errorCode = arguments?.getString(KEY_ERROR_CODE)
+        val code = arguments?.getString(KEY_CODE)
         if (saved != null) {
             return
         }
-        if (errorCode == FOURTHLINE_SELFIE_SCAN_FAILED) {
+        if (code == FOURTHLINE_SELFIE_SCAN_FAILED) {
             showAlertFragment(
                 getString(R.string.selfie_scan_error),
                 getString(R.string.selfie_error_scan_timeout_message),
@@ -65,6 +66,8 @@ class WelcomeContainerFragment : FourthlineFragment() {
                 { showSelfieScanner() },
                 { sharedViewModel.setFourthlineIdentificationFailure() }
             )
+        } else if (code == FOURTHLINE_SELFIE_RETAKE) {
+            showSelfieScanner()
         }
     }
 

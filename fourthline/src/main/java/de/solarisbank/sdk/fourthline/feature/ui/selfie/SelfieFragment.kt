@@ -17,7 +17,7 @@ import de.solarisbank.sdk.fourthline.asString
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_SCAN_FAILED
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_ERROR_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_CODE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -108,7 +108,7 @@ class SelfieFragment : SelfieScannerFragment() {
         Timber.d("onFail: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
             val bundle = Bundle().apply {
-                putString(KEY_ERROR_CODE, FOURTHLINE_SELFIE_SCAN_FAILED)
+                putString(KEY_CODE, FOURTHLINE_SELFIE_SCAN_FAILED)
             }
             activityViewModel.resetFourthlineFlow(bundle)
         }
