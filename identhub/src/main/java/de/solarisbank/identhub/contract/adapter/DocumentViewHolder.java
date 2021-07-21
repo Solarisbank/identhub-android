@@ -1,5 +1,8 @@
 package de.solarisbank.identhub.contract.adapter;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,26 +14,20 @@ import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.data.entity.Document;
 
 public class DocumentViewHolder extends RecyclerView.ViewHolder {
-    private final ImageView imageView;
     private final TextView title;
-    private final TextView subtitle;
-    private final Button previewButton;
 
     public DocumentViewHolder(View holderView) {
         super(holderView);
-        imageView = holderView.findViewById(R.id.imageView);
         title = holderView.findViewById(R.id.title);
-        subtitle = holderView.findViewById(R.id.subtitle);
-        previewButton = holderView.findViewById(R.id.previewButton);
     }
 
     public void bind(Document document) {
-        imageView.setImageLevel(0);
-        title.setText(document.getDocumentType());
-        subtitle.setText(document.getName());
+        SpannableString spannableString = SpannableString.valueOf(document.getDocumentType());
+        spannableString.setSpan(new UnderlineSpan(), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        title.setText(spannableString);
     }
 
     public void bindAction(View.OnClickListener clickListener) {
-        previewButton.setOnClickListener(clickListener);
+        title.setOnClickListener(clickListener);
     }
 }

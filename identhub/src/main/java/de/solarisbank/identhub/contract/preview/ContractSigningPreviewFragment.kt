@@ -36,7 +36,6 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
 
     private lateinit var documentsList: RecyclerView
     private lateinit var submitButton: TextView
-    private lateinit var downloadButton: Button
     private lateinit var termsAndConditionsString: TextView
 
     override fun inject(component: FragmentComponent) {
@@ -48,7 +47,6 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                 .also {
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
-                    downloadButton = it.findViewById(R.id.downloadButton)
                     termsAndConditionsString = it.findViewById(R.id.termsAndConditionsString)
                 }
     }
@@ -71,7 +69,6 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         documentsList.setHasFixedSize(true)
         documentsList.adapter = adapter
         submitButton.setOnClickListener { sharedViewModel.navigateToContractSigningProcess() }
-        downloadButton.setOnClickListener { viewModel.onDownloadAllDocumentClicked(adapter.items) }
     }
 
     private fun observeIdentification() {
