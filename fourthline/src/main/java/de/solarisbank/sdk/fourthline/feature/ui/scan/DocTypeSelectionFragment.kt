@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -26,6 +27,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     private lateinit var docTypeAdapter: DocTypeAdapter
     private lateinit var documentTypeList: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private var confirmButton: TextView? = null
 
@@ -45,6 +47,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         return inflater.inflate(R.layout.fragment_doc_type_selection, container, false).also {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
+            progressBar = it.findViewById(R.id.progress)
         }
     }
 
@@ -78,6 +81,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     private fun appearAvailableDocTypes(docs: List<AppliedDocument>){
+        progressBar.visibility = View.INVISIBLE
         val supportedDocs = docs.filter { it.isSupported }
         if (supportedDocs.isEmpty()) {
             fragmentManager?.let {
