@@ -8,4 +8,7 @@
     <string name="fourthline_terms_description_end">in order to perform the identification.</string>
     <string name="fourthline_terms_notice_title">Notice</string>
     <string name="fourthline_terms_conditions_apply">I acknowledge SAFENED Fourthline\'s privacy statement.</string>
+    <!-- The part of the above string that should by hyperlinked -->
+    <string name="fourthline_terms_conditions_apply_link_section">SAFENED Fourthline\'s privacy statement</string>
+    <string name="fourthline_terms_conditions_link" translatable="false">https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf</string>
 </resources>
