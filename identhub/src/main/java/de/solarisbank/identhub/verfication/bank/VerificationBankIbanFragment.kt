@@ -122,6 +122,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                 .subscribe(
                         { iBan: String ->
                             Timber.d("submitButton success")
+                            sharedViewModel.iban = iBan
                             ibanViewModel.onSubmitButtonClicked(iBan)
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
