@@ -17,7 +17,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
-import de.solarisbank.sdk.fourthline.getDateFromMRZ
+import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 
 
@@ -94,10 +94,12 @@ class DocScanResultFragment : FourthlineFragment() {
         }
 
         continueButton!!.setOnClickListener {
-            val doc = kycSharedViewModel.getKycDocument()
-            doc.issueDate = issueDateTextInput!!.text.toString().getDateFromMRZ()
-            doc.number = docNumberTextInput!!.text.toString()
-            doc.expirationDate = expireDateTextInput!!.text.toString().getDateFromMRZ()
+            kycSharedViewModel.getKycDocument().apply {
+                issueDate = issueDateTextInput!!.text.toString().parseDateFromString()
+                number = docNumberTextInput!!.text.toString()
+                expirationDate = expireDateTextInput!!.text.toString().parseDateFromString()
+            }
+            Timber.d("KycDocument data set: ${kycSharedViewModel.getKycDocument()}")
             activityViewModel.navigateToLocationAccessFragment()
         }
     }

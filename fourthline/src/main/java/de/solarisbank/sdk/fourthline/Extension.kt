@@ -106,9 +106,9 @@ fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun String.getDateFromMRZ(): Date? {
+fun String.parseDateFromString(): Date? {
 
-    val formats = listOf("yyMMdd", "MMM dd, yyyy")
+    val formats = listOf("MMM dd, yyyy", "yyyy-MM-dd", "dd.MM.yyyy")
     var date: Date? = null
 
     for (format in formats) {
@@ -119,6 +119,23 @@ fun String.getDateFromMRZ(): Date? {
             Timber.d("getDateFromMRZ() string value: $this, format: $format")
         }
     }
-    Timber.d("String.getDateFromMRZ() date value: $this")
+    Timber.d("String.getDateFromMRZ() date value: $date")
+    return date
+}
+
+fun String.parseDateFromMrtd(): Date? {
+
+    val formats = listOf("yyMMdd")
+    var date: Date? = null
+
+    for (format in formats) {
+        try {
+            date = SimpleDateFormat(format).parse(this)
+            break
+        } catch (pE: ParseException){
+            Timber.d("getDateFromMRZ() string value: $this, format: $format")
+        }
+    }
+    Timber.d("String.getDateFromMRZ() date value: $date")
     return date
 }

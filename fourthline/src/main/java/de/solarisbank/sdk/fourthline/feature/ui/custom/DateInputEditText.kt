@@ -8,9 +8,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
-import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
-import de.solarisbank.sdk.fourthline.getDateFromMRZ
+import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 import java.util.*
 
@@ -69,7 +68,7 @@ class DateInputEditText : AppCompatEditText {
 
             } catch (e: Exception) {
                 Timber.d("showDialog() 3")
-                text.toString().getDateFromMRZ()?.let {
+                text.toString().parseDateFromString()?.let {
                     calendar = Calendar.getInstance().apply { time = it }
                     Timber.d("showDialog() 4")
                 } ?: let {

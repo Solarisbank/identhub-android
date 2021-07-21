@@ -17,7 +17,8 @@ import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
-import de.solarisbank.sdk.fourthline.getDateFromMRZ
+import de.solarisbank.sdk.fourthline.parseDateFromMrtd
+import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 import java.net.URI
 
@@ -58,7 +59,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
             kycInfo.person.also {
                 it.nationalityCode = personDataDto.nationality
                 it.birthPlace = personDataDto.birthPlace
-                fillRecognizablePersonDataFromResponse(personDataDto)
+//                fillRecognizablePersonDataFromResponse(personDataDto)
             }
         }
     }
@@ -124,7 +125,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
                 videoUrl = result.videoUrl,
                 number = mrtd?.documentNumber,
-                expirationDate = mrtd?.expirationDate?.getDateFromMRZ(),
+                expirationDate = mrtd?.expirationDate?.parseDateFromMrtd(),
                 type = docType
         )
     }
@@ -140,13 +141,13 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 "\nlmrtd.gender: ${mrtd?.gender}" +
                 "\nlmrtd.firstNames: ${mrtd?.firstNames?.joinToString(separator = " ")}" +
                 "\nlmrtd.lastNames: ${mrtd?.lastNames?.joinToString(separator = " ")}" +
-                "\nlmrtd.birthDate.getDate(): ${mrtd?.birthDate?.getDateFromMRZ()}"
+                "\nlmrtd.birthDate.getDate(): ${mrtd?.birthDate?.parseDateFromMrtd()}"
         )
 
         kycInfo.person.apply {
             val firstNames = mrtd?.firstNames?.joinToString(separator = " ")
             if (!firstNames.isNullOrBlank()) {
-                firstName =firstNames
+                firstName = firstNames
             }
             val lastNames = mrtd?.firstNames?.joinToString(separator = " ")
             if (!lastNames.isNullOrBlank()) {
@@ -155,7 +156,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
             mrtd?.gender?.let {
                 gender = it
             }
-            mrtd?.birthDate?.getDateFromMRZ()?.let {
+            mrtd?.birthDate?.parseDateFromMrtd()?.let {
                 birthDate = it
             }
         }
@@ -188,11 +189,12 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
             uri = Zipper().createZipFile(kycInfo, applicationContext)
         } catch (zipperError: ZipperError) {
             when (zipperError) {
-                ZipperError.KycNotValid -> { Timber.d("Error in kyc object") }
-                ZipperError.CannotCreateZip -> {
-                    Timber.d("Error creating zip file")
+                ZipperError.KycNotValid -> { Timber.d("Error in kyc object")
                     fillRecognizablePersonDataFromResponse(_personDataDto)
                     try {
+                        Timber.d("getKycUriZip 2 : ${kycInfo}")
+                        Timber.d("getKycUriZip 2 : ${kycInfo.person.birthDate}, ${kycInfo.person.nationalityCode}, ${kycInfo.person}")
+                        Timber.d("getKycUriZip 2 : ${kycInfo.document}")
                         uri = Zipper().createZipFile(kycInfo, applicationContext)
                     } catch (zipperError: ZipperError) {
                         when (zipperError) {
@@ -203,10 +205,12 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                         }
                     }
                 }
+                ZipperError.CannotCreateZip -> { Timber.d("Error creating zip file") }
                 ZipperError.NotEnoughSpace -> Timber.d("There are not enough space in device")
                 ZipperError.ZipExceedMaximumSize -> Timber.d("Zip file exceed 100MB")
             }
         }
+        Timber.d("uri: $uri")
         return uri
     }
 
@@ -220,7 +224,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 Gender.FEMALE.name.toLowerCase() -> Gender.FEMALE
                 else -> Gender.UNKNOWN
             }
-            birthDate = _personDataDto?.birthDate?.getDateFromMRZ()
+            birthDate = _personDataDto?.birthDate?.parseDateFromString()
         }
     }
 
