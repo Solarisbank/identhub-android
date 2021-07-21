@@ -8,6 +8,7 @@ import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.core.network.utils.parseErrorResponseDto
 import de.solarisbank.sdk.core.result.Result
@@ -20,10 +21,10 @@ import timber.log.Timber
 import java.net.HttpURLConnection
 
 class VerifyIBanUseCase(
-        private val getIdentificationUseCase: GetIdentificationUseCase,
-        private val verificationBankRepository: VerificationBankRepository,
-        private val identityInitializationRepository: IdentityInitializationRepository
-) : SingleUseCase<String, IbanVerificationDto>() {
+    private val getIdentificationUseCase: GetIdentificationUseCase,
+    private val verificationBankRepository: VerificationBankRepository,
+    override val identityInitializationRepository: IdentityInitializationRepository
+) : SingleUseCase<String, IbanVerificationDto>(), NextStepSelector {
 
     private var ibanAttemts = 0
 
@@ -56,7 +57,9 @@ class VerifyIBanUseCase(
                         getIdentificationUseCase.execute(Unit)
                                 .map {
                                     Timber.d("andThen")
-                                    return@map NavigationalResult(it.data!!.url, it.data!!.nextStep)
+                                    val data = it.data!!
+                                    val nextStep = selectNextStep(data.nextStep, data.fallbackStep)
+                                    return@map NavigationalResult(data.url, nextStep)
                                 }
                 )
                 .transformResult()

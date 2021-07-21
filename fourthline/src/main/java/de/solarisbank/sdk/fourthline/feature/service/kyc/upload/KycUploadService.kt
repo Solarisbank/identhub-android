@@ -12,6 +12,8 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import de.solarisbank.identhub.data.entity.Status
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.core.di.DiLibraryComponent
@@ -25,8 +27,9 @@ import timber.log.Timber
 import java.io.File
 import java.net.URI
 
-class KycUploadService : Service() {
+class KycUploadService : Service(), NextStepSelector {
 
+    override lateinit var identityInitializationRepository: IdentityInitializationRepository
     internal lateinit var kycUploadUseCase: KycUploadUseCase
     internal lateinit var identificationPollingStatusUseCase: IdentificationPollingStatusUseCase
 
@@ -153,11 +156,13 @@ class KycUploadService : Service() {
                     isRunning = false
                     val result = identificationPollingStatusUseCase.convertToNavigationalResult(identification)
                     Timber.d("pollKycProcessingResult(), identificationDto : $result ")
+                    val data = result.data
+                    val nextStep = selectNextStep(data.nextStep, data.fallbackStep)
                     if (
-                            result.data.status == Status.SUCCESSFUL.label
-                            || (result.data.status == Status.AUTHORIZATION_REQUIRED.label && result.data.nextStep != null)
+                            data.status == Status.SUCCESSFUL.label
+                            || (data.status == Status.AUTHORIZATION_REQUIRED.label && nextStep != null)
                     ) {
-                        binder.uploadingStatus.value = KycUploadStatus.Success(result.data.nextStep)
+                        binder.uploadingStatus.value = KycUploadStatus.Success(nextStep)
                     } else {
                         val providerStatusCode = identification.providerStatusCode?.toIntOrNull()
                         if (providerStatusCode != null) {

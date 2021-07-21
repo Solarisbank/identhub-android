@@ -266,24 +266,9 @@ public class IdenthubComponent {
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule));
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider));
-        sharedPreferencesProvider = DoubleCheck.provider(new Factory<SharedPreferences>() {
-            @Override
-            public SharedPreferences get() {
-                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE);
-            }
-        });
-        identityInitializationSharedPrefsDataSourceProvider = DoubleCheck.provider(new Factory<IdentityInitializationSharedPrefsDataSource>() {
-            @Override
-            public IdentityInitializationSharedPrefsDataSource get() {
-                return new IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get());
-            }
-        });
-        identityInitializationRepositoryProvider = DoubleCheck.provider(new Factory<IdentityInitializationRepository>() {
-            @Override
-            public IdentityInitializationRepository get() {
-                return new IdentityInitializationRepositoryImpl(identityInitializationSharedPrefsDataSourceProvider.get());
-            }
-        });
+        sharedPreferencesProvider = DoubleCheck.provider((Factory<SharedPreferences>) () -> applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE));
+        identityInitializationSharedPrefsDataSourceProvider = DoubleCheck.provider((Factory<IdentityInitializationSharedPrefsDataSource>) () -> new IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get()));
+        identityInitializationRepositoryProvider = DoubleCheck.provider((Factory<IdentityInitializationRepository>) () -> new IdentityInitializationRepositoryImpl(identityInitializationSharedPrefsDataSourceProvider.get()));
 
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider));
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule));
@@ -314,7 +299,7 @@ public class IdenthubComponent {
         confirmVerificationPhoneUseCaseProvider = ConfirmVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider);
         fetchingAuthorizedIBanStatusUseCaseProvider = FetchingAuthorizedIBanStatusUseCaseFactory.create(identificationEntityMapperProvider, verificationBankRepositoryProvider);
         getDocumentsUseCaseProvider = GetDocumentsUseCaseFactory.create(contractSignRepositoryProvider);
-        getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider);
+        getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider, identityInitializationRepositoryProvider);
         verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(getIdentificationUseCaseProvider, verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
     }
 
@@ -431,9 +416,9 @@ public class IdenthubComponent {
             identificationRoomDataSourceProvider = DoubleCheck.provider(IdentificationRoomDataSourceFactory.create(identificationModule, identificationDaoProvider.get()));
             identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()));
             getMobileNumberUseCaseProvider = GetPersonDataUseCaseFactory.create(identificationRepositoryProvider);
-            identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()));
-            jointAccountBankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider);
-            processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, jointAccountBankIdPostUseCaseProvider);
+            identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()));
+            jointAccountBankIdPostUseCaseProvider = JointAccountBankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
+            processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, jointAccountBankIdPostUseCaseProvider, identityInitializationRepositoryProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
                     identityModule,
                     verficationBankModule,

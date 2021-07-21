@@ -11,6 +11,7 @@ data class IdentificationDto(
         @Json(name = "failure_reason") var failureReason: String? = null,
         var method: String? = null,
         @Json(name = "next_step") var nextStep: String? = null,
+        @Json(name = "fallback_step") var fallbackStep: String? = null,
         @Json(name = "completed_at") var completedAt: Date? = null,
         @Json(name = "proof_of_address_type") var proofOfAddressType: String? = null,
         @Json(name = "proof_of_address_issued_at") var proofOfAddressIssuedAt: Date? = null,

@@ -5,5 +5,6 @@ data class IdentificationUiModel(
         val status: String?,
         val failureReason: String?,
         val nextStep: String?,
+        val fallbackStep: String?,
         val method: String? = null
 )

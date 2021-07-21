@@ -11,7 +11,8 @@ data class Identification(
         var url: String,
         var status: String,
         var method: String? = null,
-        var nextStep: String? = null) {
+        var nextStep: String? = null,
+        var fallbackStep: String? = null) {
 
     val isCompleted: Boolean
         get() = Status.CONFIRMED == Status.getEnum(status)

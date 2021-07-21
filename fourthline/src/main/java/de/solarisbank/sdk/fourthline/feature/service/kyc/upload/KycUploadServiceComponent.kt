@@ -123,12 +123,13 @@ class KycUploadServiceComponent private constructor(
         identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))
         identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()))
         identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()))
-        identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get()))
+        identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()))
     }
 
     fun inject(kycUploadService: KycUploadService) {
         kycUploadService.kycUploadUseCase = kycUploadUseCaseProvider.get()
         kycUploadService.identificationPollingStatusUseCase = identificationPollingStatusUseCaseProvider.get()
+        kycUploadService.identityInitializationRepository = identityInitializationRepositoryProvider.get()
     }
 
     companion object {

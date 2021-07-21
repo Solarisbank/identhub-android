@@ -3,6 +3,7 @@ package de.solarisbank.identhub.session.domain
 import android.content.Context
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.router.NEXT_STEP_KEY
@@ -16,9 +17,9 @@ import timber.log.Timber
 class IdentHubSessionUseCase(
     private val identHubSessionRepository: IdentHubSessionRepository,
     private val sessionUrlRepository: SessionUrlRepository,
-    private val identityInitializationRepository: IdentityInitializationRepository,
+    override val identityInitializationRepository: IdentityInitializationRepository,
     private val context: Context
-        ) {
+) : NextStepSelector {
 
     fun saveSessionId(url: String?) {
         sessionUrlRepository.save(url)
@@ -37,7 +38,8 @@ class IdentHubSessionUseCase(
                                 .getSavedIdentificationId()
                                 .map {
                                     Timber.d("obtainLocalIdentificationState() 1: $it")
-                                    return@map NavigationalResult(NEXT_STEP_KEY, it.nextStep)
+                                    val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
+                                    return@map NavigationalResult(NEXT_STEP_KEY, nextStep)
                                 }
                                 .doOnError{
                                     Timber.e(it,"doOnError")
@@ -47,7 +49,7 @@ class IdentHubSessionUseCase(
                                                 .map {
                                                     Timber.d("obtainLocalIdentificationState() 3")
                                                     identityInitializationRepository.saveInitializationDto(it)
-                                                    val result =  NavigationalResult(FIRST_STEP_KEY, it.firstStep)
+                                                    val result = NavigationalResult(FIRST_STEP_KEY, it.firstStep)
                                                     Timber.d("obtainLocalIdentificationState() 4, $result")
                                                     return@map result
                                                 }.blockingGet()

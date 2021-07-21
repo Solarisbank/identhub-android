@@ -43,6 +43,7 @@ fun IdentificationDto.toIdentificationUiModel(): IdentificationUiModel {
             status = this.status,
             failureReason = this.failureReason,
             nextStep = this.nextStep,
+            fallbackStep = this.fallbackStep,
             method = this.method
     )
 }

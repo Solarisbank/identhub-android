@@ -4,6 +4,8 @@ import de.solarisbank.identhub.data.entity.FailureReason
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.domain.data.dto.ProcessingVerificationDto
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.core.result.data
@@ -12,9 +14,10 @@ import io.reactivex.Single
 import timber.log.Timber
 
 class ProcessingVerificationUseCase(
-        private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-        private val jointAccountBankIdPostUseCase: JointAccountBankIdPostUseCase
-        ) : SingleUseCase<String, ProcessingVerificationDto>() {
+    private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
+    private val jointAccountBankIdPostUseCase: JointAccountBankIdPostUseCase,
+    override val identityInitializationRepository: IdentityInitializationRepository
+) : SingleUseCase<String, ProcessingVerificationDto>(), NextStepSelector {
 
     override fun invoke(iban: String): Single<NavigationalResult<ProcessingVerificationDto>> {
         Timber.d("invoke")
@@ -23,28 +26,29 @@ class ProcessingVerificationUseCase(
                 .map {
                     Timber.d("processing identification: $it")
                     var processingVerificationDto: ProcessingVerificationDto? = null
-                    val dto = it.data
-                    if (it.succeeded && it.data != null && it.data!!.nextStep != null) {
-                        Timber.d("processing identification 1, dto: ${dto}")
-                        val status = Status.getEnum(dto?.status)
+                    val data = it.data
+                    val nextStep = selectNextStep(data?.nextStep, data?.fallbackStep)
+                    if (it.succeeded && it.data != null && nextStep != null) {
+                        Timber.d("processing identification 1, dto: $data")
+                        val status = Status.getEnum(data?.status)
                         if (status == Status.FAILED) {
                             Timber.d("processing identification 2")
-                            processingVerificationDto = when (FailureReason.getEnum(dto?.failureReason)) {
+                            processingVerificationDto = when (FailureReason.getEnum(data?.failureReason)) {
                                 FailureReason.ACCESS_BY_AUTHORIZED_HOLDER -> {
                                     Timber.d("processing identification 3")
-                                    ProcessingVerificationDto.PaymentInitAuthPersonError(dto!!.nextStep!!)
+                                    ProcessingVerificationDto.PaymentInitAuthPersonError(nextStep)
                                 }
                                 FailureReason.ACCOUNT_SNAPSHOT_FAILED -> {
                                     Timber.d("processing identification 4")
-                                    ProcessingVerificationDto.PaymentInitFailed(dto!!.nextStep!!)
+                                    ProcessingVerificationDto.PaymentInitFailed(nextStep)
                                 }
                                 FailureReason.EXPIRED -> {
                                     Timber.d("processing identification 4")
-                                    ProcessingVerificationDto.PaymentInitExpired(dto!!.nextStep!!)
+                                    ProcessingVerificationDto.PaymentInitExpired(nextStep)
                                 }
                                 FailureReason.JOINT_ACCOUNT-> {
                                     Timber.d("processing identification 5")
-                                    val jointResult = jointAccountBankIdPostUseCase.execute(Pair(iban, dto!!)).blockingGet()
+                                    val jointResult = jointAccountBankIdPostUseCase.execute(Pair(iban, data!!)).blockingGet()
                                     if (jointResult.succeeded) {
                                         Timber.d("processing identification 6")
                                         ProcessingVerificationDto.VerificationSuccessful(jointResult.data!!.id)
@@ -60,10 +64,10 @@ class ProcessingVerificationUseCase(
                             }
                         } else if (
                                 (status == Status.AUTHORIZATION_REQUIRED || status == Status.IDENTIFICATION_DATA_REQUIRED)
-                                && dto?.nextStep != null
+                                && data != null
                         ) {
                             Timber.d("processing identification 9")
-                            processingVerificationDto = ProcessingVerificationDto.VerificationSuccessful(dto.id)
+                            processingVerificationDto = ProcessingVerificationDto.VerificationSuccessful(data.id)
                         } else {
                             Timber.d("processing identification 10")
                             processingVerificationDto = ProcessingVerificationDto.GenericError
