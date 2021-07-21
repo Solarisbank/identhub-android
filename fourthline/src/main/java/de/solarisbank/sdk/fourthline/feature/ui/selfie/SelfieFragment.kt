@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.setPadding
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
@@ -19,6 +16,8 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.asString
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_ERROR_CODE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -79,7 +78,7 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun getConfig(): SelfieScannerConfig {
-        return SelfieScannerConfig(false, shouldRecordVideo = false, includeManualSelfiePolicy = true, livenessCheckType = LivenessCheckType.HEAD_TURN)
+        return SelfieScannerConfig(false, shouldRecordVideo = false, includeManualSelfiePolicy = false, livenessCheckType = LivenessCheckType.HEAD_TURN)
     }
 
     override fun getFaceDetectionArea(): Rect {
@@ -108,7 +107,10 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun onFail(error: SelfieScannerError) {
         Timber.d("onFail: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
-            Toast.makeText(requireContext(), error.asString(requireContext()), Toast.LENGTH_LONG).show()
+            val bundle = Bundle().apply {
+                putString(KEY_ERROR_CODE, FOURTHLINE_SELFIE_SCAN_FAILED)
+            }
+            activityViewModel.resetFourthlineFlow(bundle)
         }
     }
 
@@ -164,6 +166,7 @@ class SelfieFragment : SelfieScannerFragment() {
         icon = null
         warningsLabel = null
         livenessMask = null
+        cleanupJob?.cancel()
         super.onDestroyView()
     }
 

@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_ERROR_CODE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
@@ -38,15 +39,37 @@ class WelcomeContainerFragment : FourthlineFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        handleErrors(savedInstanceState)
     }
 
     private fun initView() {
-        startbutton!!.setOnClickListener { sharedViewModel.navigateToSelfieFragment() }
+        startbutton!!.setOnClickListener { showSelfieScanner() }
     }
 
     override fun onDestroyView() {
         startbutton = null
         super.onDestroyView()
+    }
+
+    private fun handleErrors(saved: Bundle?) {
+        val errorCode = arguments?.getString(KEY_ERROR_CODE)
+        if (saved != null) {
+            return
+        }
+        if (errorCode == FOURTHLINE_SELFIE_SCAN_FAILED) {
+            showAlertFragment(
+                getString(R.string.selfie_scan_error),
+                getString(R.string.selfie_error_scan_timeout_message),
+                getString(R.string.selfie_error_scan_timeout_retry),
+                getString(R.string.selfie_error_scan_timeout_quit),
+                { showSelfieScanner() },
+                { sharedViewModel.setFourthlineIdentificationFailure() }
+            )
+        }
+    }
+
+    private fun showSelfieScanner() {
+        sharedViewModel.navigateToSelfieFragment()
     }
 }
 

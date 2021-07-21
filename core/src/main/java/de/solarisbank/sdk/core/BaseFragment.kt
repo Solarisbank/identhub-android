@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core.alert.AlertDialogFragment
 import de.solarisbank.sdk.core.alert.AlertEvent
 import de.solarisbank.sdk.core.alert.AlertViewModel
+import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 import timber.log.Timber
 
@@ -39,16 +40,18 @@ abstract class BaseFragment : Fragment() {
             negativeLabel: String? = null,
             positiveAction: () -> Unit,
             negativeAction: (() -> Unit)? = null,
-            cancelAction: () -> Unit,
+            cancelAction: (() -> Unit)? = null,
             tag: String = AlertDialogFragment.TAG
     ) {
 
-        val observer: Observer<AlertEvent> = Observer<AlertEvent> { event ->
+        val observer = Observer<Event<AlertEvent>> { event ->
             Timber.d("onChanged, event : $event")
-            when (event) {
-                is AlertEvent.Positive -> positiveAction.invoke()
-                is AlertEvent.Negative -> negativeAction?.invoke()
-                is AlertEvent.Cancel -> cancelAction.invoke()
+            event.content?.let {
+                when (it) {
+                    is AlertEvent.Positive -> positiveAction.invoke()
+                    is AlertEvent.Negative -> negativeAction?.invoke()
+                    is AlertEvent.Cancel -> cancelAction?.invoke()
+                }
             }
         }
 

@@ -207,13 +207,15 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     companion object {
-
         const val FOURTHLINE_IDENTIFICATION_SUCCESSFULL = -10
         const val FOURTHLINE_IDENTIFICATION_ERROR = -20
 
         private const val CAMERA_PERMISSION_CODE = 32
         private const val LOCATION_PERMISSION_CODE = 42
         private const val FOREGROUND_SERVICE_PERMISSION_CODE = 52
+
+        const val KEY_ERROR_CODE = "KEY_ERROR_CODE"
+        const val FOURTHLINE_SELFIE_SCAN_FAILED = "SelfieScanFailed"
     }
 
 }

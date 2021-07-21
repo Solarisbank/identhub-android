@@ -57,8 +57,8 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
         navigateTo(R.id.action_termsAndConditionsFragment_to_webViewFragment, bundle)
     }
 
-    fun resetFourthlineFlow() {
-        navigateTo(R.id.action_reset_to_welcome_screen)
+    fun resetFourthlineFlow(args: Bundle? = null) {
+        navigateTo(R.id.action_reset_to_welcome_screen, args)
     }
 
     fun setFourthlineIdentificationSuccessful(identificationId: String) {

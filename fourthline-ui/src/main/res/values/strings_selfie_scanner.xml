@@ -37,5 +37,10 @@
     <string name="selfie_error_recognition_models_not_downloaded">Check internet connection and/or free space available</string>
     <string name="selfie_error_unknown">Unexpected error occurred</string>
 
+    <string name="selfie_error_scan_timeout_message">Selfie scanner timed out. Please try again.</string>
+    <string name="selfie_error_scan_timeout_retry">Retry</string>
+    <string name="selfie_error_scan_timeout_quit">Quit</string>
+
+
 </resources>
 

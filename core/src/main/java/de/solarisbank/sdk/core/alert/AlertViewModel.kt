@@ -3,16 +3,17 @@ package de.solarisbank.sdk.core.alert
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.solarisbank.sdk.core.result.Event
 
 class AlertViewModel: ViewModel() {
-    private val _events = MutableLiveData<AlertEvent>()
-    val events: LiveData<AlertEvent>
+    private val _events = MutableLiveData<Event<AlertEvent>>()
+    val events: LiveData<Event<AlertEvent>>
         get() {
             return _events
         }
 
     fun sendEvent(event: AlertEvent) {
-        _events.value = event
+        _events.value = Event(event)
     }
 }
 
