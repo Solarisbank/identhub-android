@@ -3,4 +3,9 @@
     <string name="fourthline_welcome_container_title">Als nächstes, machen Sie ein Foto von sich selbst (Selfie)</string>
     <string name="fourthline_welcome_container_subtitle">Wenn Sie eine Brille tragen, stellen Sie sicher, dass sie kein grelles Licht reflektiert.</string>
     <string name="fourthline_welcome_container_continue_button">Weiter</string>
+
+    <string name="fourthline_permission_rationale_title">Berechtigungen</string>
+    <string name="fourthline_permission_rationale_message">Wir können den Identifikationsprozess nicht ohne diese Berechtigungen abschließen. Bitte erlauben Sie den benötigten Zugriff um den Identifikationsprozess abzuschließen.</string>
+    <string name="fourthline_permission_rationale_ok">Zulassen</string>
+    <string name="fourthline_permission_rationale_quit">Schließen</string>
 </resources>

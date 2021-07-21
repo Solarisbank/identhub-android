@@ -5,8 +5,10 @@ import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import de.solarisbank.sdk.core.alert.AlertDialogFragment
 import de.solarisbank.sdk.core.alert.AlertViewModel
 import de.solarisbank.sdk.core.di.CoreActivityComponent
 import de.solarisbank.sdk.core.di.DiLibraryComponent
@@ -29,6 +31,8 @@ abstract class BaseActivity : AppCompatActivity() {
     private val alertViewModel: AlertViewModel by lazy {
         ViewModelProvider(this)[AlertViewModel::class.java]
     }
+
+    private var alertDialogFragment: DialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectMe()
@@ -71,6 +75,37 @@ abstract class BaseActivity : AppCompatActivity() {
                 setNegativeButton(R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
             }.show()
         }
+    }
+
+    fun showAlertFragment(
+        title: String,
+        message: String,
+        positiveLabel: String = "Ok",
+        negativeLabel: String? = null,
+        positiveAction: () -> Unit,
+        negativeAction: (() -> Unit)? = null,
+        cancelAction: (() -> Unit)? = null,
+        tag: String = AlertDialogFragment.TAG
+    ) {
+        alertDialogFragment = de.solarisbank.sdk.core.alert.showAlertFragment(
+            title,
+            message,
+            positiveLabel,
+            negativeLabel,
+            positiveAction,
+            negativeAction,
+            cancelAction,
+            tag,
+            alertViewModel,
+            this,
+            supportFragmentManager
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        alertDialogFragment?.dismissAllowingStateLoss()
+        alertDialogFragment = null
     }
 
 }

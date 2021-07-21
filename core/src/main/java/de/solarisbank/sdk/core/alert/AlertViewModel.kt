@@ -21,4 +21,5 @@ sealed class AlertEvent(val tag: String) {
     class Positive(tag: String): AlertEvent(tag)
     class Negative(tag: String): AlertEvent(tag)
     class Cancel(tag: String): AlertEvent(tag)
+    class Dismiss(tag: String): AlertEvent(tag)
 }

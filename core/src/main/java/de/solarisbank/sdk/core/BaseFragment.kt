@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core.alert.AlertDialogFragment
-import de.solarisbank.sdk.core.alert.AlertEvent
 import de.solarisbank.sdk.core.alert.AlertViewModel
-import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.core.alert.showAlertFragment
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
-import timber.log.Timber
 
 abstract class BaseFragment : Fragment() {
     lateinit var assistedViewModelFactory: AssistedViewModelFactory
@@ -34,38 +31,28 @@ abstract class BaseFragment : Fragment() {
     private var alertDialogFragment: DialogFragment? = null
 
     fun showAlertFragment(
-            title: String,
-            message: String,
-            positiveLabel: String = "Ok",
-            negativeLabel: String? = null,
-            positiveAction: () -> Unit,
-            negativeAction: (() -> Unit)? = null,
-            cancelAction: (() -> Unit)? = null,
-            tag: String = AlertDialogFragment.TAG
+        title: String,
+        message: String,
+        positiveLabel: String = "Ok",
+        negativeLabel: String? = null,
+        positiveAction: () -> Unit,
+        negativeAction: (() -> Unit)? = null,
+        cancelAction: (() -> Unit)? = null,
+        tag: String = AlertDialogFragment.TAG
     ) {
-
-        val observer = Observer<Event<AlertEvent>> { event ->
-            Timber.d("onChanged, event : $event")
-            event.content?.let {
-                when (it) {
-                    is AlertEvent.Positive -> positiveAction.invoke()
-                    is AlertEvent.Negative -> negativeAction?.invoke()
-                    is AlertEvent.Cancel -> cancelAction?.invoke()
-                }
-            }
-        }
-
-        alertViewModel.events.observe(viewLifecycleOwner, observer)
-        fragmentManager?.let {
-            alertDialogFragment = AlertDialogFragment.newInstance(
-                    title = title,
-                    message = message,
-                    positiveLabel = positiveLabel,
-                    negativeLabel = negativeLabel
-            )
-            alertDialogFragment?.show(it, tag)
-        }
-
+        alertDialogFragment = showAlertFragment(
+            title,
+            message,
+            positiveLabel,
+            negativeLabel,
+            positiveAction,
+            negativeAction,
+            cancelAction,
+            tag,
+            alertViewModel,
+            viewLifecycleOwner,
+            fragmentManager
+        )
     }
 
     protected fun String.getStringRes(): String{
@@ -81,5 +68,4 @@ abstract class BaseFragment : Fragment() {
         alertDialogFragment = null
         super.onDestroyView()
     }
-
 }

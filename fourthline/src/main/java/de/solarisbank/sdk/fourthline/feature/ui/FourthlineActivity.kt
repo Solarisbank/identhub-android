@@ -2,10 +2,11 @@ package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
@@ -112,7 +113,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 }
                 R.id.action_welcomeContainerFragment_to_selfieFragment -> {
                     awaitedDirection = it
-                    requestCameraPermission()
+                    proceedWithPermissions()
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
@@ -156,53 +157,67 @@ class FourthlineActivity : FourthlineBaseActivity() {
         awaitedDirection = null
     }
 
-    private fun requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 32)
-        } else {
-            requestLocationPermission()
-        }
-    }
-
-    private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
-        else {
-            requestForegroundServicePermission()
-        }
-    }
-
-    private fun requestForegroundServicePermission() {
-        Timber.d("requestForegroundServicePermission()")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PermissionChecker.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.FOREGROUND_SERVICE), FOREGROUND_SERVICE_PERMISSION_CODE)
-        } else {
-            navigateToAwaitedDirection()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera permission is required to proceed", Toast.LENGTH_SHORT)
-                        .show()
-                requestCameraPermission()
+    private fun requestPermission(permission: String, rationalize: Boolean): Boolean {
+        if (ContextCompat.checkSelfPermission(this, permission) != PermissionChecker.PERMISSION_GRANTED) {
+            if (rationalize) {
+                showRationale(permission)
             } else {
-                requestLocationPermission()
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(permission),
+                    PERMISSION_CODE
+                )
             }
-        } else if (requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission is required to proceed", Toast.LENGTH_SHORT)
-                        .show()
-                requestLocationPermission()
-            } else {
-                requestForegroundServicePermission()
-            }
-        } else if (requestCode == FOREGROUND_SERVICE_PERMISSION_CODE && grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED) {
-            requestForegroundServicePermission()
+            return false
         } else {
-            navigateToAwaitedDirection()
+            return true
+        }
+    }
+
+    private fun proceedWithPermissions(rationalize: Boolean = false) {
+        if (requestPermission(Manifest.permission.CAMERA, rationalize)
+            && requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, rationalize)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                if (requestPermission(Manifest.permission.FOREGROUND_SERVICE, rationalize)) {
+                    navigateToAwaitedDirection()
+                }
+            } else {
+                navigateToAwaitedDirection()
+            }
+        }
+    }
+
+    private fun showRationale(permission: String) {
+        showAlertFragment(
+            getString(R.string.fourthline_permission_rationale_title),
+            getString(R.string.fourthline_permission_rationale_message),
+            getString(R.string.fourthline_permission_rationale_ok),
+            getString(R.string.fourthline_permission_rationale_quit),
+            {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", packageName, null)
+                    }.also {
+                        startActivity(it)
+                    }
+                } else {
+                    proceedWithPermissions(false)
+                }
+            },
+            { viewModel.setFourthlineIdentificationFailure() },
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_CODE) {
+            proceedWithPermissions(rationalize = true)
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
@@ -210,9 +225,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
         const val FOURTHLINE_IDENTIFICATION_SUCCESSFULL = -10
         const val FOURTHLINE_IDENTIFICATION_ERROR = -20
 
-        private const val CAMERA_PERMISSION_CODE = 32
-        private const val LOCATION_PERMISSION_CODE = 42
-        private const val FOREGROUND_SERVICE_PERMISSION_CODE = 52
+        private const val PERMISSION_CODE = 32
 
         const val KEY_CODE = "KEY_ERROR_CODE"
         const val FOURTHLINE_SELFIE_SCAN_FAILED = "SelfieScanFailed"

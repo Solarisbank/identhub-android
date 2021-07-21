@@ -5,9 +5,13 @@ import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.sdk.core.result.Event
 
-class AlertDialogFragment: DialogFragment() {
+class AlertDialogFragment : DialogFragment() {
     private lateinit var alertViewModel: AlertViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,4 +69,52 @@ class AlertDialogFragment: DialogFragment() {
         super.onCancel(dialog)
         alertViewModel.sendEvent(AlertEvent.Cancel(tag ?: TAG))
     }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        alertViewModel.sendEvent(AlertEvent.Dismiss(tag ?: TAG))
+    }
+}
+
+fun showAlertFragment(
+    title: String,
+    message: String,
+    positiveLabel: String = "Ok",
+    negativeLabel: String? = null,
+    positiveAction: () -> Unit,
+    negativeAction: (() -> Unit)? = null,
+    cancelAction: (() -> Unit)? = null,
+    tag: String = AlertDialogFragment.TAG,
+    alertViewModel: AlertViewModel,
+    lifecycleOwner: LifecycleOwner,
+    fragmentManager: FragmentManager?
+): DialogFragment? {
+    var dialog: DialogFragment? = null
+
+    alertViewModel.events.observe(lifecycleOwner, object: Observer<Event<AlertEvent>> {
+        override fun onChanged(event: Event<AlertEvent>?) {
+            event?.content?.let {
+                if (it.tag != tag) {
+                    return
+                }
+                when (it) {
+                    is AlertEvent.Positive -> positiveAction.invoke()
+                    is AlertEvent.Negative -> negativeAction?.invoke()
+                    is AlertEvent.Cancel -> cancelAction?.invoke()
+                    is AlertEvent.Dismiss -> alertViewModel.events.removeObserver(this)
+                }
+            }
+        }
+    })
+
+    fragmentManager?.let {
+        dialog = AlertDialogFragment.newInstance(
+            title = title,
+            message = message,
+            positiveLabel = positiveLabel,
+            negativeLabel = negativeLabel
+        )
+        dialog?.show(it, tag)
+    }
+    return dialog
 }
