@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModelFactory
@@ -20,15 +21,21 @@ import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeViewModelFactory
 internal class FourthlineSaveStateViewModelMapProvider private constructor(
         private val fourthlineModule: FourthlineModule,
         private val personDataUseCaseProvider: Provider<PersonDataUseCase>,
-        private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>
-        ) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
+        private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
+        private val locationUseCaseProvider: Provider<LocationUseCase>
+) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
         return linkedMapOf(
                 FourthlineViewModel::class.java to FourthlineViewModelFactory.create(fourthlineModule),
                 TermsAndConditionsViewModel::class.java to TermsAndConditionsViewModelFactory.create(fourthlineModule),
                 WelcomeSharedViewModel::class.java to WelcomeViewModelFactory.create(fourthlineModule),
-                KycSharedViewModel::class.java to KycSharedViewModelFactory.create(fourthlineModule, personDataUseCaseProvider, kycInfoUseCaseProvider)
+                KycSharedViewModel::class.java to KycSharedViewModelFactory.create(
+                        fourthlineModule,
+                        personDataUseCaseProvider,
+                        kycInfoUseCaseProvider,
+                        locationUseCaseProvider
+                )
         )
     }
 
@@ -36,9 +43,15 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
         fun create(
                 fourthlineModule: FourthlineModule,
                 personDataUseCaseProvider: Provider<PersonDataUseCase>,
-                kycInfoUseCaseProvider: Provider<KycInfoUseCase>
+                kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
+                locationUseCaseProvider: Provider<LocationUseCase>
         ): FourthlineSaveStateViewModelMapProvider {
-            return FourthlineSaveStateViewModelMapProvider(fourthlineModule, personDataUseCaseProvider, kycInfoUseCaseProvider)
+            return FourthlineSaveStateViewModelMapProvider(
+                    fourthlineModule,
+                    personDataUseCaseProvider,
+                    kycInfoUseCaseProvider,
+                    locationUseCaseProvider
+            )
         }
     }
 }

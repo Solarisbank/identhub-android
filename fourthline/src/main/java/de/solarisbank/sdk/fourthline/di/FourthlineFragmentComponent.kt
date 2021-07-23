@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.di
 
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
-import de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessFragment
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResultFragment
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionFragment
@@ -28,8 +27,6 @@ interface FourthlineFragmentComponent {
     fun inject(docScanFragment: DocScanFragment)
 
     fun inject(docScanResultFragment: DocScanResultFragment)
-
-    fun inject(locationAccessFragment: LocationAccessFragment)
 
     fun inject(kycUploadFragment: KycUploadFragment)
 

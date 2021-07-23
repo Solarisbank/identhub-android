@@ -93,17 +93,7 @@
         android:label="DocumentResultFragment"
         >
         <action
-            android:id="@+id/action_documentResultFragment_to_locationAccessFragment"
-            app:destination="@id/locationAccessFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/locationAccessFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessFragment"
-        android:label="LocationAccessFragment"
-        >
-        <action
-            android:id="@+id/action_locationAccessFragment_to_kycUploadFragment"
+            android:id="@+id/action_documentScanFragment_to_kycUploadFragment"
             app:destination="@id/kycUploadFragment" />
     </fragment>
 

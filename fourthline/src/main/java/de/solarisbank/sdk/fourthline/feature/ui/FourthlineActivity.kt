@@ -122,12 +122,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                     setTitle(R.string.fourthline_activity_select_id_step_label)
                 }
-                R.id.action_documentResultFragment_to_locationAccessFragment -> {
-                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_verifying_step_label)
-                }
-                R.id.action_locationAccessFragment_to_kycUploadFragment -> {
+                R.id.action_documentScanFragment_to_kycUploadFragment -> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                     setTitle(R.string.fourthline_activity_verifying_step_label)

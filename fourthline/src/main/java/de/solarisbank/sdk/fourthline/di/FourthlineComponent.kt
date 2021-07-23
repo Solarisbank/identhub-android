@@ -30,16 +30,20 @@ import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthli
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.location.LocationDataSource
+import de.solarisbank.sdk.fourthline.data.location.LocationDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.location.LocationRepository
+import de.solarisbank.sdk.fourthline.data.location.LocationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.network.IdentificationIdInterceptor
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseFactory
+import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
+import de.solarisbank.sdk.fourthline.domain.location.LocationUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivityInjector
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragmentInjector
-import de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessFragment
-import de.solarisbank.sdk.fourthline.feature.ui.loaction.LocationAccessFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.scan.*
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragmentInjector.Companion.injectAssistedViewModelFactory
@@ -85,6 +89,9 @@ class FourthlineComponent private constructor(
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
     private lateinit var personDataUseCaseProvider: Provider<PersonDataUseCase>
     private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
+    private lateinit var locationDataSourceProvider: Provider<LocationDataSource>
+    private lateinit var locationRepositoryProvider: Provider<LocationRepository>
+    private lateinit var locationUseCaseProvider: Provider<LocationUseCase>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<out Interceptor>
     private lateinit var identificationIdInterceptorProvider: Provider<IdentificationIdInterceptor>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
@@ -119,7 +126,9 @@ class FourthlineComponent private constructor(
         identityInitializationRepositoryProvider = DoubleCheck.provider(
             IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
         kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider)
-
+        locationDataSourceProvider = LocationDataSourceFactory.create(applicationContextProvider.get())
+        locationRepositoryProvider = LocationRepositoryFactory.create(locationDataSourceProvider.get())
+        locationUseCaseProvider = LocationUseCaseFactory.create(locationRepositoryProvider.get())
         identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
         identificationIdInterceptorProvider = DoubleCheck.provider(object : Factory<IdentificationIdInterceptor> {
             override fun get(): IdentificationIdInterceptor {
@@ -188,7 +197,8 @@ class FourthlineComponent private constructor(
                 FourthlineSaveStateViewModelMapProvider.create(
                         fourthlineModule,
                         personDataUseCaseProvider,
-                        kycInfoUseCaseProvider
+                        kycInfoUseCaseProvider,
+                        locationUseCaseProvider
                 )
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
                 DoubleCheck.provider(EmptyMapOfClassOfAndProviderOfViewModelProvider())
@@ -252,10 +262,6 @@ class FourthlineComponent private constructor(
 
             override fun inject(docScanResultFragment: DocScanResultFragment) {
                 DocScanResultFragmentInjector.injectAssistedViewModelFactory(docScanResultFragment, assistedViewModelFactoryProvider.get())
-            }
-
-            override fun inject(locationAccessFragment: LocationAccessFragment) {
-                LocationAccessFragmentInjector.injectAssistedViewModelFactory(locationAccessFragment, assistedViewModelFactoryProvider.get())
             }
 
             override fun inject(kycUploadFragment: KycUploadFragment) {

@@ -23,7 +23,9 @@ import de.solarisbank.sdk.fourthline.base.FourthlineBaseViewModel
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -34,7 +36,8 @@ import java.net.URI
 class KycSharedViewModel(
         private val savedStateHandle: SavedStateHandle,
         private val personDataUseCase: PersonDataUseCase,
-        private val kycInfoUseCase: KycInfoUseCase
+        private val kycInfoUseCase: KycInfoUseCase,
+        private val locationUseCase: LocationUseCase
         ): FourthlineBaseViewModel() {
 
     private val _documentTypesLiveData = MutableLiveData<List<AppliedDocument>>()
@@ -48,26 +51,33 @@ class KycSharedViewModel(
 
     var type: Int? = null
 
-    fun fetchPersonData(intent: Intent) {
-        compositeDisposable.add(personDataUseCase.execute(intent)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            Timber.d("${it.toString()}")
-                            it.data?.let { dto ->
-                                kycInfoUseCase.updateWithPersonDataDto(dto)
-                                _documentTypesLiveData.value = dto.appliedDocuments()
-                            }?:run{
-                                _errorLiveData.value = "Identification failed"
-                                Timber.e("fetchPersonData() dto is null")
-                            }
-                        },
-                        {
-                            Timber.e("fetchPersonData() ${it.message}")
-                            _errorLiveData.value = "Identification failed"
-                        }
+    fun fetchPersonDataAndLocation(sessionId: String) {
+        compositeDisposable.add(
+                Single.zip(
+                        personDataUseCase.execute(sessionId),
+                        locationUseCase.getLocation(),
+                        { resultPersonData, location -> Pair(resultPersonData, location) }
                 )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                { pair ->
+                                    Timber.e("fetchPersonData() 0")
+                                    pair.first.data?.let { dto ->
+                                        Timber.e("fetchPersonData() 1")
+                                        kycInfoUseCase.updateWithPersonDataDto(dto)
+                                        kycInfoUseCase.updateKycLocation(pair.second)
+                                        _documentTypesLiveData.value = dto.appliedDocuments()
+                                    }?:run{
+                                        _errorLiveData.value = "Identification failed"
+                                        Timber.e("fetchPersonData() 2 dto is null")
+                                    }
+                                },
+                                {
+                                    Timber.e(it,"fetchPersonData() 3")
+                                    _errorLiveData.value = "Identification failed"
+                                }
+                        )
         )
     }
 

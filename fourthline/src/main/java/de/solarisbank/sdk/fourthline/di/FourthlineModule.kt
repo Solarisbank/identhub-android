@@ -7,6 +7,7 @@ import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -38,7 +39,14 @@ class FourthlineModule {
     fun provideDocScanSharedViewModel(
             savedStateHandle: SavedStateHandle,
             personDataUseCase: PersonDataUseCase,
-            kycInfoUseCase: KycInfoUseCase): ViewModel {
-        return KycSharedViewModel(savedStateHandle, personDataUseCase, kycInfoUseCase)
+            kycInfoUseCase: KycInfoUseCase,
+            locationUseCase: LocationUseCase
+    ): ViewModel {
+        return KycSharedViewModel(
+                savedStateHandle,
+                personDataUseCase,
+                kycInfoUseCase,
+                locationUseCase
+        )
     }
 }

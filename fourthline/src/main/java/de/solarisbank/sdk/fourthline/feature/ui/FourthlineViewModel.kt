@@ -44,12 +44,8 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
         navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
     }
 
-    fun navigateToLocationAccessFragment() {
-        navigateTo(R.id.action_documentResultFragment_to_locationAccessFragment)
-    }
-
     fun navigateToKycUploadFragemnt() {
-        navigateTo(R.id.action_locationAccessFragment_to_kycUploadFragment)
+        navigateTo(R.id.action_documentScanFragment_to_kycUploadFragment)
     }
 
     fun navigateToWeViewFragment(url: String) {

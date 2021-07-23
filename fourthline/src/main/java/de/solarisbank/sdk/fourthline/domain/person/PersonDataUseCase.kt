@@ -1,11 +1,9 @@
 package de.solarisbank.sdk.fourthline.domain.person
 
-import android.content.Intent
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.router.isIdentificationIdCreationRequired
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import io.reactivex.Single
@@ -14,31 +12,30 @@ import timber.log.Timber
 class PersonDataUseCase(
         private val fourthlineIdentificationRepository: FourthlineIdentificationRepository,
         private val sessionUrlLocalDataSource: SessionUrlLocalDataSource
-        ) : SingleUseCase<Intent, PersonDataDto>() {
+) : SingleUseCase<String, PersonDataDto>() {
 
 
     /**
      * Obtains identificationId, saves it and obtain personal data
      */
-    override fun invoke(intent: Intent): Single<NavigationalResult<PersonDataDto>> {
-        var sessionUrl = intent.getStringExtra(IdentHub.SESSION_URL_KEY)
-        if (sessionUrl != null && !sessionUrl.endsWith("/", true)) {
-            sessionUrl = "$sessionUrl/"
-        }
-
-        sessionUrlLocalDataSource.store(sessionUrl)
+    override fun invoke(sessionUrl: String): Single<NavigationalResult<PersonDataDto>> {
+        sessionUrlLocalDataSource.store(sessionUrl.formatSessionUrl())
 
         return fourthlineIdentificationRepository.getLastSavedLocalIdentification()
                 .map {
                     entity -> if (entity.nextStep != null && isIdentificationIdCreationRequired(entity)) {
-                        return@map passFourthlineIdentificationCreation().blockingGet()
-                    } else {
-                        return@map entity.id
-                    }
+                    return@map passFourthlineIdentificationCreation().blockingGet()
+                } else {
+                    return@map entity.id
+                }
                 }
                 .onErrorResumeNext { passFourthlineIdentificationCreation() }
                 .flatMap { fourthlineIdentificationRepository.getPersonData(it) }
                 .map { NavigationalResult<PersonDataDto>(it) }
+    }
+
+    fun String.formatSessionUrl(): String {
+        return if (!this.endsWith("/", true)) "$this/" else this
     }
 
     private fun passFourthlineIdentificationCreation(): Single<String> {

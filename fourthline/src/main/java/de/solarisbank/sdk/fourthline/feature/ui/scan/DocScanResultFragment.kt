@@ -18,7 +18,6 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.parseDateFromMrtd
-import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 import java.util.*
 
@@ -102,7 +101,7 @@ class DocScanResultFragment : FourthlineFragment() {
                 expirationDate = expireDateTextInput!!.text.toString().parseDateFromMrtd()
             }
             Timber.d("KycDocument data set: ${kycSharedViewModel.getKycDocument()}")
-            activityViewModel.navigateToLocationAccessFragment()
+            activityViewModel.navigateToKycUploadFragemnt()
         }
     }
 

@@ -7,21 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.alert.AlertDialogFragment
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment.Companion.DOC_TYPE_KEY
+import timber.log.Timber
 
 class DocTypeSelectionFragment: FourthlineFragment() {
 
@@ -60,7 +59,6 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         kycSharedViewModel.documentTypesLiveData.observe(viewLifecycleOwner, { appearAvailableDocTypes(it) })
-        kycSharedViewModel.fetchPersonData(requireActivity().intent)
     }
 
     override fun initViewModel() {
@@ -80,11 +78,11 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         val supportedDocs = docs.filter { it.isSupported }
         if (supportedDocs.isEmpty()) {
             showAlertFragment(
-                getString(R.string.fourthline_doc_type_country_not_supported_headline),
-                getString(R.string.fourthline_doc_type_country_not_supported_message),
-                getString(R.string.fourthline_doc_type_country_not_supported_button),
-                positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
-                tag = "DocScanError"
+                    getString(R.string.fourthline_doc_type_country_not_supported_headline),
+                    getString(R.string.fourthline_doc_type_country_not_supported_message),
+                    getString(R.string.fourthline_doc_type_country_not_supported_button),
+                    positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                    tag = "DocScanError"
             )
             return
         }
@@ -93,30 +91,51 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     private fun moveToDocScanFragment() {
-        activityViewModel.navigateToDocScanFragment(Bundle().apply { putSerializable(DOC_TYPE_KEY, docTypeAdapter.getSelectedDocType()) })
+        activityViewModel.navigateToDocScanFragment(Bundle().apply { putSerializable(DocScanFragment.DOC_TYPE_KEY, docTypeAdapter.getSelectedDocType()) })
     }
 
     override fun onResume() {
         super.onResume()
-        requestCameraPermission()
+        requestLocationPermission()
     }
 
-    private fun requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 32)
-    }
 
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+            Timber.d("requestLocationPermission() 1")
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
+        } else {
+            Timber.d("requestLocationPermission() 2")
+            fetchData()
+        }
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == 32 && (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED)) {
-            Toast.makeText(requireContext(), "Camera permission is required to proceed", Toast.LENGTH_SHORT)
-                .show()
-            requestCameraPermission()
+        Timber.d("onRequestPermissionsResult")
+        if (requestCode == LOCATION_PERMISSION_CODE && (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED)) {
+            Timber.d("onRequestPermissionsResult 1")
+            requestLocationPermission()
+        } else if (requestCode == LOCATION_PERMISSION_CODE && (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED)){
+            Timber.d("onRequestPermissionsResult 2")
+            fetchData()
+        }
+    }
+
+    private fun fetchData() {
+        Timber.d("fetchData()")
+        requireActivity().intent.getStringExtra(IdentHub.SESSION_URL_KEY)?.let {
+            kycSharedViewModel.fetchPersonDataAndLocation(it)
+        }?: run {
+            Timber.e("SessionUrl is absent")
         }
     }
 
     override fun onDestroyView() {
         confirmButton = null
         super.onDestroyView()
+    }
+
+    companion object {
+        const val LOCATION_PERMISSION_CODE = 42
     }
 }
