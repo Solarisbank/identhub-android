@@ -35,6 +35,7 @@ class IdentificationPollingStatusUseCase(
     }
 
     fun pollIdentificationStatus(): Single<IdentificationDto> {
+        Timber.d("pollIdentificationStatus() 0")
         var count = 0L
         var isResultObtainer = false
         return identificationRepository

@@ -22,7 +22,11 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
                 .apply {
-                    onCompletionCallback(this@IdentHubInteractionActivity, this@IdentHubInteractionActivity::onSuccess, this@IdentHubInteractionActivity::onFailure)
+                    onCompletionCallback(
+                            fragmentActivity = this@IdentHubInteractionActivity,
+                            successCallback = this@IdentHubInteractionActivity::onSuccess,
+                            errorCallback = this@IdentHubInteractionActivity::onFailure
+                    )
                     onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
                 }
 
@@ -33,18 +37,21 @@ class IdentHubInteractionActivity : AppCompatActivity() {
     private fun onSuccess(result: IdentHubSessionResult) {
         val identificationId = result.identificationId
         Timber.d("onSuccess; IdentHubSessionResult identification id: $identificationId")
+        binding.callbackResult.setText("onSuccess called")
         // Do something else.
     }
 
     private fun onPayment(result: IdentHubSessionResult) {
         val identificationId = result.identificationId
         Timber.d("onPayment; IdentHubSessionResult identification id: $identificationId")
+        binding.callbackResult.setText("onPayment called")
         // Do something else.
     }
 
     private fun onFailure(failure: IdentHubSessionFailure) {
         val message = failure.message
         Timber.d("onFailure; IdentHubSessionFailure identification has not completed: $message")
+        binding.callbackResult.setText("onFailure called")
         // Continue after failed identification.
     }
 

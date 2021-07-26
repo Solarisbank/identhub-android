@@ -158,11 +158,10 @@ class KycUploadService : Service(), NextStepSelector {
                     Timber.d("pollKycProcessingResult(), identificationDto : $result ")
                     val data = result.data
                     val nextStep = selectNextStep(data.nextStep, data.fallbackStep)
-                    if (
-                            data.status == Status.SUCCESSFUL.label
-                            || (data.status == Status.AUTHORIZATION_REQUIRED.label && nextStep != null)
-                    ) {
-                        binder.uploadingStatus.value = KycUploadStatus.Success(nextStep)
+                    if (data.status == Status.SUCCESSFUL.label) {
+                        binder.uploadingStatus.value = KycUploadStatus.FinishIdentSuccess(data.id)
+                    } else if (data.status == Status.AUTHORIZATION_REQUIRED.label && nextStep != null) {
+                        binder.uploadingStatus.value = KycUploadStatus.ToNextStepSuccess(nextStep)
                     } else {
                         val providerStatusCode = identification.providerStatusCode?.toIntOrNull()
                         if (providerStatusCode != null) {
@@ -221,7 +220,8 @@ class KycUploadServiceBinder : Binder() {
 
 sealed class KycUploadStatus {
     object Uploading: KycUploadStatus()
-    data class Success(val nextStep: String?): KycUploadStatus()
+    data class ToNextStepSuccess(val nextStep: String): KycUploadStatus()
+    data class FinishIdentSuccess(val id: String): KycUploadStatus()
     data class ProviderError(val isFraud: Boolean): KycUploadStatus()
     data class GenericError(val error: Throwable? = null): KycUploadStatus()
 }

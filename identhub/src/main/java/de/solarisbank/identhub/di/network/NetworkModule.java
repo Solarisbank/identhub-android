@@ -24,7 +24,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 import static de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor.DUMMY_BASE_URL;
 
 public final class NetworkModule {
-    private static final long TIMEOUT = 60L;
+    private static final long TIMEOUT = 90L;
 
     public DynamicBaseUrlInterceptor provideDynamicBaseUrlInterceptor(SessionUrlRepository sessionUrlRepository) {
         return new DynamicBaseUrlInterceptor(sessionUrlRepository);
@@ -62,6 +62,7 @@ public final class NetworkModule {
         return builder
                 .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .build();
     }
 

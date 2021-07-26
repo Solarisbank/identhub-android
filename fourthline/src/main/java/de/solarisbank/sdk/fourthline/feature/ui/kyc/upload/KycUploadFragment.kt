@@ -55,9 +55,6 @@ class KycUploadFragment : FourthlineFragment() {
     }
 
     private val uploadingObserver = Observer<KycUploadStatus> {
-        if(it is KycUploadStatus.Success) {
-            nextStep = it.nextStep
-        }
         setUiState(it)
     }
 
@@ -69,7 +66,6 @@ class KycUploadFragment : FourthlineFragment() {
 
     private var bound: Boolean = false
     private var binder: KycUploadServiceBinder? = null
-    private var nextStep: String? = null
 
 
 
@@ -110,7 +106,6 @@ class KycUploadFragment : FourthlineFragment() {
         }
 
         val state = getUploadDataForStatus(status)
-
         Timber.d("setUiState: $state")
 
         title!!.text = state.titleText
@@ -119,14 +114,8 @@ class KycUploadFragment : FourthlineFragment() {
         resultImageView!!.setImageResource(state.uploadResultImageName.getDrawableRes())
         resultImageView!!.visibility = if (state.isResultImageViewVisible) View.VISIBLE else View.GONE
         progressBar!!.visibility = if (state.isProgressBarVisible) View.VISIBLE else View.INVISIBLE
-        if (state.submitButtonActionSendsResult) {
-            submitButton!!.setOnClickListener { moveToNextStep() }
-        } else if (state.submitButtonActionResetsFlow){
-            submitButton!!.setOnClickListener { activityViewModel.resetFourthlineFlow() }
-        } else {
-            submitButton!!.setOnClickListener(null)
-        }
         submitButton!!.isEnabled = state.isSubmitButtonEnabled
+        submitButton!!.setOnClickListener { state.submitButtonAction!!.invoke() }
     }
 
     private fun showErrorAlert(isFraud: Boolean) {
@@ -163,13 +152,11 @@ class KycUploadFragment : FourthlineFragment() {
     }
 
 
-    private fun moveToNextStep() {
+    private fun moveToNextStep(nextStep: String) {
         Timber.d("moveToNextStep : ${nextStep}")
-        nextStep?.let { activityViewModel.postDynamicNavigationNextStep(Bundle().apply {
-            putString(NEXT_STEP_KEY, nextStep)
-        })}?:run { //todo check if it is needed
-            kycSharedViewModel.sendCompletedResult(requireActivity())
-        }
+        activityViewModel.postDynamicNavigationNextStep(
+                Bundle().apply { putString(NEXT_STEP_KEY, nextStep) }
+        )
     }
 
     private fun startKycUploadService() {
@@ -218,12 +205,13 @@ class KycUploadFragment : FourthlineFragment() {
         val isProgressBarVisible: Boolean,
         val submitButtonActionSendsResult: Boolean,
         val submitButtonActionResetsFlow: Boolean,
-        val isSubmitButtonEnabled: Boolean
+        val isSubmitButtonEnabled: Boolean,
+        val submitButtonAction: (() -> Unit)?,
     )
 
     private fun getUploadDataForStatus(uploadStatus: KycUploadStatus): UploadViewState {
         return when (uploadStatus) {
-            is KycUploadStatus.Success -> UploadViewState(
+            is KycUploadStatus.FinishIdentSuccess -> UploadViewState(
                     titleText = "Congratulation",
                     subtitleText = "Your data was confirmed",
                     submitButtonLabel = "Submit",
@@ -232,8 +220,21 @@ class KycUploadFragment : FourthlineFragment() {
                     isProgressBarVisible = false,
                     submitButtonActionSendsResult = true,
                     submitButtonActionResetsFlow = false,
-                    isSubmitButtonEnabled = true
+                    isSubmitButtonEnabled = true,
+                    submitButtonAction = { activityViewModel.setFourthlineIdentificationSuccessful(uploadStatus.id) }
                 )
+            is KycUploadStatus.ToNextStepSuccess -> UploadViewState(
+                    titleText = "Congratulation",
+                    subtitleText = "Your data was confirmed",
+                    submitButtonLabel = "Submit",
+                    uploadResultImageName = "ic_upload_successful",
+                    isResultImageViewVisible = true,
+                    isProgressBarVisible = false,
+                    submitButtonActionSendsResult = true,
+                    submitButtonActionResetsFlow = false,
+                    isSubmitButtonEnabled = true,
+                    submitButtonAction = { moveToNextStep(uploadStatus.nextStep) }
+            )
             is KycUploadStatus.Uploading -> UploadViewState(
                     titleText = "Verification",
                     subtitleText = "Please wait for verification",
@@ -243,20 +244,33 @@ class KycUploadFragment : FourthlineFragment() {
                     isProgressBarVisible = true,
                     submitButtonActionSendsResult = false,
                     submitButtonActionResetsFlow = false,
-                    isSubmitButtonEnabled = false
+                    isSubmitButtonEnabled = false,
+                    submitButtonAction = null
                 )
-            else -> UploadViewState(
-                titleText = "Please try again ...",
-                subtitleText = "Identification process failed",
-                submitButtonLabel = "Retry",
-                uploadResultImageName = "ic_upload_failed",
-                isResultImageViewVisible = true,
-                isProgressBarVisible = false,
-                submitButtonActionSendsResult = false,
-                submitButtonActionResetsFlow = true,
-                isSubmitButtonEnabled = true
+            is KycUploadStatus.ProviderError -> UploadViewState(
+                    titleText = "Please try again ...",
+                    subtitleText = "Identification process failed",
+                    submitButtonLabel = "Retry",
+                    uploadResultImageName = "ic_upload_failed",
+                    isResultImageViewVisible = true,
+                    isProgressBarVisible = false,
+                    submitButtonActionSendsResult = false,
+                    submitButtonActionResetsFlow = true,
+                    isSubmitButtonEnabled = true,
+                    submitButtonAction =  { activityViewModel.resetFourthlineFlow() }
             )
-
+            is KycUploadStatus.GenericError -> UploadViewState(
+                    titleText = "Please try again ...",
+                    subtitleText = "Identification process failed",
+                    submitButtonLabel = "Retry",
+                    uploadResultImageName = "ic_upload_failed",
+                    isResultImageViewVisible = true,
+                    isProgressBarVisible = false,
+                    submitButtonActionSendsResult = false,
+                    submitButtonActionResetsFlow = true,
+                    isSubmitButtonEnabled = true,
+                    submitButtonAction =  { activityViewModel.setFourthlineIdentificationFailure() }
+            )
         }
     }
 

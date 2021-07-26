@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
@@ -12,6 +13,7 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_ERROR
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
+import timber.log.Timber
 
 class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -58,7 +60,10 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
     }
 
     fun setFourthlineIdentificationSuccessful(identificationId: String) {
-        val bundle = Bundle().apply {  }
+        Timber.d("setFourthlineIdentificationSuccessful, identificationId : $identificationId")
+        val bundle = Bundle().apply {
+            putString(IdentHub.IDENTIFICATION_ID_KEY, identificationId)
+        }
         navigateTo(FOURTHLINE_IDENTIFICATION_SUCCESSFULL, bundle)
     }
 
