@@ -9,7 +9,9 @@
     <string name="generic_error_title">Unknown  error</string>
     <string name="generic_error_message">Could not proceed your verification</string>
     <string name="retry_button">Retry</string>
-    <string name="ok_button">Ok</string>
+    <string name="ok_button">OK</string>
     <string name="invalid_iban_retry_button">Retry with different IBAN</string>
     <string name="invalid_iban_ok_button">Identify with alternative method</string>
+    <string name="about_identity_verification_title">About identity verification</string>
+    <string name="about_identity_verification_message">You\'ll be asked to create an electronic signature by signing in to your existing bank account where an automatic reference transaction of 5 cents will be initiated to provide proof. Your 5 cents will automatically be sent back to your account afterwards.</string>
 </resources>

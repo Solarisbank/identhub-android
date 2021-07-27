@@ -1,15 +1,24 @@
 package de.solarisbank.identhub.verfication.bank
 
+import android.graphics.Rect
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
@@ -17,6 +26,7 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.feature.model.ErrorState
+import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.disposables.CompositeDisposable
@@ -31,6 +41,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
     private var submitButton: TextView? = null
+    private var secondDescription: TextView? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -43,6 +54,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
+                    secondDescription = it.findViewById(R.id.secondDescription)
                 }
     }
 
@@ -127,6 +139,28 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
+        addInfoToDescription()
+    }
+
+    private fun addInfoToDescription() {
+        val descriptionText = getString(R.string.verification_bank_second_description)
+        val desc = SpannableString("$descriptionText ")
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_question)!!
+        drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        val imageSpan = ImageSpan(drawable)
+        val clickSpan = CustomClickableSpan {
+            showAlertFragment(
+                getString(R.string.about_identity_verification_title),
+                getString(R.string.about_identity_verification_message),
+                getString(R.string.ok_button),
+                positiveAction = {}
+            )
+        }
+        val length = descriptionText.length
+        desc.setSpan(imageSpan, length, length + 1, SPAN_INCLUSIVE_EXCLUSIVE)
+        desc.setSpan(clickSpan, length, length + 1, SPAN_INCLUSIVE_EXCLUSIVE)
+        secondDescription!!.text = desc
+        secondDescription!!.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private val ibanTextValidator = object : TextWatcher {
