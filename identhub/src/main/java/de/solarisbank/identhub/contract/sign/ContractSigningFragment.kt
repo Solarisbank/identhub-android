@@ -25,10 +25,7 @@ import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
@@ -156,8 +153,8 @@ class ContractSigningFragment : IdentHubFragment() {
             onStateOfDigitInputChanged(ERROR_STATE)
             sharedViewModel.callOnFailureResult()
         // TODO: implement later error state on 422
-        //} else if (result is Error) {
-        //    onStateOfDigitInputChanged(ERROR_STATE)
+        } else if (result.throwable?.message?.contains("422") == true) {
+            onStateOfDigitInputChanged(ERROR_STATE)
         }
     }
 
