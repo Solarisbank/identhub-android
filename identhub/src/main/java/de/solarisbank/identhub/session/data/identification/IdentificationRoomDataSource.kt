@@ -12,7 +12,8 @@ class IdentificationRoomDataSource(private val identificationDao: Identification
     }
 
     fun insert(identification: Identification): Completable {
-        return identificationDao.insert(identification)
+        return identificationDao.deleteAll()
+                .andThen(identificationDao.insert(identification))
     }
 
 }
