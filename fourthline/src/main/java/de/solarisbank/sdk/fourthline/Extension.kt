@@ -35,7 +35,7 @@ fun SelfieScannerStep.asString(context: Context) =  when (this) {
 
 fun SelfieScannerWarning.asString(context: Context) = when (this) {
     SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.selfie_warning_not_detected)
-    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.selfie_warning_multiple_detected)
+    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.scanner_error_multiple_faces_detected)
     SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.selfie_warning_not_in_frame)
     SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.selfie_warning_too_close)
     SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.selfie_warning_too_far)
@@ -45,16 +45,16 @@ fun SelfieScannerWarning.asString(context: Context) = when (this) {
 }
 
 fun SelfieScannerError.asString(context: Context) = when (this) {
-    SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.selfie_error_timeout)
-    SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.selfie_error_face_disappeared)
-    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.selfie_error_camera_permission)
-    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.selfie_error_manual_selfie_not_allowed)
-    SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.selfie_error_recording_failed)
-    SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.selfie_error_scanner_interrupted)
-    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.selfie_error_recognition_models_not_downloaded)
-    SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.selfie_error_unknown)
-    SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.selfie_error_unknown)
-    SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.selfie_warning_multiple_detected)
+    SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.scanner_error_timeout)
+    SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.scanner_error_face_disappeared)
+    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_camera_permission)
+    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.scanner_error_unknown)
+    SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.scanner_error_recording_failed)
+    SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.scanner_error_interrupted)
+    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.scanner_error_models_not_downloaded)
+    SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.scanner_error_unknown)
+    SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
+    SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.scanner_error_multiple_faces_detected)
 }
 
 private var cleanupJob: Job? = null
@@ -78,12 +78,12 @@ fun List<DocumentScannerStepWarning>.asString(context: Context) = when (first())
 }
 
 fun DocumentScannerError.asString(context: Context) = when (this) {
-    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.document_scanner_error_no_permission)
-    DocumentScannerError.RECORDING_FAILED -> context.resources.getString(R.string.document_scanner_error_recording_failed)
-    DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.document_scanner_error_scanner_interrupted)
-    DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.document_scanner_error_unknown)
-    DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.document_scanner_error_timeout)
-    DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.document_scanner_error_unknown)
+    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_camera_permission)
+    DocumentScannerError.RECORDING_FAILED -> context.resources.getString(R.string.scanner_error_recording_failed)
+    DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.scanner_error_interrupted)
+    DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.scanner_error_unknown)
+    DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.scanner_error_timeout)
+    DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
 }
 
 fun DocumentScannerStep.asString(context: Context): String {

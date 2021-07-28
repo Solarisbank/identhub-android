@@ -20,27 +20,12 @@
 
     <!-- fourthline selfie scan responses -->
     <string name="selfie_warning_not_detected">Face not detected</string>
-    <string name="selfie_warning_multiple_detected">Multiple faces detected</string>
     <string name="selfie_warning_not_in_frame">Fit face in frame</string>
     <string name="selfie_warning_too_close">Move the phone farther</string>
     <string name="selfie_warning_too_far">Move the phone closer</string>
     <string name="selfie_warning_yaw_too_big">Face the camera directly</string>
     <string name="selfie_warning_eyes_closed">Open both eyes</string>
     <string name="selfie_warning_device_not_steady">Device not steady</string>
-
-    <string name="selfie_error_timeout">Selfie scanner timed out</string>
-    <string name="selfie_error_face_disappeared">Face disappeared during liveness check</string>
-    <string name="selfie_error_camera_permission">Please grant camera access</string>
-    <string name="selfie_error_manual_selfie_not_allowed">Not allowed while not in manual selfie mode</string>
-    <string name="selfie_error_recording_failed">Video recording failed</string>
-    <string name="selfie_error_scanner_interrupted">Selfie scanner was interrupted</string>
-    <string name="selfie_error_recognition_models_not_downloaded">Check internet connection and/or free space available</string>
-    <string name="selfie_error_unknown">Unexpected error occurred</string>
-
-    <string name="selfie_error_scan_timeout_message">Selfie scanner timed out. Please try again.</string>
-    <string name="selfie_error_scan_timeout_retry">Retry</string>
-    <string name="selfie_error_scan_timeout_quit">Quit</string>
-
 
 </resources>
 

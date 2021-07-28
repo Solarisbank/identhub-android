@@ -21,11 +21,12 @@ import de.solarisbank.sdk.fourthline.parseDateFromMrtd
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 import java.net.URI
+import java.util.concurrent.ConcurrentHashMap
 
 class KycInfoUseCase(private val identityInitializationRepository: IdentityInitializationRepository) {
 
     private val kycInfo = KycInfo().also { it.person = Person() }
-    private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
+    private val docPagesMap = ConcurrentHashMap<DocPageKey, Attachment.Document>()
     private var _selfieResultCroppedBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
     private var _personDataDto: PersonDataDto? = null
 
@@ -99,6 +100,13 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 "\nlocation?.first: ${result.metadata.location?.first}" +
                 "\nlocation?.second: ${result.metadata.location?.second}"
         )
+
+        // Prune the doc map of other type
+        docPagesMap.forEach { entry ->
+            if (entry.key.docType != docType) {
+                docPagesMap.remove(entry.key)
+            }
+        }
 
         docPagesMap[DocPageKey(docType, result.metadata.fileSide, result.metadata.isAngled)] =
                 Attachment.Document(

@@ -38,6 +38,10 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
         navigateTo(R.id.action_selfieResultFragment_to_documentTypeSelectionFragment)
     }
 
+    fun navigateBackToDocTypeSelectionFragment(args: Bundle) {
+        navigateTo(R.id.action_documentScanFragment_to_documentTypeSelectionFragment, args)
+    }
+
     fun navigateToDocScanFragment(bundle: Bundle) {
         navigateTo(R.id.action_documentTypeSelectionFragment_to_documentScanFragment, bundle)
     }

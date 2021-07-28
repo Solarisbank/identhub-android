@@ -10,7 +10,7 @@
         app:popUpTo="@+id/termsAndConditionsFragment"
         app:popUpToInclusive="true">
         <argument
-            android:name="KEY_ERROR_CODE"
+            android:name="KEY_CODE"
             app:argType="string"
             />
     </action>
@@ -85,6 +85,20 @@
         <action
             android:id="@+id/action_documentScanFragment_to_documentResultFragment"
             app:destination="@id/documentResultFragment" />
+        <action
+            android:id="@+id/action_documentScanFragment_to_documentTypeSelectionFragment"
+            app:destination="@id/documentTypeSelectionFragment"
+            app:popUpTo="@id/documentTypeSelectionFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="KEY_CODE"
+                app:argType="string"
+                />
+            <argument
+                android:name="KEY_MESSAGE"
+                app:argType="string"
+                />
+        </action>
     </fragment>
 
     <fragment

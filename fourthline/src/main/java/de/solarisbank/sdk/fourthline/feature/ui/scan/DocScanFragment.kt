@@ -26,6 +26,9 @@ import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.toDocumentType
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -67,7 +70,6 @@ class DocScanFragment : DocumentScannerFragment() {
     private enum class UiState {
         SCANNING, INTERMEDIATE_RESULT
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate")
@@ -237,8 +239,11 @@ class DocScanFragment : DocumentScannerFragment() {
     override fun onFail(error: DocumentScannerError) {
         Timber.d("onFail")
         lifecycleScope.launch(Dispatchers.Main) {
-            Toast.makeText(requireContext(), error.asString(requireContext()), Toast.LENGTH_LONG).show()
-            requireActivity().onBackPressed()
+            val args = Bundle().apply {
+                putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
+                putString(KEY_MESSAGE, error.asString(requireContext()))
+            }
+            activityViewModel.navigateBackToDocTypeSelectionFragment(args)
         }
     }
 
@@ -286,8 +291,6 @@ class DocScanFragment : DocumentScannerFragment() {
         const val TYPE_ID = 2
 
         private val SHOW_INTERMEDIATR_RESULTS = true
-
-
     }
 
 }

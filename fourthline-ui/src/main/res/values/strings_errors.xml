@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scanner_error_timeout">Scanner timed out. Please try again.</string>
+    <string name="scanner_error_face_disappeared">Face disappeared during liveness check. Make sure your face is visible through entirety of the selfie scan. Please try again.</string>
+    <string name="scanner_error_camera_permission">Please grant camera access</string>
+    <string name="scanner_error_recording_failed">Video recording failed</string>
+    <string name="scanner_error_interrupted">Scanner was interrupted</string>
+    <string name="scanner_error_models_not_downloaded">Check internet connection and/or free space available</string>
+    <string name="scanner_error_unknown">Unexpected error occurred. Please try again.</string>
+    <string name="scanner_error_multiple_faces_detected">Multiple faces detected</string>
+
+    <string name="scanner_error_title">Scan error</string>
+    <string name="scanner_error_scan_button_retry">Retry</string>
+    <string name="scanner_error_scan_button_quit">Quit</string>
+</resources>

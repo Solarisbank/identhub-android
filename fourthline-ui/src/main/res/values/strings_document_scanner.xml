@@ -10,12 +10,6 @@
    <string name="document_scanner_warning_device_not_steady">Device not steady</string>
    <string name="document_scanner_warning_recognition_models_not_downloaded">Check internet connection and/or free space available</string>
 
-   <string name="document_scanner_error_no_permission">Please allow camera usage</string>
-   <string name="document_scanner_error_recording_failed">Image recording failed</string>
-   <string name="document_scanner_error_scanner_interrupted">Document scanner was interrupted</string>
-   <string name="document_scanner_error_unknown">Unexpected scanner error occurred</string>
-   <string name="document_scanner_error_timeout">Document scanner timed out</string>
-
    <string name="document_scanner_file_side_front">front</string>
    <string name="document_scanner_file_side_back">back</string>
    <string name="document_scanner_file_side_inside_left">inside left</string>

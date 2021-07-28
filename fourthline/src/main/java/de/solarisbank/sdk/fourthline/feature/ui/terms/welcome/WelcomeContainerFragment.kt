@@ -10,9 +10,11 @@ import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_RETAKE
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SELFIE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SCAN_FAILED
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
@@ -52,27 +54,28 @@ class WelcomeContainerFragment : FourthlineFragment() {
         super.onDestroyView()
     }
 
+    private fun showSelfieScanner() {
+        sharedViewModel.navigateToSelfieFragment()
+    }
+
     private fun handleErrors(saved: Bundle?) {
-        val code = arguments?.getString(KEY_CODE)
+        val code = arguments?.getString(FourthlineActivity.KEY_CODE)
+        val message = arguments?.getString(FourthlineActivity.KEY_MESSAGE)
         if (saved != null) {
             return
         }
-        if (code == FOURTHLINE_SELFIE_SCAN_FAILED) {
+        if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
             showAlertFragment(
-                getString(R.string.selfie_scan_error),
-                getString(R.string.selfie_error_scan_timeout_message),
-                getString(R.string.selfie_error_scan_timeout_retry),
-                getString(R.string.selfie_error_scan_timeout_quit),
+                getString(R.string.scanner_error_title),
+                message ?: getString(R.string.scanner_error_unknown),
+                getString(R.string.scanner_error_scan_button_retry),
+                getString(R.string.scanner_error_scan_button_quit),
                 { showSelfieScanner() },
                 { sharedViewModel.setFourthlineIdentificationFailure() }
             )
-        } else if (code == FOURTHLINE_SELFIE_RETAKE) {
+        } else if (code == FourthlineActivity.FOURTHLINE_SELFIE_RETAKE) {
             showSelfieScanner()
         }
-    }
-
-    private fun showSelfieScanner() {
-        sharedViewModel.navigateToSelfieFragment()
     }
 }
 

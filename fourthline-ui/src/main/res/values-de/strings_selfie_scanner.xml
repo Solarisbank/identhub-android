@@ -20,7 +20,6 @@
 
     <!-- fourthline selfie scan responses -->
     <string name="selfie_warning_not_detected">Gesicht nicht erkannt</string>
-    <string name="selfie_warning_multiple_detected">Mehrere Gesichter erkannt</string>
     <string name="selfie_warning_not_in_frame">Gesicht an den Fotorahmen anpassen</string>
     <string name="selfie_warning_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>
     <string name="selfie_warning_too_far">Halten Sie das Handy näher an Ihr Gesicht</string>
@@ -28,16 +27,5 @@
     <string name="selfie_warning_eyes_closed">Öffnen Sie beide Augen</string>
     <string name="selfie_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
 
-    <string name="selfie_error_timeout">Selfie-Scanner Zeitlimit erreicht</string>
-    <string name="selfie_error_face_disappeared">Gesicht nicht erkannt während Lebendigkeitsprüfung</string>
-    <string name="selfie_error_camera_permission">Bitte der Kamera Zugriff erlauben</string>
-    <string name="selfie_error_manual_selfie_not_allowed">Nicht erlaubt wenn nicht im manuellen Selfie-Modus</string>
-    <string name="selfie_error_recording_failed">Videoaufnahme fehlgeschlagen</string>
-    <string name="selfie_error_scanner_interrupted">Selfie-Scanner wurde unterbrochen</string>
-    <string name="selfie_error_recognition_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz</string>
-    <string name="selfie_error_unknown">Unerwarteter Fehler aufgetreten</string>
 
-    <string name="selfie_error_scan_timeout_message">Zeitüberschreitung beim Selfie-Scan. Versuchen Sie es bitte erneut.</string>
-    <string name="selfie_error_scan_timeout_retry">erneut versuchen</string>
-    <string name="selfie_error_scan_timeout_quit">Verlassen</string>
 </resources>

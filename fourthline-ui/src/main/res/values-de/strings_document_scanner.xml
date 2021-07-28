@@ -10,12 +10,6 @@
    <string name="document_scanner_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
    <string name="document_scanner_warning_recognition_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz</string>
 
-   <string name="document_scanner_error_no_permission">Bitte erlauben Sie die Nutzung der Kamera</string>
-   <string name="document_scanner_error_recording_failed">Bildaufnahme fehlgeschlagen</string>
-   <string name="document_scanner_error_scanner_interrupted">Dokumentenscanner wurde unterbrochen</string>
-   <string name="document_scanner_error_unknown">Unerwartetes Problem mit dem Scanner aufgetreten</string>
-   <string name="document_scanner_error_timeout">Dokumentenscanner Zeitlimit erreicht</string>
-
    <string name="document_scanner_file_side_front">Vorderseite</string>
    <string name="document_scanner_file_side_back">Rückseite</string>
    <string name="document_scanner_file_side_inside_left">Innenseite links</string>

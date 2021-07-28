@@ -117,7 +117,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
-                R.id.action_selfieResultFragment_to_documentTypeSelectionFragment -> {
+                R.id.action_selfieResultFragment_to_documentTypeSelectionFragment,
+                R.id.action_documentScanFragment_to_documentTypeSelectionFragment-> {
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                     setTitle(R.string.fourthline_activity_select_id_step_label)
@@ -236,8 +237,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
         private const val PERMISSION_LOCATION_CODE = 52
         private const val PERMISSION_FOREGROUND_CODE = 72
 
-        const val KEY_CODE = "KEY_ERROR_CODE"
-        const val FOURTHLINE_SELFIE_SCAN_FAILED = "SelfieScanFailed"
+        const val KEY_CODE = "KEY_CODE"
+        const val KEY_MESSAGE = "KEY_MESSAGE"
+        const val FOURTHLINE_SCAN_FAILED = "ScanFailed"
         const val FOURTHLINE_SELFIE_RETAKE = "SelfieRetake"
     }
 

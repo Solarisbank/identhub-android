@@ -69,11 +69,6 @@ class AlertDialogFragment : DialogFragment() {
         super.onCancel(dialog)
         alertViewModel.sendEvent(AlertEvent.Cancel(tag ?: TAG))
     }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        alertViewModel.sendEvent(AlertEvent.Dismiss(tag ?: TAG))
-    }
 }
 
 fun showAlertFragment(
@@ -101,8 +96,8 @@ fun showAlertFragment(
                     is AlertEvent.Positive -> positiveAction.invoke()
                     is AlertEvent.Negative -> negativeAction?.invoke()
                     is AlertEvent.Cancel -> cancelAction?.invoke()
-                    is AlertEvent.Dismiss -> alertViewModel.events.removeObserver(this)
                 }
+                alertViewModel.events.removeObserver(this)
             }
         }
     })

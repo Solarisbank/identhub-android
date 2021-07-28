@@ -18,6 +18,8 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import timber.log.Timber
@@ -54,6 +56,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initViewModel()
+        handleErrors(savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -133,6 +136,25 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     override fun onDestroyView() {
         confirmButton = null
         super.onDestroyView()
+    }
+
+    private fun handleErrors(saved: Bundle?) {
+        val code = arguments?.getString(FourthlineActivity.KEY_CODE)
+        val message = arguments?.getString(KEY_MESSAGE)
+        if (saved != null) {
+            return
+        }
+        if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
+            showAlertFragment(
+                getString(R.string.scanner_error_title),
+                message ?: getString(R.string.scanner_error_unknown),
+                getString(R.string.scanner_error_scan_button_retry),
+                getString(R.string.scanner_error_scan_button_quit),
+                positiveAction = {},
+                negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                tag = "DocScanError"
+            )
+        }
     }
 
     companion object {
