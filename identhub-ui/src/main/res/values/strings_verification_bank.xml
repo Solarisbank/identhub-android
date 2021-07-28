@@ -9,7 +9,7 @@
     <string name="verification_bank_notice_label">Notice</string>
     <string name="verification_bank_notice_value">If you identify yourself with an account that you don’t use to receive your income, you might not be considered for Samsung Pay Card instalment plans.</string>
 
-    <string name="verification_bank_input_hint">DE21 1234 3456 4567 5678 6789</string>
+    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">IBAN format is not valid!</string>
     <string name="verification_bank_action_next_step">Continue</string>
 

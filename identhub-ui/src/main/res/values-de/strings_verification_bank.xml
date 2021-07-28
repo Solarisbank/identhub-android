@@ -10,7 +10,7 @@
     <string name="verification_bank_notice_label">Hinweise</string>
     <string name="verification_bank_notice_value">Wenn Sie sich mit einem Konto ohne Gehaltseingang identifizieren, können wir Sie möglicherweise nicht für unsere Ratenzahlungs-Funktion der Samsung Pay Karte freischalten.</string>
 
-    <string name="verification_bank_input_hint">DE21 1234 3456 4567 5678 6789</string>
+    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">IBAN Format is not valid!</string>
     <string name="verification_bank_action_next_step">Weiter</string>
 
