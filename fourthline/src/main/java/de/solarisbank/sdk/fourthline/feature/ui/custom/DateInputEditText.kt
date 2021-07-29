@@ -23,6 +23,7 @@ class DateInputEditText : AppCompatEditText {
     init {
         Timber.d("init 1")
         setOnTouchListener()
+        isCursorVisible = false
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus -> if (hasFocus) { showDialog() } }
         Timber.d("init 2")
     }
@@ -83,12 +84,18 @@ class DateInputEditText : AppCompatEditText {
         }
 
         calendar?.let {
-            DatePickerDialog(
-                    context,
-                    dateListener,
-                    calendar!!.get(Calendar.YEAR),
-                    calendar!!.get(Calendar.MONTH),
-                    calendar!!.get(Calendar.DAY_OF_MONTH)).show()
+            val datePickerDialog = DatePickerDialog(
+                context,
+                dateListener,
+                calendar!!.get(Calendar.YEAR),
+                calendar!!.get(Calendar.MONTH),
+                calendar!!.get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.setOnCancelListener {
+                clearFocus()
+            }
+            datePickerDialog.setCanceledOnTouchOutside(false)
+            datePickerDialog.show()
         }
     }
 
