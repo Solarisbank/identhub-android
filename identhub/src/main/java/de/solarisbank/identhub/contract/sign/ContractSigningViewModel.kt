@@ -8,12 +8,12 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.verfication.phone.CountDownTime
-import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.succeeded
@@ -36,7 +36,7 @@ class ContractSigningViewModel(
     private var countDownTimer = DefaultCountDownTimer(TimeUnit.SECONDS.toMillis(COUNTER_TIME), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SEC))
     private val clickEventRelay = BehaviorRelay.createDefault(ClickEvent())
     private val authorizeResultLiveData: MutableLiveData<Result<Any>> = MutableLiveData<Result<Any>>()
-    private val identificationResultLiveData: MutableLiveData<Result<IdentificationUiModel>> = MutableLiveData<Result<IdentificationUiModel>>()
+    private val identificationResultLiveData: MutableLiveData<Result<IdentificationDto>> = MutableLiveData<Result<IdentificationDto>>()
     private val phoneNumberLiveData = MutableLiveData<Result<MobileNumberDto>>()
 
     private val tickListener = object : DefaultCountDownTimer.OnTickListener {
@@ -106,7 +106,7 @@ class ContractSigningViewModel(
         return authorizeResultLiveData
     }
 
-    fun getIdentificationResultLiveData(): MutableLiveData<Result<IdentificationUiModel>> {
+    fun getIdentificationResultLiveData(): MutableLiveData<Result<IdentificationDto>> {
         return identificationResultLiveData
     }
 

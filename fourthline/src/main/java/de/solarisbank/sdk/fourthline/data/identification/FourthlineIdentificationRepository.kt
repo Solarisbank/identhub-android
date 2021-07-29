@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
 import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.identhub.data.person.PersonDataDataSource
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
@@ -9,7 +10,8 @@ import io.reactivex.Single
 
 class FourthlineIdentificationRepository(
         private val fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
-        private val identificationRoomDataSource: IdentificationRoomDataSource
+        private val identificationRoomDataSource: IdentificationRoomDataSource,
+        private val personDataDataSource: PersonDataDataSource
         ) {
 
     fun postFourthlineIdentication(): Single<IdentificationDto> {
@@ -28,7 +30,7 @@ class FourthlineIdentificationRepository(
     }
 
     fun getPersonData(identificationId: String): Single<PersonDataDto> {
-        return fourthlineIdentificationRetrofitDataSource.getPersonData(identificationId)
+        return personDataDataSource.getPersonData(identificationId)
     }
 
 }

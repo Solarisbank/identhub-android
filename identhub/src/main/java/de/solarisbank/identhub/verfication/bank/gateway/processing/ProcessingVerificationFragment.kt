@@ -5,10 +5,10 @@ import android.view.View
 import androidx.lifecycle.Observer
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP_KEY
 import de.solarisbank.identhub.feature.model.ErrorState
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
-import de.solarisbank.identhub.router.COMPLETED_STEP
-import de.solarisbank.identhub.router.COMPLETED_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.sdk.core.viewModels
 import timber.log.Timber

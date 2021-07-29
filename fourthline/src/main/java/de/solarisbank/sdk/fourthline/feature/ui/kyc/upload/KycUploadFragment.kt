@@ -13,7 +13,7 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.identhub.data.network.getErrorType
-import de.solarisbank.identhub.router.NEXT_STEP_KEY
+import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity

@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.core.navigation
+package de.solarisbank.sdk.domain.navigation
 
 import android.os.Bundle
 

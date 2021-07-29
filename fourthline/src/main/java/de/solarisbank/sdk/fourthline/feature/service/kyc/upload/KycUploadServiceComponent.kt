@@ -16,6 +16,10 @@ import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.domain.session.*
 import de.solarisbank.identhub.session.data.identification.*
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberApi
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberApiFactory.Companion.create
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSourceFactory.Companion.create
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.core.di.LibraryComponent
@@ -81,6 +85,8 @@ class KycUploadServiceComponent private constructor(
     private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
+    private lateinit var mobileNumberApiProvider: Provider<MobileNumberApi>
+    private lateinit var mobileNumberDataSourceProvider: Provider<MobileNumberDataSource>
     private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
 
@@ -122,7 +128,11 @@ class KycUploadServiceComponent private constructor(
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(kycUploadRepositoryProvider, sessionUrlRepositoryProvider)
         identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))
         identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()))
-        identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get()))
+        mobileNumberApiProvider = create(retrofitProvider.get())
+        mobileNumberDataSourceProvider = create(mobileNumberApiProvider.get())
+        identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(
+                identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
+        ))
         identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()))
     }
 

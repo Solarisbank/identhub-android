@@ -1,5 +1,9 @@
 package de.solarisbank.identhub.domain.session
 
+/**
+ * This class selects the next step based on partner settings.
+ */
+
 interface NextStepSelector {
     val identityInitializationRepository: IdentityInitializationRepository
 

@@ -1,31 +1,22 @@
 package de.solarisbank.sdk.fourthline.feature.ui.kyc.info
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
-import android.location.Location
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.identhub.router.COMPLETED_STEP
-import de.solarisbank.identhub.router.COMPLETED_STEP_KEY
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.fourthline.base.FourthlineBaseViewModel
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
+import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -38,10 +29,12 @@ class KycSharedViewModel(
         private val personDataUseCase: PersonDataUseCase,
         private val kycInfoUseCase: KycInfoUseCase,
         private val locationUseCase: LocationUseCase
-        ): FourthlineBaseViewModel() {
+        ): ViewModel() {
 
-    private val _documentTypesLiveData = MutableLiveData<List<AppliedDocument>>()
-    val documentTypesLiveData = _documentTypesLiveData as LiveData<List<AppliedDocument>>
+    private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
+    val passingPossibilityLiveData = _personDataStateLiveData as LiveData<PersonDataStateDto>
+    private val _supportedDocLiveData = MutableLiveData<PersonDataStateDto>()
+    val supportedDocLiveData = _supportedDocLiveData as LiveData<PersonDataStateDto>
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -49,33 +42,53 @@ class KycSharedViewModel(
         return kycInfoUseCase.getKycDocument()
     }
 
-    var type: Int? = null
-
-    fun fetchPersonDataAndLocation(sessionId: String) {
+    fun fetchPersonData(sessionId: String) {
+        Timber.d("fetchPersonData() 0")
+        _supportedDocLiveData.value = PersonDataStateDto.UPLOADING
         compositeDisposable.add(
-                Single.zip(
-                        personDataUseCase.execute(sessionId),
-                        locationUseCase.getLocation(),
-                        { resultPersonData, location -> Pair(resultPersonData, location) }
-                )
+                personDataUseCase.execute(sessionId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                { pair ->
-                                    Timber.e("fetchPersonData() 0")
-                                    pair.first.data?.let { dto ->
-                                        Timber.e("fetchPersonData() 1")
-                                        kycInfoUseCase.updateWithPersonDataDto(dto)
-                                        kycInfoUseCase.updateKycLocation(pair.second)
-                                        _documentTypesLiveData.value = dto.appliedDocuments()
-                                    }?:run{
-                                        _errorLiveData.value = "Identification failed"
-                                        Timber.e("fetchPersonData() 2 dto is null")
+                                { dtoResult ->
+                                    Timber.d("fetchPersonData() 1")
+                                    dtoResult.data?.let { dto ->
+                                        val supportedDocs = dto.appliedDocuments()
+                                        if (!supportedDocs.isNullOrEmpty()) {
+                                            Timber.d("fetchPersonData() 2")
+                                            kycInfoUseCase.updateWithPersonDataDto(dto)
+                                            _personDataStateLiveData.value =
+                                                    PersonDataStateDto.SUCCEEDED(supportedDocs)
+                                        } else {
+                                            Timber.d("fetchPersonData() 3")
+                                            _personDataStateLiveData.value =
+                                                    PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
+                                        }
                                     }
                                 },
                                 {
-                                    Timber.e(it,"fetchPersonData() 3")
-                                    _errorLiveData.value = "Identification failed"
+                                    Timber.e(it,"fetchPersonData() 4")
+                                    _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
+                                }
+                        )
+        )
+    }
+
+    fun fetchPersonDataAndLocation() {
+        Timber.d("fetchPersonDataAndLocation() 0")
+        compositeDisposable.add(
+                locationUseCase.getLocation()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                {
+                                    Timber.d("fetchPersonDataAndLocation() 1")
+                                    kycInfoUseCase.updateKycLocation(it)
+                                    _supportedDocLiveData.value = _personDataStateLiveData.value
+                                },
+                                {
+                                    Timber.d("fetchPersonDataAndLocation() 2")
+                                    _supportedDocLiveData.value = PersonDataStateDto.GENERIC_ERROR
                                 }
                         )
         )
@@ -97,33 +110,8 @@ class KycSharedViewModel(
         kycInfoUseCase.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    fun updateKycLocation(location: Location){
-        kycInfoUseCase.updateKycLocation(location)
-    }
-
     fun getKycUriZip(applicationContext: Context): URI? {
         return kycInfoUseCase.getKycUriZip(applicationContext)
-    }
-
-    fun sendCompletedResult(activity: FragmentActivity) {
-        compositeDisposable.add(
-                personDataUseCase
-                        .getIdentificationId()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                {
-                                    val bundle = Bundle()
-                                    bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.CONTRACT_SIGNING.index)
-                                    bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, it)
-                                    activity.setResult(AppCompatActivity.RESULT_OK, Intent().apply { putExtras(bundle) })
-                                    activity.finish()
-                                },
-                                {
-                                    _errorLiveData.value = "Failed to send activity result"
-                                }
-                        )
-        )
     }
 
     override fun onCleared() {

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fourthline_navigation"
-    app:startDestination="@id/termsAndConditionsFragment">
+    app:startDestination="@id/passingPossibilityFragment">
 
     <action
         android:id="@+id/action_reset_to_welcome_screen"
@@ -14,6 +14,7 @@
             app:argType="string"
             />
     </action>
+
 
     <fragment
         android:id="@+id/termsAndConditionsFragment"
@@ -31,6 +32,16 @@
                 app:argType="string"
                 />
         </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/passingPossibilityFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragment"
+        android:label="PassingPossibilityFragment"
+        >
+        <action
+            android:id="@+id/action_passingPossibilityFragment_to_termsAndConditionsFragment"
+            app:destination="@id/termsAndConditionsFragment" />
     </fragment>
 
     <fragment

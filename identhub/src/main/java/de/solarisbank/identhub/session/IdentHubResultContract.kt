@@ -2,10 +2,10 @@ package de.solarisbank.identhub.session
 
 import android.content.Context
 import android.content.Intent
-import de.solarisbank.identhub.router.COMPLETED_STEP
-import de.solarisbank.identhub.router.COMPLETED_STEP_KEY
-import de.solarisbank.identhub.router.toFirstStep
-import de.solarisbank.identhub.router.toNextStep
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP_KEY
+import de.solarisbank.identhub.domain.navigation.router.toFirstStep
+import de.solarisbank.identhub.domain.navigation.router.toNextStep
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.core.ActivityResultContract
 

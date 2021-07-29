@@ -2,7 +2,7 @@ package de.solarisbank.identhub.data.preferences
 
 import android.content.SharedPreferences
 import androidx.annotation.RestrictTo
-import de.solarisbank.identhub.router.COMPLETED_STEP
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class IdentificationStepPreferences(private val sharedPreferences: SharedPreferences) {

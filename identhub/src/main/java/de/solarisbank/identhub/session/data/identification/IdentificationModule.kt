@@ -1,6 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
 import de.solarisbank.identhub.data.dao.IdentificationDao
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
 import retrofit2.Retrofit
 
 class IdentificationModule {
@@ -19,9 +20,14 @@ class IdentificationModule {
 
     fun provideIdentificationStatusRepository(
             identificationRoomDataSource: IdentificationRoomDataSource,
-            identificationStatusRetrofitDataSource: IdentificationRetrofitDataSourceImpl
+            identificationStatusRetrofitDataSource: IdentificationRetrofitDataSource,
+            mobileNumberDataSource: MobileNumberDataSource
     ): IdentificationRepository {
-        return IdentificationRepository(identificationRoomDataSource, identificationStatusRetrofitDataSource)
+        return IdentificationRepository(
+                identificationRoomDataSource,
+                identificationStatusRetrofitDataSource,
+                mobileNumberDataSource
+                )
     }
 
 }

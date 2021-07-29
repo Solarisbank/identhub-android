@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.textclassifier.TextLinks
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -57,7 +51,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
         termsSpannable.setSpan(URLSpan(link), linkStartIndex, linkEndIndex, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
         termsText!!.text = termsSpannable
         termsText!!.movementMethod = LinkMovementMethod()
-        submitButton!!.setOnClickListener { activityViewModel.navigateToWelcomeContainerFragment() }
+        submitButton!!.setOnClickListener { activityViewModel.navigateFromTcToWelcomeContainerFragment() }
     }
 
     override fun inject(component: FourthlineFragmentComponent) {

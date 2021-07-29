@@ -205,6 +205,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                         Timber.d("getKycUriZip 2 : ${kycInfo.document}")
                         uri = Zipper().createZipFile(kycInfo, applicationContext)
                     } catch (zipperError: ZipperError) {
+                        Timber.e(zipperError)
                         when (zipperError) {
                             ZipperError.KycNotValid -> Timber.d("2 Error in kyc object")
                             ZipperError.CannotCreateZip -> Timber.d("2 Error creating zip file")

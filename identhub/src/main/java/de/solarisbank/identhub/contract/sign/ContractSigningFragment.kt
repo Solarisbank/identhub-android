@@ -19,12 +19,12 @@ import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.verfication.phone.CountDownTime
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.viewModels
 import io.reactivex.Observable
@@ -143,7 +143,8 @@ class ContractSigningFragment : IdentHubFragment() {
         viewModel.getIdentificationResultLiveData().observe(viewLifecycleOwner, Observer { onIdentificationResultChanged(it) })
     }
 
-    private fun onIdentificationResultChanged(result: Result<IdentificationUiModel>) {
+    private fun onIdentificationResultChanged(result: Result<IdentificationDto>) {
+        //todo move to use case and replace with states
         Timber.d("onIdentificationResultChanged, result: ${result.data}")
         if (result.succeeded && Status.getEnum(result.data?.status) == Status.SUCCESSFUL) {
             transactionDescription.text = String.format(getString(R.string.contract_signing_preview_transaction_info), result.data?.id)

@@ -6,6 +6,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
+import de.solarisbank.identhub.data.person.PersonDataApi
+import de.solarisbank.identhub.data.person.PersonDataApiFactory
+import de.solarisbank.identhub.data.person.PersonDataDataSource
+import de.solarisbank.identhub.data.person.PersonDataDataSourceFactory
 import de.solarisbank.identhub.data.room.IdentityRoomDatabase
 import de.solarisbank.identhub.data.session.SessionModule
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
@@ -44,6 +48,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivityInjector
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragmentInjector
+import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragment
+import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.scan.*
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragmentInjector.Companion.injectAssistedViewModelFactory
@@ -84,6 +90,8 @@ class FourthlineComponent private constructor(
     private lateinit var fourthlineIdentificationApiProvider: Provider<FourthlineIdentificationApi>
     private lateinit var fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>
     private lateinit var identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>
+    private lateinit var personDataApiProvider: Provider<PersonDataApi>
+    private lateinit var personDataDataSourceProvider: Provider<PersonDataDataSource>
     private lateinit var fourthlineIdentificationRepositoryProvider: Provider<FourthlineIdentificationRepository>
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
@@ -146,11 +154,13 @@ class FourthlineComponent private constructor(
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider))
         fourthlineIdentificationApiProvider = DoubleCheck.provider(ProvideFourthlineIdentificationApiFactory.create(fourthlineIdentificationModule, retrofitProvider))
         fourthlineIdentificationRetrofitDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRetrofitDataSourceFactory.create(fourthlineIdentificationModule, fourthlineIdentificationApiProvider))
-
+        personDataApiProvider = PersonDataApiFactory.create(retrofitProvider.get())
+        personDataDataSourceProvider = PersonDataDataSourceFactory.create(personDataApiProvider.get())
         fourthlineIdentificationRepositoryProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRepositoryFactory.create(
                 fourthlineIdentificationModule,
                 fourthlineIdentificationRetrofitDataSourceProvider,
-                identificationRoomDataSourceProvider
+                identificationRoomDataSourceProvider,
+                personDataDataSourceProvider
         ))
 
 
@@ -268,6 +278,9 @@ class FourthlineComponent private constructor(
                 KycUploadFragmentInjector.injectAssistedViewModelFactory(kycUploadFragment, assistedViewModelFactoryProvider.get())
             }
 
+            override fun inject(passingPossibilityFragment: PassingPossibilityFragment) {
+                PassingPossibilityFragmentInjector.injectAssistedViewModelFactory(passingPossibilityFragment, assistedViewModelFactoryProvider.get())
+            }
 
         }
     }

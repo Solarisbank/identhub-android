@@ -3,12 +3,14 @@ package de.solarisbank.identhub.session.data.identification
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
+import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class IdentificationRepository(
         private val identificationRoomDataSource: IdentificationRoomDataSource,
-        private val identificationRetrofitDataSource: IdentificationRetrofitDataSource
+        private val identificationRetrofitDataSource: IdentificationRetrofitDataSource,
+        private val mobileNumberDataSource: MobileNumberDataSource
         ) {
 
         fun getStoredIdentification(): Single<Identification> {
@@ -24,7 +26,7 @@ class IdentificationRepository(
         }
 
         fun getMobileNumber(): Single<MobileNumberDto> {
-                return identificationRetrofitDataSource.getMobileNumber()
+                return mobileNumberDataSource.getMobileNumber()
         }
 
 

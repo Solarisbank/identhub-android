@@ -3,7 +3,7 @@ package de.solarisbank.identhub.domain.session
 import android.content.SharedPreferences
 import de.solarisbank.identhub.domain.data.dto.InitializationDto
 import de.solarisbank.identhub.domain.data.dto.PartnerSettingsDto
-import de.solarisbank.identhub.router.FIRST_STEP_KEY
+import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_KEY
 import timber.log.Timber
 
 class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences: SharedPreferences) {

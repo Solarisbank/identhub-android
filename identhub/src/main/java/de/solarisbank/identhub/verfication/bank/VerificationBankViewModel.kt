@@ -9,15 +9,15 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
+import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.identity.IdentityActivityViewModel
-import de.solarisbank.identhub.router.COMPLETED_STEP
-import de.solarisbank.identhub.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
 import de.solarisbank.identhub.session.IdentHub.isPaymentResultAvailable
 import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.domain.navigation.NaviDirection
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 

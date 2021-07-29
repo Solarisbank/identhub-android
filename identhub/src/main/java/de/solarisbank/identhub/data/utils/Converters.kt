@@ -1,5 +1,6 @@
-package de.solarisbank.sdk.core.data.utils
+package de.solarisbank.identhub.data.utils
 
+import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
 
@@ -12,4 +13,14 @@ fun IdentificationDto.toIdentificationUiModel(): IdentificationUiModel {
             fallbackStep = this.fallbackStep,
             method = this.method
     )
+}
+
+fun IdentificationDto.toIdentification(): Identification {
+    return Identification(
+            id = this.id,
+            status = this.status,
+            nextStep = this.nextStep,
+            fallbackStep = this.fallbackStep,
+            url = this.url ?: "", //todo make it nullable in db
+            method = this.method)
 }

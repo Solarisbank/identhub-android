@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.fragment.app.FragmentActivity
-import de.solarisbank.identhub.router.COMPLETED_STEP
+import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
 import timber.log.Timber
 
 class IdentHubSession(val sessionUrl: String) {

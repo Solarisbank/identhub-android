@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.room.IdentityRoomDatabase.Companion.clearDatabase
-import de.solarisbank.identhub.router.*
+import de.solarisbank.identhub.domain.navigation.router.*
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel
@@ -119,8 +119,14 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
             } else {
                 Timber.d("processInitializationStateResult 4")
             }
+        } else {
+            errorCallback.invoke(IdentHubSessionFailure(
+                    //todo clear how fourthline simplified should be shown
+                    message = "", null)
+            )
         }
     }
+
 
     override fun onDestroy(owner: LifecycleOwner) {
         Timber.d("onDestroy")

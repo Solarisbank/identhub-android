@@ -12,12 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -26,10 +25,9 @@ import timber.log.Timber
 
 class DocTypeSelectionFragment: FourthlineFragment() {
 
-    private lateinit var docTypeAdapter: DocTypeAdapter
-    private lateinit var documentTypeList: RecyclerView
-    private lateinit var progressBar: ProgressBar
-
+    private var docTypeAdapter: DocTypeAdapter? = null
+    private var documentTypeList: RecyclerView? = null
+    private var progressBar: ProgressBar? = null
     private var confirmButton: TextView? = null
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
@@ -61,7 +59,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        kycSharedViewModel.documentTypesLiveData.observe(viewLifecycleOwner, { appearAvailableDocTypes(it) })
+        kycSharedViewModel.supportedDocLiveData.observe(viewLifecycleOwner, { processState(it) })
     }
 
     override fun initViewModel() {
@@ -69,32 +67,58 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     private fun initRecyclerView() {
-        documentTypeList.layoutManager = LinearLayoutManager(requireContext())
-        documentTypeList.setHasFixedSize(true)
+        documentTypeList!!.layoutManager = LinearLayoutManager(requireContext())
+        documentTypeList!!.setHasFixedSize(true)
         docTypeAdapter = DocTypeAdapter { type -> confirmButton!!.isEnabled = (type != null) }
-        documentTypeList.adapter = docTypeAdapter
+        documentTypeList!!.adapter = docTypeAdapter
         confirmButton!!.setOnClickListener { moveToDocScanFragment() }
     }
 
-    private fun appearAvailableDocTypes(docs: List<AppliedDocument>){
-        progressBar.visibility = View.INVISIBLE
-        val supportedDocs = docs.filter { it.isSupported }
-        if (supportedDocs.isEmpty()) {
-            showAlertFragment(
-                    getString(R.string.fourthline_doc_type_country_not_supported_headline),
-                    getString(R.string.fourthline_doc_type_country_not_supported_message),
-                    getString(R.string.fourthline_doc_type_country_not_supported_button),
-                    positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
-                    tag = "DocScanError"
-            )
-            return
+    private fun processState(personDataStateDto: PersonDataStateDto) {
+        Timber.d("processState 0")
+        when (personDataStateDto) {
+            is PersonDataStateDto.UPLOADING -> {
+                Timber.d("processState 1")
+                progressBar!!.visibility = View.VISIBLE
+            }
+            is PersonDataStateDto.SUCCEEDED -> {
+                Timber.d("processState 2, docs : ${personDataStateDto.docs}")
+                progressBar!!.visibility = View.INVISIBLE
+                docTypeAdapter!!.add(personDataStateDto.docs)
+                docTypeAdapter!!.notifyDataSetChanged()
+            }
+            is PersonDataStateDto.EMPTY_DOCS_LIST_ERROR -> {
+                Timber.d("processState 3")
+                progressBar!!.visibility = View.INVISIBLE
+                showAlertFragment(
+                        getString(R.string.fourthline_doc_type_country_not_supported_headline),
+                        getString(R.string.fourthline_doc_type_country_not_supported_message),
+                        getString(R.string.fourthline_doc_type_country_not_supported_button),
+                        positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                        tag = "DocScanError"
+                )
+            }
+            is PersonDataStateDto.GENERIC_ERROR -> {
+                Timber.d("processState 3")
+                progressBar!!.visibility = View.INVISIBLE
+                showAlertFragment(
+                        title = getString(R.string.generic_error_title),
+                        message = getString(R.string.generic_error_message),
+                        positiveLabel = getString(R.string.ok_button),
+                        positiveAction = {
+                            activityViewModel.setFourthlineIdentificationFailure()
+                        }
+                )
+            }
         }
-        docTypeAdapter.add(supportedDocs)
-        docTypeAdapter.notifyDataSetChanged()
     }
 
     private fun moveToDocScanFragment() {
-        activityViewModel.navigateToDocScanFragment(Bundle().apply { putSerializable(DocScanFragment.DOC_TYPE_KEY, docTypeAdapter.getSelectedDocType()) })
+        activityViewModel.navigateToDocScanFragment(Bundle()
+                .apply { putSerializable(
+                            DocScanFragment.DOC_TYPE_KEY,
+                            docTypeAdapter!!.getSelectedDocType()
+                ) })
     }
 
     override fun onResume() {
@@ -126,15 +150,14 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     private fun fetchData() {
         Timber.d("fetchData()")
-        requireActivity().intent.getStringExtra(IdentHub.SESSION_URL_KEY)?.let {
-            kycSharedViewModel.fetchPersonDataAndLocation(it)
-        }?: run {
-            Timber.e("SessionUrl is absent")
-        }
+        kycSharedViewModel.fetchPersonDataAndLocation()
     }
 
     override fun onDestroyView() {
         confirmButton = null
+        docTypeAdapter = null
+        documentTypeList = null
+        progressBar = null
         super.onDestroyView()
     }
 

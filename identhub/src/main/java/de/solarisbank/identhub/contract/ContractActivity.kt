@@ -13,8 +13,8 @@ import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.core.data.model.StateUiModel
-import de.solarisbank.sdk.core.navigation.NaviDirection
 import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.domain.navigation.NaviDirection
 import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {

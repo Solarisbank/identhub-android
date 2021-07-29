@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.router
+package de.solarisbank.identhub.domain.navigation.router
 
 import android.content.Context
 import android.content.Intent
