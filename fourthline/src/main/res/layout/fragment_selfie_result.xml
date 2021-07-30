@@ -75,7 +75,7 @@
     </LinearLayout>
 
 
-    <TextView
+    <Button
         android:id="@+id/retryButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
@@ -98,7 +98,7 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="@id/retryButton" />
 
-    <TextView
+    <Button
         android:id="@+id/submitButton"
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"

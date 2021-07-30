@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +40,7 @@ class DocScanResultFragment : FourthlineFragment() {
     private var issueDateError: TextView? = null
     private var expireDateTextInput: DateInputEditText? = null
     private var expiryDateError: TextView? = null
-    private var continueButton: TextView? = null
+    private var continueButton: Button? = null
 
     private val textValidationWatcher = object : TextWatcher{
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

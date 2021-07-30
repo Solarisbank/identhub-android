@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -46,7 +47,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private lateinit var newCodeCounter: TextView
     private lateinit var transactionDescription: TextView
     private lateinit var errorMessage: TextView
-    private lateinit var submitButton: TextView
+    private lateinit var submitButton: Button
     private lateinit var progress: ProgressBar
 
     override fun inject(component: FragmentComponent) {
@@ -113,7 +114,9 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun onPhoneNumberResult(result: Result<MobileNumberDto>) {
         if (result.succeeded && result.data != null) {
-            description.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), result.data!!.number)
+            val number = result.data!!.number
+
+            description.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), number)
             description.visibility = View.VISIBLE
             progress.visibility = View.INVISIBLE
         }

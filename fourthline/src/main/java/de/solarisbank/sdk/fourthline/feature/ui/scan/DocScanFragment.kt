@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -56,8 +57,8 @@ class DocScanFragment : DocumentScannerFragment() {
     private var warningsLabel: AppCompatTextView? = null
     private var resultBlock: ViewGroup? = null
     private var punchhole: PunchholeView? = null
-    private var retakeButton: TextView? = null
-    private var confirmButton: TextView? = null
+    private var retakeButton: Button? = null
+    private var confirmButton: Button? = null
     private var progressBar: ProgressBar? = null
     private var resultImageView: AppCompatImageView? = null
 

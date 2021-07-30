@@ -35,7 +35,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
 
     private lateinit var documentsList: RecyclerView
-    private lateinit var submitButton: TextView
+    private lateinit var submitButton: Button
     private lateinit var termsAndConditionsString: TextView
 
     override fun inject(component: FragmentComponent) {

@@ -8,6 +8,7 @@ import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.fourthline.R
@@ -18,7 +19,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 class TermsAndConditionsFragment : FourthlineFragment() {
 
     private var termsText: TextView? = null
-    private var submitButton: TextView? = null
+    private var submitButton: Button? = null
 
     private val activityViewModel: FourthlineViewModel by lazy<FourthlineViewModel> {
         activityViewModels()

@@ -116,7 +116,7 @@
 
             <TextView
                 android:id="@+id/label"
-                style="@style/IdentHubTextView.Small"
+                style="@style/IdentHubTextView.Small_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_8"
@@ -160,74 +160,54 @@
                 tools:visibility="visible" />
 
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginBottom="@dimen/margin_16"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/errorMessage"
-                app:layout_constraintVertical_bias="1">
-
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:src="@drawable/ic_info" />
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintTop_toBottomOf="@+id/errorMessage"
+                    app:layout_constraintStart_toStartOf="@+id/errorMessage"
+                    />
 
                 <TextView
                     android:id="@+id/noticeTitle"
-                    style="@style/IdentHubTextView.Small_16"
+                    style="@style/IdentHubTextView.Small_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_4"
                     android:layout_marginLeft="@dimen/margin_8"
                     android:text="@string/contract_signing_preview_notice"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintTop_toTopOf="@+id/imageView"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintStart_toEndOf="@+id/imageView" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout"
-                app:layout_constraintVertical_bias="1">
 
                 <TextView
                     android:id="@+id/point"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginEnd="@dimen/margin_8"
-                    android:text="∙"
-                    app:layout_constraintStart_toStartOf="@id/startGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\u2022"
+                    app:layout_constraintStart_toStartOf="@+id/imageView"
                     app:layout_constraintEnd_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toBottomOf="@+id/noticeTitle" />
 
                 <TextView
                     android:id="@+id/noticeDescription"
-                    android:layout_width="wrap_content"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/verification_bank_notice_value"
-                    app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                     app:layout_constraintStart_toStartOf="@+id/noticeTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/noticeTitle" />
-            </LinearLayout>
+                    app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                    app:layout_constraintTop_toTopOf="@+id/point"
+                    android:paddingBottom="@dimen/margin_16"
+                    />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-    <TextView
+    <Button
         android:id="@+id/submitButton"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
@@ -20,7 +21,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
 class WelcomeContainerFragment : FourthlineFragment() {
 
-    private var startbutton: TextView? = null
+    private var startbutton: Button? = null
 
     private val viewModel: WelcomeSharedViewModel by lazy<WelcomeSharedViewModel> { viewModels() }
 

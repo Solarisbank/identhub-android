@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -28,7 +29,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private var docTypeAdapter: DocTypeAdapter? = null
     private var documentTypeList: RecyclerView? = null
     private var progressBar: ProgressBar? = null
-    private var confirmButton: TextView? = null
+    private var confirmButton: Button? = null
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
         activityViewModels()

@@ -14,6 +14,7 @@ import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -40,7 +41,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private var ibanNumber: EditText? = null
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
-    private var submitButton: TextView? = null
+    private var submitButton: Button? = null
     private var secondDescription: TextView? = null
 
     override fun inject(component: FragmentComponent) {

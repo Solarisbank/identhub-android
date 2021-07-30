@@ -79,7 +79,7 @@
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         />
 
-    <TextView
+    <Button
         android:id="@+id/confirmButton"
         style="@style/IdentHubPrimaryButton"
         android:enabled="false"
