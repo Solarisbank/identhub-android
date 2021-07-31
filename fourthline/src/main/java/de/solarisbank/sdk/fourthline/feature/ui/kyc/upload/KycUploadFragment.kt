@@ -212,9 +212,9 @@ class KycUploadFragment : FourthlineFragment() {
     private fun getUploadDataForStatus(uploadStatus: KycUploadStatus): UploadViewState {
         return when (uploadStatus) {
             is KycUploadStatus.FinishIdentSuccess -> UploadViewState(
-                    titleText = "Congratulation",
-                    subtitleText = "Your data was confirmed",
-                    submitButtonLabel = "Submit",
+                    titleText = getString(R.string.kyc_upload_success_title),
+                    subtitleText = getString(R.string.kyc_upload_success_subtitle),
+                    submitButtonLabel = getString(R.string.kyc_upload_success_button),
                     uploadResultImageName = "ic_upload_successful",
                     isResultImageViewVisible = true,
                     isProgressBarVisible = false,
@@ -224,9 +224,9 @@ class KycUploadFragment : FourthlineFragment() {
                     submitButtonAction = { activityViewModel.setFourthlineIdentificationSuccessful(uploadStatus.id) }
                 )
             is KycUploadStatus.ToNextStepSuccess -> UploadViewState(
-                    titleText = "Congratulation",
-                    subtitleText = "Your data was confirmed",
-                    submitButtonLabel = "Submit",
+                    titleText = getString(R.string.kyc_upload_to_next_title),
+                    subtitleText = getString(R.string.kyc_upload_to_next_subtitle),
+                    submitButtonLabel = getString(R.string.kyc_upload_to_next_button),
                     uploadResultImageName = "ic_upload_successful",
                     isResultImageViewVisible = true,
                     isProgressBarVisible = false,
@@ -236,9 +236,9 @@ class KycUploadFragment : FourthlineFragment() {
                     submitButtonAction = { moveToNextStep(uploadStatus.nextStep) }
             )
             is KycUploadStatus.Uploading -> UploadViewState(
-                    titleText = "Verification",
-                    subtitleText = "Please wait for verification",
-                    submitButtonLabel = "Uploading...",
+                    titleText = getString(R.string.kyc_upload_verification_title),
+                    subtitleText = getString(R.string.kyc_upload_verification_subtitle),
+                    submitButtonLabel = getString(R.string.kyc_upload_verification_button),
                     uploadResultImageName = "ic_upload_failed",
                     isResultImageViewVisible = false,
                     isProgressBarVisible = true,
@@ -248,9 +248,9 @@ class KycUploadFragment : FourthlineFragment() {
                     submitButtonAction = null
                 )
             is KycUploadStatus.ProviderError -> UploadViewState(
-                    titleText = "Please try again ...",
-                    subtitleText = "Identification process failed",
-                    submitButtonLabel = "Retry",
+                    titleText = getString(R.string.kyc_upload_provider_error_title),
+                    subtitleText = getString(R.string.kyc_upload_provider_error_subtitle),
+                    submitButtonLabel = getString(R.string.kyc_upload_provider_error_button),
                     uploadResultImageName = "ic_upload_failed",
                     isResultImageViewVisible = true,
                     isProgressBarVisible = false,
@@ -260,9 +260,9 @@ class KycUploadFragment : FourthlineFragment() {
                     submitButtonAction =  { activityViewModel.resetFourthlineFlow() }
             )
             is KycUploadStatus.GenericError -> UploadViewState(
-                    titleText = "Please try again ...",
-                    subtitleText = "Identification process failed",
-                    submitButtonLabel = "Retry",
+                    titleText = getString(R.string.kyc_upload_generic_error_title),
+                    subtitleText = getString(R.string.kyc_upload_generic_error_subtitle),
+                    submitButtonLabel = getString(R.string.kyc_upload_generic_error_button),
                     uploadResultImageName = "ic_upload_failed",
                     isResultImageViewVisible = true,
                     isProgressBarVisible = false,

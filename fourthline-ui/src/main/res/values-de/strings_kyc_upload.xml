@@ -8,4 +8,22 @@
     <string name="failure_no_fraud_message">Leider ist während Ihrer Identifikation etwas schief gelaufen. Bitte versuchen Sie es erneut. Achten Sie darauf, dass die Fotos in guter Qualität aufgenommen wurden und die Dokumente lesbar sind.</string>
     <string name="failure_no_fraud_positive">erneut versuchen</string>
     <string name="failure_no_fraud_negative">Identifikation abbrechen</string>
+
+    <string name="kyc_upload_verification_title">Verifizierung</string>
+    <string name="kyc_upload_verification_subtitle">Bitte warten Sie bis die Verifizierung Ihrer Daten abgeschlossen ist.\nDer Upload kann ein paar Minuten dauern.</string>
+    <string name="kyc_upload_verification_button">Weiter</string>
+
+    <string name="kyc_upload_provider_error_title">Etwas ist schiefgelaufen...</string>
+    <string name="kyc_upload_provider_error_subtitle">Wir konnten Ihre Daten leider nicht bestätigen. Bitte versuchen Sie es erneut.</string>
+    <string name="kyc_upload_provider_error_button">Wiederholen</string>
+    <string name="kyc_upload_generic_error_title">Etwas ist schiefgelaufen...</string>
+    <string name="kyc_upload_generic_error_subtitle">Wir konnten Ihre Daten leider nicht bestätigen. Bitte versuchen Sie es erneut.</string>
+    <string name="kyc_upload_generic_error_button">Wiederholen</string>
+
+    <string name="kyc_upload_success_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
+    <string name="kyc_upload_success_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
+    <string name="kyc_upload_success_button">Weiter</string>
+    <string name="kyc_upload_to_next_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
+    <string name="kyc_upload_to_next_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
+    <string name="kyc_upload_to_next_button">Weiter</string>
 </resources>
