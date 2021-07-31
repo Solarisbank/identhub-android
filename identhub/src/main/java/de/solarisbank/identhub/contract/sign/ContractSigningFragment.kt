@@ -49,6 +49,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private lateinit var errorMessage: TextView
     private lateinit var submitButton: Button
     private lateinit var progress: ProgressBar
+    private lateinit var codeProgress: ProgressBar
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -65,6 +66,8 @@ class ContractSigningFragment : IdentHubFragment() {
                     errorMessage = it.findViewById(R.id.errorMessage)
                     submitButton = it.findViewById(R.id.submitButton)
                     progress = it.findViewById(R.id.progress)
+                    codeProgress = it.findViewById(R.id.codeProgress)
+
                 }
     }
 
@@ -206,6 +209,7 @@ class ContractSigningFragment : IdentHubFragment() {
         submitButton.visibility = if (!error) View.VISIBLE else View.GONE
         newCodeCounter.visibility = if (!error) View.VISIBLE else View.GONE
 
+        codeProgress.visibility = if (state == LOADING_STATE) View.VISIBLE else View.GONE
         codeInput.isEnabled = state != LOADING_STATE && !error
         listLevelDrawables.forEach { it.level = state }
     }

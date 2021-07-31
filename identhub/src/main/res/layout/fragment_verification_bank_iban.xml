@@ -107,6 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8"
+                android:textStyle="bold"
                 android:text="@string/verification_bank_encrypted_label"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -114,36 +115,23 @@
                 app:layout_constraintBottom_toBottomOf="@id/lock_image"
                 app:layout_constraintTop_toTopOf="@id/lock_image" />
 
-            <TextView
-                android:id="@+id/label"
-                style="@style/IdentHubTextView.Small_14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_8"
-                android:text="@string/verification_bank_input_label"
-                android:textAllCaps="true"
-                app:layout_constraintEnd_toEndOf="@+id/ibanNumber"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/ibanNumber"
-                app:layout_constraintTop_toBottomOf="@+id/encription_info" />
-
             <EditText
                 android:id="@+id/ibanNumber"
                 style="@style/IdentHubTextBox"
-                android:textSize="22dp"
+                android:textSize="18dp"
                 android:inputType="textCapCharacters"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
+                android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/textbox_drawable_selector"
                 android:hint="@string/verification_bank_input_hint"
                 android:imeOptions="actionDone"
                 android:maxLines="1"
-                android:padding="@dimen/margin_8"
+                android:padding="@dimen/margin_12"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/label" />
+                app:layout_constraintTop_toBottomOf="@+id/encription_info" />
 
             <TextView
                 android:id="@+id/errorMessage"

@@ -65,7 +65,8 @@
             android:layout_marginTop="@dimen/margin_24"
             android:text="@string/fourthline_terms_description_start"
             app:layout_constraintStart_toEndOf="@id/start_guideline"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"       app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintHorizontal_bias="0.0"
             />
 
@@ -73,7 +74,7 @@
             android:id="@+id/condition1Layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="@dimen/margin_24"
             app:layout_constraintStart_toEndOf="@id/start_guideline"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintTop_toBottomOf="@id/subtitle"
@@ -128,7 +129,7 @@
         <TextView
             android:id="@+id/selectAll"
             style="@style/IdentHubTextView.Regular"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="@dimen/margin_24"
             app:layout_constraintStart_toEndOf="@id/start_guideline"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintTop_toBottomOf="@id/condition2Layout"
@@ -141,7 +142,7 @@
                 android:id="@+id/noticeImage"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_32"
                 android:src="@drawable/ic_info"
                 app:layout_constraintTop_toBottomOf="@+id/selectAll"
                 app:layout_constraintStart_toStartOf="@+id/selectAll"/>
@@ -166,7 +167,7 @@
                 app:layout_constraintStart_toStartOf="@+id/noticeImage"
                 app:layout_constraintEnd_toEndOf="@+id/noticeImage"
                 app:layout_constraintTop_toBottomOf="@+id/noticeImage"
-                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_12"
                 android:textAlignment="center" />
 
             <TextView
@@ -174,6 +175,7 @@
                 style="@style/IdentHubTextView.Small_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textColorLink="@color/ident_hub_color_light_grey"
                 android:text="@string/fourthline_terms_conditions_apply"
                 app:layout_constraintStart_toStartOf="@+id/noticeTitle"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
