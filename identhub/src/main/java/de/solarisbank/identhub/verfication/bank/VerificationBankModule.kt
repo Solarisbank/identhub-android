@@ -45,9 +45,10 @@ class VerificationBankModule {
     fun provideContractSigningPreviewViewModel(
             getDocumentsUseCase: GetDocumentsUseCase,
             fetchPdfUseCase: FetchPdfUseCase,
-            getIdentificationUseCase: GetIdentificationUseCase
+            getIdentificationUseCase: GetIdentificationUseCase,
+            fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase
     ): ContractSigningPreviewViewModel {
-        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase)
+        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase, fetchingAuthorizedIBanStatusUseCase)
     }
 
     fun provideVerificationBankExternalGateViewModel(savedStateHandle: SavedStateHandle,

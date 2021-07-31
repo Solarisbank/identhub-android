@@ -54,6 +54,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        viewModel.refreshIdentificationData()
         observeIdentification()
         observeContracts()
         observeDownloadPdfFile()

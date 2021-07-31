@@ -438,6 +438,7 @@ public class IdenthubComponent {
                     IdenthubComponent.this.confirmVerificationPhoneUseCaseProvider,
                     IdenthubComponent.this.getDocumentsUseCaseProvider,
                     IdenthubComponent.this.getIdentificationUseCaseProvider,
+                    IdenthubComponent.this.fetchingAuthorizedIBanStatusUseCaseProvider,
                     fetchPdfUseCaseProvider,
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.verifyIBanUseCaseProvider,

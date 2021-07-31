@@ -6,6 +6,7 @@ import de.solarisbank.identhub.contract.sign.ContractSigningViewModel
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.*
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 
 class ContractModule {
@@ -26,9 +27,10 @@ class ContractModule {
     fun provideContractSigningPreviewViewModel(
             getDocumentsUseCase: GetDocumentsUseCase,
             fetchPdfUseCase: FetchPdfUseCase,
-            getIdentificationUseCase: GetIdentificationUseCase
+            getIdentificationUseCase: GetIdentificationUseCase,
+            fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase
     ): ContractSigningPreviewViewModel {
-        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase)
+        return ContractSigningPreviewViewModel(getDocumentsUseCase, fetchPdfUseCase, getIdentificationUseCase, fetchingAuthorizedIBanStatusUseCase)
     }
 
 

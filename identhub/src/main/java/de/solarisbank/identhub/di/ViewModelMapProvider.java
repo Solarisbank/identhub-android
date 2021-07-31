@@ -13,6 +13,7 @@ import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.JointAccountBankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
@@ -46,6 +47,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider;
     private final Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
+    private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
     private final Provider<FetchPdfUseCase> fetchPdfUseCaseProvider;
     private final Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider;
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
@@ -61,6 +63,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider,
             Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
+            Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
             Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
@@ -75,6 +78,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.confirmVerificationPhoneUseCaseProvider = confirmVerificationPhoneUseCaseProvider;
         this.getDocumentsFromVerificationBankUseCaseProvider = getDocumentsFromVerificationBankUseCaseProvider;
         this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
+        this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.fetchPdfUseCaseProvider = fetchPdfUseCaseProvider;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.verifyIBanUseCaseProvider = verifyIBanUseCaseProvider;
@@ -91,6 +95,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider,
             Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
+            Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
             Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<VerifyIBanUseCase> verifyIBanUseCaseProvider,
@@ -106,6 +111,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 confirmVerificationPhoneUseCaseProvider,
                 getDocumentsFromVerificationBankUseCaseProvider,
                 getIdentificationUseCaseProvider,
+                fetchingAuthorizedIBanStatusUseCaseProvider,
                 fetchPdfUseCaseProvider,
                 identificationStepPreferencesProvider,
                 verifyIBanUseCaseProvider,
@@ -119,7 +125,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     public Map<Class<? extends ViewModel>, Provider<ViewModel>> get() {
         Map<Class<? extends ViewModel>, Provider<ViewModel>> map = new LinkedHashMap<>(10);
 
-        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider, getIdentificationUseCaseProvider));
+        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider, getIdentificationUseCaseProvider, fetchingAuthorizedIBanStatusUseCaseProvider));
         map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(VerificationPhoneViewModel.class, VerificationPhoneViewModelFactory.create(identityModule, authorizeVerificationPhoneUseCaseProvider, confirmVerificationPhoneUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
