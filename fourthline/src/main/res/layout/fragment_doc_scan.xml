@@ -123,7 +123,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="9dp"
-            android:background="@drawable/ic_separator_background"
+            android:background="@drawable/separator_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

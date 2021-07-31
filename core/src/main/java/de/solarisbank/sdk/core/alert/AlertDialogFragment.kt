@@ -1,43 +1,68 @@
 package de.solarisbank.sdk.core.alert
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.core.result.Event
 
-class AlertDialogFragment : DialogFragment() {
+class AlertDialogFragment : BottomSheetDialogFragment() {
     private lateinit var alertViewModel: AlertViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         alertViewModel = ViewModelProvider(requireActivity())[AlertViewModel::class.java]
+        isCancelable = false
+
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.layout_dialog, container, false)
+        initView(view)
+        return view
+    }
+
+    fun initView(view: View) {
         val args = requireArguments()
         val tag = tag ?: TAG
-        val builder = AlertDialog.Builder(requireActivity())
-            .setTitle(args.getString(KEY_TITLE))
-            .setMessage(args.getString(KEY_MESSAGE))
-            .setPositiveButton(args.getString(KEY_POSITIVE_LABEL)) { _, _ ->
+
+        view.findViewById<TextView>(R.id.title).apply { text = args.getString(KEY_TITLE) }
+        view.findViewById<TextView>(R.id.message).apply { text = args.getString(KEY_MESSAGE) }
+        view.findViewById<Button>(R.id.positiveButton).apply {
+            text = args.getString(KEY_POSITIVE_LABEL)
+            setOnClickListener {
                 alertViewModel.sendEvent(AlertEvent.Positive(tag))
-            }
-        args.getString(KEY_NEGATIVE_LABEL)?.let {
-            builder.setNegativeButton(it) { _, _ ->
-                alertViewModel.sendEvent(AlertEvent.Negative(tag))
+                dismiss()
             }
         }
-
-        isCancelable = false
-        val dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        return dialog
+        val negativeLabel = args.getString(KEY_NEGATIVE_LABEL)
+        if (negativeLabel != null) {
+            view.findViewById<Button>(R.id.negativeButton).apply {
+                text = negativeLabel
+                setOnClickListener {
+                    alertViewModel.sendEvent(AlertEvent.Negative(tag))
+                    dismiss()
+                }
+            }
+        } else {
+            view.findViewById<Button>(R.id.negativeButton).isVisible = false
+            view.findViewById<View>(R.id.buttomSeparator).isVisible = false
+        }
     }
 
     companion object {

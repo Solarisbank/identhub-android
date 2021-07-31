@@ -3,7 +3,6 @@ package de.solarisbank.sdk.core
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -65,15 +64,17 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun initBackButtonBehavior() {
         onBackPressedDispatcher.addCallback(this) {
-            AlertDialog.Builder(this@BaseActivity).apply {
-                setTitle(R.string.identity_dialog_quit_process_title)
-                setMessage(R.string.identity_dialog_quit_process_message)
-                setPositiveButton(R.string.identity_dialog_quit_process_positive_button) { _, _ ->
+            showAlertFragment(
+                title = getString(R.string.identity_dialog_quit_process_title),
+                message = getString(R.string.identity_dialog_quit_process_message),
+                positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
+                negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
+                positiveAction = {
                     Timber.d("Quit IdentHub SDK after back button pressed")
                     quit(null)
-                }
-                setNegativeButton(R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
-            }.show()
+                },
+                tag = "BackButtonAlert"
+            )
         }
     }
 

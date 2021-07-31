@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.verfication.bank.gateway
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
@@ -73,6 +74,7 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                 return false
             }
 
+            @SuppressLint("RequiresFeature")
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 val messagePorts = createWebMessageChannel(view!!)
@@ -82,15 +84,16 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                         super.onMessage(port, message)
                         Timber.d("Message from JavaScript received: %s", message?.data)
                         if (message?.data == "abort") {
-                            AlertDialog.Builder(requireActivity()).apply {
-                                setTitle(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_title)
-                                setMessage(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_message)
-                                setPositiveButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_positive_button) { _, _ ->
+                            showAlertFragment(
+                                title = getString(R.string.identity_dialog_quit_process_title),
+                                message = getString(R.string.identity_dialog_quit_process_message),
+                                positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
+                                negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
+                                positiveAction = {
                                     Timber.d("Quit IdentHub SDK after back button pressed")
                                     sharedViewModel?.cancelIdentification()
                                 }
-                                setNegativeButton(de.solarisbank.sdk.core.R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
-                            }.show()
+                            )
                         }
                     }
                 })

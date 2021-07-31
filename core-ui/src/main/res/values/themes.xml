@@ -7,5 +7,6 @@
         <item name="colorControlNormal">@color/ident_hub_color_onPrimary</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/ident_hub_color_secondary</item>
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
     </style>
 </resources>
