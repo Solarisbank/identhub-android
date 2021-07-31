@@ -1,8 +1,8 @@
 <resources>
-    <string name="contract_signing_preview_title">Fast fertig! Bitte unterzeichnen Sie Ihren Kartenantrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
-    <string name="contract_signing_preview_description">Nutzen Sie Samsung Pay überall wo man kontaktlos mit VISA bezahlen kann.</string>
-    <string name="contract_signing_preview_description2">100% kostenlos und ohne Abo - auch im Ausland.</string>
-    <string name="contract_signing_preview_description3">Push-Nachrichten für jede Transaktion.</string>
+    <string name="contract_signing_preview_title">Fast fertig! Bitte unterzeichnen Sie Ihren Antrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
+    <string name="contract_signing_preview_description" />
+    <string name="contract_signing_preview_description2" />
+    <string name="contract_signing_preview_description3" />
 
     <string name="contract_signing_preview_notice">Hinweis</string>
     <string name="contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
@@ -11,8 +11,8 @@
     <string name="contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
 
     <string name="contract_signing_notice_title">Sie konnten den Prozess nicht abschließen?</string>
-    <string name="contract_signing_notice1">Wenden Sie sich unter 06196 – 77 555 30 an den Kundendiest von Samsung Pay, wenn Sie Hilfe bei der Verifizierung benötigen.</string>
-    <string name="contract_signing_notice2">Es fallen Kosten für den Anruf gemäß Konditionen des Vertragspartners für Festnetz- oder Mobilfunkanschlüsse an.</string>
+    <string name="contract_signing_notice1" />
+    <string name="contract_signing_notice2" />
     <string name="contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
     <string name="contract_signing_sign_action">Unterzeichnen und Abschicken</string>
 
@@ -23,6 +23,8 @@
     <string name="contract_signing_terms_label">Es gelten die AGBs</string>
     <string name="contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
     <string name="contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
+    <string name="contract_signing_additional_terms_label" />
+    <string name="contract_signing_additional_terms_link" />
 
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>

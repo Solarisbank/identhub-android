@@ -220,6 +220,34 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewYourDocumentsString"
                 />
 
+            <TextView
+                android:id="@+id/additionalTermsAndConditionsDot"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="\u2022"
+                android:textAlignment="center"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@+id/documentsList"
+                app:layout_constraintTop_toBottomOf="@+id/documentsList" />
+
+            <TextView
+                android:id="@+id/additionalTermsAndConditionsString"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/margin_8"
+                android:paddingEnd="@dimen/margin_8"
+                android:layout_marginStart="@dimen/margin_8"
+                android:text="@string/contract_signing_additional_terms_label"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/additionalTermsAndConditionsDot"
+                app:layout_constraintTop_toTopOf="@+id/additionalTermsAndConditionsDot" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

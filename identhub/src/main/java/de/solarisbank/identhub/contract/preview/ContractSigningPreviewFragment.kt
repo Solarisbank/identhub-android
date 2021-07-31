@@ -1,8 +1,13 @@
 package de.solarisbank.identhub.contract.preview
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
@@ -37,6 +42,8 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private lateinit var documentsList: RecyclerView
     private lateinit var submitButton: Button
     private lateinit var termsAndConditionsString: TextView
+    private lateinit var additionalTermsAndConditionsDot: TextView
+    private lateinit var additionalTermsAndConditionsString: TextView
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -48,6 +55,8 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
                     termsAndConditionsString = it.findViewById(R.id.termsAndConditionsString)
+                    additionalTermsAndConditionsDot = it.findViewById(R.id.additionalTermsAndConditionsDot)
+                    additionalTermsAndConditionsString = it.findViewById(R.id.additionalTermsAndConditionsString)
                 }
     }
 
@@ -82,6 +91,17 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                 termsAndConditionsString.setText(R.string.contract_signing_terms_bank_id_label)
             } else if (result.data!!.method == "bank") {
                 termsAndConditionsString.setText(R.string.contract_signing_terms_bank_ident_label)
+            }
+            val link = getString(R.string.contract_signing_additional_terms_link)
+            if (link.isNotBlank()) {
+                Timber.d("onIdentification(): link %s", link)
+                additionalTermsAndConditionsString.visibility = VISIBLE
+                additionalTermsAndConditionsDot.visibility = VISIBLE
+                val label = getString(R.string.contract_signing_additional_terms_label)
+                val additionalTermsSpannable = SpannableString(label)
+                additionalTermsSpannable.setSpan(URLSpan(link), 0, label.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                additionalTermsAndConditionsString.text = additionalTermsSpannable
+                additionalTermsAndConditionsString.movementMethod = LinkMovementMethod()
             }
         }
     }

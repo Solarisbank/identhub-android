@@ -1,8 +1,8 @@
 <resources>
     <string name="contract_signing_preview_title">Lastly! In the following please sign your application by entering the code that will be send to your phone.n</string>
-    <string name="contract_signing_preview_description">Use Samsung Pay wherever you can make contactless payments with VISA.</string>
-    <string name="contract_signing_preview_description2">Completely free of charge also when used abroad.</string>
-    <string name="contract_signing_preview_description3">Push notification for every transaction.</string>
+    <string name="contract_signing_preview_description" />
+    <string name="contract_signing_preview_description2" />
+    <string name="contract_signing_preview_description3" />
 
     <string name="contract_signing_preview_notice">Notice</string>
     <string name="contract_signing_preview_notice_label">View your documents</string>
@@ -12,8 +12,8 @@
 
     <string name="contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
     <string name="contract_signing_notice_title">You couldn\'t complete the process?</string>
-    <string name="contract_signing_notice1">Pleas contact Samsung Pay Customer Support under 06196 – 77 555 30 if you need help with identity verification.</string>
-    <string name="contract_signing_notice2">Charges according to the conditions of the service provider of landline or mobile connections.</string>
+    <string name="contract_signing_notice1" />
+    <string name="contract_signing_notice2" />
     <string name="contract_signing_sign_action">Sign and Submit</string>
 
     <string name="contract_signing_code_expires">Expires in %1$s</string>
@@ -28,6 +28,8 @@
     <string name="contract_signing_terms_label">The T&amp;Cs apply</string>
     <string name="contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
     <string name="contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
+    <string name="contract_signing_additional_terms_label" />
+    <string name="contract_signing_additional_terms_link" />
 
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>
