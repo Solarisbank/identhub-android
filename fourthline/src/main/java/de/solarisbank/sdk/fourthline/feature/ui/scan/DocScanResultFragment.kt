@@ -18,7 +18,6 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
-import de.solarisbank.sdk.fourthline.parseDateFromMrtd
 import timber.log.Timber
 import java.util.*
 
@@ -96,13 +95,21 @@ class DocScanResultFragment : FourthlineFragment() {
         }
 
         continueButton!!.setOnClickListener {
-            kycSharedViewModel.getKycDocument().apply {
-                issueDate = issueDateTextInput!!.text.toString().parseDateFromMrtd()
-                number = docNumberTextInput!!.text.toString()
-                expirationDate = expireDateTextInput!!.text.toString().parseDateFromMrtd()
+            val issueDate = issueDateTextInput!!.getDate()
+            val expirationDate = expireDateTextInput!!.getDate()
+            val number = docNumberTextInput!!.text.toString()
+            Timber.d("KycDocument data set" +
+                    "\nissueDate: $issueDate" +
+                    "\nexpirationDate $expirationDate" +
+                    "\nnumber $number")
+            if (issueDate != null && expirationDate != null && !number.isNullOrBlank()) {
+                kycSharedViewModel.updateIssueDate(issueDate)
+                kycSharedViewModel.updateExpireDate(expirationDate)
+                kycSharedViewModel.updateDocumentNumber(number)
+                activityViewModel.navigateToKycUploadFragemnt()
+            } else {
+                showGenericAlertFragment {  }
             }
-            Timber.d("KycDocument data set: ${kycSharedViewModel.getKycDocument()}")
-            activityViewModel.navigateToKycUploadFragemnt()
         }
     }
 

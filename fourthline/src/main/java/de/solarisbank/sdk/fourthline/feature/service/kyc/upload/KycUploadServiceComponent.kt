@@ -32,6 +32,10 @@ import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificatio
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadApi
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadModule
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
@@ -82,6 +86,8 @@ class KycUploadServiceComponent private constructor(
     private lateinit var kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
     private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+    private lateinit var kycInfoInMemoryDataSourceProvider: Provider<KycInfoInMemoryDataSource>
+    private lateinit var kycInfoRepositoryProvider: Provider<KycInfoRepository>
     private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
@@ -123,7 +129,9 @@ class KycUploadServiceComponent private constructor(
         })
         identitySharedPrefsDataSourceProvider = DoubleCheck.provider(IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
         identityInitializationRepositoryProvider = DoubleCheck.provider(IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
-        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider)
+        kycInfoInMemoryDataSourceProvider = KycInfoInMemoryDataSourceFactory.create()
+        kycInfoRepositoryProvider = KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider)
+        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider, kycInfoRepositoryProvider)
         kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, identificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(kycUploadRepositoryProvider, sessionUrlRepositoryProvider)
         identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))

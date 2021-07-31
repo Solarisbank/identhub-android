@@ -34,6 +34,10 @@ import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthli
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.location.LocationDataSource
 import de.solarisbank.sdk.fourthline.data.location.LocationDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.location.LocationRepository
@@ -96,6 +100,8 @@ class FourthlineComponent private constructor(
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
     private lateinit var personDataUseCaseProvider: Provider<PersonDataUseCase>
+    private lateinit var kycInfoInMemoryDataSourceProvider: Provider<KycInfoInMemoryDataSource>
+    private lateinit var kycInfoRepositoryProvider: Provider<KycInfoRepository>
     private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
     private lateinit var locationDataSourceProvider: Provider<LocationDataSource>
     private lateinit var locationRepositoryProvider: Provider<LocationRepository>
@@ -133,7 +139,9 @@ class FourthlineComponent private constructor(
             IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
         identityInitializationRepositoryProvider = DoubleCheck.provider(
             IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
-        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider)
+        kycInfoInMemoryDataSourceProvider = KycInfoInMemoryDataSourceFactory.create()
+        kycInfoRepositoryProvider = KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider)
+        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider, kycInfoRepositoryProvider)
         locationDataSourceProvider = LocationDataSourceFactory.create(applicationContextProvider.get())
         locationRepositoryProvider = LocationRepositoryFactory.create(locationDataSourceProvider.get())
         locationUseCaseProvider = LocationUseCaseFactory.create(locationRepositoryProvider.get())

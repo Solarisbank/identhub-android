@@ -22,6 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.net.URI
+import java.util.*
 
 
 class KycSharedViewModel(
@@ -112,6 +113,18 @@ class KycSharedViewModel(
 
     fun getKycUriZip(applicationContext: Context): URI? {
         return kycInfoUseCase.getKycUriZip(applicationContext)
+    }
+
+    fun updateIssueDate(issueDate: Date) {
+        kycInfoUseCase.updateIssueDate(issueDate)
+    }
+
+    fun updateExpireDate(expireDate: Date) {
+        kycInfoUseCase.updateExpireDate(expireDate)
+    }
+
+    fun updateDocumentNumber(number: String) {
+        kycInfoUseCase.updateDocumentNumber(number)
     }
 
     override fun onCleared() {

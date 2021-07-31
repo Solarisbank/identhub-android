@@ -6,10 +6,9 @@
     <string name="invalid_iban_message">Die von Ihnen eingegebene IBAN kann nicht zur Identifizierung genutzt werden. Bitte versuchen Sie es mit einer anderen IBAN oder wählen Sie Verifizierung mit Ausweis.</string>
     <string name="excess_attempts_title">Maximale Anzahl an Identifikationsversuchen erreicht</string>
     <string name="excess_attempts_message">ULeider haben Sie die maximale Anzahl an Identifikationsversuchen erreicht. Wir können Sie leider nicht erfolgreich identifizieren. </string>
-    <string name="generic_error_title">Unknown  error</string>
-    <string name="generic_error_message">Could not proceed your verification</string>
+
     <string name="retry_button">Retry</string>
-    <string name="ok_button">OK</string>
+
     <string name="invalid_iban_retry_button">Mit anderer IBAN probieren</string>
     <string name="invalid_iban_ok_button">Identifizieren mit Ausweis</string>
     <string name="about_identity_verification_title">Über die Verifizierung Ihrer Identität</string>

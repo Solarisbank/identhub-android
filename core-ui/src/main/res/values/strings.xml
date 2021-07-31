@@ -6,4 +6,7 @@
     <string name="identity_dialog_quit_process_message">Your progress will be lost. You will be required to repeat the steps next time.</string>
     <string name="identity_dialog_quit_process_positive_button">Quit</string>
     <string name="identity_dialog_quit_process_negative_button">Stay</string>
+    <string name="ok_button">OK</string>
+    <string name="generic_error_title">Unknown  error</string>
+    <string name="generic_error_message">Could not proceed your verification</string>
 </resources>

@@ -5,11 +5,9 @@ import android.graphics.Bitmap
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
-import com.fourthline.core.Gender
-import com.fourthline.core.mrz.MrtdMrzInfo
-import com.fourthline.kyc.*
+import com.fourthline.kyc.Document
+import com.fourthline.kyc.KycInfo
 import com.fourthline.kyc.zipper.Zipper
 import com.fourthline.kyc.zipper.ZipperError
 import com.fourthline.vision.document.DocumentScannerResult
@@ -17,58 +15,24 @@ import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
-import de.solarisbank.sdk.fourthline.parseDateFromMrtd
-import de.solarisbank.sdk.fourthline.parseDateFromString
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import timber.log.Timber
 import java.net.URI
-import java.util.concurrent.ConcurrentHashMap
+import java.util.*
 
-class KycInfoUseCase(private val identityInitializationRepository: IdentityInitializationRepository) {
+class KycInfoUseCase(
+        private val kycInfoRepository: KycInfoRepository,
+        private val identityInitializationRepository: IdentityInitializationRepository
+) {
 
-    private val kycInfo = KycInfo().also { it.person = Person() }
-    private val docPagesMap = ConcurrentHashMap<DocPageKey, Attachment.Document>()
     private var _selfieResultCroppedBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
-    private var _personDataDto: PersonDataDto? = null
-
     var selfieResultCroppedBitmapLiveData = _selfieResultCroppedBitmapLiveData as LiveData<Bitmap>
 
 
     fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
-        Timber.d("updateWithPersonDataDto : ${personDataDto}")
-        _personDataDto = personDataDto
-        withFourthlineProvider {
-            kycInfo.provider = Provider(
-                name = it, //todo should be different for different types of staging
-                clientNumber = personDataDto.personUid
-            )
-
-            kycInfo.address = Address().also {
-                personDataDto.address?.apply {
-                    it.street = street
-                    it.streetNumber = streetNumber
-                    it.city = city
-                    it.countryCode = personDataDto.address?.country //todo change with country
-                    it.postalCode = postalCode
-                }
-            }
-
-            kycInfo.contacts = Contacts().also {
-                it.mobile = personDataDto.mobileNumber
-                it.email = personDataDto.email
-            }
-
-            kycInfo.person.also {
-                it.nationalityCode = personDataDto.nationality
-                it.birthPlace = personDataDto.birthPlace
-//                fillRecognizablePersonDataFromResponse(personDataDto)
-            }
-        }
-    }
-
-    private fun withFourthlineProvider(function: (String) -> Person) {
         val initializationDto = identityInitializationRepository.getInitializationDto()
-        Timber.d("withFourthlineProvider() initialization data: $initializationDto")
-        function(initializationDto?.fourthlineProvider!!)
+        Timber.d("updateWithPersonDataDto : ${personDataDto}, initialization data: $initializationDto")
+        kycInfoRepository.updateWithPersonDataDto(personDataDto, initializationDto!!.fourthlineProvider!!)
     }
 
     fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
@@ -77,17 +41,12 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 "\nlocation?.first: ${result.metadata.location?.first}" +
                 "\nlocation?.second: ${result.metadata.location?.second}"
         )
-        kycInfo.selfie = Attachment.Selfie(
-                image = result.image.full,
-                timestamp = result.metadata.timestamp.time,
-                location = result.metadata.location,
-                videoUrl = result.videoUrl
-        )
+        kycInfoRepository.updateKycWithSelfieScannerResult(result)
         _selfieResultCroppedBitmapLiveData.value = result.image.cropped
     }
 
     fun getSelfieFullImage(): Bitmap? {
-        return kycInfo.selfie?.image
+        return kycInfoRepository.getSelfieFullImage()
     }
 
     /**
@@ -100,22 +59,7 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
                 "\nlocation?.first: ${result.metadata.location?.first}" +
                 "\nlocation?.second: ${result.metadata.location?.second}"
         )
-
-        // Prune the doc map of other type
-        docPagesMap.forEach { entry ->
-            if (entry.key.docType != docType) {
-                docPagesMap.remove(entry.key)
-            }
-        }
-
-        docPagesMap[DocPageKey(docType, result.metadata.fileSide, result.metadata.isAngled)] =
-                Attachment.Document(
-                        image = result.image.full,
-                        fileSide = result.metadata.fileSide,
-                        isAngled = result.metadata.isAngled,
-                        timestamp = result.metadata.timestamp.time,
-                        location = result.metadata.location
-                )
+        kycInfoRepository.updateKycInfoWithDocumentScannerStepResult(docType, result)
     }
 
 
@@ -123,119 +67,80 @@ class KycInfoUseCase(private val identityInitializationRepository: IdentityIniti
      * Retains recognized String data of the documents
      */
     fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
-        obtainDocument(docType, result)
-        updateKycPerson(result)
+        kycInfoRepository.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    private fun obtainDocument(docType: DocumentType, result: DocumentScannerResult) {
-        val mrtd = (result.mrzInfo as? MrtdMrzInfo)
-        kycInfo.document = Document(
-                images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
-                videoUrl = result.videoUrl,
-                number = mrtd?.documentNumber,
-                expirationDate = mrtd?.expirationDate?.parseDateFromMrtd(),
-                type = docType
-        )
+    fun updateIssueDate(issueDate: Date) {
+        kycInfoRepository.updateIssueDate(issueDate)
     }
 
-    /**
-     * A part of kycInfo.person is obtained in updateWithPersonDataDto.
-     * Here provides person data that has been recognized from document scanning
-     */
-    private fun updateKycPerson(result: DocumentScannerResult) {
-        val mrtd = result.mrzInfo as? MrtdMrzInfo
-        Timber.d("updateKycPerson : " +
-                "\nmrtd.nationality:${mrtd?.nationality}" +
-                "\nlmrtd.gender: ${mrtd?.gender}" +
-                "\nlmrtd.firstNames: ${mrtd?.firstNames?.joinToString(separator = " ")}" +
-                "\nlmrtd.lastNames: ${mrtd?.lastNames?.joinToString(separator = " ")}" +
-                "\nlmrtd.birthDate.getDate(): ${mrtd?.birthDate?.parseDateFromMrtd()}"
-        )
+    fun updateExpireDate(expireDate: Date) {
+        kycInfoRepository.updateExpireDate(expireDate)
+    }
 
-        kycInfo.person.apply {
-            val firstNames = mrtd?.firstNames?.joinToString(separator = " ")
-            if (!firstNames.isNullOrBlank()) {
-                firstName = firstNames
-            }
-            val lastNames = mrtd?.firstNames?.joinToString(separator = " ")
-            if (!lastNames.isNullOrBlank()) {
-                lastName = mrtd?.lastNames?.joinToString(separator = " ")
-            }
-            mrtd?.gender?.let {
-                gender = it
-            }
-            mrtd?.birthDate?.parseDateFromMrtd()?.let {
-                birthDate = it
-            }
-        }
-
+    fun updateDocumentNumber(number: String) {
+        kycInfoRepository.updateDocumentNumber(number)
     }
 
     /**
      * Provides @Document for display
      */
     fun getKycDocument(): Document {
-        return kycInfo.document!!
+        return kycInfoRepository.getKycDocument()
     }
 
     fun updateKycLocation(resultLocation: Location) {
-        kycInfo.metadata = DeviceMetadata()
-                .apply { location = Pair(resultLocation.latitude, resultLocation.longitude) }
+        kycInfoRepository.updateKycLocation(resultLocation)
+    }
+
+    private fun validateFycInfo(kycInfo: KycInfo): Boolean {
+        val documentValidationError = kycInfo.document?.validate()
+        val personValidationError = kycInfo.person.validate()
+        val providerValidationError = kycInfo.provider.validate()
+        val metadataValidationError = kycInfo.metadata?.validate()
+        val selfieValidationError = kycInfo.selfie?.validate()
+        val secondaryValidationError = kycInfo.secondaryDocument?.validate()
+        val contactsValidationError = kycInfo.contacts.validate()
+        val addressValidationError = kycInfo.address?.validate()
+
+        Timber.d("validateFycInfo" +
+                "\n documentValidationError : $documentValidationError" +
+                "\n personValidationError  : $personValidationError " +
+                "\n providerValidationError : $providerValidationError" +
+                "\n metadataValidationError : $metadataValidationError" +
+                "\n selfieValidationError : $selfieValidationError" +
+                "\n secondaryValidationError : $secondaryValidationError" +
+                "\n contactsValidationError : $contactsValidationError" +
+                "\n addressValidationError : $addressValidationError"
+        )
+        return documentValidationError.isNullOrEmpty()
+                && personValidationError.isNullOrEmpty()
+                && providerValidationError.isNullOrEmpty()
+                && metadataValidationError.isNullOrEmpty()
+                && selfieValidationError.isNullOrEmpty()
+                && secondaryValidationError.isNullOrEmpty()
+                && contactsValidationError.isNullOrEmpty()
+                && addressValidationError.isNullOrEmpty()
     }
 
     fun getKycUriZip(applicationContext: Context): URI? {
-        Timber.d("getKycUriZip : ${kycInfo}")
-        Timber.d("getKycUriZip : ${kycInfo.person.birthDate}, ${kycInfo.person.nationalityCode}, ${kycInfo.person}")
-        Timber.d("getKycUriZip : ${kycInfo.document}")
-        val errorList = kycInfo.validate()
-        if (errorList.isNullOrEmpty()) {
-            errorList.forEach { Timber.d("errorList: ${it.name}") }
-        }
-
+        val kycInfo = kycInfoRepository.getKycInfo()
+        Timber.d("getKycUriZip : $kycInfo")
         var uri: URI? = null
-        try {
-            uri = Zipper().createZipFile(kycInfo, applicationContext)
-        } catch (zipperError: ZipperError) {
-            when (zipperError) {
-                ZipperError.KycNotValid -> { Timber.d("Error in kyc object")
-                    fillRecognizablePersonDataFromResponse(_personDataDto)
-                    try {
-                        Timber.d("getKycUriZip 2 : ${kycInfo}")
-                        Timber.d("getKycUriZip 2 : ${kycInfo.person.birthDate}, ${kycInfo.person.nationalityCode}, ${kycInfo.person}")
-                        Timber.d("getKycUriZip 2 : ${kycInfo.document}")
-                        uri = Zipper().createZipFile(kycInfo, applicationContext)
-                    } catch (zipperError: ZipperError) {
-                        Timber.e(zipperError)
-                        when (zipperError) {
-                            ZipperError.KycNotValid -> Timber.d("2 Error in kyc object")
-                            ZipperError.CannotCreateZip -> Timber.d("2 Error creating zip file")
-                            ZipperError.NotEnoughSpace -> Timber.d("2 There are not enough space in device")
-                            ZipperError.ZipExceedMaximumSize -> Timber.d("2 Zip file exceed 100MB")
-                        }
-                    }
+        if (validateFycInfo(kycInfo)) {
+            try {
+                uri = Zipper().createZipFile(kycInfo, applicationContext)
+            } catch (zipperError: ZipperError) {
+                when (zipperError) {
+                    ZipperError.KycNotValid -> Timber.d("Error in kyc object")
+                    ZipperError.CannotCreateZip -> Timber.d("Error creating zip file")
+                    ZipperError.NotEnoughSpace -> Timber.d("There are not enough space in device")
+                    ZipperError.ZipExceedMaximumSize -> Timber.d("Zip file exceed 100MB")
                 }
-                ZipperError.CannotCreateZip -> { Timber.d("Error creating zip file") }
-                ZipperError.NotEnoughSpace -> Timber.d("There are not enough space in device")
-                ZipperError.ZipExceedMaximumSize -> Timber.d("Zip file exceed 100MB")
             }
         }
         Timber.d("uri: $uri")
         return uri
     }
 
-    private fun fillRecognizablePersonDataFromResponse(personDataDto: PersonDataDto?) {
-        Timber.d("fillRecognizablePersonDataFromResponse, $personDataDto")
-        kycInfo.person.apply {
-            firstName = _personDataDto?.firstName
-            lastName = _personDataDto?.lastName
-            gender = when (_personDataDto?.gender?.toLowerCase()) {
-                Gender.MALE.name.toLowerCase() -> Gender.MALE
-                Gender.FEMALE.name.toLowerCase() -> Gender.FEMALE
-                else -> Gender.UNKNOWN
-            }
-            birthDate = _personDataDto?.birthDate?.parseDateFromString()
-        }
-    }
-
-    private data class DocPageKey(val docType: DocumentType, val docSide: DocumentFileSide, val isAngled: Boolean)
 }
