@@ -154,7 +154,7 @@ class SelfieFragment : SelfieScannerFragment() {
         cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
             warningsLabel!!.text = warnings[0].asString(requireContext())
             stepName?.visibility = View.GONE
-            delay(500)
+            delay(3000)
             warningsLabel!!.text = ""
             stepName?.visibility = View.VISIBLE
         }
