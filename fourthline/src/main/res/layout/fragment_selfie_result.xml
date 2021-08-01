@@ -47,7 +47,8 @@
         app:layout_constraintBottom_toBottomOf="@id/imageResult"
         app:layout_constraintEnd_toEndOf="@id/imageResult"
         app:layout_constraintStart_toStartOf="@id/imageResult"
-        app:layout_constraintTop_toTopOf="@id/imageResult" />
+        app:layout_constraintTop_toTopOf="@id/imageResult"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

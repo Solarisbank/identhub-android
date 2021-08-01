@@ -8,13 +8,13 @@
     <string name="selfie_turn_left">Bitte drehen Sie Ihren Kopf nach links</string>
     <string name="selfie_turn_right">Bitte drehen Sie Ihren Kopf nach rechts</string>
 
-    <string name="selfie_step_scanning">Scanning</string>
-    <string name="selfie_step_checking_liveness">Lebendigkeitsprüfung</string>
+    <string name="selfie_step_scanning">Erkennen…</string>
+    <string name="selfie_step_checking_liveness">Lebendigkeitsprüfung…</string>
     <string name="selfie_result_successful">Scan erfolgreich</string>
     <string name="selfie_not_steady">Handy ist nicht in einer stabilen Position</string>
     <string name="selfie_face_detected">Gesicht erfolgreich erkannt</string>
 
-    <string name="selfie_checking_liveliness">Lebendigkeitsprüfung</string>
+    <string name="selfie_checking_liveliness">Lebendigkeitsprüfung…</string>
     <string name="selfie_scan_successful">Scan erfolgreich</string>
     <string name="selfie_scan_error">Fehler beim Scannen</string>
 

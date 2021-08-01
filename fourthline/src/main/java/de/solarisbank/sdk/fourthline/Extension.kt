@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
+import com.fourthline.core.DocumentType
 import com.fourthline.vision.document.DocumentScannerError
 import com.fourthline.vision.document.DocumentScannerStep
 import com.fourthline.vision.document.DocumentScannerStepWarning
@@ -86,7 +87,7 @@ fun DocumentScannerError.asString(context: Context) = when (this) {
     DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
 }
 
-fun DocumentScannerStep.asString(context: Context): String {
+fun DocumentScannerStep.asString(docType: DocumentType, context: Context): String {
     val side = when (fileSide) {
         DocumentFileSide.FRONT -> context.resources.getString(R.string.document_scanner_file_side_front)
         DocumentFileSide.BACK -> context.resources.getString(R.string.document_scanner_file_side_back)
@@ -95,7 +96,24 @@ fun DocumentScannerStep.asString(context: Context): String {
     }
 
     val tilted = if (isAngled) context.resources.getString(R.string.document_scanner_file_tilted) else ""
-    return String.format(context.resources.getString(R.string.document_scanner_file_side), side, tilted)
+    val isScan = isScan(docType)
+    return if (isScan) {
+        context.resources.getString(R.string.document_scanner_main_text_scan, side)
+    } else {
+        context.resources.getString(R.string.document_scanner_main_text_picture, "$tilted ", side)
+    }
+}
+
+fun DocumentScannerStep.isScan(docType: DocumentType): Boolean {
+    if (isAngled || !isAutoDetectAvailable) {
+        return false
+    }
+
+    return if (docType == DocumentType.PASSPORT) {
+        fileSide == DocumentFileSide.FRONT
+    } else {
+        fileSide == DocumentFileSide.BACK
+    }
 }
 
 fun View.hide() {

@@ -8,13 +8,13 @@
     <string name="selfie_turn_left">Please turn your head to the left</string>
     <string name="selfie_turn_right">Please turn your head to the right</string>
 
-    <string name="selfie_step_scanning">Scanning</string>
-    <string name="selfie_step_checking_liveness">Checking liveness</string>
+    <string name="selfie_step_scanning">Detecting…</string>
+    <string name="selfie_step_checking_liveness">Checking liveliness…</string>
     <string name="selfie_result_successful">Scan successful</string>
     <string name="selfie_not_steady">Device not steady</string>
     <string name="selfie_face_detected">Face detected \nsuccessful</string>
 
-    <string name="selfie_checking_liveliness">Checking liveliness...</string>
+    <string name="selfie_checking_liveliness">Checking liveliness…</string>
     <string name="selfie_scan_successful">Scan successful</string>
     <string name="selfie_scan_error">Scan error</string>
 

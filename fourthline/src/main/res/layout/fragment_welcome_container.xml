@@ -11,10 +11,9 @@
         android:fillViewport="true"
         android:layout_above="@+id/buttonLayout">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.Guideline
@@ -61,17 +60,109 @@
             app:layout_constraintStart_toStartOf="@id/startGuideline"
             app:layout_constraintTop_toBottomOf="@id/image" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/firstTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/margin_16"
+            android:src="@drawable/ic_tick_blue"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeTitle" />
+
         <TextView
-            android:id="@+id/welcomeSubTitle"
+            android:id="@+id/firstTickInfo"
+            style="@style/IdentHubTextView.Regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/fourthline_welcome_container_first_tick"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+            app:layout_constraintStart_toEndOf="@+id/firstTick"
+            app:layout_constraintTop_toTopOf="@+id/firstTick"
+            android:layout_marginStart="@dimen/margin_12"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/secondTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/margin_12"
+            android:src="@drawable/ic_tick_blue"
+            app:layout_constraintStart_toStartOf="@+id/startGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/firstTickInfo" />
+
+        <TextView
+            android:id="@+id/secondTickInfo"
+            style="@style/IdentHubTextView.Regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/fourthline_welcome_container_second_tick"
+            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+            app:layout_constraintStart_toEndOf="@+id/secondTick"
+            app:layout_constraintTop_toTopOf="@+id/secondTick"
+            android:layout_marginStart="@dimen/margin_12"/>
+
+        <TextView
+            android:id="@+id/description"
             style="@style/IdentHubTextView.Regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
-            android:text="@string/fourthline_welcome_container_subtitle"
+            android:text="@string/fourthline_welcome_container_description"
             app:layout_constraintEnd_toEndOf="@id/endGuideline"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@id/welcomeTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/secondTickInfo"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/noticeRoot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_constraintStart_toStartOf="@id/startGuideline"
+            app:layout_constraintEnd_toEndOf="@id/endGuideline">
+
+            <ImageView
+                android:id="@+id/noticeImage"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_info"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/fourthline_terms_notice_title"/>
+
+            <TextView
+                android:id="@+id/noticeTitle"
+                style="@style/IdentHubTextView.Small_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fourthline_terms_notice_title"
+                app:layout_constraintStart_toEndOf="@+id/noticeImage"
+                app:layout_constraintTop_toTopOf="@+id/noticeImage"
+                app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
+                android:layout_marginStart="@dimen/margin_4" />
+
+            <TextView
+                android:id="@+id/noticeDot"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u2022"
+                app:layout_constraintStart_toStartOf="@+id/noticeImage"
+                app:layout_constraintEnd_toEndOf="@+id/noticeImage"
+                app:layout_constraintTop_toBottomOf="@+id/noticeImage"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/termsText"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/noticeDot"
+                android:text="@string/fourthline_welcome_container_notice"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
       </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

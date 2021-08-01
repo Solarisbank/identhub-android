@@ -9,9 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -55,12 +54,16 @@ class DocScanFragment : DocumentScannerFragment() {
     private var scanPreview: AppCompatImageView? = null
     private var stepLabel: AppCompatTextView? = null
     private var warningsLabel: AppCompatTextView? = null
-    private var resultBlock: ViewGroup? = null
+    private var resultButtons: ViewGroup? = null
     private var punchhole: PunchholeView? = null
     private var retakeButton: Button? = null
     private var confirmButton: Button? = null
-    private var progressBar: ProgressBar? = null
-    private var resultImageView: AppCompatImageView? = null
+    private var noticeRoot: ViewGroup? = null
+    private var bottomInfoRoot: View? = null
+    private var bottomInfoTitle: TextView? = null
+    private var bottomInfoSubtitle: TextView? = null
+    private var progressRoot: LinearLayout? = null
+    private var resultRoot: LinearLayout? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -94,12 +97,16 @@ class DocScanFragment : DocumentScannerFragment() {
         scanPreview = null
         stepLabel = null
         warningsLabel = null
-        resultBlock = null
+        resultButtons = null
         punchhole = null
         retakeButton = null
         confirmButton = null
-        progressBar = null
-        resultImageView = null
+        noticeRoot = null
+        bottomInfoRoot = null
+        bottomInfoTitle = null
+        bottomInfoSubtitle = null
+        progressRoot = null
+        resultRoot = null
         super.onDestroyView()
     }
 
@@ -121,30 +128,39 @@ class DocScanFragment : DocumentScannerFragment() {
         return LayoutInflater
                 .from(requireContext())
                 .inflate(R.layout.fragment_doc_scan, requireActivity().findViewById(R.id.content), false)
-                .also {
-                    documentMask = it.findViewById(R.id.documentMask)
-                    when (currentDocumentType) {
-                        DocumentType.PASSPORT -> documentMask!!.setImageResource(R.drawable.ic_passport_front_success_frame)
-                        DocumentType.ID_CARD -> documentMask!!.setImageResource(R.drawable.ic_idcard_front_success_frame)
-                    }
-                    takeSnapshot = it.findViewById(R.id.takeSnapshot)
-                    takeSnapshot!!.setOnClickListener { takeSnapshot() }
-                    scanPreview = it.findViewById(R.id.scanPreview)
-                    stepLabel = it.findViewById(R.id.stepName)
-                    warningsLabel = it.findViewById(R.id.warningsLabel)
-                    resultBlock = it.findViewById(R.id.resultBlock)
-                    punchhole = it.findViewById(R.id.punchhole)
-                    retakeButton = it.findViewById(R.id.retakeButton)
-                    retakeButton!!.setOnClickListener { resetCurrentStep() }
-                    confirmButton = it.findViewById(R.id.confirmButton)
-                    confirmButton!!.setOnClickListener { moveToNextStep() }
-                    progressBar = it.findViewById(R.id.progressBar)
-                    resultImageView = it.findViewById(R.id.resultImageView)
-                    it.onLayoutMeasuredOnce {
-                        punchhole!!.punchholeRect = getDocumentDetectionArea()
-                        punchhole!!.postInvalidate()
-                    }
-                }
+                .also(::initView)
+    }
+
+    private fun initView(view: View) {
+        with(view) {
+            documentMask = findViewById(R.id.documentMask)
+            when (currentDocumentType) {
+                DocumentType.PASSPORT -> documentMask!!.setImageResource(R.drawable.ic_passport_front_success_frame)
+                DocumentType.ID_CARD -> documentMask!!.setImageResource(R.drawable.ic_idcard_front_success_frame)
+            }
+            takeSnapshot = findViewById(R.id.takeSnapshot)
+            takeSnapshot?.setOnClickListener { takeSnapshot() }
+            scanPreview = findViewById(R.id.scanPreview)
+            stepLabel = findViewById(R.id.stepName)
+            warningsLabel = findViewById(R.id.warningsLabel)
+            resultButtons = findViewById(R.id.resultButtonsRoot)
+            punchhole = findViewById(R.id.punchhole)
+            retakeButton = findViewById(R.id.retakeButton)
+            retakeButton?.setOnClickListener { resetCurrentStep() }
+            confirmButton = findViewById(R.id.confirmButton)
+            confirmButton?.setOnClickListener { moveToNextStep() }
+            noticeRoot = findViewById(R.id.noticeRoot)
+            bottomInfoRoot = findViewById(R.id.bottomInfoRoot)
+            bottomInfoTitle = findViewById(R.id.bottomInfoTitle)
+            bottomInfoSubtitle = findViewById(R.id.bottomInfoSubtitle)
+            resultRoot = findViewById(R.id.resultRoot)
+            progressRoot = findViewById(R.id.progressRoot)
+            handleShortScreen()
+            onLayoutMeasuredOnce {
+                punchhole!!.punchholeRect = getDocumentDetectionArea()
+                punchhole!!.postInvalidate()
+            }
+        }
     }
 
     override fun getDocumentDetectionArea(): Rect {
@@ -152,30 +168,24 @@ class DocScanFragment : DocumentScannerFragment() {
         return Rect(
                 documentMask!!.left,
                 documentMask!!.top,
-                documentMask!!.right,
-                documentMask!!.bottom
+                documentMask!!.right - 1,
+                documentMask!!.bottom - 1
         )
     }
 
     override fun onStepUpdate(step: DocumentScannerStep) {
         Timber.d("onStepUpdate: ${step.prettify()}")
-        step.fileSide.ordinal
-        requireActivity().runOnUiThread(Runnable {
-            stepLabel!!.text = step.asString(requireContext())
-            documentMask!!.setImageDrawable(step.findMaskDrawable(requireContext()))
-            punchhole!!.punchholeRect = getDocumentDetectionArea()
-            punchhole!!.postInvalidate()
-            syncUi(UiState.SCANNING)
-            if (step.isAutoDetectAvailable && currentDocumentType != DocumentType.ID_CARD) {
-                takeSnapshot!!.visibility = View.GONE
-                lifecycleScope.launch(Dispatchers.Main) {
-                    delay(5000)
-                    takeSnapshot!!.visibility = View.VISIBLE
-                }
-            } else {
-                takeSnapshot!!.visibility = View.VISIBLE
-            }
-        })
+
+        activity?.runOnUiThread {
+            updateUiForScanning(
+                isScan = step.isScan(currentDocumentType),
+                tilted = step.isAngled,
+                maskDrawable = step.findMaskDrawable(requireContext()),
+                stepText = step.asString(currentDocumentType, requireContext())
+            )
+            punchhole?.punchholeRect = getDocumentDetectionArea()
+            punchhole?.postInvalidate()
+        }
     }
 
     private fun DocumentScannerStep.findMaskDrawable(context: Context): Drawable? {
@@ -230,7 +240,6 @@ class DocScanFragment : DocumentScannerFragment() {
             lifecycleScope.launch(Dispatchers.Main) {
                 showIntermediateResult(result.image.cropped)
                 kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, result)
-                result.metadata.fileSide.name
             }
         } else {
             moveToNextStep()
@@ -259,31 +268,71 @@ class DocScanFragment : DocumentScannerFragment() {
     private fun showIntermediateResult(image: Bitmap) {
         Timber.d("showIntermediateResult")
         scanPreview!!.setImageBitmap(image)
-        syncUi(UiState.INTERMEDIATE_RESULT)
+        updateUiForResult()
     }
 
-    private fun syncUi(newState: UiState) {
-        Timber.d("syncUi")
-        when (newState) {
-            UiState.SCANNING -> {
-                stepLabel!!.show()
-                takeSnapshot!!.show()
-                scanPreview!!.hide()
-                resultBlock!!.hide()
-                progressBar!!.show()
-                resultImageView!!.hide()
+    private fun updateUiForScanning(isScan: Boolean,
+                                    tilted: Boolean,
+                                    maskDrawable: Drawable?,
+                                    stepText: String)
+    {
+        documentMask?.setImageDrawable(maskDrawable)
+        resultRoot?.hide()
+        stepLabel?.text = stepText
+        stepLabel?.show()
+        scanPreview?.hide()
+        resultButtons?.hide()
+        if (isScan) {
+            progressRoot?.show()
+            noticeRoot?.show()
+            warningsLabel?.text = ""
+            takeSnapshot?.hide()
+            lifecycleScope.launch(Dispatchers.Main) {
+                delay(5000)
+                takeSnapshot?.show()
             }
-            UiState.INTERMEDIATE_RESULT -> {
-                stepLabel!!.text = ""
-                warningsLabel!!.text = getString(R.string.document_scanner_scan_success)
-                stepLabel!!.hide()
-                takeSnapshot!!.hide()
-                scanPreview!!.show()
-                resultBlock!!.show()
-                progressBar!!.hide()
-                resultImageView!!.show()
+        } else {
+            takeSnapshot?.show()
+            progressRoot?.hide()
+            noticeRoot?.hide()
+        }
+        if (tilted) {
+            bottomInfoTitle?.text = getString(R.string.document_scanner_tilted_notice)
+            bottomInfoSubtitle?.text = ""
+            bottomInfoRoot?.show()
+        } else {
+            bottomInfoRoot?.hide()
+        }
+    }
+
+    private fun updateUiForResult() {
+        stepLabel?.hide()
+        takeSnapshot?.hide()
+        scanPreview?.show()
+        resultButtons?.show()
+        resultRoot?.show()
+        progressRoot?.hide()
+        noticeRoot?.hide()
+        bottomInfoTitle?.text = getString(R.string.document_scanner_clear_picture_title)
+        bottomInfoSubtitle?.text = getString(R.string.document_scanner_clear_picture_message)
+        bottomInfoRoot?.show()
+    }
+
+    private fun handleShortScreen() {
+        if (isScreenShort(requireContext())) {
+            resultRoot?.orientation = LinearLayout.HORIZONTAL
+            progressRoot?.orientation = LinearLayout.HORIZONTAL
+            if (currentDocumentType == DocumentType.PASSPORT) {
+                noticeRoot?.findViewById<View>(R.id.noticeImage)?.visibility = View.INVISIBLE
+                noticeRoot?.findViewById<View>(R.id.noticeTitle)?.visibility = View.INVISIBLE
+                bottomInfoSubtitle?.hide()
             }
         }
+    }
+
+    private fun isScreenShort(context: Context): Boolean {
+        val dm = context.resources.displayMetrics
+        return dm.heightPixels.toFloat() / dm.density < 700.0
     }
 
     companion object {

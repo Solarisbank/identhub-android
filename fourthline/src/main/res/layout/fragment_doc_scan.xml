@@ -27,20 +27,6 @@
         android:layout_height="match_parent"
         tools:visibility="gone" />
 
-    <ImageButton
-        android:id="@+id/buttonClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_16"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:adjustViewBounds="true"
-        android:background="@color/ident_hub_color_white"
-        android:src="@drawable/ic_close_grey"
-        android:visibility="gone"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/scanPreview"
         android:layout_width="0dp"
@@ -54,60 +40,167 @@
         android:id="@+id/documentMask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/margin_12"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
-        app:layout_constraintBottom_toTopOf="@id/resultBlock"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/documentMask" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/resultImageView"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/resultBlock"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
-        android:src="@drawable/ic_done_round_blue"
-        app:layout_constraintTop_toBottomOf="@+id/documentMask" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/warningsLabel"
-        style="@style/IdentHubTextView.Small_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_goneMarginTop="32dp"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        tools:text="Warnings Label" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.35"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/stepName"
         style="@style/IdentHubTextView.Small_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/documentMask"
-        tools:text="Step Label" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Please scan the front side of your document" />
+
+    <LinearLayout
+        android:id="@+id/resultRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintBottom_toTopOf="@id/documentMask"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/resultImageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_done_round_blue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/resultLabel"
+            style="@style/IdentHubTextView.Small_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/document_scanner_scan_success"
+            tools:text="Success!" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/stepName"
+        app:layout_constraintBottom_toTopOf="@id/documentMask"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:indeterminateDrawable="@drawable/ic_progressbar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/warningsLabel"
+            style="@style/IdentHubTextView.Small_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/selfie_step_scanning"
+            tools:text="Detecting..." />
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/resultBlock"
+        android:id="@+id/noticeRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="68dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/noticeImage"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_info"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/fourthline_terms_notice_title"/>
+
+        <TextView
+            android:id="@+id/noticeTitle"
+            style="@style/IdentHubTextView.Small_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fourthline_terms_notice_title"
+            app:layout_constraintStart_toEndOf="@+id/noticeImage"
+            app:layout_constraintTop_toTopOf="@+id/noticeImage"
+            app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
+            android:layout_marginStart="@dimen/margin_4" />
+
+        <TextView
+            android:id="@+id/noticeDot"
+            style="@style/IdentHubTextView.Small_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\u2022"
+            app:layout_constraintStart_toStartOf="@+id/noticeImage"
+            app:layout_constraintEnd_toEndOf="@+id/noticeImage"
+            app:layout_constraintTop_toBottomOf="@+id/noticeImage"
+            android:layout_marginTop="@dimen/margin_8"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/termsText"
+            style="@style/IdentHubTextView.Small_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/noticeDot"
+            android:text="@string/document_scanner_notice"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomInfoRoot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="70dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/bottomInfoTitle"
+            style="@style/IdentHubTextView.HeadLine4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/document_scanner_clear_picture_title"/>
+
+        <TextView
+            android:id="@+id/bottomInfoSubtitle"
+            style="@style/IdentHubTextView.Small_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/document_scanner_clear_picture_message"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/resultButtonsRoot"
         android:layout_width="0dp"
         android:layout_height="@dimen/default_button_height"
         android:layout_marginBottom="@dimen/margin_16"
@@ -161,11 +254,9 @@
         android:textColor="@color/ident_hub_color_white"
         android:textSize="15sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/punchhole"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/warningsLabel"
-        app:layout_constraintVertical_bias="1.0"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
