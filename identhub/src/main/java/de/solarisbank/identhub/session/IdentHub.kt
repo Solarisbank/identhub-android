@@ -10,22 +10,29 @@ object IdentHub {
     }
     private var SESSION: IdentHubSession? = null
 
-    val isPaymentResultAvailable: Boolean
-        get() = SESSION?.isPaymentProcessAvailable ?: false
+    @Synchronized
+    fun isPaymentResultAvailable(): Boolean {
+        return SESSION?.isPaymentProcessAvailable ?: false
+    }
 
+    @Synchronized
     fun sessionWithUrl(url: String): IdentHubSession {
-        synchronized(this) {
-            if (!SESSION?.sessionUrl.equals(url)) {
-                clear()
-            }
-            return SESSION ?: IdentHubSession(buildApiUrl(url)).apply {
-                SESSION = this
-            }
+        val apiUrl = buildApiUrl(url)
+        if (SESSION != null && SESSION?.sessionUrlString != apiUrl) {
+            clearSession()
+        }
+        return SESSION ?: IdentHubSession(apiUrl).apply {
+            SESSION = this
         }
     }
 
+    @Synchronized
     fun clear() {
         Timber.d("clear(), this: $this")
+        clearSession()
+    }
+
+    private fun clearSession() {
         SESSION?.stop()
         SESSION = null
     }

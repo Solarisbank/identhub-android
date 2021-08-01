@@ -25,8 +25,7 @@ import timber.log.Timber
 
 class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
                               private val successCallback: (IdentHubSessionResult) -> Unit,
-                              private val errorCallback: (IdentHubSessionFailure) -> Unit,
-                              private val sessionUrl: String
+                              private val errorCallback: (IdentHubSessionFailure) -> Unit
 ) : DefaultLifecycleObserver {
 
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -37,6 +36,12 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
                     .getInstance(fragmentActivity.applicationContext)
                     .IdentHubSessionObserverSubComponentFactory()
                     .create()
+
+    var sessionUrl: String? = null
+        set(value) {
+            field = value
+            viewModel.saveSessionId(value)
+        }
 
     var receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -73,7 +78,6 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
         identHubObserverSubcomponent.inject(this)
         initBroadcastReceiver()
         initViewModel()
-        viewModel.saveSessionId(sessionUrl)
         viewModel.getInitializationStateLiveData().observe(fragmentActivity, { processInitializationStateResult(it) })
     }
 

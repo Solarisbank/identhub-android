@@ -98,7 +98,7 @@ class VerificationBankViewModel(private val savedStateHandle: SavedStateHandle, 
     }
 
     fun doOnNavigationChanged(actionId: Int) {
-        if (isPaymentResultAvailable && actionId == ACTION_STOP_WITH_RESULT) {
+        if (isPaymentResultAvailable() && actionId == ACTION_STOP_WITH_RESULT) {
             identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK)
         } else if (actionId == ACTION_SUMMARY_WITH_RESULT) {
             identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)

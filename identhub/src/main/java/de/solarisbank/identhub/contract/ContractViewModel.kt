@@ -49,7 +49,7 @@ class ContractViewModel(
     }
 
     fun doOnNavigationChanged(actionId: Int) {
-        if (isPaymentResultAvailable && actionId == IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
+        if (isPaymentResultAvailable() && actionId == IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
             identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK)
         }
     }

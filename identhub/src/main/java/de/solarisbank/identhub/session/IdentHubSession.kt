@@ -3,11 +3,13 @@ package de.solarisbank.identhub.session
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Looper
+import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
 import timber.log.Timber
 
-class IdentHubSession(val sessionUrl: String) {
+class IdentHubSession(val sessionUrlString: String) {
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null
@@ -18,6 +20,8 @@ class IdentHubSession(val sessionUrl: String) {
     val isPaymentProcessAvailable: Boolean
         get() = paymentErrorCallback != null || paymentSuccessCallback != null
 
+    @MainThread
+    @Synchronized
     fun onCompletionCallback(
             fragmentActivity: FragmentActivity,
             successCallback: ((IdentHubSessionResult) -> Unit),
@@ -29,23 +33,27 @@ class IdentHubSession(val sessionUrl: String) {
         this.identificationSuccessCallback = successCallback
 
         initMainProcess(fragmentActivity)
-        fragmentActivity.lifecycle.addObserver(MAIN_PROCESS!!)
     }
 
     private fun initMainProcess(fragmentActivity: FragmentActivity) {
         Timber.d("initMainProcess, fragmentActivity : $fragmentActivity, this : $this")
-        synchronized(this) {
-            if (MAIN_PROCESS == null) {
-                MAIN_PROCESS = IdentHubSessionObserver(
-                    fragmentActivity,
-                    ::onResultSuccess,
-                    ::onResultFailure,
-                    sessionUrl
-                )
-            }
+
+        if(Looper.myLooper() != Looper.getMainLooper()) {
+            throw IllegalThreadStateException("This method must be called on the main thread!")
         }
+
+        if (MAIN_PROCESS == null) {
+            MAIN_PROCESS = IdentHubSessionObserver(
+                fragmentActivity,
+                ::onResultSuccess,
+                ::onResultFailure
+            )
+        }
+        fragmentActivity.lifecycle.addObserver(MAIN_PROCESS!!)
+        MAIN_PROCESS?.sessionUrl = sessionUrlString
     }
 
+    @Synchronized
     fun onPaymentCallback(
             paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null,
             paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
@@ -85,47 +93,43 @@ class IdentHubSession(val sessionUrl: String) {
         }
     }
 
+    @Synchronized
     fun start() {
         Timber.d("start, MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You need to call create method first")
         }
 
-        synchronized(this) {
-            if (!STARTED) {
-                MAIN_PROCESS?.obtainLocalIdentificationState()
-                STARTED = true
-            }
+        if (!STARTED) {
+            MAIN_PROCESS?.obtainLocalIdentificationState()
+            STARTED = true
         }
     }
 
+    @Synchronized
     fun resume() {
         Timber.d("resume, MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You cannot resume the flow if the session is not started")
         }
         Timber.d("STARTED : $STARTED; RESUMED : $RESUMED")
-        synchronized(this) {
-            if (STARTED && !RESUMED) {
-                MAIN_PROCESS?.obtainLocalIdentificationState()
-                RESUMED = true
-            }
+        if (STARTED && !RESUMED) {
+            MAIN_PROCESS?.obtainLocalIdentificationState()
+            RESUMED = true
         }
     }
 
-    fun reset() {
+    private fun reset() {
         Timber.d("reset(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
-        synchronized(this) {
-            MAIN_PROCESS?.clearDataOnCompletion()
-            STARTED = false
-            RESUMED = false
-        }
+        MAIN_PROCESS?.clearDataOnCompletion()
+        STARTED = false
+        RESUMED = false
     }
 
+    @Synchronized
     fun stop() {
         Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         reset()
-        MAIN_PROCESS = null
     }
 
     private fun loadAppName(context: Context) {
