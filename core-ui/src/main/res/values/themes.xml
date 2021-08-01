@@ -8,5 +8,6 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/ident_hub_color_secondary</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
+        <item name="actionBarStyle">@style/actionBarStyle</item>
     </style>
 </resources>

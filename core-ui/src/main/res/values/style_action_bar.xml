@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="actionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/ident_hub_color_primary</item>
+        <item name="titleTextStyle">@style/actionBarTitleStyle</item>
+    </style>
+
+    <style name="actionBarTitleStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/ident_hub_color_dark_grey</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+</resources>
