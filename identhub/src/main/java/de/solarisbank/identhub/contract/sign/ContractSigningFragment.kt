@@ -117,8 +117,10 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun onPhoneNumberResult(result: Result<MobileNumberDto>) {
         if (result.succeeded && result.data != null) {
-            val number = result.data!!.number
-
+            var number = result.data!!.number
+            if (number != null) {
+                number = number.replace("\\d(?=\\d{4})".toRegex(), "*")
+            }
             description.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), number)
             description.visibility = View.VISIBLE
             progress.visibility = View.INVISIBLE
