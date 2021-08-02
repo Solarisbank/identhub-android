@@ -6,4 +6,11 @@
     <string name="fourthline_doc_type_country_not_supported_headline">Identifikationsdokument nicht unterstützt</string>
     <string name="fourthline_doc_type_country_not_supported_message">Derzeit unterstützen wir Ihre Identifikationsdokumente leider noch nicht.</string>
     <string name="fourthline_doc_type_country_not_supported_button">OK</string>
+    <string name="fourthline_doc_type_passport">Reisepass</string>
+    <string name="fourthline_doc_type_id_card">Personalausweis</string>
+    <string name="fourthline_doc_type_french_id_card">Französischer Personalausweis</string>
+    <string name="fourthline_doc_type_paper_id">Papier ID</string>
+    <string name="fourthline_doc_type_residence_permit">Aufenthaltsgenehmigung</string>
+    <string name="fourthline_doc_type_drivers_licence">Führerschein</string>
+    <string name="fourthline_doc_type_driving_licence">Führerschein</string>
 </resources>

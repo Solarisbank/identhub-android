@@ -1,19 +1,20 @@
 package de.solarisbank.sdk.fourthline.data.entity
 
+import android.content.Context
 import com.fourthline.core.DocumentType
 import java.io.Serializable
 
 /**
  * Represents an enum list of documents that could be used for fourthline identification passing
  */
-enum class AppliedDocument(val displayString: String, val isSupported: Boolean = true) : Serializable {
-    PASSPORT("Passport"),
-    NATIONAL_ID_CARD("ID Card"),
-    FRENCH_ID_CARD("French ID Card", false),
-    PAPER_ID("Paper ID"),
-    RESIDENCE_PERMIT("Residence Permit", false),
-    DRIVING_LICENSE("Drivers Licence", false),
-    DUTCH_DRIVERS_LICENCE("Driving Licence", false)
+enum class AppliedDocument(val isSupported: Boolean = true) : Serializable {
+    PASSPORT,
+    NATIONAL_ID_CARD,
+    FRENCH_ID_CARD(false),
+    PAPER_ID,
+    RESIDENCE_PERMIT(false),
+    DRIVING_LICENSE(false),
+    DUTCH_DRIVERS_LICENCE(false)
 }
 
 fun AppliedDocument.toDocumentType(): DocumentType {
@@ -26,4 +27,14 @@ fun AppliedDocument.toDocumentType(): DocumentType {
         AppliedDocument.DRIVING_LICENSE -> DocumentType.DRIVERS_LICENSE
         AppliedDocument.DUTCH_DRIVERS_LICENCE -> DocumentType.DUTCH_DRIVERS_LICENSE
     }
+}
+
+fun AppliedDocument.asString(context: Context) = when (this) {
+    AppliedDocument.PASSPORT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_passport)
+    AppliedDocument.NATIONAL_ID_CARD -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_id_card)
+    AppliedDocument.FRENCH_ID_CARD -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_french_id_card)
+    AppliedDocument.PAPER_ID -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_paper_id)
+    AppliedDocument.RESIDENCE_PERMIT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_residence_permit)
+    AppliedDocument.DRIVING_LICENSE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_driving_licence)
+    AppliedDocument.DUTCH_DRIVERS_LICENCE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.fourthline_doc_type_drivers_licence)
 }

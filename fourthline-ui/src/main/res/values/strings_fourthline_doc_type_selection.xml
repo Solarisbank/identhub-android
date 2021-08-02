@@ -6,5 +6,11 @@
     <string name="fourthline_doc_type_country_not_supported_headline">ID document not supported</string>
     <string name="fourthline_doc_type_country_not_supported_message">Unfortunately we cannot support your identification document at the moment. </string>
     <string name="fourthline_doc_type_country_not_supported_button">OK</string>
-
+    <string name="fourthline_doc_type_passport">Passport</string>
+    <string name="fourthline_doc_type_id_card">ID Card</string>
+    <string name="fourthline_doc_type_french_id_card">French ID Card</string>
+    <string name="fourthline_doc_type_paper_id">Paper ID</string>
+    <string name="fourthline_doc_type_residence_permit">Residence Permit</string>
+    <string name="fourthline_doc_type_drivers_licence">Drivers Licence</string>
+    <string name="fourthline_doc_type_driving_licence">Driving Licence</string>
 </resources>
