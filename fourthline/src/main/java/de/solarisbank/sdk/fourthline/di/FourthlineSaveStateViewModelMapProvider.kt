@@ -3,6 +3,7 @@ package de.solarisbank.sdk.fourthline.di
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
@@ -22,7 +23,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
         private val fourthlineModule: FourthlineModule,
         private val personDataUseCaseProvider: Provider<PersonDataUseCase>,
         private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-        private val locationUseCaseProvider: Provider<LocationUseCase>
+        private val locationUseCaseProvider: Provider<LocationUseCase>,
+        private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
 ) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
@@ -34,7 +36,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                         fourthlineModule,
                         personDataUseCaseProvider,
                         kycInfoUseCaseProvider,
-                        locationUseCaseProvider
+                        locationUseCaseProvider,
+                        ipObtainingUseCaseProvider
                 )
         )
     }
@@ -44,13 +47,15 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                 fourthlineModule: FourthlineModule,
                 personDataUseCaseProvider: Provider<PersonDataUseCase>,
                 kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-                locationUseCaseProvider: Provider<LocationUseCase>
+                locationUseCaseProvider: Provider<LocationUseCase>,
+                ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
         ): FourthlineSaveStateViewModelMapProvider {
             return FourthlineSaveStateViewModelMapProvider(
                     fourthlineModule,
                     personDataUseCaseProvider,
                     kycInfoUseCaseProvider,
-                    locationUseCaseProvider
+                    locationUseCaseProvider,
+                    ipObtainingUseCaseProvider
             )
         }
     }

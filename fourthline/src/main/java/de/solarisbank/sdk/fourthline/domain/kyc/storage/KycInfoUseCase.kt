@@ -82,6 +82,10 @@ class KycInfoUseCase(
         kycInfoRepository.updateDocumentNumber(number)
     }
 
+    fun updateIpAddress(ipAddress: String) {
+        kycInfoRepository.updateIpAddress(ipAddress)
+    }
+
     /**
      * Provides @Document for display
      */

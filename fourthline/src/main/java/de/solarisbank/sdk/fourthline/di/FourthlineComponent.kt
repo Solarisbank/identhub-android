@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.dao.IdentificationDao
+import de.solarisbank.identhub.data.ip.*
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
 import de.solarisbank.identhub.data.person.PersonDataApi
 import de.solarisbank.identhub.data.person.PersonDataApiFactory
@@ -20,6 +21,8 @@ import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDa
 import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
 import de.solarisbank.identhub.domain.session.*
 import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
 import de.solarisbank.sdk.core.di.CoreActivityComponent
@@ -106,6 +109,10 @@ class FourthlineComponent private constructor(
     private lateinit var locationDataSourceProvider: Provider<LocationDataSource>
     private lateinit var locationRepositoryProvider: Provider<LocationRepository>
     private lateinit var locationUseCaseProvider: Provider<LocationUseCase>
+    private lateinit var ipApiProvider: Provider<IpApi>
+    private lateinit var ipDataSourceProvider: Provider<IpDataSource>
+    private lateinit var ipRepositoryProvider: Provider<IpRepository>
+    private lateinit var ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<out Interceptor>
     private lateinit var identificationIdInterceptorProvider: Provider<IdentificationIdInterceptor>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
@@ -171,8 +178,10 @@ class FourthlineComponent private constructor(
                 personDataDataSourceProvider
         ))
 
-
-
+        ipApiProvider = DoubleCheck.provider(IpApiFactory.create(retrofitProvider.get()))
+        ipDataSourceProvider = DoubleCheck.provider(IpDataSourceFactory.create(ipApiProvider.get()))
+        ipRepositoryProvider = DoubleCheck.provider(IpRepositoryFactory.create(ipDataSourceProvider.get()))
+        ipObtainingUseCaseProvider = DoubleCheck.provider(IpObtainingUseCaseFactory.create(ipRepositoryProvider.get()))
         personDataUseCaseProvider = DoubleCheck.provider(object : Factory<PersonDataUseCase> {
             override fun get(): PersonDataUseCase {
                 return PersonDataUseCase(
@@ -216,7 +225,8 @@ class FourthlineComponent private constructor(
                         fourthlineModule,
                         personDataUseCaseProvider,
                         kycInfoUseCaseProvider,
-                        locationUseCaseProvider
+                        locationUseCaseProvider,
+                        ipObtainingUseCaseProvider
                 )
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
                 DoubleCheck.provider(EmptyMapOfClassOfAndProviderOfViewModelProvider())

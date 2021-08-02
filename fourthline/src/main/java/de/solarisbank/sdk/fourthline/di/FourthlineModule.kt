@@ -3,6 +3,7 @@ package de.solarisbank.sdk.fourthline.di
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
@@ -40,13 +41,15 @@ class FourthlineModule {
             savedStateHandle: SavedStateHandle,
             personDataUseCase: PersonDataUseCase,
             kycInfoUseCase: KycInfoUseCase,
-            locationUseCase: LocationUseCase
+            locationUseCase: LocationUseCase,
+            ipObtainingUseCase: IpObtainingUseCase
     ): ViewModel {
         return KycSharedViewModel(
                 savedStateHandle,
                 personDataUseCase,
                 kycInfoUseCase,
-                locationUseCase
+                locationUseCase,
+                ipObtainingUseCase
         )
     }
 }

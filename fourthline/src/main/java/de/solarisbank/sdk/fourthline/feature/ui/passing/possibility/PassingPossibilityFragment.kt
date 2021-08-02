@@ -41,7 +41,7 @@ class PassingPossibilityFragment : FourthlineFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kycSharedViewModel.fetchPersonData(requireActivity().intent.getStringExtra(SESSION_URL_KEY)!!)
+        kycSharedViewModel.fetchPersonDataAndIp(requireActivity().intent.getStringExtra(SESSION_URL_KEY)!!)
         kycSharedViewModel.passingPossibilityLiveData.observe(viewLifecycleOwner, { processState(it) })
     }
 

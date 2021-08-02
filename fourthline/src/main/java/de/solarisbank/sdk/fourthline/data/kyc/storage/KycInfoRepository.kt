@@ -44,6 +44,10 @@ class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDa
         kycInfoInMemoryDataSource.updateDocumentNumber(number)
     }
 
+    fun updateIpAddress(ipAddress: String) {
+        kycInfoInMemoryDataSource.updateIpAddress(ipAddress)
+    }
+
     fun getPersonData(): PersonDataDto? {
         return kycInfoInMemoryDataSource.getPersonData()
     }

@@ -11,12 +11,15 @@ import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -29,7 +32,8 @@ class KycSharedViewModel(
         private val savedStateHandle: SavedStateHandle,
         private val personDataUseCase: PersonDataUseCase,
         private val kycInfoUseCase: KycInfoUseCase,
-        private val locationUseCase: LocationUseCase
+        private val locationUseCase: LocationUseCase,
+        private val ipObtainingUseCase: IpObtainingUseCase
         ): ViewModel() {
 
     private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
@@ -43,35 +47,49 @@ class KycSharedViewModel(
         return kycInfoUseCase.getKycDocument()
     }
 
-    fun fetchPersonData(sessionId: String) {
-        Timber.d("fetchPersonData() 0")
+    fun fetchPersonDataAndIp(sessionId: String) {
+        Timber.d("fetchPersonDataAndIp() 0")
         _supportedDocLiveData.value = PersonDataStateDto.UPLOADING
         compositeDisposable.add(
-                personDataUseCase.execute(sessionId)
+                Single.zip(personDataUseCase.execute(sessionId),
+                        ipObtainingUseCase.execute(Unit), {personData, ip -> personData to ip})
+                        .doOnSuccess { pair ->
+                            Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
+                            if(
+                                    pair.first.succeeded
+                                    && pair.second.succeeded
+                                    && pair.first.data != null
+                                    && pair.second.data != null
+                            ) {
+
+                                    val supportedDocs = pair.first.data!!.appliedDocuments()
+                                    if (!supportedDocs.isNullOrEmpty()) {
+                                        Timber.d("fetchPersonDataAndIp() 2")
+                                        kycInfoUseCase.updateWithPersonDataDto(pair.first.data!!)
+                                        kycInfoUseCase.updateIpAddress(pair.second.data!!)
+                                        _personDataStateLiveData.postValue(
+                                                PersonDataStateDto.SUCCEEDED(supportedDocs)
+                                        )
+                                    } else {
+                                        Timber.d("fetchPersonDataAndIp() 3")
+                                        _personDataStateLiveData.postValue(
+                                                PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
+                                        )
+                                    }
+                            } else {
+                                Timber.d("fetchPersonDataAndIp() 4")
+                                _personDataStateLiveData.postValue(
+                                        PersonDataStateDto.GENERIC_ERROR
+                                )
+                            }
+                        }
+                        .doOnError {
+                            Timber.e(it, "fetchPersonDataAndIp() 5")
+                            _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
+                        }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                { dtoResult ->
-                                    Timber.d("fetchPersonData() 1")
-                                    dtoResult.data?.let { dto ->
-                                        val supportedDocs = dto.appliedDocuments()
-                                        if (!supportedDocs.isNullOrEmpty()) {
-                                            Timber.d("fetchPersonData() 2")
-                                            kycInfoUseCase.updateWithPersonDataDto(dto)
-                                            _personDataStateLiveData.value =
-                                                    PersonDataStateDto.SUCCEEDED(supportedDocs)
-                                        } else {
-                                            Timber.d("fetchPersonData() 3")
-                                            _personDataStateLiveData.value =
-                                                    PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
-                                        }
-                                    }
-                                },
-                                {
-                                    Timber.e(it,"fetchPersonData() 4")
-                                    _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
-                                }
-                        )
+                        .subscribe()
         )
     }
 

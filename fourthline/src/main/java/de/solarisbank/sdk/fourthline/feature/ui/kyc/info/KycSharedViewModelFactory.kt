@@ -2,6 +2,7 @@ package de.solarisbank.sdk.fourthline.feature.ui.kyc.info
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.di.FourthlineModule
@@ -13,7 +14,8 @@ class KycSharedViewModelFactory(
         private val fourthlineModule: FourthlineModule,
         private val personDataUseCaseProvider: Provider<PersonDataUseCase>,
         private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-        private val locationUseCaseProvider: Provider<LocationUseCase>
+        private val locationUseCaseProvider: Provider<LocationUseCase>,
+        private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
 ) : Factory2<ViewModel, SavedStateHandle> {
 
     override fun create(value: SavedStateHandle): ViewModel {
@@ -21,7 +23,8 @@ class KycSharedViewModelFactory(
                 value,
                 personDataUseCaseProvider.get(),
                 kycInfoUseCaseProvider.get(),
-                locationUseCaseProvider.get()
+                locationUseCaseProvider.get(),
+                ipObtainingUseCaseProvider.get()
         )
     }
 
@@ -31,13 +34,15 @@ class KycSharedViewModelFactory(
                 fourthlineModule: FourthlineModule,
                 personDataUseCaseProvider: Provider<PersonDataUseCase>,
                 kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-                locationUseCaseProvider: Provider<LocationUseCase>
+                locationUseCaseProvider: Provider<LocationUseCase>,
+                ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
         ): KycSharedViewModelFactory {
             return KycSharedViewModelFactory(
                     fourthlineModule,
                     personDataUseCaseProvider,
                     kycInfoUseCaseProvider,
-                    locationUseCaseProvider
+                    locationUseCaseProvider,
+                    ipObtainingUseCaseProvider
             )
         }
     }

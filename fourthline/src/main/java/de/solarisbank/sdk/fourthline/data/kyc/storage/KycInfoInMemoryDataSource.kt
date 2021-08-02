@@ -21,7 +21,10 @@ import kotlin.collections.LinkedHashMap
 class KycInfoInMemoryDataSource {
 
     private val lock: ReentrantReadWriteLock = ReentrantReadWriteLock()
-    private val kycInfo = KycInfo().also { it.person = Person() }
+    private val kycInfo = KycInfo().also {
+        it.person = Person()
+        it.metadata = DeviceMetadata()
+    }
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _personDataDto: PersonDataDto? = null
 
@@ -126,6 +129,10 @@ class KycInfoInMemoryDataSource {
         }
     }
 
+    fun updateIpAddress(ipAddress: String) {
+        kycInfo.metadata!!.ipAddress = ipAddress
+    }
+
     /**
      * Retains document pages' photos and stores them to map
      * Called from DocScanFragment.onStepSuccess()
@@ -138,13 +145,6 @@ class KycInfoInMemoryDataSource {
                     "\nlocation?.first: ${result.metadata.location?.first}" +
                     "\nlocation?.second: ${result.metadata.location?.second}"
             )
-
-//            // Prune the doc map of other type
-//            docPagesMap.forEach { entry ->
-//                if (entry.key.docType != docType) {
-//                    docPagesMap.remove(entry.key)
-//                }
-//            }
 
             val resultMap =
                     docPagesMap
@@ -239,9 +239,7 @@ class KycInfoInMemoryDataSource {
     fun updateKycLocation(resultLocation: Location) {
         lock.writeLock().lock()
         try {
-
-            kycInfo.metadata = DeviceMetadata()
-                    .apply { location = Pair(resultLocation.latitude, resultLocation.longitude) }
+            kycInfo.metadata!!.location = Pair(resultLocation.latitude, resultLocation.longitude)
         } finally {
             lock.writeLock().unlock()
         }
