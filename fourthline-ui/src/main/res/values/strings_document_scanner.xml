@@ -21,7 +21,6 @@
 
    <string name="document_scanner_scan_success">Picture successful</string>
    <string name="document_scanner_notice">If the document is clear and readable the app will automatically take a scan of the document. If the scan doesn’t complete you can still take a manual picture.</string>
-   <string name="document_scanner_clear_picture_title">Is the text on the picture clear and readable?</string>
-   <string name="document_scanner_clear_picture_message">If yes, press \"Confirm\" to continue, if not, press \"Retake\" to try again.</string>
+   <string name="document_scanner_clear_picture_title">Is the text on the picture clear and readable? If yes, press \"Confirm\" to continue, if not, press \"Retake\" to try again.</string>
    <string name="document_scanner_tilted_notice">Please tilt your document until holographic images become visible.</string>
 </resources>

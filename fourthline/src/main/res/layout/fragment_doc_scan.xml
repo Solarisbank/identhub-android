@@ -171,33 +171,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/bottomInfoRoot"
+    <TextView
+        android:id="@+id/bottomInfoText"
+        style="@style/IdentHubTextView.Small_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="@string/document_scanner_clear_picture_title"
         app:layout_constraintEnd_toStartOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="70dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/bottomInfoTitle"
-            style="@style/IdentHubTextView.HeadLine4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/document_scanner_clear_picture_title"/>
-
-        <TextView
-            android:id="@+id/bottomInfoSubtitle"
-            style="@style/IdentHubTextView.Small_14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/document_scanner_clear_picture_message"/>
-
-    </LinearLayout>
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resultButtonsRoot"

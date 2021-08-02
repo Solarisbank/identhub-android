@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,9 +60,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private var retakeButton: Button? = null
     private var confirmButton: Button? = null
     private var noticeRoot: ViewGroup? = null
-    private var bottomInfoRoot: View? = null
-    private var bottomInfoTitle: TextView? = null
-    private var bottomInfoSubtitle: TextView? = null
+    private var bottomInfoText: TextView? = null
     private var progressRoot: LinearLayout? = null
     private var resultRoot: LinearLayout? = null
 
@@ -70,6 +69,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private lateinit var currentDocumentType: DocumentType
 
     private var cleanupJob: Job? = null
+    private var showSnapshotJob: Job? = null
 
     private enum class UiState {
         SCANNING, INTERMEDIATE_RESULT
@@ -92,6 +92,8 @@ class DocScanFragment : DocumentScannerFragment() {
     }
 
     override fun onDestroyView() {
+        cleanupJob?.cancel()
+        showSnapshotJob?.cancel()
         documentMask = null
         takeSnapshot = null
         scanPreview = null
@@ -102,9 +104,7 @@ class DocScanFragment : DocumentScannerFragment() {
         retakeButton = null
         confirmButton = null
         noticeRoot = null
-        bottomInfoRoot = null
-        bottomInfoTitle = null
-        bottomInfoSubtitle = null
+        bottomInfoText = null
         progressRoot = null
         resultRoot = null
         super.onDestroyView()
@@ -150,9 +150,7 @@ class DocScanFragment : DocumentScannerFragment() {
             confirmButton = findViewById(R.id.confirmButton)
             confirmButton?.setOnClickListener { moveToNextStep() }
             noticeRoot = findViewById(R.id.noticeRoot)
-            bottomInfoRoot = findViewById(R.id.bottomInfoRoot)
-            bottomInfoTitle = findViewById(R.id.bottomInfoTitle)
-            bottomInfoSubtitle = findViewById(R.id.bottomInfoSubtitle)
+            bottomInfoText = findViewById(R.id.bottomInfoText)
             resultRoot = findViewById(R.id.resultRoot)
             progressRoot = findViewById(R.id.progressRoot)
             handleShortScreen()
@@ -287,7 +285,8 @@ class DocScanFragment : DocumentScannerFragment() {
             noticeRoot?.show()
             warningsLabel?.text = ""
             takeSnapshot?.hide()
-            lifecycleScope.launch(Dispatchers.Main) {
+            showSnapshotJob?.cancel()
+            showSnapshotJob = lifecycleScope.launch(Dispatchers.Main) {
                 delay(5000)
                 takeSnapshot?.show()
             }
@@ -297,15 +296,15 @@ class DocScanFragment : DocumentScannerFragment() {
             noticeRoot?.hide()
         }
         if (tilted) {
-            bottomInfoTitle?.text = getString(R.string.document_scanner_tilted_notice)
-            bottomInfoSubtitle?.text = ""
-            bottomInfoRoot?.show()
+            bottomInfoText?.text = getString(R.string.document_scanner_tilted_notice)
+            bottomInfoText?.show()
         } else {
-            bottomInfoRoot?.hide()
+            bottomInfoText?.hide()
         }
     }
 
     private fun updateUiForResult() {
+        showSnapshotJob?.cancel()
         stepLabel?.hide()
         takeSnapshot?.hide()
         scanPreview?.show()
@@ -313,9 +312,8 @@ class DocScanFragment : DocumentScannerFragment() {
         resultRoot?.show()
         progressRoot?.hide()
         noticeRoot?.hide()
-        bottomInfoTitle?.text = getString(R.string.document_scanner_clear_picture_title)
-        bottomInfoSubtitle?.text = getString(R.string.document_scanner_clear_picture_message)
-        bottomInfoRoot?.show()
+        bottomInfoText?.text = getString(R.string.document_scanner_clear_picture_title)
+        bottomInfoText?.show()
     }
 
     private fun handleShortScreen() {
@@ -325,7 +323,7 @@ class DocScanFragment : DocumentScannerFragment() {
             if (currentDocumentType == DocumentType.PASSPORT) {
                 noticeRoot?.findViewById<View>(R.id.noticeImage)?.visibility = View.INVISIBLE
                 noticeRoot?.findViewById<View>(R.id.noticeTitle)?.visibility = View.INVISIBLE
-                bottomInfoSubtitle?.hide()
+                bottomInfoText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }
         }
     }
