@@ -30,7 +30,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
 
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private lateinit var viewModel: IdentHubSessionViewModel
+    private var viewModel: IdentHubSessionViewModel? = null
     private val identHubObserverSubcomponent =
             IdentHubSessionComponent
                     .getInstance(fragmentActivity.applicationContext)
@@ -40,7 +40,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
     var sessionUrl: String? = null
         set(value) {
             field = value
-            viewModel.saveSessionId(value)
+            viewModel?.saveSessionId(value)
         }
 
     var receiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -78,7 +78,8 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
         identHubObserverSubcomponent.inject(this)
         initBroadcastReceiver()
         initViewModel()
-        viewModel.getInitializationStateLiveData().observe(fragmentActivity, { processInitializationStateResult(it) })
+        viewModel?.saveSessionId(sessionUrl)
+        viewModel?.getInitializationStateLiveData()?.observe(fragmentActivity, { processInitializationStateResult(it) })
     }
 
     private fun initBroadcastReceiver() {
@@ -92,7 +93,7 @@ class IdentHubSessionObserver(val fragmentActivity: FragmentActivity,
 
     fun obtainLocalIdentificationState() {
         Timber.d("obtainLocalIdentificationState")
-        viewModel.obtainLocalIdentificationState()
+        viewModel?.obtainLocalIdentificationState()
     }
 
     fun clearDataOnCompletion() {
