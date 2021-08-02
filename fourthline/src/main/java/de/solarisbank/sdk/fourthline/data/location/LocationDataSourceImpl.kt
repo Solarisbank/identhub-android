@@ -24,13 +24,18 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
                 )
                 .addOnCompleteListener { task: Task<Location> ->
                     Timber.d("getLocation() 00")
-                    if (task.isSuccessful) {
+                    if (task != null && task.isSuccessful && task.result != null) {
                         Timber.d("getLocation() 1")
                         val result: Location = task.result
                         subject.onSuccess(result)
+                    } else if (task == null || task.result == null) {
+                        Timber.d("getLocation() 2")
+                        subject.onError(NullPointerException("task or task result is null"))
                     } else {
-                        val exception = task.exception
-                        Timber.e(exception,"getLocation() 2")
+                        val exception =
+                            if (task != null && task.exception != null) task.exception
+                            else NullPointerException("Location task.exception is null")
+                        Timber.e(exception,"getLocation() 3")
                         subject.onError(exception)
                     }
                 }
