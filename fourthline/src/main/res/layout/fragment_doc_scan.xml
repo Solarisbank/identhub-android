@@ -213,10 +213,12 @@
         <View
             android:id="@+id/separator"
             android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_height="16dp"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="9dp"
             android:background="@drawable/separator_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
