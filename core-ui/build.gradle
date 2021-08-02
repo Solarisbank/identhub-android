@@ -19,14 +19,12 @@ android {
 
     buildTypes {
         debug {
-            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro',
                     'proguard-rules-test.pro'
         }
         release {
-            debuggable false
             minifyEnabled false
             zipAlignEnabled true
 //            todo check does proguard have influence on excluding the classes or
