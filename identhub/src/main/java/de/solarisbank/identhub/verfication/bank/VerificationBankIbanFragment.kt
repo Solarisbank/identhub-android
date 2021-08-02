@@ -5,11 +5,9 @@ import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
-import android.text.Spanned
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,6 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
@@ -96,7 +93,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                 showAlertFragment(
                         title = state.dialogTitle.getStringRes(),
                         message = state.dialogMessage.getStringRes(),
-                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        positiveLabel = getString(R.string.invalid_iban_ok_button),
                         positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
                         negativeLabel = if (state.retryAllowed) state.dialogNegativeLabel.getStringRes() else null,
                         negativeAction = if (state.retryAllowed) ({ retryInputIBan() }) else null,

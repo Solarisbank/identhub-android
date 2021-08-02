@@ -5,6 +5,7 @@
     <string name="fourthline_doc_scan_date_of_issue">Date of issue</string>
     <string name="fourthline_doc_scan_expiry_date">Document expiry date</string>
     <string name="fourthline_doc_scan_date_placeholder">Select</string>
+    <string name="fourthline_doc_scan_issue_future_error">Error, issuing date is in the future.</string>
     <string name="fourthline_doc_scan_date_past_error">Error, date of issue exceeds expiry date</string>
     <string name="fourthline_doc_scan_expiry_past_error">Error, expiry date expires in the past</string>
     <string name="fourthline_doc_scan_deriving_error">There was an error deriving the data</string>

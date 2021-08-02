@@ -97,7 +97,7 @@ class DocScanResultFragment : FourthlineFragment() {
         continueButton!!.setOnClickListener {
             val issueDate = issueDateTextInput!!.getDate()
             val expirationDate = expireDateTextInput!!.getDate()
-            val number = docNumberTextInput!!.text.toString()
+            val number = docNumberTextInput!!.text.toString().filter { !it.isWhitespace() }
             Timber.d("KycDocument data set" +
                     "\nissueDate: $issueDate" +
                     "\nexpirationDate $expirationDate" +
@@ -130,6 +130,11 @@ class DocScanResultFragment : FourthlineFragment() {
         val expiryDate = expireDateTextInput?.getDate() ?: return false
         var valid = true
         if (issueDate > expiryDate) {
+            issueDateError!!.setText(getString(R.string.fourthline_doc_scan_date_past_error))
+            issueDateError!!.visibility = View.VISIBLE
+            valid = false
+        } else if (issueDate > Date()) {
+            issueDateError!!.setText(getString(R.string.fourthline_doc_scan_issue_future_error))
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else {
