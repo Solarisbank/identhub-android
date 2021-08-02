@@ -62,8 +62,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/firstTick"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
             android:src="@drawable/ic_tick_blue"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
@@ -82,8 +82,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/secondTick"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
             android:src="@drawable/ic_tick_blue"
             app:layout_constraintStart_toStartOf="@+id/startGuideline"
