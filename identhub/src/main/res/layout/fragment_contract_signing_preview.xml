@@ -243,6 +243,7 @@
                 android:layout_marginStart="@dimen/margin_8"
                 android:text="@string/contract_signing_additional_terms_label"
                 android:visibility="invisible"
+                android:textColorLink="@color/ident_hub_color_light_grey"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/additionalTermsAndConditionsDot"

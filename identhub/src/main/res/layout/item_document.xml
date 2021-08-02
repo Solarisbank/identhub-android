@@ -16,7 +16,8 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/IdentHubTextView"
+        style="@style/IdentHubTextView.Small_12"
+        android:textColorLink="@color/ident_hub_color_light_grey"
         android:layout_width="wrap_content"
         android:paddingStart="@dimen/margin_8"
         android:paddingEnd="@dimen/margin_8"
