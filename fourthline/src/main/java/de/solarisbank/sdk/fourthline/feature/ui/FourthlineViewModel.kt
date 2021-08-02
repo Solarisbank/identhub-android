@@ -55,7 +55,17 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
     }
 
     fun navigateToKycUploadFragemnt() {
-        navigateTo(R.id.action_documentScanFragment_to_kycUploadFragment)
+        navigateTo(R.id.action_documentResultFragment_to_kycUploadFragment)
+    }
+
+    fun navigateToUploadResultFragment(nextStep: String? = null, identificationId: String? = null) {
+        navigateTo(
+            R.id.action_kycUploadFragment_to_uploadResultFragment,
+            Bundle().apply {
+                putString(NEXT_STEP_ARG, nextStep)
+                putString(IDENTIFICATION_ID, identificationId)
+            }
+        )
     }
 
     fun navigateToWeViewFragment(url: String) {
@@ -85,6 +95,11 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
 
     fun postDynamicNavigationNextStep(arguments: Bundle) {
         _navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, arguments))
+    }
+
+    companion object {
+        const val NEXT_STEP_ARG = "nextStepArg"
+        const val IDENTIFICATION_ID = "identificationId"
     }
 
 }

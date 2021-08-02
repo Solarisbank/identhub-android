@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -33,60 +34,71 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="30dp"/>
 
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
-        android:layout_width="@dimen/kyc_upload_progress_size"
-        android:layout_height="47.2dp"
+    <ImageView
+        android:id="@+id/resultImageView"
+        tools:visibility="visible"
+        android:layout_width="0dp"
+        android:layout_height="126dp"
+        android:src="@drawable/bank_success"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@+id/topGuideline"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         app:layout_constraintVertical_bias="0.5"
+        />
+    
+    <TextView
+        android:id="@+id/subtitle1"
+        style="@style/IdentHubTextView.Regular"
+        android:gravity="center_horizontal"
+        android:maxLines="4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/resultImageView"
+        app:layout_constraintBottom_toTopOf="@id/indicator"
+        android:text="@string/kyc_upload_success_title"
+        app:layout_constraintVertical_bias="0.1"
         />
 
     <ImageView
-        android:id="@+id/errorImage"
-        android:visibility="invisible"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/progressBar"
-        app:layout_constraintTop_toTopOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="@id/progressBar"
-        app:layout_constraintEnd_toEndOf="@id/progressBar"
-        android:src="@drawable/ic_error"
+        android:id="@+id/indicator"
+        android:layout_width="47.2dp"
+        android:layout_height="47.2dp"
+        android:src="@drawable/ic_done_round_blue"
+        android:adjustViewBounds="true"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintTop_toTopOf="@+id/topGuideline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/subtitle2"
         style="@style/IdentHubTextView.Regular"
-        android:gravity="center_horizontal"
         android:layout_width="0dp"
         android:maxLines="4"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        android:layout_marginTop="20dp"
-        android:text ="@string/kyc_upload_verification_subtitle_1"
-        />
-
-    <TextView
-        android:id="@+id/subtitle"
-        style="@style/IdentHubTextView.Regular"
-        android:layout_marginTop="@dimen/margin_16"
-        android:gravity="center_horizontal"
-        android:layout_width="0dp"
-        android:maxLines="4"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
+        app:layout_constraintTop_toBottomOf="@id/indicator"
+        app:layout_constraintBottom_toTopOf="@id/quitButton"
+        android:text="@string/kyc_upload_success_subtitle"
         app:layout_constraintVertical_bias="0.1"
-        android:text="@string/kyc_upload_verification_subtitle_2"
         />
+
+    <Button
+        android:id="@+id/quitButton"
+        style="@style/IdentHubPrimaryButton"
+        android:enabled="true"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_button_height"
+        android:layout_marginBottom="@dimen/margin_18"
+        android:text="@string/kyc_upload_success_button"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

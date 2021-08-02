@@ -118,7 +118,7 @@
         android:label="DocumentResultFragment"
         >
         <action
-            android:id="@+id/action_documentScanFragment_to_kycUploadFragment"
+            android:id="@+id/action_documentResultFragment_to_kycUploadFragment"
             app:destination="@id/kycUploadFragment" />
     </fragment>
 
@@ -128,6 +128,27 @@
         android:label="KycUploadFragment"
         >
 
+        <action
+            android:id="@+id/action_kycUploadFragment_to_uploadResultFragment"
+            app:destination="@id/uploadResultFragment">
+            <argument
+                android:name="nextStepArg"
+                app:argType="string"
+                android:defaultValue="@null"
+                app:nullable="true"/>
+            <argument
+                android:name="identificationId"
+                app:argType="string"
+                android:defaultValue="@null"
+                app:nullable="true"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/uploadResultFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultFragment"
+        android:label="UploadResultFragment"
+        >
     </fragment>
 
     <fragment

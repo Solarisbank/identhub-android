@@ -10,7 +10,8 @@
     <string name="failure_no_fraud_negative">Identifikation abbrechen</string>
 
     <string name="kyc_upload_verification_title">Verifizierung</string>
-    <string name="kyc_upload_verification_subtitle">Bitte warten Sie bis die Verifizierung Ihrer Daten abgeschlossen ist.\nDer Upload kann ein paar Minuten dauern.</string>
+    <string name="kyc_upload_verification_subtitle_1">Bitte warten Sie bis die Verifizierung Ihrer Daten abgeschlossen ist.</string>
+    <string name="kyc_upload_verification_subtitle_2">Der Upload kann ein paar Minuten dauern.</string>
     <string name="kyc_upload_verification_button">Weiter</string>
 
     <string name="kyc_upload_provider_error_title">Etwas ist schiefgelaufen...</string>

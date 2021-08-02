@@ -16,6 +16,7 @@ import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
+import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
@@ -35,6 +36,8 @@ class KycSharedViewModel(
         private val locationUseCase: LocationUseCase,
         private val ipObtainingUseCase: IpObtainingUseCase
         ): ViewModel() {
+
+    var kycURI: URI? = null
 
     private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
     val passingPossibilityLiveData = _personDataStateLiveData as LiveData<PersonDataStateDto>
@@ -129,8 +132,8 @@ class KycSharedViewModel(
         kycInfoUseCase.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    fun getKycUriZip(applicationContext: Context): URI? {
-        return kycInfoUseCase.getKycUriZip(applicationContext)
+    fun createKycZip(applicationContext: Context): ZipCreationStateDto {
+        return kycInfoUseCase.createKycZip(applicationContext)
     }
 
     fun updateIssueDate(issueDate: Date) {

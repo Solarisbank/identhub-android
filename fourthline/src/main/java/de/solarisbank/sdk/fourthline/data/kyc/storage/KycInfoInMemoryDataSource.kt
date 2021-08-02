@@ -112,7 +112,6 @@ class KycInfoInMemoryDataSource {
     fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         lock.writeLock().lock()
         try {
-
             Timber.d("updateKycWithSelfieScannerResult : " +
                     "\ntimestamp:${result.metadata.timestamp}" +
                     "\nlocation?.first: ${result.metadata.location?.first}" +

@@ -7,5 +7,6 @@ sealed class Type {
     object BadRequest : Type()
     object ServerError : Type()
     object UnprocessableEntity: Type()
+    object Conflict: Type()
     object Unknown : Type()
 }

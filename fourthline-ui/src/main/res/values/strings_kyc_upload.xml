@@ -10,7 +10,8 @@
     <string name="failure_no_fraud_negative">Quit</string>
 
     <string name="kyc_upload_verification_title">Verification</string>
-    <string name="kyc_upload_verification_subtitle">Please wait for the verification of your data.\nThe upload may take a couple of minutes.</string>
+    <string name="kyc_upload_verification_subtitle_1">Please wait for the verification of your data.</string>
+    <string name="kyc_upload_verification_subtitle_2">The upload may take a couple of minutes.</string>
     <string name="kyc_upload_verification_button">Continue</string>
 
     <string name="kyc_upload_provider_error_title">There was an error uploading your data</string>

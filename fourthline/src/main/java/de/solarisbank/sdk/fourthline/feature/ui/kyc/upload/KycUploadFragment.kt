@@ -12,19 +12,16 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.data.network.getErrorType
-import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity
-import de.solarisbank.sdk.core.result.Type
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService.Companion.KYC_ZIPPER_URI
 import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadServiceBinder
-import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadStatus
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -54,20 +51,16 @@ class KycUploadFragment : FourthlineFragment() {
         }
     }
 
-    private val uploadingObserver = Observer<KycUploadStatus> {
+    private val uploadingObserver = Observer<KycUploadStatusDto> {
         setUiState(it)
     }
 
     private var title: TextView? = null
     private var subtitle:  TextView? = null
     private var progressBar: ProgressBar? = null
-    private var resultImageView: ImageView? = null
-    private var submitButton: Button? = null
-
+    private var errorImage: ImageView? = null
     private var bound: Boolean = false
     private var binder: KycUploadServiceBinder? = null
-
-
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
@@ -79,8 +72,7 @@ class KycUploadFragment : FourthlineFragment() {
                     title = it.findViewById(R.id.title)
                     subtitle = it.findViewById(R.id.subtitle)
                     progressBar = it.findViewById(R.id.progressBar)
-                    resultImageView = it.findViewById(R.id.resultImageView)
-                    submitButton = it.findViewById(R.id.quitButton)
+                    errorImage = it.findViewById(R.id.errorImage)
                 }
     }
 
@@ -92,90 +84,47 @@ class KycUploadFragment : FourthlineFragment() {
         bindKycUploadService()
     }
 
-    private fun setUiState(status: KycUploadStatus) {
-        when(status) {
-            is KycUploadStatus.ProviderError -> {
-                showErrorAlert(status.isFraud)
+    private fun setUiState(statusDto: KycUploadStatusDto) {
+        val state = getUploadDataForStatus(statusDto)
+        Timber.d("setUiState: $state, $statusDto")
+        when (statusDto) {
+            is KycUploadStatusDto.ToNextStepSuccess -> {
+                activityViewModel.navigateToUploadResultFragment(nextStep = statusDto.nextStep)
             }
-            is KycUploadStatus.GenericError -> {
-                status.error?.let {
-                    showErrorAlertIfNeeded(it)
-                }
+             is KycUploadStatusDto.FinishIdentSuccess -> {
+                 activityViewModel.navigateToUploadResultFragment(identificationId = statusDto.id)
+             }
+            is KycUploadStatusDto.ProviderErrorNotFraud,
+            is KycUploadStatusDto.ProviderErrorFraud,
+            is KycUploadStatusDto.PreconditionsFailedError,
+            is KycUploadStatusDto.GenericError-> {
+                progressBar!!.visibility = View.INVISIBLE
+                errorImage!!.visibility = View.VISIBLE
+                title!!.visibility = View.INVISIBLE
+                subtitle!!.visibility = View.INVISIBLE
+                showAlertFragment(
+                    title = state.alertTitle,
+                    message = state.alertMessage,
+                    positiveLabel = state.positiveButtonLabel,
+                    negativeLabel = state.negativeButtonLabel,
+                    positiveAction = state.positiveAlertButtonAction!!,
+                    negativeAction = state.negativeAlertButtonAction
+                )
             }
-            else -> {}
         }
-
-        val state = getUploadDataForStatus(status)
-        Timber.d("setUiState: $state")
-
-        title!!.text = state.titleText
-        subtitle!!.text = state.subtitleText
-        submitButton!!.text = state.submitButtonLabel
-        resultImageView!!.setImageResource(state.uploadResultImageName.getDrawableRes())
-        resultImageView!!.visibility = if (state.isResultImageViewVisible) View.VISIBLE else View.GONE
-        progressBar!!.visibility = if (state.isProgressBarVisible) View.VISIBLE else View.INVISIBLE
-        submitButton!!.isEnabled = state.isSubmitButtonEnabled
-        submitButton!!.setOnClickListener { state.submitButtonAction!!.invoke() }
-    }
-
-    private fun showErrorAlert(isFraud: Boolean) {
-        if (isFraud) {
-            showAlertFragment(
-                    title = getString(R.string.failure_fraud_headline),
-                    message = getString(R.string.failure_fraud_message),
-                    positiveLabel = getString(R.string.failure_fraud_button),
-                    tag = TAG_FAILURE_FRAUD,
-                    positiveAction = { activityViewModel.resetFourthlineFlow() },
-                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() }
-            )
-        } else {
-            showAlertFragment(
-                    title = getString(R.string.failure_no_fraud_headline),
-                    message = getString(R.string.failure_no_fraud_message),
-                    positiveLabel = getString(R.string.failure_no_fraud_positive),
-                    negativeLabel = getString(R.string.failure_no_fraud_negative),
-                    tag = TAG_FAILURE_NO_FRAUD,
-                    positiveAction = { activityViewModel.resetFourthlineFlow() },
-                    negativeAction = { activityViewModel.setFourthlineIdentificationFailure() }
-            )
-        }
-    }
-
-    private fun showErrorAlertIfNeeded(throwable: Throwable) {
-        if (getErrorType(throwable) == Type.PreconditionFailed) {
-            //TODO Handle 412 Here
-        }
-    }
-
-    private fun String.getDrawableRes(): Int {
-        return requireContext().resources.getIdentifier(this, "drawable", requireContext().packageName)
-    }
-
-
-    private fun moveToNextStep(nextStep: String) {
-        Timber.d("moveToNextStep : ${nextStep}")
-        activityViewModel.postDynamicNavigationNextStep(
-                Bundle().apply { putString(NEXT_STEP_KEY, nextStep) }
-        )
     }
 
     private fun startKycUploadService() {
         Timber.d("startKycUploadService")
-        kycSharedViewModel.getKycUriZip(requireContext().applicationContext)?.let {
-            val intent = Intent(requireActivity(), KycUploadService::class.java)
-                    .apply {
-                        putExtra(KYC_ZIPPER_URI, it)
-                        putExtra(IdentHub.SESSION_URL_KEY, requireActivity().intent.getStringExtra(IdentHub.SESSION_URL_KEY))
-                    }
-            requireActivity().startService(intent)
-        }?: kotlin.run {
-            Timber.d("Can not obtain data for identification")
-            Toast.makeText(
-                    requireContext(),
-                    "Can not obtain data for identification",
-                    Toast.LENGTH_SHORT)
-                    .show()
-        }
+        val intent = Intent(requireActivity(), KycUploadService::class.java)
+                .apply {
+                    putExtra(KYC_ZIPPER_URI, kycSharedViewModel.kycURI!!)
+                    putExtra(
+                        IdentHub.SESSION_URL_KEY,
+                        requireActivity().intent.getStringExtra(IdentHub.SESSION_URL_KEY)
+                    )
+                }
+        requireActivity().startService(intent)
     }
 
     private fun bindKycUploadService() {
@@ -191,91 +140,57 @@ class KycUploadFragment : FourthlineFragment() {
         title = null
         subtitle = null
         progressBar = null
-        resultImageView = null
-        submitButton = null
+        errorImage = null
         super.onDestroyView()
     }
 
     data class UploadViewState(
-        val titleText: String,
-        val subtitleText: String,
-        val submitButtonLabel: String,
-        val uploadResultImageName: String,
-        val isResultImageViewVisible: Boolean,
-        val isProgressBarVisible: Boolean,
-        val submitButtonActionSendsResult: Boolean,
-        val submitButtonActionResetsFlow: Boolean,
-        val isSubmitButtonEnabled: Boolean,
-        val submitButtonAction: (() -> Unit)?,
+        val alertTitle: String,
+        val alertMessage: String,
+        val positiveButtonLabel: String,
+        val negativeButtonLabel: String? = null,
+        val positiveAlertButtonAction: (() -> Unit)?,
+        val negativeAlertButtonAction: (() -> Unit)? = null
     )
 
-    private fun getUploadDataForStatus(uploadStatus: KycUploadStatus): UploadViewState {
-        return when (uploadStatus) {
-            is KycUploadStatus.FinishIdentSuccess -> UploadViewState(
-                    titleText = getString(R.string.kyc_upload_success_title),
-                    subtitleText = getString(R.string.kyc_upload_success_subtitle),
-                    submitButtonLabel = getString(R.string.kyc_upload_success_button),
-                    uploadResultImageName = "ic_upload_successful",
-                    isResultImageViewVisible = true,
-                    isProgressBarVisible = false,
-                    submitButtonActionSendsResult = true,
-                    submitButtonActionResetsFlow = false,
-                    isSubmitButtonEnabled = true,
-                    submitButtonAction = { activityViewModel.setFourthlineIdentificationSuccessful(uploadStatus.id) }
-                )
-            is KycUploadStatus.ToNextStepSuccess -> UploadViewState(
-                    titleText = getString(R.string.kyc_upload_to_next_title),
-                    subtitleText = getString(R.string.kyc_upload_to_next_subtitle),
-                    submitButtonLabel = getString(R.string.kyc_upload_to_next_button),
-                    uploadResultImageName = "ic_upload_successful",
-                    isResultImageViewVisible = true,
-                    isProgressBarVisible = false,
-                    submitButtonActionSendsResult = true,
-                    submitButtonActionResetsFlow = false,
-                    isSubmitButtonEnabled = true,
-                    submitButtonAction = { moveToNextStep(uploadStatus.nextStep) }
+    private fun getUploadDataForStatus(uploadStatusDto: KycUploadStatusDto): UploadViewState {
+        return when (uploadStatusDto) {
+            is KycUploadStatusDto.FinishIdentSuccess -> UploadViewState(
+                alertTitle = getString(R.string.kyc_upload_success_title),
+                alertMessage = getString(R.string.kyc_upload_success_subtitle),
+                positiveButtonLabel = getString(R.string.kyc_upload_success_button),
+                positiveAlertButtonAction = null,
+                negativeAlertButtonAction = null
             )
-            is KycUploadStatus.Uploading -> UploadViewState(
-                    titleText = getString(R.string.kyc_upload_verification_title),
-                    subtitleText = getString(R.string.kyc_upload_verification_subtitle),
-                    submitButtonLabel = getString(R.string.kyc_upload_verification_button),
-                    uploadResultImageName = "ic_upload_failed",
-                    isResultImageViewVisible = false,
-                    isProgressBarVisible = true,
-                    submitButtonActionSendsResult = false,
-                    submitButtonActionResetsFlow = false,
-                    isSubmitButtonEnabled = false,
-                    submitButtonAction = null
-                )
-            is KycUploadStatus.ProviderError -> UploadViewState(
-                    titleText = getString(R.string.kyc_upload_provider_error_title),
-                    subtitleText = getString(R.string.kyc_upload_provider_error_subtitle),
-                    submitButtonLabel = getString(R.string.kyc_upload_provider_error_button),
-                    uploadResultImageName = "ic_upload_failed",
-                    isResultImageViewVisible = true,
-                    isProgressBarVisible = false,
-                    submitButtonActionSendsResult = false,
-                    submitButtonActionResetsFlow = true,
-                    isSubmitButtonEnabled = true,
-                    submitButtonAction =  { activityViewModel.resetFourthlineFlow() }
+            is KycUploadStatusDto.ToNextStepSuccess -> UploadViewState(
+                alertTitle = getString(R.string.kyc_upload_to_next_title),
+                alertMessage = getString(R.string.kyc_upload_to_next_subtitle),
+                positiveButtonLabel = getString(R.string.kyc_upload_to_next_button),
+                positiveAlertButtonAction = null,
+                negativeAlertButtonAction = null
             )
-            is KycUploadStatus.GenericError -> UploadViewState(
-                    titleText = getString(R.string.kyc_upload_generic_error_title),
-                    subtitleText = getString(R.string.kyc_upload_generic_error_subtitle),
-                    submitButtonLabel = getString(R.string.kyc_upload_generic_error_button),
-                    uploadResultImageName = "ic_upload_failed",
-                    isResultImageViewVisible = true,
-                    isProgressBarVisible = false,
-                    submitButtonActionSendsResult = false,
-                    submitButtonActionResetsFlow = true,
-                    isSubmitButtonEnabled = true,
-                    submitButtonAction =  { activityViewModel.setFourthlineIdentificationFailure() }
+            is KycUploadStatusDto.ProviderErrorNotFraud -> UploadViewState(
+                alertTitle = getString(R.string.failure_no_fraud_headline),
+                alertMessage = getString(R.string.failure_no_fraud_message),
+                positiveButtonLabel = getString(R.string.failure_no_fraud_positive),
+                negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
+                positiveAlertButtonAction =  { activityViewModel.resetFourthlineFlow() },
+                negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
+            )
+            is KycUploadStatusDto.ProviderErrorFraud -> UploadViewState(
+                alertTitle = getString(R.string.failure_fraud_headline),
+                alertMessage = getString(R.string.failure_fraud_message),
+                positiveButtonLabel = getString(R.string.failure_fraud_button),
+                positiveAlertButtonAction =  { activityViewModel.setFourthlineIdentificationFailure() }
+            )
+            is KycUploadStatusDto.GenericError, is KycUploadStatusDto.PreconditionsFailedError -> UploadViewState(
+                alertTitle = getString(R.string.kyc_upload_generic_error_title),
+                alertMessage = getString(R.string.kyc_upload_generic_error_subtitle),
+                positiveButtonLabel = getString(R.string.kyc_upload_generic_error_button),
+                negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
+                positiveAlertButtonAction =  { activityViewModel.resetFourthlineFlow() },
+                negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
         }
-    }
-
-    companion object {
-        const val TAG_FAILURE_FRAUD = "FailureFraud"
-        const val TAG_FAILURE_NO_FRAUD = "FailureNoFraud"
     }
 }

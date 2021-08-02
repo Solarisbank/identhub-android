@@ -14,6 +14,7 @@ import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
@@ -102,11 +103,18 @@ class DocScanResultFragment : FourthlineFragment() {
                     "\nissueDate: $issueDate" +
                     "\nexpirationDate $expirationDate" +
                     "\nnumber $number")
+
             if (issueDate != null && expirationDate != null && !number.isNullOrBlank()) {
                 kycSharedViewModel.updateIssueDate(issueDate)
                 kycSharedViewModel.updateExpireDate(expirationDate)
                 kycSharedViewModel.updateDocumentNumber(number)
-                activityViewModel.navigateToKycUploadFragemnt()
+                val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
+                if (kycCreationState is ZipCreationStateDto.SUCCESS) {
+                    kycSharedViewModel.kycURI = kycCreationState.uri
+                    activityViewModel.navigateToKycUploadFragemnt()
+                } else {
+                    showGenericAlertFragment {  }
+                }
             } else {
                 showGenericAlertFragment {  }
             }

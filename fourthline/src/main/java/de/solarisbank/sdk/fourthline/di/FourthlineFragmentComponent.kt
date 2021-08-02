@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.fourthline.di
 
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultFragment
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
 import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragment
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment
@@ -32,6 +33,8 @@ interface FourthlineFragmentComponent {
     fun inject(kycUploadFragment: KycUploadFragment)
 
     fun inject(passingPossibilityFragment: PassingPossibilityFragment)
+
+    fun inject(uploadResultFragment: UploadResultFragment)
 
     interface Factory {
         fun create(): FourthlineFragmentComponent

@@ -16,8 +16,8 @@ import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
+import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import timber.log.Timber
-import java.net.URI
 import java.util.*
 
 class KycInfoUseCase(
@@ -117,6 +117,7 @@ class KycInfoUseCase(
                 "\n contactsValidationError : $contactsValidationError" +
                 "\n addressValidationError : $addressValidationError"
         )
+
         return documentValidationError.isNullOrEmpty()
                 && personValidationError.isNullOrEmpty()
                 && providerValidationError.isNullOrEmpty()
@@ -127,13 +128,13 @@ class KycInfoUseCase(
                 && addressValidationError.isNullOrEmpty()
     }
 
-    fun getKycUriZip(applicationContext: Context): URI? {
+    fun createKycZip(applicationContext: Context): ZipCreationStateDto {
         val kycInfo = kycInfoRepository.getKycInfo()
         Timber.d("getKycUriZip : $kycInfo")
-        var uri: URI? = null
+        var zipCreationStateDto: ZipCreationStateDto = ZipCreationStateDto.ERROR
         if (validateFycInfo(kycInfo)) {
             try {
-                uri = Zipper().createZipFile(kycInfo, applicationContext)
+                zipCreationStateDto = ZipCreationStateDto.SUCCESS(Zipper().createZipFile(kycInfo, applicationContext))
             } catch (zipperError: ZipperError) {
                 when (zipperError) {
                     ZipperError.KycNotValid -> Timber.d("Error in kyc object")
@@ -143,8 +144,8 @@ class KycInfoUseCase(
                 }
             }
         }
-        Timber.d("uri: $uri")
-        return uri
+        Timber.d("uri: $zipCreationStateDto")
+        return zipCreationStateDto
     }
 
 }

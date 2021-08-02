@@ -53,6 +53,8 @@ import de.solarisbank.sdk.fourthline.domain.location.LocationUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivityInjector
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultFragment
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragment
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragment
@@ -298,6 +300,10 @@ class FourthlineComponent private constructor(
 
             override fun inject(passingPossibilityFragment: PassingPossibilityFragment) {
                 PassingPossibilityFragmentInjector.injectAssistedViewModelFactory(passingPossibilityFragment, assistedViewModelFactoryProvider.get())
+            }
+
+            override fun inject(uploadResultFragment: UploadResultFragment) {
+                UploadResultFragmentInjector.injectAssistedViewModelFactory(uploadResultFragment, assistedViewModelFactoryProvider.get())
             }
 
         }

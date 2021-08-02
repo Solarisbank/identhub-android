@@ -35,6 +35,7 @@ fun getErrorType(throwable: Throwable): Type {
             HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
             HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
             HttpURLConnection.HTTP_PRECON_FAILED -> Type.PreconditionFailed
+            HttpURLConnection.HTTP_CONFLICT -> Type.Conflict
             UNPROCESSABLE_ENTITY -> Type.UnprocessableEntity
             else -> Type.Unknown
         }
