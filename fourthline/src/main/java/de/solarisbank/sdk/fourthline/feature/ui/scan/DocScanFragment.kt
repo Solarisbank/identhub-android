@@ -120,7 +120,13 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun getConfig(): DocumentScannerConfig {
         Timber.d("getConfig()")
-        return DocumentScannerConfig(currentDocumentType, true, false, true, MrzValidationPolicy.STRONG)
+        return DocumentScannerConfig(
+            type = currentDocumentType,
+            includeAngledSteps = true,
+            debugModeEnabled = false,
+            shouldRecordVideo = true,
+            mrzValidationPolicy = MrzValidationPolicy.STRONG
+        )
     }
 
     override fun getOverlayView(): View? {

@@ -79,7 +79,12 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun getConfig(): SelfieScannerConfig {
-        return SelfieScannerConfig(false, shouldRecordVideo = false, includeManualSelfiePolicy = false, livenessCheckType = LivenessCheckType.HEAD_TURN)
+        return SelfieScannerConfig(
+            debugModeEnabled = false,
+            shouldRecordVideo = true,
+            includeManualSelfiePolicy = false,
+            livenessCheckType = LivenessCheckType.HEAD_TURN
+        )
     }
 
     override fun getFaceDetectionArea(): Rect {
