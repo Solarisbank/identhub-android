@@ -65,6 +65,12 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun show(manager: FragmentManager, tag: String?) {
+        val ft = manager.beginTransaction()
+        ft.add(this, tag)
+        ft.commitAllowingStateLoss()
+    }
+
     companion object {
         const val TAG = "AlertDialog"
 
