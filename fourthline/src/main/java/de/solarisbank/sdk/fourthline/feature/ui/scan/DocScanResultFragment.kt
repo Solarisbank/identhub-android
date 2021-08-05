@@ -17,7 +17,7 @@ import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputEditText
+import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import timber.log.Timber
 import java.util.*
@@ -36,9 +36,9 @@ class DocScanResultFragment : FourthlineFragment() {
 
     private var title: TextView? = null
     private var docNumberTextInput: EditText? = null
-    private var issueDateTextInput: DateInputEditText? = null
+    private var issueDateTextInput: DateInputTextView? = null
     private var issueDateError: TextView? = null
-    private var expireDateTextInput: DateInputEditText? = null
+    private var expireDateTextInput: DateInputTextView? = null
     private var expiryDateError: TextView? = null
     private var continueButton: Button? = null
 

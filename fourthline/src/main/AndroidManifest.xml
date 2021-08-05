@@ -6,19 +6,22 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application tools:node="merge">
+        
         <activity
             android:name="de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity"
             android:theme="@style/IdentHubTheme"
             android:screenOrientation="portrait"
             android:exported="false"
-            >
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
+
         <service android:name="de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService"
             android:exported="false"
             android:foregroundServiceType="location">
         </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 </manifest>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="IdentHubDateField" parent="Widget.AppCompat.EditText">
+    <style name="IdentHubDateField" parent="IdentHubTextView">
         <item name="android:background">@drawable/date_field_drawable</item>
         <item name="android:textColor">@color/ident_hub_color_base</item>
         <item name="android:gravity">center</item>
