@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="30dp"/>
+        app:layout_constraintGuide_end="16dp"/>
 
     <ImageView
         android:id="@+id/resultImageView"
@@ -83,22 +83,21 @@
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/indicator"
-        app:layout_constraintBottom_toTopOf="@id/quitButton"
         android:text="@string/kyc_upload_success_subtitle"
         app:layout_constraintVertical_bias="0.1"
         />
 
     <Button
         android:id="@+id/quitButton"
-        style="@style/IdentHubPrimaryButton"
-        android:enabled="true"
-        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/default_button_height"
-        android:layout_marginBottom="@dimen/margin_18"
-        android:text="@string/kyc_upload_success_button"
-        app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
-        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline" />
-
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:text="@string/fourthline_doc_scan_continue_button"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
