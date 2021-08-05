@@ -23,7 +23,7 @@
 
         <provider
             android:name=".feature.provider.IdentHubFileProvider"
-            android:authorities="de.solarisbank.identhub.provider"
+            android:authorities="${applicationId}.de.solarisbank.identhub.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

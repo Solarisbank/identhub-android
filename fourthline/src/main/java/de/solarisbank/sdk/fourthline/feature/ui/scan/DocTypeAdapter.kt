@@ -1,6 +1,5 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,6 @@ class DocTypeAdapter(private val isDocTypeDelectedCallback: ((AppliedDocument?) 
     private val documentTypes: MutableList<AppliedDocument> = mutableListOf()
     private var selectedDocumentTypeIndex = -1
 
-    private lateinit var context: Context
-
     fun getSelectedDocType(): AppliedDocument {
         return documentTypes[selectedDocumentTypeIndex]
     }
@@ -28,13 +25,12 @@ class DocTypeAdapter(private val isDocTypeDelectedCallback: ((AppliedDocument?) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocTypeViewHolder {
-        context = parent.context
-        return DocTypeViewHolder( LayoutInflater.from(context).inflate(R.layout.view_id_doc_type_holder, parent, false))
+        return DocTypeViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.view_id_doc_type_holder, parent, false))
     }
 
     override fun onBindViewHolder(holder: DocTypeViewHolder, position: Int) {
         val documentType: AppliedDocument = documentTypes[position]
-        holder.textView.text = documentType.asString(context)
+        holder.textView.text = documentType.asString(holder.textView.context)
         holder.typeRadioButton.isChecked = position == selectedDocumentTypeIndex
         holder.typeRadioButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
