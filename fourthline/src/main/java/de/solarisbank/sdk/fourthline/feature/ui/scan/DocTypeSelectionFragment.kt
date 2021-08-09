@@ -1,13 +1,16 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
@@ -44,6 +47,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Timber.d("onCreateView")
         return inflater.inflate(R.layout.fragment_doc_type_selection, container, false).also {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
@@ -76,7 +80,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     private fun processState(personDataStateDto: PersonDataStateDto) {
-        Timber.d("processState 0")
+        Timber.d("processState 0 : ${personDataStateDto}")
         when (personDataStateDto) {
             is PersonDataStateDto.UPLOADING -> {
                 Timber.d("processState 1")
@@ -99,13 +103,50 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         tag = "DocScanError"
                 )
             }
-            is PersonDataStateDto.GENERIC_ERROR -> {
+            is PersonDataStateDto.LOCATION_FETCHING_ERROR, is PersonDataStateDto.NETWORK_NOT_ENABLED_ERROR -> {
                 Timber.d("processState 3")
+                progressBar!!.visibility = View.INVISIBLE
+                showAlertFragment(
+                    //todo add trasnlation
+                    title = getString(R.string.location_fetching_error_title),
+                    message = getString(R.string.location_fetching_error_message),
+                    positiveLabel = getString(R.string.retry_button),
+                    negativeLabel = getString(R.string.quit_location_button),
+                    positiveAction = {
+                        fetchData()
+                    },
+                    negativeAction = {
+                        activityViewModel.setFourthlineIdentificationFailure()
+                    }
+
+                )
+            }
+            is PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR -> {
+                showAlertFragment(
+                    //todo add trasnlation
+                    title = getString(R.string.location_not_active_title),
+                    message = getString(R.string.location_not_active_message),
+                    positiveLabel = getString(R.string.enable_location_button),
+                    negativeLabel = getString(R.string.quit_location_button),
+                    positiveAction = {
+                        requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            processState(PersonDataStateDto.RETRY_LOCATION_FETCHING)
+                        }, 1000)
+                    },
+                    negativeAction = {
+                        activityViewModel.setFourthlineIdentificationFailure()
+                    }
+
+                )
+            }
+            is PersonDataStateDto.GENERIC_ERROR -> {
+                Timber.d("processState 4")
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
                         title = getString(R.string.generic_error_title),
                         message = getString(R.string.generic_error_message),
-                        positiveLabel = getString(R.string.ok_button),
+                        positiveLabel = getString(R.string.quit_location_button),
                         positiveAction = {
                             activityViewModel.setFourthlineIdentificationFailure()
                         }

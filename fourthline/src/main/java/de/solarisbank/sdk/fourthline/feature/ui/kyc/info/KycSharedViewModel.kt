@@ -14,16 +14,19 @@ import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.fourthline.data.dto.LocationDto
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import de.solarisbank.sdk.fourthline.domain.toPersonDataStateDto
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.net.URI
 import java.util.*
@@ -43,8 +46,13 @@ class KycSharedViewModel(
     val passingPossibilityLiveData = _personDataStateLiveData as LiveData<PersonDataStateDto>
     private val _supportedDocLiveData = MutableLiveData<PersonDataStateDto>()
     val supportedDocLiveData = _supportedDocLiveData as LiveData<PersonDataStateDto>
+    private val locationBehaviorSubject = BehaviorSubject.create<Unit>()
 
     private val compositeDisposable = CompositeDisposable()
+
+    init {
+        subscribeLocationStates()
+    }
 
     fun getKycDocument(): Document {
         return kycInfoUseCase.getKycDocument()
@@ -96,24 +104,39 @@ class KycSharedViewModel(
         )
     }
 
+    private fun subscribeLocationStates() {
+        compositeDisposable.add(
+            locationBehaviorSubject.switchMap {
+                locationUseCase.getLocation().subscribeOn(Schedulers.io()).toObservable()
+                    .doOnNext {
+                        Timber.d("subscribeLocationStates() 0, doOnNext")
+                        when (it) {
+                            is LocationDto.SUCCESS -> {
+                                Timber.d("fetchPersonDataAndLocation() 1")
+                                kycInfoUseCase.updateKycLocation(it.location)
+                                _supportedDocLiveData.postValue(_personDataStateLiveData.value)
+                            }
+                            else -> {
+                                Timber.d("fetchPersonDataAndLocation() 2")
+                                _supportedDocLiveData.postValue(it.toPersonDataStateDto())
+                            }
+                        }
+                    }
+                    .doOnError {
+                        Timber.d("fetchPersonDataAndLocation() 3")
+                        _supportedDocLiveData.postValue(PersonDataStateDto.LOCATION_FETCHING_ERROR)
+                    }
+            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
+    }
+
+
     fun fetchPersonDataAndLocation() {
         Timber.d("fetchPersonDataAndLocation() 0")
-        compositeDisposable.add(
-                locationUseCase.getLocation()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                {
-                                    Timber.d("fetchPersonDataAndLocation() 1")
-                                    kycInfoUseCase.updateKycLocation(it)
-                                    _supportedDocLiveData.value = _personDataStateLiveData.value
-                                },
-                                {
-                                    Timber.d("fetchPersonDataAndLocation() 2")
-                                    _supportedDocLiveData.value = PersonDataStateDto.GENERIC_ERROR
-                                }
-                        )
-        )
+        locationBehaviorSubject.onNext(Unit)
     }
 
     fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
