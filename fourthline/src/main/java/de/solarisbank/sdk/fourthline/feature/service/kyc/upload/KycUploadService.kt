@@ -6,9 +6,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import de.solarisbank.identhub.data.entity.NavigationalResult
@@ -212,7 +210,7 @@ class KycUploadService : Service(), NextStepSelector {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Timber.e("pollKycProcessingResult(), 3")
+                    Timber.d("pollKycProcessingResult(), 3")
                     isRunning = false
                     killService()
                 },{ throwable ->
@@ -225,8 +223,10 @@ class KycUploadService : Service(), NextStepSelector {
     }
 
     private fun killService() {
-        stopForeground(true)
-        stopSelf()
+        Handler(Looper.getMainLooper()).postDelayed({
+            stopForeground(true)
+            stopSelf()
+        }, 2000)
     }
 
     override fun onBind(intent: Intent?): IBinder {
