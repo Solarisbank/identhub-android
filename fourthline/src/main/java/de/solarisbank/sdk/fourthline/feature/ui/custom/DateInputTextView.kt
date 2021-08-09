@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.format.DateFormat
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import timber.log.Timber
 import java.util.*
@@ -45,7 +46,6 @@ class DateInputTextView : AppCompatTextView {
             time = expireDate
             add(Calendar.YEAR, subtractYears)
         }
-//        updateLabel()
     }
 
     private fun showDialog() {
@@ -79,6 +79,7 @@ class DateInputTextView : AppCompatTextView {
         calendar?.let {
             val datePickerDialog = DatePickerDialog(
                 context,
+                R.style.IdentHubDatePickerStyle,
                 dateListener,
                 calendar!!.get(Calendar.YEAR),
                 calendar!!.get(Calendar.MONTH),
@@ -89,6 +90,10 @@ class DateInputTextView : AppCompatTextView {
             }
             datePickerDialog.setCanceledOnTouchOutside(false)
             datePickerDialog.show()
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+                .setTextColor(resources.getColor(R.color.ident_hub_color_secondary))
+            datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.ident_hub_color_secondary))
         }
     }
 

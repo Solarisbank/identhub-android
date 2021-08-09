@@ -58,4 +58,10 @@
     <color name="ident_hub_step_enabled_inner_background">#FF252525</color>
     <color name="ident_hub_step_enabled_text_color">#FFFAFAFA</color>
 
+    <!--date picker-->
+    <color name="ident_hub_date_picker_color_background">#F7F8FA</color>
+    <color name="ident_hub_date_picker_text_color_primary">#3284FF</color>
+    <color name="ident_hub_date_picker_text_color_secondary">#3284FF</color>
+    <color name="ident_hub_date_picker_text_color_calendar">#3284FF</color>
+
 </resources>
