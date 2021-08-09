@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fourthline_welcome_container_title">Next, take a selfie</string>
+    <string name="fourthline_welcome_container_title">Next, take a selfie.</string>
     <string name="fourthline_welcome_container_first_tick">The app will recognise your face.</string>
     <string name="fourthline_welcome_container_second_tick">Prove your liveness by following the instructions on the screen.</string>
     <string name="fourthline_welcome_container_description">Make sure there is enough lighting for your selfie. If you wear glasses make sure there is no glare.</string>

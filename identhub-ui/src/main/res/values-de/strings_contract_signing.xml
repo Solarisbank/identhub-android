@@ -1,5 +1,6 @@
 <resources>
-    <string name="contract_signing_preview_title">Fast fertig! Bitte unterzeichnen Sie Ihren Antrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
+    <string name="contract_signing_preview_title">Fast fertig!</string>
+    <string name="contract_signing_preview_subtitle">Bitte unterzeichnen Sie Ihren Kartenantrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
     <string name="contract_signing_preview_description" />
     <string name="contract_signing_preview_description2" />
     <string name="contract_signing_preview_description3" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fourthline_welcome_container_title">Als nächstes, machen sie ein Selfie (Foto)</string>
+    <string name="fourthline_welcome_container_title">Als nächstes, machen sie ein Selfie (Foto).</string>
     <string name="fourthline_welcome_container_first_tick">Die App wird Ihr Gesicht erkennen.</string>
     <string name="fourthline_welcome_container_second_tick">Beweisen Sie Ihre Lebendigkeit in dem Sie den Instruktionen auf dem Bildschirm folgen.</string>
     <string name="fourthline_welcome_container_description">Stellen Sie sicher, dass Sie genug Licht haben. Wenn Sie eine Brille tragen achten Sie darauf, dass diese nicht spiegelt.</string>

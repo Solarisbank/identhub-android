@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="IdentHubTheme" parent="Theme.AppCompat.DayNight">
+    <style name="IdentHubBaseTheme" parent="Theme.AppCompat.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/ident_hub_color_primary</item>
         <item name="color">@color/ident_hub_color_primaryVariant</item>
@@ -9,5 +9,9 @@
         <item name="colorSecondary">@color/ident_hub_color_secondary</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
         <item name="actionBarStyle">@style/actionBarStyle</item>
+    </style>
+
+    <style name="IdentHubTheme" parent="@style/IdentHubBaseTheme">
+
     </style>
 </resources>
