@@ -162,16 +162,45 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private val ibanTextValidator = object : TextWatcher {
+        private var lastChangedText: String = ""
+        private var locked: Boolean = false
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            submitButton!!.isEnabled = !ibanNumber!!.text.isNullOrEmpty() && ibanNumber!!.text.length >= MIN_IBAN_LENGTH
+            submitButton!!.isEnabled = ibanNumber!!.text.toString().replace(" ", "").length >= MIN_IBAN_LENGTH
         }
 
         override fun afterTextChanged(s: Editable?) {
-
+            if (locked || s == null) {
+                return
+            }
+            locked = true
+            if (lastChangedText.length > s.length) {
+                var differIndex = -1
+                for (index in lastChangedText.indices) {
+                    if (index >= s.length || s[index] != lastChangedText[index]) {
+                        differIndex = index
+                        break
+                    }
+                }
+                if (lastChangedText[differIndex] == ' ') {
+                    s.delete(differIndex - 1, differIndex)
+                }
+            }
+            var i = 0
+            while (i < s.length) {
+                if ((i + 1) % 5 != 0 && s[i] == ' ')  {
+                    s.delete(i, i + 1)
+                } else if ((i + 1) % 5 == 0 && s[i] != ' ') {
+                    s.insert(i, " ")
+                }
+                i++
+            }
+            lastChangedText = s.toString()
+            locked = false
         }
 
     }
