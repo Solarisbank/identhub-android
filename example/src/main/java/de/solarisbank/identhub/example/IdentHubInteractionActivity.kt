@@ -21,14 +21,14 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         setContentView(view)
         Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
-                .apply {
-                    onCompletionCallback(
-                            fragmentActivity = this@IdentHubInteractionActivity,
-                            successCallback = this@IdentHubInteractionActivity::onSuccess,
-                            errorCallback = this@IdentHubInteractionActivity::onFailure
-                    )
-                    onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
-                }
+            .apply {
+                onCompletionCallback(
+                    fragmentActivity = this@IdentHubInteractionActivity,
+                    successCallback = this@IdentHubInteractionActivity::onSuccess,
+                    errorCallback = this@IdentHubInteractionActivity::onFailure
+                )
+                onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
+            }
 
         binding.button.setOnClickListener { identHubSession.start() }
         binding.resumeButton.setOnClickListener { identHubSession.resume() }

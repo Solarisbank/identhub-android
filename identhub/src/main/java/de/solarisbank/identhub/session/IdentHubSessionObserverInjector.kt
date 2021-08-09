@@ -20,7 +20,7 @@ class IdentHubSessionObserverInjector(
 //                ,
 //                saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>
         ) {
-            instance.viewModelFactory = assistedViewModelFactory.create(instance.fragmentActivity, null)
+            instance.viewModelFactory = assistedViewModelFactory.create(instance.fragmentActivity!!, null)
         }
     }
 }

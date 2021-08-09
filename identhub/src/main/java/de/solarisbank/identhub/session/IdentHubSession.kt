@@ -44,12 +44,11 @@ class IdentHubSession(val sessionUrlString: String) {
 
         if (MAIN_PROCESS == null) {
             MAIN_PROCESS = IdentHubSessionObserver(
-                fragmentActivity,
                 ::onResultSuccess,
                 ::onResultFailure
             )
         }
-        fragmentActivity.lifecycle.addObserver(MAIN_PROCESS!!)
+        MAIN_PROCESS?.fragmentActivity = fragmentActivity
         MAIN_PROCESS?.sessionUrl = sessionUrlString
     }
 
