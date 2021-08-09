@@ -117,66 +117,10 @@
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/noticeRoot"
+    <de.solarisbank.sdk.core.view.BulletListLayout
+        android:id="@+id/bulletList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="68dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/noticeImage"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:src="@drawable/ic_info"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@string/fourthline_terms_notice_title"/>
-
-        <TextView
-            android:id="@+id/noticeTitle"
-            style="@style/IdentHubTextView.Small_13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fourthline_terms_notice_title"
-            app:layout_constraintStart_toEndOf="@+id/noticeImage"
-            app:layout_constraintTop_toTopOf="@+id/noticeImage"
-            app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
-            android:layout_marginStart="@dimen/margin_4" />
-
-        <TextView
-            android:id="@+id/noticeDot"
-            style="@style/IdentHubTextView.Small_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="\u2022"
-            app:layout_constraintStart_toStartOf="@+id/noticeImage"
-            app:layout_constraintEnd_toEndOf="@+id/noticeImage"
-            app:layout_constraintTop_toBottomOf="@+id/noticeImage"
-            android:layout_marginTop="@dimen/margin_8"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/termsText"
-            style="@style/IdentHubTextView.Small_12"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/noticeTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/noticeDot"
-            android:text="@string/document_scanner_notice"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/bottomInfoText"
-        style="@style/IdentHubTextView.Small_16"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/document_scanner_clear_picture_title"
         app:layout_constraintEnd_toStartOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -228,6 +172,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/separator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/tiltingCard"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintTop_toBottomOf="@id/documentMask"
+        app:layout_constraintBottom_toTopOf="@+id/takeSnapshot"
+        android:padding="20dp"
+        android:cropToPadding="false"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/takeSnapshot"

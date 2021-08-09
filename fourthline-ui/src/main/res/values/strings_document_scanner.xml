@@ -20,7 +20,14 @@
    <string name="document_scanner_main_text_picture">Please take a %1$spicture of the %2$s of your identification document.</string>
 
    <string name="document_scanner_scan_success">Picture successful</string>
-   <string name="document_scanner_notice">If the document is clear and readable the app will automatically take a scan of the document. If the scan doesn’t complete you can still take a manual picture.</string>
-   <string name="document_scanner_clear_picture_title">Is the text on the picture clear and readable? If yes, press \"Confirm\" to continue, if not, press \"Retake\" to try again.</string>
-   <string name="document_scanner_tilted_notice">Please tilt your document until holographic images become visible.</string>
+
+   <string name="document_scanner_auto_scan_list_title">Automatic scan</string>
+   <string name="document_scanner_auto_scan_list_item1">If the document is clear and readable the app will automatically take a scan</string>
+   <string name="document_scanner_auto_scan_list_item2">If it doesn\'t work do a manual scan</string>
+
+   <string name="document_scanner_clear_picture_list_title">Does everything look good?</string>
+   <string name="document_scanner_clear_picture_list_item1">Is the text readable?</string>
+   <string name="document_scanner_clear_picture_list_item2">Is nothing covering the picture?</string>
+   <string name="document_scanner_clear_picture_list_item3">Are all corners in the picture?</string>
+
 </resources>

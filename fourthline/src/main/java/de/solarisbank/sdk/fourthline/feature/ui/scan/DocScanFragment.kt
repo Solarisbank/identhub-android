@@ -1,17 +1,18 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
+import android.animation.AnimatorInflater
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -21,6 +22,7 @@ import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.document.*
 import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.core.view.BulletListLayout
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
@@ -43,11 +45,12 @@ class DocScanFragment : DocumentScannerFragment() {
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
+            .get(FourthlineViewModel::class.java)
     }
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
+    private val kycSharedViewModel: KycSharedViewModel by lazy {
+        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)
+            .get(KycSharedViewModel::class.java)
     }
 
     private var documentMask: AppCompatImageView? = null
@@ -59,10 +62,10 @@ class DocScanFragment : DocumentScannerFragment() {
     private var punchhole: PunchholeView? = null
     private var retakeButton: Button? = null
     private var confirmButton: Button? = null
-    private var noticeRoot: ViewGroup? = null
-    private var bottomInfoText: TextView? = null
     private var progressRoot: LinearLayout? = null
     private var resultRoot: LinearLayout? = null
+    private var tiltingCard: ImageView? = null
+    private var bulletList: BulletListLayout? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -70,10 +73,6 @@ class DocScanFragment : DocumentScannerFragment() {
 
     private var cleanupJob: Job? = null
     private var showSnapshotJob: Job? = null
-
-    private enum class UiState {
-        SCANNING, INTERMEDIATE_RESULT
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate")
@@ -103,10 +102,10 @@ class DocScanFragment : DocumentScannerFragment() {
         punchhole = null
         retakeButton = null
         confirmButton = null
-        noticeRoot = null
-        bottomInfoText = null
         progressRoot = null
         resultRoot = null
+        tiltingCard = null
+        bulletList = null
         super.onDestroyView()
     }
 
@@ -141,8 +140,8 @@ class DocScanFragment : DocumentScannerFragment() {
         with(view) {
             documentMask = findViewById(R.id.documentMask)
             when (currentDocumentType) {
-                DocumentType.PASSPORT -> documentMask!!.setImageResource(R.drawable.ic_passport_front_success_frame)
-                DocumentType.ID_CARD -> documentMask!!.setImageResource(R.drawable.ic_idcard_front_success_frame)
+                DocumentType.PASSPORT -> documentMask?.setImageResource(R.drawable.ic_passport_front_success_frame)
+                DocumentType.ID_CARD -> documentMask?.setImageResource(R.drawable.ic_idcard_front_success_frame)
             }
             takeSnapshot = findViewById(R.id.takeSnapshot)
             takeSnapshot?.setOnClickListener { takeSnapshot() }
@@ -155,20 +154,20 @@ class DocScanFragment : DocumentScannerFragment() {
             retakeButton?.setOnClickListener { resetCurrentStep() }
             confirmButton = findViewById(R.id.confirmButton)
             confirmButton?.setOnClickListener { moveToNextStep() }
-            noticeRoot = findViewById(R.id.noticeRoot)
-            bottomInfoText = findViewById(R.id.bottomInfoText)
             resultRoot = findViewById(R.id.resultRoot)
             progressRoot = findViewById(R.id.progressRoot)
+            tiltingCard = findViewById(R.id.tiltingCard)
+            bulletList = findViewById(R.id.bulletList)
             handleShortScreen()
             onLayoutMeasuredOnce {
-                punchhole!!.punchholeRect = getDocumentDetectionArea()
-                punchhole!!.postInvalidate()
+                punchhole?.punchholeRect = getDocumentDetectionArea()
+                punchhole?.postInvalidate()
             }
         }
     }
 
     override fun getDocumentDetectionArea(): Rect {
-        Timber.d("getDocumentDetectionArea() ${documentMask}")
+        Timber.d("getDocumentDetectionArea() $documentMask")
         return Rect(
                 documentMask!!.left,
                 documentMask!!.top,
@@ -185,7 +184,8 @@ class DocScanFragment : DocumentScannerFragment() {
                 isScan = step.isScan(currentDocumentType),
                 tilted = step.isAngled,
                 maskDrawable = step.findMaskDrawable(requireContext()),
-                stepText = step.asString(currentDocumentType, requireContext())
+                stepText = step.asString(currentDocumentType, requireContext()),
+                tiltingResource = step.getTiltingResource(currentDocumentType)
             )
             punchhole?.punchholeRect = getDocumentDetectionArea()
             punchhole?.postInvalidate()
@@ -222,6 +222,19 @@ class DocScanFragment : DocumentScannerFragment() {
         return ContextCompat.getDrawable(context, frameResource)
     }
 
+    private fun DocumentScannerStep.getTiltingResource(docType: DocumentType): Int {
+        return when(docType) {
+            DocumentType.PASSPORT -> R.drawable.ic_tilting_passport
+            else -> {
+                when (fileSide) {
+                    DocumentFileSide.FRONT -> R.drawable.ic_tilting_card_front
+                    DocumentFileSide.BACK -> R.drawable.ic_tilting_card_back
+                    else -> R.drawable.ic_tilting_card_front
+                }
+            }
+        }
+    }
+
     override fun onWarnings(warnings: List<DocumentScannerStepWarning>) {
         Timber.d("onWarnings")
         cleanupJob?.cancel()
@@ -239,14 +252,11 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun onStepSuccess(result: DocumentScannerStepResult) {
         Timber.d("onStepSuccess: ${step?.fileSide?.name}")
+
         cleanupJob?.cancel()
-        if(SHOW_INTERMEDIATR_RESULTS) {
-            lifecycleScope.launch(Dispatchers.Main) {
-                showIntermediateResult(result.image.cropped)
-                kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, result)
-            }
-        } else {
-            moveToNextStep()
+        lifecycleScope.launch(Dispatchers.Main) {
+            showIntermediateResult(result.image.cropped)
+            kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, result)
         }
     }
 
@@ -278,7 +288,8 @@ class DocScanFragment : DocumentScannerFragment() {
     private fun updateUiForScanning(isScan: Boolean,
                                     tilted: Boolean,
                                     maskDrawable: Drawable?,
-                                    stepText: String)
+                                    stepText: String,
+                                    tiltingResource: Int)
     {
         documentMask?.setImageDrawable(maskDrawable)
         resultRoot?.hide()
@@ -288,7 +299,6 @@ class DocScanFragment : DocumentScannerFragment() {
         resultButtons?.hide()
         if (isScan) {
             progressRoot?.show()
-            noticeRoot?.show()
             warningsLabel?.text = ""
             takeSnapshot?.hide()
             showSnapshotJob?.cancel()
@@ -296,16 +306,24 @@ class DocScanFragment : DocumentScannerFragment() {
                 delay(5000)
                 takeSnapshot?.show()
             }
+            bulletList?.updateItems(
+                title = getString(R.string.document_scanner_auto_scan_list_title),
+                items = listOf(
+                    getString(R.string.document_scanner_auto_scan_list_item1),
+                    getString(R.string.document_scanner_auto_scan_list_item2)
+                )
+            )
+            bulletList?.show()
         } else {
             takeSnapshot?.show()
             progressRoot?.hide()
-            noticeRoot?.hide()
+            bulletList?.hide()
         }
         if (tilted) {
-            bottomInfoText?.text = getString(R.string.document_scanner_tilted_notice)
-            bottomInfoText?.show()
+            tiltingCard?.setImageResource(tiltingResource)
+            toggleTiltingCard(true)
         } else {
-            bottomInfoText?.hide()
+            toggleTiltingCard(false)
         }
     }
 
@@ -317,20 +335,37 @@ class DocScanFragment : DocumentScannerFragment() {
         resultButtons?.show()
         resultRoot?.show()
         progressRoot?.hide()
-        noticeRoot?.hide()
-        bottomInfoText?.text = getString(R.string.document_scanner_clear_picture_title)
-        bottomInfoText?.show()
+        toggleTiltingCard(false)
+        bulletList?.updateItems(
+            title = getString(R.string.document_scanner_clear_picture_list_title),
+            items = listOf(
+                getString(R.string.document_scanner_clear_picture_list_item1),
+                getString(R.string.document_scanner_clear_picture_list_item2),
+                getString(R.string.document_scanner_clear_picture_list_item3)
+            )
+        )
+        bulletList?.show()
+    }
+
+    private fun toggleTiltingCard(show: Boolean) {
+        if (show) {
+            tiltingCard?.rotationX = 0f
+            tiltingCard?.show()
+            (AnimatorInflater.loadAnimator(requireContext(), R.animator.card_tilt) as ObjectAnimator)
+                .apply {
+                    target = tiltingCard
+                    start()
+                }
+        } else {
+            tiltingCard?.hide()
+            tiltingCard?.clearAnimation()
+        }
     }
 
     private fun handleShortScreen() {
         if (isScreenShort(requireContext())) {
             resultRoot?.orientation = LinearLayout.HORIZONTAL
             progressRoot?.orientation = LinearLayout.HORIZONTAL
-            if (currentDocumentType == DocumentType.PASSPORT) {
-                noticeRoot?.findViewById<View>(R.id.noticeImage)?.visibility = View.INVISIBLE
-                noticeRoot?.findViewById<View>(R.id.noticeTitle)?.visibility = View.INVISIBLE
-                bottomInfoText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-            }
         }
     }
 
@@ -341,10 +376,6 @@ class DocScanFragment : DocumentScannerFragment() {
 
     companion object {
         const val DOC_TYPE_KEY = "DOC_TYPE_KEY"
-        const val TYPE_PASSPORT = 1
-        const val TYPE_ID = 2
-
-        private val SHOW_INTERMEDIATR_RESULTS = true
     }
 
 }
