@@ -105,6 +105,7 @@
             <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
                 android:id="@+id/issueDateTextInput"
                 style="@style/IdentHubDateField"
+                android:focusable="false"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_4"
@@ -146,6 +147,7 @@
             <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
                 android:id="@+id/expireDateTextInput"
                 style="@style/IdentHubDateField"
+                android:focusable="false"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_4"
