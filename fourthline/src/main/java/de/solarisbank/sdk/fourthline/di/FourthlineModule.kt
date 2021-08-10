@@ -8,10 +8,12 @@ import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 
@@ -29,6 +31,10 @@ class FourthlineModule {
 
     fun provideWelcomeSharedViewModel(savedStateHandle: SavedStateHandle): WelcomeSharedViewModel {
         return WelcomeSharedViewModel(savedStateHandle)
+    }
+
+    fun provideKycUploadViewModel(kycUploadUseCase: KycUploadUseCase): KycUploadViewModel {
+        return KycUploadViewModel(kycUploadUseCase)
     }
 
     fun provideFourthlineViewModel(

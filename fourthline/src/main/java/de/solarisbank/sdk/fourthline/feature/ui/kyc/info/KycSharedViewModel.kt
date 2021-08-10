@@ -37,7 +37,7 @@ class KycSharedViewModel(
         private val personDataUseCase: PersonDataUseCase,
         private val kycInfoUseCase: KycInfoUseCase,
         private val locationUseCase: LocationUseCase,
-        private val ipObtainingUseCase: IpObtainingUseCase
+        private val ipObtainingUseCase: IpObtainingUseCase,
         ): ViewModel() {
 
     var kycURI: URI? = null

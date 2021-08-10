@@ -1,31 +1,24 @@
 package de.solarisbank.sdk.fourthline.feature.ui.kyc.upload
 
-import android.app.Service
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
-import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService
-import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService.Companion.KYC_ZIPPER_URI
-import de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadServiceBinder
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import timber.log.Timber
+import java.io.File
 
 class KycUploadFragment : FourthlineFragment() {
 
@@ -38,17 +31,8 @@ class KycUploadFragment : FourthlineFragment() {
         ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
     }
 
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            bound = true
-            this@KycUploadFragment.binder = (service as KycUploadServiceBinder)
-            this@KycUploadFragment.binder!!.uploadingStatus.observe(this@KycUploadFragment, uploadingObserver)
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            binder?.uploadingStatus?.removeObserver(uploadingObserver)
-            bound = false
-        }
+    private val kycUploadViewModel: KycUploadViewModel by lazy<KycUploadViewModel> {
+        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycUploadViewModel::class.java]
     }
 
     private val uploadingObserver = Observer<KycUploadStatusDto> {
@@ -60,7 +44,6 @@ class KycUploadFragment : FourthlineFragment() {
     private var progressBar: ProgressBar? = null
     private var errorImage: ImageView? = null
     private var bound: Boolean = false
-    private var binder: KycUploadServiceBinder? = null
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
@@ -78,10 +61,8 @@ class KycUploadFragment : FourthlineFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!isServiceRunning(requireContext())) {
-            startKycUploadService()
-        }
-        bindKycUploadService()
+        kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner, uploadingObserver)
+        kycUploadViewModel.uploadKyc(File(kycSharedViewModel.kycURI!!))
     }
 
     private fun setUiState(statusDto: KycUploadStatusDto) {
@@ -114,29 +95,7 @@ class KycUploadFragment : FourthlineFragment() {
         }
     }
 
-    private fun startKycUploadService() {
-        Timber.d("startKycUploadService")
-        val intent = Intent(requireActivity(), KycUploadService::class.java)
-                .apply {
-                    putExtra(KYC_ZIPPER_URI, kycSharedViewModel.kycURI!!)
-                    putExtra(
-                        IdentHub.SESSION_URL_KEY,
-                        requireActivity().intent.getStringExtra(IdentHub.SESSION_URL_KEY)
-                    )
-                }
-        requireActivity().startService(intent)
-    }
-
-    private fun bindKycUploadService() {
-        requireActivity().bindService(
-                Intent(requireActivity(), KycUploadService::class.java),
-                serviceConnection,
-                Service.BIND_ADJUST_WITH_ACTIVITY
-        )
-    }
-
     override fun onDestroyView() {
-        binder?.uploadingStatus?.removeObserver(uploadingObserver)
         title = null
         subtitle = null
         progressBar = null

@@ -14,11 +14,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <service android:name="de.solarisbank.sdk.fourthline.feature.service.kyc.upload.KycUploadService"
-            android:exported="false"
-            android:foregroundServiceType="location">
-        </service>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
