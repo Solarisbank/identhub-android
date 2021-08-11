@@ -22,16 +22,16 @@ class PersonDataUseCase(
         sessionUrlLocalDataSource.store(sessionUrl.formatSessionUrl())
 
         return fourthlineIdentificationRepository.getLastSavedLocalIdentification()
-                .map {
-                    entity -> if (entity.nextStep != null && isIdentificationIdCreationRequired(entity)) {
+            .map { entity ->
+                if (isIdentificationIdCreationRequired(entity)) {
                     return@map passFourthlineIdentificationCreation().blockingGet()
                 } else {
                     return@map entity.id
                 }
-                }
-                .onErrorResumeNext { passFourthlineIdentificationCreation() }
-                .flatMap { fourthlineIdentificationRepository.getPersonData(it) }
-                .map { NavigationalResult<PersonDataDto>(it) }
+            }
+            .onErrorResumeNext { passFourthlineIdentificationCreation() }
+            .flatMap { fourthlineIdentificationRepository.getPersonData(it) }
+            .map { NavigationalResult<PersonDataDto>(it) }
     }
 
     fun String.formatSessionUrl(): String {

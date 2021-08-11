@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import de.solarisbank.identhub.contract.ContractActivity
 import de.solarisbank.identhub.data.entity.Identification
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.FOURTHLINE_FLOW_ACTIVITY_ACTION
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
@@ -54,18 +53,16 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
     }
 }
 
-fun isIdentificationIdCreationRequired(dto: IdentificationDto): Boolean {
-    return isIdentificationIdCreationRequired(method = dto.method, nextStep = dto.nextStep)
-}
-
 fun isIdentificationIdCreationRequired(entity: Identification): Boolean {
     return isIdentificationIdCreationRequired(method = entity.method, nextStep = entity.nextStep)
 }
 
 fun isIdentificationIdCreationRequired(method: String?, nextStep: String?): Boolean {
-    return if (method == METHOD.BANK_ID.strValue && nextStep != null && nextStep!!.contains(METHOD.BANK_ID.strValue)) {
+    val hasBankIdNextStep = nextStep?.contains(METHOD.BANK_ID.strValue) == true
+    val hasBankNextStep = nextStep?.contains(METHOD.BANK.strValue) == true
+    return if (method == METHOD.BANK_ID.strValue && hasBankIdNextStep) {
         return false
-    } else if (method == METHOD.BANK.strValue && nextStep != null && !nextStep!!.contains(METHOD.BANK_ID.strValue) && nextStep!!.contains(METHOD.BANK.strValue)){
+    } else if (method == METHOD.BANK.strValue && !hasBankIdNextStep && hasBankNextStep) {
         return false
     } else {
         true

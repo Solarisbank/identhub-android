@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.webkit.WebMessageCompat
@@ -21,6 +20,7 @@ import androidx.webkit.WebViewFeature
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_DIRECTION
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel
 import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.result.Result
@@ -90,8 +90,12 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                                 positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
                                 negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
                                 positiveAction = {
-                                    Timber.d("Quit IdentHub SDK after back button pressed")
+                                    Timber.d("Quit IdentHub SDK after abort button pressed")
                                     sharedViewModel?.cancelIdentification()
+                                },
+                                negativeAction = {
+                                    Timber.d("Switch to Fourthline after abort button pressed")
+                                    sharedViewModel?.postDynamicNavigationNextStep(NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination)
                                 }
                             )
                         }
