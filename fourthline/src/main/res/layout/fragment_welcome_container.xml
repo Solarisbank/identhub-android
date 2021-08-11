@@ -8,163 +8,164 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_above="@+id/buttonLayout">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/startGuideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/margin_24" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/endGuideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/margin_24" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/topGuideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="16dp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_selfie"
-            app:layout_constraintStart_toStartOf="@id/startGuideline"
-            app:layout_constraintEnd_toEndOf="@id/endGuideline"
-            app:layout_constraintTop_toTopOf="@id/topGuideline"
-            />
-
-        <TextView
-            android:id="@+id/welcomeTitle"
-            style="@style/IdentHubTextView.Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16"
-            android:text="@string/fourthline_welcome_container_title"
-            app:layout_constraintEnd_toEndOf="@id/endGuideline"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@id/image" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/firstTick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16"
-            android:src="@drawable/ic_tick_blue"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeTitle" />
-
-        <TextView
-            android:id="@+id/firstTickInfo"
-            style="@style/IdentHubTextView.Regular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/fourthline_welcome_container_first_tick"
-            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-            app:layout_constraintStart_toEndOf="@+id/firstTick"
-            app:layout_constraintTop_toTopOf="@+id/firstTick"
-            android:layout_marginStart="@dimen/margin_12"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/secondTick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12"
-            android:src="@drawable/ic_tick_blue"
-            app:layout_constraintStart_toStartOf="@+id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/firstTickInfo" />
-
-        <TextView
-            android:id="@+id/secondTickInfo"
-            style="@style/IdentHubTextView.Regular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/fourthline_welcome_container_second_tick"
-            app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-            app:layout_constraintStart_toEndOf="@+id/secondTick"
-            app:layout_constraintTop_toTopOf="@+id/secondTick"
-            android:layout_marginStart="@dimen/margin_12"/>
-
-        <TextView
-            android:id="@+id/description"
-            style="@style/IdentHubTextView.Regular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16"
-            android:text="@string/fourthline_welcome_container_description"
-            app:layout_constraintEnd_toEndOf="@id/endGuideline"
-            app:layout_constraintStart_toStartOf="@id/startGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/secondTickInfo"/>
+        android:layout_above="@+id/buttonLayout"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/noticeRoot"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_24"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            app:layout_constraintStart_toStartOf="@id/startGuideline"
-            app:layout_constraintEnd_toEndOf="@id/endGuideline">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/noticeImage"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ic_info"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:contentDescription="@string/fourthline_terms_notice_title"/>
-
-            <TextView
-                android:id="@+id/noticeTitle"
-                style="@style/IdentHubTextView.Small_13"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fourthline_terms_notice_title"
-                app:layout_constraintStart_toEndOf="@+id/noticeImage"
-                app:layout_constraintTop_toTopOf="@+id/noticeImage"
-                app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
-                android:layout_marginStart="@dimen/margin_4" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_24" />
 
-            <TextView
-                android:id="@+id/noticeDot"
-                style="@style/IdentHubTextView.Small_12"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\u2022"
-                app:layout_constraintStart_toStartOf="@+id/noticeImage"
-                app:layout_constraintEnd_toEndOf="@+id/noticeImage"
-                app:layout_constraintTop_toBottomOf="@+id/noticeImage"
-                android:layout_marginTop="@dimen/margin_8"
-                android:textAlignment="center" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_24" />
 
-            <TextView
-                android:id="@+id/termsText"
-                style="@style/IdentHubTextView.Small_12"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@+id/noticeTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/noticeDot"
-                android:text="@string/fourthline_welcome_container_notice"/>
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_selfie"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toTopOf="@id/topGuideline" />
+
+            <TextView
+                android:id="@+id/welcomeTitle"
+                style="@style/IdentHubTextView.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/fourthline_welcome_container_title"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/image" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/firstTick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_4"
+                android:layout_marginTop="@dimen/margin_16"
+                android:src="@drawable/ic_tick_blue"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/welcomeTitle" />
+
+            <TextView
+                android:id="@+id/firstTickInfo"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_12"
+                android:text="@string/fourthline_welcome_container_first_tick"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+                app:layout_constraintStart_toEndOf="@+id/firstTick"
+                app:layout_constraintTop_toTopOf="@+id/firstTick" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/secondTick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:paddingTop="@dimen/margin_4"
+                android:src="@drawable/ic_tick_blue"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/firstTickInfo" />
+
+            <TextView
+                android:id="@+id/secondTickInfo"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_12"
+                android:text="@string/fourthline_welcome_container_second_tick"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+                app:layout_constraintStart_toEndOf="@+id/secondTick"
+                app:layout_constraintTop_toTopOf="@+id/secondTick" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/fourthline_welcome_container_description"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/secondTickInfo" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noticeRoot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
+                <ImageView
+                    android:id="@+id/noticeImage"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/fourthline_terms_notice_title"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/noticeTitle"
+                    style="@style/IdentHubTextView.Small_13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_4"
+                    android:text="@string/fourthline_terms_notice_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
+                    app:layout_constraintStart_toEndOf="@+id/noticeImage"
+                    app:layout_constraintTop_toTopOf="@+id/noticeImage" />
+
+                <TextView
+                    android:id="@+id/noticeDot"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="\u2022"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/noticeImage"
+                    app:layout_constraintStart_toStartOf="@+id/noticeImage"
+                    app:layout_constraintTop_toBottomOf="@+id/noticeImage" />
+
+                <TextView
+                    android:id="@+id/termsText"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fourthline_welcome_container_notice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/noticeDot" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <LinearLayout
         android:id="@+id/buttonLayout"
