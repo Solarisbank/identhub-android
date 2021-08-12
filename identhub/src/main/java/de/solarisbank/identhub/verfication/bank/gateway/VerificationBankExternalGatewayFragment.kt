@@ -85,10 +85,10 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                         Timber.d("Message from JavaScript received: %s", message?.data)
                         if (message?.data == "abort") {
                             showAlertFragment(
-                                title = getString(R.string.identity_dialog_quit_process_title),
-                                message = getString(R.string.identity_dialog_quit_process_message),
+                                title = getString(R.string.identity_dialog_fallback_process_title),
+                                message = getString(R.string.identity_dialog_fallback_process_message),
                                 positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
-                                negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
+                                negativeLabel = getString(R.string.identity_dialog_fallback_process_negative_button),
                                 positiveAction = {
                                     Timber.d("Quit IdentHub SDK after abort button pressed")
                                     sharedViewModel?.cancelIdentification()
