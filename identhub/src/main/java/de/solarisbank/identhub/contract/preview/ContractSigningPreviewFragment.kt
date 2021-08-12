@@ -39,11 +39,11 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
     private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
 
-    private lateinit var documentsList: RecyclerView
-    private lateinit var submitButton: Button
-    private lateinit var termsAndConditionsString: TextView
-    private lateinit var additionalTermsAndConditionsDot: TextView
-    private lateinit var additionalTermsAndConditionsString: TextView
+    private var documentsList: RecyclerView? = null
+    private var submitButton: Button? = null
+    private var termsAndConditionsString: TextView? = null
+    private var additionalTermsAndConditionsDot: TextView? = null
+    private var additionalTermsAndConditionsString: TextView? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -75,10 +75,10 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                 { onDocumentActionClicked(it) },
                 { onDocumentActionError(it) }
         )
-        documentsList.layoutManager = LinearLayoutManager(context)
-        documentsList.setHasFixedSize(true)
-        documentsList.adapter = adapter
-        submitButton.setOnClickListener { sharedViewModel.navigateToContractSigningProcess() }
+        documentsList!!.layoutManager = LinearLayoutManager(context)
+        documentsList!!.setHasFixedSize(true)
+        documentsList!!.adapter = adapter
+        submitButton!!.setOnClickListener { sharedViewModel.navigateToContractSigningProcess() }
     }
 
     private fun observeIdentification() {
@@ -88,20 +88,20 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private fun onIdentification(result: Result<Identification>) {
         if (result.succeeded) {
             if (result.data!!.method == "bank_id") {
-                termsAndConditionsString.setText(R.string.contract_signing_terms_bank_id_label)
+                termsAndConditionsString!!.setText(R.string.contract_signing_terms_bank_id_label)
             } else if (result.data!!.method == "bank") {
-                termsAndConditionsString.setText(R.string.contract_signing_terms_bank_ident_label)
+                termsAndConditionsString!!.setText(R.string.contract_signing_terms_bank_ident_label)
             }
             val link = getString(R.string.contract_signing_additional_terms_link)
             if (link.isNotBlank()) {
                 Timber.d("onIdentification(): link %s", link)
-                additionalTermsAndConditionsString.visibility = VISIBLE
-                additionalTermsAndConditionsDot.visibility = VISIBLE
+                additionalTermsAndConditionsString!!.visibility = VISIBLE
+                additionalTermsAndConditionsDot!!.visibility = VISIBLE
                 val label = getString(R.string.contract_signing_additional_terms_label)
                 val additionalTermsSpannable = SpannableString(label)
                 additionalTermsSpannable.setSpan(URLSpan(link), 0, label.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                additionalTermsAndConditionsString.text = additionalTermsSpannable
-                additionalTermsAndConditionsString.movementMethod = LinkMovementMethod()
+                additionalTermsAndConditionsString!!.text = additionalTermsSpannable
+                additionalTermsAndConditionsString!!.movementMethod = LinkMovementMethod()
             }
         }
     }
@@ -158,6 +158,11 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
 
     override fun onDestroyView() {
         clickDisposable.dispose()
+        documentsList = null
+        submitButton = null
+        termsAndConditionsString = null
+        additionalTermsAndConditionsDot = null
+        additionalTermsAndConditionsString = null
         super.onDestroyView()
     }
 

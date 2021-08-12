@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
-import androidx.webkit.WebMessagePortCompat.*
+import androidx.webkit.WebMessagePortCompat.WebMessageCallbackCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat.createWebMessageChannel
 import androidx.webkit.WebViewCompat.postWebMessage
@@ -22,7 +22,6 @@ import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_DIRECTION
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel
-import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.result.Result
 import timber.log.Timber
 
@@ -30,6 +29,7 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
     private var sharedViewModel: VerificationBankViewModel? = null
     private var verificationBankExternalGateViewModel: VerificationBankExternalGateViewModel? = null
     private var webView: WebView? = null
+
     override fun inject(component: FragmentComponent) {
         component.inject(this)
     }
@@ -166,6 +166,11 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
         } else if (result is Result.Error) {
             Timber.d("Could not find verification result")
         }
+    }
+
+    override fun onDestroyView() {
+        webView = null
+        super.onDestroyView()
     }
 
     companion object {

@@ -12,7 +12,7 @@ import de.solarisbank.sdk.core.activityViewModels
 
 class VerificationBankIntroFragment : IdentHubFragment() {
     private val sharedViewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { activityViewModels() }
-    private lateinit var startVerifyButton: Button
+    private var startVerifyButton: Button? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_verification_bank_intro, container, false)
@@ -26,10 +26,15 @@ class VerificationBankIntroFragment : IdentHubFragment() {
     }
 
     private fun initViews() {
-        startVerifyButton.setOnClickListener { sharedViewModel.navigateToVerficationBankIban() }
+        startVerifyButton!!.setOnClickListener { sharedViewModel.navigateToVerficationBankIban() }
     }
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
+    }
+
+    override fun onDestroyView() {
+        startVerifyButton = null
+        super.onDestroyView()
     }
 }

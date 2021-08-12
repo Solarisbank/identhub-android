@@ -60,6 +60,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     }
 
     override fun onDestroyView() {
+        termsText = null
         submitButton = null
         super.onDestroyView()
     }

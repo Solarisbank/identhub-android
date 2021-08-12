@@ -212,6 +212,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         ibanInputErrorLabel = null
         progressBar = null
         submitButton = null
+        secondDescription = null
         super.onDestroyView()
     }
 
