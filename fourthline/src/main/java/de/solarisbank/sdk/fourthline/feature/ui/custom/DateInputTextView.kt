@@ -45,6 +45,7 @@ class DateInputTextView : AppCompatTextView {
         calendar = Calendar.getInstance().apply {
             time = expireDate
             add(Calendar.YEAR, subtractYears)
+            add(Calendar.DAY_OF_MONTH, 1)
         }
     }
 

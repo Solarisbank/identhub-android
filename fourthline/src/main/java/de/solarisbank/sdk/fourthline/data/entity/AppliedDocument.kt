@@ -11,7 +11,7 @@ enum class AppliedDocument(val isSupported: Boolean = true) : Serializable {
     PASSPORT,
     NATIONAL_ID_CARD,
     FRENCH_ID_CARD(false),
-    PAPER_ID,
+    PAPER_ID(false),
     RESIDENCE_PERMIT(false),
     DRIVING_LICENSE(false),
     DUTCH_DRIVERS_LICENCE(false)
