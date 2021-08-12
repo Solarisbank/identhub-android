@@ -43,7 +43,6 @@ class KycUploadFragment : FourthlineFragment() {
     private var subtitle:  TextView? = null
     private var progressBar: ProgressBar? = null
     private var errorImage: ImageView? = null
-    private var bound: Boolean = false
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)

@@ -59,6 +59,8 @@ import de.solarisbank.sdk.fourthline.data.location.LocationDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.location.LocationRepository
 import de.solarisbank.sdk.fourthline.data.location.LocationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.network.IdentificationIdInterceptor
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
@@ -105,6 +107,7 @@ class FourthlineComponent private constructor(
 ) {
 
     private lateinit var applicationContextProvider: Provider<Context>
+    private lateinit var deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
     private lateinit var identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
     private lateinit var identificationDaoProvider: Provider<IdentificationDao>
 
@@ -178,6 +181,7 @@ class FourthlineComponent private constructor(
             IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
         identityInitializationRepositoryProvider = DoubleCheck.provider(
             IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
+        deleteKycInfoUseCaseProvider = DeleteKycInfoUseCaseFactory.create(applicationContextProvider)
         kycInfoInMemoryDataSourceProvider = KycInfoInMemoryDataSourceFactory.create()
         kycInfoRepositoryProvider = KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider)
         kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider, kycInfoRepositoryProvider)
@@ -232,7 +236,7 @@ class FourthlineComponent private constructor(
         kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, identificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(
             kycUploadRepositoryProvider,
-            sessionUrlRepositoryProvider,
+            deleteKycInfoUseCaseProvider,
             identificationPollingStatusUseCaseProvider,
             identityInitializationRepositoryProvider
             )
@@ -287,7 +291,8 @@ class FourthlineComponent private constructor(
                     kycInfoUseCaseProvider,
                     locationUseCaseProvider,
                     ipObtainingUseCaseProvider,
-                    kycUploadUseCaseProvider
+                    kycUploadUseCaseProvider,
+                    deleteKycInfoUseCaseProvider
                 )
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
                 DoubleCheck.provider(EmptyMapOfClassOfAndProviderOfViewModelProvider())

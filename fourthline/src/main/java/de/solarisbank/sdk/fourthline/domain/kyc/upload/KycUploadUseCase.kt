@@ -5,7 +5,6 @@ import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.data.network.transformResult
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.NextStepSelector
-import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.Type
@@ -13,20 +12,17 @@ import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
 
 class KycUploadUseCase  (
     private val kycUploadRepository: KycUploadRepository,
-    private val sessionUrlRepositoryRepository: SessionUrlRepository,
+    private val deleteKycInfoUseCase: DeleteKycInfoUseCase,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
     override val identityInitializationRepository: IdentityInitializationRepository
 ) : NextStepSelector {
-
-//    fun setBaseUrl(baseUrl: String) {
-//        sessionUrlRepositoryRepository.save(baseUrl)
-//    }
 
     fun uploadKyc(file: File): Single<KycUploadStatusDto> {
         return kycUploadRepository.uploadKyc(file)
@@ -40,7 +36,10 @@ class KycUploadUseCase  (
 
     private fun pollKycProcessingResult(): Single<KycUploadStatusDto> {
         return identificationPollingStatusUseCase.pollIdentificationStatus()
-            .map { NavigationalResult(it) }
+            .map {
+                deleteKycInfoUseCase.clearPersonDataCaches()
+                NavigationalResult(it)
+            }
             .transformResult()
             .map { result ->
                 if (result.succeeded && result.data != null) {

@@ -18,6 +18,7 @@ import de.solarisbank.sdk.fourthline.data.dto.LocationDto
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
@@ -38,6 +39,7 @@ class KycSharedViewModel(
         private val kycInfoUseCase: KycInfoUseCase,
         private val locationUseCase: LocationUseCase,
         private val ipObtainingUseCase: IpObtainingUseCase,
+        private val deleteKycInfoUseCase: DeleteKycInfoUseCase
         ): ViewModel() {
 
     var kycURI: URI? = null
@@ -58,12 +60,19 @@ class KycSharedViewModel(
         return kycInfoUseCase.getKycDocument()
     }
 
+    fun clearPersonDataCaches() {
+        deleteKycInfoUseCase.clearPersonDataCaches()
+    }
+
     fun fetchPersonDataAndIp(sessionId: String) {
         Timber.d("fetchPersonDataAndIp() 0")
+        deleteKycInfoUseCase.clearPersonDataCaches()
         _supportedDocLiveData.value = PersonDataStateDto.UPLOADING
         compositeDisposable.add(
-                Single.zip(personDataUseCase.execute(sessionId),
-                        ipObtainingUseCase.execute(Unit), {personData, ip -> personData to ip})
+                Single.zip(
+                    personDataUseCase.execute(sessionId).subscribeOn(Schedulers.io()),
+                    ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io()),
+                    {personData, ip -> personData to ip})
                         .doOnSuccess { pair ->
                             Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
                             if(
@@ -172,7 +181,10 @@ class KycSharedViewModel(
     }
 
     override fun onCleared() {
+        Timber.d("onCleared()")
         compositeDisposable.clear()
+        deleteKycInfoUseCase.clearPersonDataCaches()
+        Timber.d("onCleared() 2")
         super.onCleared()
     }
 }

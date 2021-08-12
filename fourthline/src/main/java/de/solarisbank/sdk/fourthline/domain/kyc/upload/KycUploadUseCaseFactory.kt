@@ -1,16 +1,16 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.upload
 
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 
 class KycUploadUseCaseFactory private constructor(
         private val kycUploadRepositoryProvider: Provider<KycUploadRepository>,
-        private val sessionUrlRepositoryProvider: Provider<SessionUrlRepository>,
+        private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
         private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
         private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 
@@ -19,7 +19,7 @@ class KycUploadUseCaseFactory private constructor(
         return Preconditions.checkNotNull(
                 KycUploadUseCase(
                     kycUploadRepositoryProvider.get(),
-                    sessionUrlRepositoryProvider.get(),
+                    deleteKycInfoUseCaseProvider.get(),
                     identificationPollingStatusUseCaseProvider.get(),
                     identityInitializationRepositoryProvider.get()
                 ),
@@ -31,13 +31,13 @@ class KycUploadUseCaseFactory private constructor(
         @JvmStatic
         fun create(
                 kycUploadRepositoryProvider: Provider<KycUploadRepository>,
-                SessionUrlRepositoryProvider: Provider<SessionUrlRepository>,
+                deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
                 identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
                 identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
         ): KycUploadUseCaseFactory {
             return KycUploadUseCaseFactory(
                 kycUploadRepositoryProvider,
-                SessionUrlRepositoryProvider,
+                deleteKycInfoUseCaseProvider,
                 identificationPollingStatusUseCaseProvider,
                 identityInitializationRepositoryProvider
             )

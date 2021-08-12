@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
@@ -28,7 +29,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
         private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
         private val locationUseCaseProvider: Provider<LocationUseCase>,
         private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
-        private val kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+        private val kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
+        private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
 ) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
@@ -37,11 +39,12 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                 TermsAndConditionsViewModel::class.java to TermsAndConditionsViewModelFactory.create(fourthlineModule),
                 WelcomeSharedViewModel::class.java to WelcomeViewModelFactory.create(fourthlineModule),
                 KycSharedViewModel::class.java to KycSharedViewModelFactory.create(
-                        fourthlineModule,
-                        personDataUseCaseProvider,
-                        kycInfoUseCaseProvider,
-                        locationUseCaseProvider,
-                        ipObtainingUseCaseProvider
+                    fourthlineModule,
+                    personDataUseCaseProvider,
+                    kycInfoUseCaseProvider,
+                    locationUseCaseProvider,
+                    ipObtainingUseCaseProvider,
+                    deleteKycInfoUseCaseProvider
                 ),
             KycUploadViewModel::class.java to KycUploadViewModelFactory.create(fourthlineModule, kycUploadUseCaseProvider)
 
@@ -55,7 +58,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                 kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
                 locationUseCaseProvider: Provider<LocationUseCase>,
                 ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
-                kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+                kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
+                deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
         ): FourthlineSaveStateViewModelMapProvider {
             return FourthlineSaveStateViewModelMapProvider(
                 fourthlineModule,
@@ -63,7 +67,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                 kycInfoUseCaseProvider,
                 locationUseCaseProvider,
                 ipObtainingUseCaseProvider,
-                kycUploadUseCaseProvider
+                kycUploadUseCaseProvider,
+                deleteKycInfoUseCaseProvider
             )
         }
     }

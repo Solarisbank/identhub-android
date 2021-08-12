@@ -7,6 +7,7 @@ import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
@@ -20,8 +21,10 @@ import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeSharedViewModel
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class FourthlineModule {
 
-    fun provideViewModelFactory(classProviderMap: Map<Class<out ViewModel>, Provider<ViewModel>>,
-                                classSavedStateProviderMap: Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>): AssistedViewModelFactory {
+    fun provideViewModelFactory(
+        classProviderMap: Map<Class<out ViewModel>, Provider<ViewModel>>,
+        classSavedStateProviderMap: Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>
+    ): AssistedViewModelFactory {
         return AssistedViewModelFactory(classSavedStateProviderMap, classProviderMap)
     }
 
@@ -44,18 +47,20 @@ class FourthlineModule {
     }
 
     fun provideDocScanSharedViewModel(
-            savedStateHandle: SavedStateHandle,
-            personDataUseCase: PersonDataUseCase,
-            kycInfoUseCase: KycInfoUseCase,
-            locationUseCase: LocationUseCase,
-            ipObtainingUseCase: IpObtainingUseCase
+        savedStateHandle: SavedStateHandle,
+        personDataUseCase: PersonDataUseCase,
+        kycInfoUseCase: KycInfoUseCase,
+        locationUseCase: LocationUseCase,
+        ipObtainingUseCase: IpObtainingUseCase,
+        deleteKycInfoUseCase: DeleteKycInfoUseCase
     ): ViewModel {
         return KycSharedViewModel(
-                savedStateHandle,
-                personDataUseCase,
-                kycInfoUseCase,
-                locationUseCase,
-                ipObtainingUseCase
+            savedStateHandle,
+            personDataUseCase,
+            kycInfoUseCase,
+            locationUseCase,
+            ipObtainingUseCase,
+            deleteKycInfoUseCase
         )
     }
 }
