@@ -27,6 +27,8 @@ import de.solarisbank.sdk.domain.navigation.NaviDirection
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
+import de.solarisbank.sdk.fourthline.hide
+import de.solarisbank.sdk.fourthline.show
 import timber.log.Timber
 
 class FourthlineActivity : FourthlineBaseActivity() {
@@ -93,6 +95,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         Timber.d("onNavigationChanged; event: ${event}")
+        supportActionBar?.setShowHideAnimationEnabled(false)
+        supportActionBar?.show()
+        stepIndicator.show()
         event.content?.let {
             when (it.actionId) {
                 R.id.action_selfieFragment_to_selfieResultFragment -> {
@@ -104,8 +109,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
                 R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
+                    supportActionBar?.hide()
+                    stepIndicator.hide()
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_scan_document_step_label)
                 }
                 R.id.action_documentScanFragment_to_documentResultFragment -> {
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)

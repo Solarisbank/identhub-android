@@ -1,6 +1,10 @@
 package de.solarisbank.sdk.fourthline
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
@@ -87,7 +91,7 @@ fun DocumentScannerError.asString(context: Context) = when (this) {
     DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
 }
 
-fun DocumentScannerStep.asString(docType: DocumentType, context: Context): String {
+fun DocumentScannerStep.asString(docType: DocumentType, context: Context): CharSequence {
     val side = when (fileSide) {
         DocumentFileSide.FRONT -> context.resources.getString(R.string.document_scanner_file_side_front)
         DocumentFileSide.BACK -> context.resources.getString(R.string.document_scanner_file_side_back)
@@ -98,10 +102,32 @@ fun DocumentScannerStep.asString(docType: DocumentType, context: Context): Strin
     val tilted = if (isAngled) context.resources.getString(R.string.document_scanner_file_tilted) else ""
     val isScan = isScan(docType)
     return if (isScan) {
-        context.resources.getString(R.string.document_scanner_main_text_scan, side)
+        val string = context.resources.getString(R.string.document_scanner_main_text_scan, side)
+        string.boldOccurrenceOf(side)
+
     } else {
-        context.resources.getString(R.string.document_scanner_main_text_picture, "$tilted ", side)
+        var string: CharSequence = context.resources
+            .getString(R.string.document_scanner_main_text_picture, " $tilted", side)
+        string = string.boldOccurrenceOf(tilted)
+        string.boldOccurrenceOf(side)
     }
+}
+
+fun CharSequence.boldOccurrenceOf(string: String): CharSequence {
+    return spanOccurrenceOf(string, StyleSpan(Typeface.BOLD))
+}
+
+fun CharSequence.spanOccurrenceOf(string: String, span: Any): CharSequence {
+    val spannable = if (this is SpannableString) {
+        this
+    } else {
+        SpannableString(this)
+    }
+    val index = spannable.toString().indexOf(string)
+    if (index >= 0) {
+        spannable.setSpan(span, index, index + string.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+    }
+    return spannable
 }
 
 fun DocumentScannerStep.isScan(docType: DocumentType): Boolean {

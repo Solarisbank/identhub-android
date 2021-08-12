@@ -57,7 +57,6 @@ class DocScanFragment : DocumentScannerFragment() {
     private var takeSnapshot: View? = null
     private var scanPreview: AppCompatImageView? = null
     private var stepLabel: AppCompatTextView? = null
-    private var warningsLabel: AppCompatTextView? = null
     private var resultButtons: ViewGroup? = null
     private var punchhole: PunchholeView? = null
     private var retakeButton: Button? = null
@@ -65,6 +64,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private var progressRoot: LinearLayout? = null
     private var resultRoot: LinearLayout? = null
     private var tiltingCard: ImageView? = null
+    private var docImageView: ImageView? = null
     private var bulletList: BulletListLayout? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
@@ -73,6 +73,7 @@ class DocScanFragment : DocumentScannerFragment() {
 
     private var cleanupJob: Job? = null
     private var showSnapshotJob: Job? = null
+    private var animator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate")
@@ -97,7 +98,6 @@ class DocScanFragment : DocumentScannerFragment() {
         takeSnapshot = null
         scanPreview = null
         stepLabel = null
-        warningsLabel = null
         resultButtons = null
         punchhole = null
         retakeButton = null
@@ -106,6 +106,7 @@ class DocScanFragment : DocumentScannerFragment() {
         resultRoot = null
         tiltingCard = null
         bulletList = null
+        docImageView = null
         super.onDestroyView()
     }
 
@@ -147,7 +148,6 @@ class DocScanFragment : DocumentScannerFragment() {
             takeSnapshot?.setOnClickListener { takeSnapshot() }
             scanPreview = findViewById(R.id.scanPreview)
             stepLabel = findViewById(R.id.stepName)
-            warningsLabel = findViewById(R.id.warningsLabel)
             resultButtons = findViewById(R.id.resultButtonsRoot)
             punchhole = findViewById(R.id.punchhole)
             retakeButton = findViewById(R.id.retakeButton)
@@ -157,6 +157,7 @@ class DocScanFragment : DocumentScannerFragment() {
             resultRoot = findViewById(R.id.resultRoot)
             progressRoot = findViewById(R.id.progressRoot)
             tiltingCard = findViewById(R.id.tiltingCard)
+            docImageView = findViewById(R.id.docImage)
             bulletList = findViewById(R.id.bulletList)
             handleShortScreen()
             onLayoutMeasuredOnce {
@@ -185,7 +186,7 @@ class DocScanFragment : DocumentScannerFragment() {
                 tilted = step.isAngled,
                 maskDrawable = step.findMaskDrawable(requireContext()),
                 stepText = step.asString(currentDocumentType, requireContext()),
-                tiltingResource = step.getTiltingResource(currentDocumentType)
+                imageResource = step.getImageResource(currentDocumentType)
             )
             punchhole?.punchholeRect = getDocumentDetectionArea()
             punchhole?.postInvalidate()
@@ -222,14 +223,32 @@ class DocScanFragment : DocumentScannerFragment() {
         return ContextCompat.getDrawable(context, frameResource)
     }
 
-    private fun DocumentScannerStep.getTiltingResource(docType: DocumentType): Int {
+    private fun DocumentScannerStep.getImageResource(docType: DocumentType): Int {
         return when(docType) {
-            DocumentType.PASSPORT -> R.drawable.ic_tilting_passport
+            DocumentType.PASSPORT -> {
+                if (isAngled) {
+                    R.drawable.ic_passport_scan_angled
+                } else {
+                    R.drawable.ic_passport_scan
+                }
+            }
             else -> {
                 when (fileSide) {
-                    DocumentFileSide.FRONT -> R.drawable.ic_tilting_card_front
-                    DocumentFileSide.BACK -> R.drawable.ic_tilting_card_back
-                    else -> R.drawable.ic_tilting_card_front
+                    DocumentFileSide.FRONT -> {
+                        if (isAngled) {
+                            R.drawable.ic_card_scan_front_angled
+                        } else {
+                            R.drawable.ic_card_scan_front
+                        }
+                    }
+                    DocumentFileSide.BACK -> {
+                        if (isAngled) {
+                            R.drawable.ic_card_scan_back_angled
+                        } else {
+                            R.drawable.ic_card_scan_back
+                        }
+                    }
+                    else -> R.drawable.ic_card_scan_front
                 }
             }
         }
@@ -237,12 +256,6 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun onWarnings(warnings: List<DocumentScannerStepWarning>) {
         Timber.d("onWarnings")
-        cleanupJob?.cancel()
-        cleanupJob = lifecycleScope.launch(Dispatchers.Main) {
-            warningsLabel!!.text = warnings.asString(requireContext())
-            delay(500)
-            warningsLabel!!.text = getString(R.string.selfie_step_scanning)
-        }
     }
 
     override fun onStepFail(error: DocumentScannerStepError) {
@@ -285,11 +298,12 @@ class DocScanFragment : DocumentScannerFragment() {
         updateUiForResult()
     }
 
-    private fun updateUiForScanning(isScan: Boolean,
-                                    tilted: Boolean,
-                                    maskDrawable: Drawable?,
-                                    stepText: String,
-                                    tiltingResource: Int)
+    private fun updateUiForScanning(
+        isScan: Boolean,
+        tilted: Boolean,
+        maskDrawable: Drawable?,
+        stepText: CharSequence,
+        imageResource: Int)
     {
         documentMask?.setImageDrawable(maskDrawable)
         resultRoot?.hide()
@@ -297,33 +311,27 @@ class DocScanFragment : DocumentScannerFragment() {
         stepLabel?.show()
         scanPreview?.hide()
         resultButtons?.hide()
+        bulletList?.hide()
         if (isScan) {
             progressRoot?.show()
-            warningsLabel?.text = ""
             takeSnapshot?.hide()
             showSnapshotJob?.cancel()
             showSnapshotJob = lifecycleScope.launch(Dispatchers.Main) {
                 delay(5000)
                 takeSnapshot?.show()
             }
-            bulletList?.updateItems(
-                title = getString(R.string.document_scanner_auto_scan_list_title),
-                items = listOf(
-                    getString(R.string.document_scanner_auto_scan_list_item1),
-                    getString(R.string.document_scanner_auto_scan_list_item2)
-                )
-            )
-            bulletList?.show()
         } else {
             takeSnapshot?.show()
             progressRoot?.hide()
-            bulletList?.hide()
         }
         if (tilted) {
-            tiltingCard?.setImageResource(tiltingResource)
+            tiltingCard?.setImageResource(imageResource)
             toggleTiltingCard(true)
+            docImageView?.hide()
         } else {
             toggleTiltingCard(false)
+            docImageView?.setImageResource(imageResource)
+            docImageView?.show()
         }
     }
 
@@ -336,6 +344,7 @@ class DocScanFragment : DocumentScannerFragment() {
         resultRoot?.show()
         progressRoot?.hide()
         toggleTiltingCard(false)
+        docImageView?.hide()
         bulletList?.updateItems(
             title = getString(R.string.document_scanner_clear_picture_list_title),
             items = listOf(
@@ -348,17 +357,22 @@ class DocScanFragment : DocumentScannerFragment() {
     }
 
     private fun toggleTiltingCard(show: Boolean) {
+        animator?.cancel()
+        animator = null
+        tiltingCard?.rotationX = 0f
+
         if (show) {
-            tiltingCard?.rotationX = 0f
             tiltingCard?.show()
-            (AnimatorInflater.loadAnimator(requireContext(), R.animator.card_tilt) as ObjectAnimator)
-                .apply {
-                    target = tiltingCard
-                    start()
-                }
+            animator = AnimatorInflater.loadAnimator(
+                requireContext(),
+                R.animator.card_tilt
+            ) as ObjectAnimator
+            animator?.apply {
+                target = tiltingCard
+                start()
+            }
         } else {
             tiltingCard?.hide()
-            tiltingCard?.clearAnimation()
         }
     }
 
