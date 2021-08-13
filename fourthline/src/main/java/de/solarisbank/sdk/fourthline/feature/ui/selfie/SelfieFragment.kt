@@ -117,7 +117,7 @@ class SelfieFragment : SelfieScannerFragment() {
                 putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
                 putString(KEY_MESSAGE, error.asString(requireContext()))
             }
-            activityViewModel.resetFourthlineFlow(bundle)
+            activityViewModel.resetFlowToWelcomeScreen(bundle)
         }
     }
 

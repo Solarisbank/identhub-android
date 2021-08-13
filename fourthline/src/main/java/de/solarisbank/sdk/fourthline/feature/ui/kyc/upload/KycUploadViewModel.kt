@@ -3,6 +3,7 @@ package de.solarisbank.sdk.fourthline.feature.ui.kyc.upload
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,8 +18,8 @@ class KycUploadViewModel(
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _uploadingStatus = MutableLiveData<KycUploadStatusDto>()
-    val uploadingStatus = _uploadingStatus as LiveData<KycUploadStatusDto>
+    private val _uploadingStatus = MutableLiveData<Event<KycUploadStatusDto>>()
+    val uploadingStatus = _uploadingStatus as LiveData<Event<KycUploadStatusDto>>
 
     fun uploadKyc(uploadableFile: File) {
         Timber.d("uploadKyc()")
@@ -29,12 +30,12 @@ class KycUploadViewModel(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ t1 ->
                             Timber.d("uploadKyc(), upload successful")
-                            _uploadingStatus.value = t1
+                            _uploadingStatus.value = Event(t1)
                         },{ t2 ->
                             if (t2 != null) {
                                 Timber.e(t2,"uploadKyc(), upload failed")
                                 _uploadingStatus.value =
-                                        KycUploadStatusDto.GenericError
+                                        Event(KycUploadStatusDto.GenericError)
                         }}
         ))
     }

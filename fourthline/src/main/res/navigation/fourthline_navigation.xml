@@ -15,6 +15,16 @@
             />
     </action>
 
+    <action
+        android:id="@+id/action_reset_to_passingPossibilityFragment"
+        app:destination="@id/passingPossibilityFragment"
+        app:popUpTo="@+id/passingPossibilityFragment"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="KEY_CODE"
+            app:argType="string"
+            />
+    </action>
 
     <fragment
         android:id="@+id/termsAndConditionsFragment"

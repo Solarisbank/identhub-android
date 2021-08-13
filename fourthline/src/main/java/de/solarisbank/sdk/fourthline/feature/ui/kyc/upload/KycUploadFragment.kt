@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.fourthline.R
@@ -35,10 +34,6 @@ class KycUploadFragment : FourthlineFragment() {
         ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycUploadViewModel::class.java]
     }
 
-    private val uploadingObserver = Observer<KycUploadStatusDto> {
-        setUiState(it)
-    }
-
     private var title: TextView? = null
     private var subtitle:  TextView? = null
     private var progressBar: ProgressBar? = null
@@ -60,7 +55,7 @@ class KycUploadFragment : FourthlineFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner, uploadingObserver)
+        kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner) { it.content?.let { statusDto -> setUiState(statusDto) }}
         kycUploadViewModel.uploadKyc(File(kycSharedViewModel.kycURI!!))
     }
 
@@ -132,7 +127,7 @@ class KycUploadFragment : FourthlineFragment() {
                 alertMessage = getString(R.string.failure_no_fraud_message),
                 positiveButtonLabel = getString(R.string.failure_no_fraud_positive),
                 negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
-                positiveAlertButtonAction =  { activityViewModel.resetFourthlineFlow() },
+                positiveAlertButtonAction =  { activityViewModel.resetFlowToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
             is KycUploadStatusDto.ProviderErrorFraud -> UploadViewState(
@@ -146,7 +141,7 @@ class KycUploadFragment : FourthlineFragment() {
                 alertMessage = getString(R.string.kyc_upload_generic_error_subtitle),
                 positiveButtonLabel = getString(R.string.kyc_upload_generic_error_button),
                 negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
-                positiveAlertButtonAction =  { activityViewModel.resetFourthlineFlow() },
+                positiveAlertButtonAction =  { activityViewModel.resetFlowToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
         }
