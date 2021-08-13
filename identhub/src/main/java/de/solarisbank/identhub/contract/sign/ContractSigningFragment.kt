@@ -160,9 +160,7 @@ class ContractSigningFragment : IdentHubFragment() {
             sharedViewModel.callOnSuccessResult()
         } else if (Status.getEnum(result.data?.status) == Status.FAILED || Status.getEnum(result.data?.status) == Status.CONFIRMED) {
             onStateOfDigitInputChanged(ERROR_STATE)
-            sharedViewModel.callOnFailureResult()
-        // TODO: implement later error state on 422
-        } else if (result.throwable?.message?.contains("422") == true) {
+        } else if (result.throwable?.message?.contains("422") == true || result.throwable?.message?.contains("409") == true) {
             onStateOfDigitInputChanged(ERROR_STATE)
         }
     }
