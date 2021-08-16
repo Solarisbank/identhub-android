@@ -35,7 +35,7 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
 }
 
 
-fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Intent {
+fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Intent? {
     Timber.d("toNextStep, route : $route")
     return when(route) {
         NEXT_STEP_DIRECTION.BANK_IBAN.destination -> Intent(context, VerificationBankActivity::class.java)
@@ -47,8 +47,9 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
                 .apply {
                     putExtra(NEXT_STEP_KEY, NEXT_STEP_DIRECTION.BANK_ID_FOURTHLINE.destination)
                 }
+        NEXT_STEP_DIRECTION.ABORT.destination -> null
         else -> throw IllegalArgumentException("wrong NextStep route: $route")
-    }.apply {
+    }?.apply {
         if (sessionUrl != null) { putExtra(IdentHub.SESSION_URL_KEY, sessionUrl) }
     }
 }
@@ -89,7 +90,8 @@ enum class NEXT_STEP_DIRECTION(val destination: String) {
     BANK_ID_FOURTHLINE("bank_id/fourthline"),
     BANK_QES("bank/qes"),
     BANK_ID_QES("bank_id/qes"),
-    FOURTHLINE_SIMPLIFIED("fourthline/simplified")
+    FOURTHLINE_SIMPLIFIED("fourthline/simplified"),
+    ABORT("abort")
 }
 
 enum class COMPLETED_STEP(val index: Int) {

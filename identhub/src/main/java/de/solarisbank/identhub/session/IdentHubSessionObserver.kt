@@ -52,7 +52,16 @@ class IdentHubSessionObserver(
                 if (intent.hasExtra(NEXT_STEP_KEY) && !intent.hasExtra(IDENTIFICATION_ID_KEY)) {
                     Timber.d("onReceive 1")
                     intent.getStringExtra(NEXT_STEP_KEY)?.let {
-                        fragmentActivity?.startActivity(toNextStep(fragmentActivity!!, it, sessionUrl))
+                        toNextStep(fragmentActivity!!, it, sessionUrl)?.let {
+                                nextStepIntent -> fragmentActivity?.startActivity(nextStepIntent)
+                        }?:run {
+                            errorCallback.invoke(
+                                IdentHubSessionFailure(
+                                    message = "Session aborted",
+                                    step = COMPLETED_STEP.getEnum(intent.getIntExtra(COMPLETED_STEP_KEY, -1))
+                                )
+                            )
+                        }
                         return
                     }
                 } else if (intent.hasExtra(IDENTIFICATION_ID_KEY) && !intent.hasExtra(NEXT_STEP_KEY)) {
@@ -122,7 +131,12 @@ class IdentHubSessionObserver(
                 fragmentActivity?.startActivity(toFirstStep(fragmentActivity!!, navResult.nextStep, sessionUrl))
             } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
                 Timber.d("processInitializationStateResult 2")
-                fragmentActivity?.startActivity(toNextStep(fragmentActivity!!, navResult.nextStep, sessionUrl))
+                val nextStep = toNextStep(fragmentActivity!!, navResult.nextStep, sessionUrl)
+                if(nextStep != null) {
+                    fragmentActivity?.startActivity(nextStep)
+                } else {
+                    errorCallback.invoke(IdentHubSessionFailure(message = "Session aborted", step = null))
+                }
             } else {
                 Timber.d("processInitializationStateResult 4")
             }
