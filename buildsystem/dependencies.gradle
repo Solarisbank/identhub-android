@@ -105,8 +105,9 @@ ext {
             "com.jakewharton.rxrelay2:rxrelay:2.1.1"
     ]
 
+    junitVersion = "4.13.1"
     baseTest = [
-            "junit:junit:4.13",
+            "junit:junit:$junitVersion",
             "androidx.test.ext:junit:1.1.2",
             "org.mockito:mockito-core:3.5.15",
             "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0",

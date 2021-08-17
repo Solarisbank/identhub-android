@@ -111,4 +111,12 @@ dependencies {
     testImplementation baseTest
     testImplementation room.test
     androidTestImplementation espresso
+
+    constraints {
+        androidTestImplementation('junit:junit') {
+            version {
+                require junitVersion
+            }
+        }
+    }
 }

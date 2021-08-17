@@ -93,4 +93,12 @@ dependencies {
     implementation timber
     testImplementation baseTest
     androidTestImplementation espresso
+
+    constraints {
+        androidTestImplementation('junit:junit') {
+            version {
+                require junitVersion
+            }
+        }
+    }
 }

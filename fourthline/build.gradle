@@ -96,4 +96,12 @@ dependencies {
     implementation rxJava
     testImplementation baseTest
     androidTestImplementation espresso
+
+    constraints {
+        androidTestImplementation('junit:junit') {
+            version {
+                require junitVersion
+            }
+        }
+    }
 }
