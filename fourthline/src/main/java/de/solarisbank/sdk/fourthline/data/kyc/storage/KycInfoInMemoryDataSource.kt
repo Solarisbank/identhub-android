@@ -13,6 +13,8 @@ import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.parseDateFromMrtd
 import de.solarisbank.sdk.fourthline.parseDateFromString
+import de.solarisbank.sdk.fourthline.streetNumber
+import de.solarisbank.sdk.fourthline.streetSuffix
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -80,7 +82,8 @@ class KycInfoInMemoryDataSource {
             kycInfo.address = Address().also {
                 personDataDto.address?.apply {
                     it.street = street
-                    it.streetNumber = streetNumber
+                    it.streetNumber = streetNumber?.streetNumber()
+                    it.streetNumberSuffix = streetNumber?.streetSuffix()
                     it.city = city
                     it.countryCode = personDataDto.address?.country
                     it.postalCode = postalCode

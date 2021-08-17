@@ -26,7 +26,7 @@ data class SupportedDocument(
 @JsonClass(generateAdapter = true)
 data class Address(
     var street: String?,
-    @Json(name = "street_number") var streetNumber: Int?,
+    @Json(name = "street_number") var streetNumber: String?,
     var city: String?,
     var country: String?,
     @Json(name = "postal_code") var postalCode: String?

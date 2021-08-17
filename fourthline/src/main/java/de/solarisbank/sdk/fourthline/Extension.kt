@@ -20,6 +20,8 @@ import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGlobalLayoutListener(
         object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -182,4 +184,30 @@ fun String.parseDateFromMrtd(): Date? {
     }
     Timber.d("String.getDateFromMRZ() date value: $date")
     return date
+}
+
+fun String.streetNumber(): Int? {
+    var answer: Int? = null
+    try {
+        val m: Matcher = Pattern.compile("-?\\d+").matcher(this)
+        if (m.find()) {
+            answer = m.group().toIntOrNull()
+        }
+    } catch (e: Exception) {
+        Timber.e(e, "String.streetNumber()")
+    }
+    return answer
+}
+
+fun String.streetSuffix(): String? {
+    var answer: String? = null
+    try {
+        val m: Matcher = Pattern.compile("-?[a-zA-Z]+").matcher(this)
+        if (m.find()) {
+            answer = m.group()
+        }
+    } catch (e: Exception) {
+        Timber.e(e, "String.streetSuffix()")
+    }
+    return answer
 }
