@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.data.person
 
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
+import de.solarisbank.sdk.core.data.dto.PersonDataDto
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

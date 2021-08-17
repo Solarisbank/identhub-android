@@ -4,7 +4,7 @@ import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
 import de.solarisbank.identhub.domain.navigation.router.isIdentificationIdCreationRequired
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
+import de.solarisbank.sdk.core.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import io.reactivex.Single
 import timber.log.Timber
