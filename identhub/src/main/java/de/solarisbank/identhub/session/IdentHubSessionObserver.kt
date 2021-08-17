@@ -28,16 +28,19 @@ class IdentHubSessionObserver(
     private val errorCallback: (IdentHubSessionFailure) -> Unit
 ) : DefaultLifecycleObserver {
 
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: (FragmentActivity) -> ViewModelProvider.Factory
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var viewModel: IdentHubSessionViewModel? = null
 
     var fragmentActivity: FragmentActivity? = null
         set(value) {
+            field?.lifecycle?.removeObserver(this)
             field = value
-            value!!.lifecycle.addObserver(this)
-            LocalBroadcastManager.getInstance(fragmentActivity!!)
-                .registerReceiver(receiver, IntentFilter(IDENTHUB_STEP_ACTION))
+            if (value != null) {
+                value.lifecycle.addObserver(this)
+                LocalBroadcastManager.getInstance(value)
+                    .registerReceiver(receiver, IntentFilter(IDENTHUB_STEP_ACTION))
+            }
         }
     var sessionUrl: String? = null
         set(value) {
@@ -97,7 +100,7 @@ class IdentHubSessionObserver(
 
     private fun initViewModel() {
         if (viewModel == null) {
-            viewModel = ViewModelProvider(fragmentActivity!!, viewModelFactory)
+            viewModel = ViewModelProvider(fragmentActivity!!, viewModelFactory(fragmentActivity!!))
                 .get(IdentHubSessionViewModel::class.java)
         }
     }
@@ -152,6 +155,7 @@ class IdentHubSessionObserver(
     override fun onDestroy(owner: LifecycleOwner) {
         Timber.d("onDestroy")
         LocalBroadcastManager.getInstance(fragmentActivity!!).unregisterReceiver(receiver)
+        viewModel = null
         super.onDestroy(owner)
     }
 }

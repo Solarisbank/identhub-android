@@ -129,6 +129,7 @@ class IdentHubSession(val sessionUrlString: String) {
     fun stop() {
         Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         reset()
+        MAIN_PROCESS?.fragmentActivity = null
     }
 
     private fun loadAppName(context: Context) {
