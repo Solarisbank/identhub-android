@@ -33,7 +33,6 @@ import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
 import de.solarisbank.identhub.data.mapper.MapperModule;
 import de.solarisbank.identhub.data.mapper.factory.IdentificationEntityMapperFactory;
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor;
-import de.solarisbank.identhub.data.network.interceptor.RetryOnFailInterceptor;
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferencesFactory;
@@ -68,7 +67,6 @@ import de.solarisbank.identhub.di.network.NetworkModuleProvideOkHttpClientFactor
 import de.solarisbank.identhub.di.network.NetworkModuleProvideRetrofitFactory;
 import de.solarisbank.identhub.di.network.NetworkModuleProvideRxJavaCallAdapterFactory;
 import de.solarisbank.identhub.di.network.NetworkModuleProvideUserAgentInterceptorFactory;
-import de.solarisbank.identhub.di.network.RetryOnFailInterceptorFactory;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCaseFactory;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
@@ -175,7 +173,6 @@ public class IdenthubComponent {
     private Provider<CallAdapter.Factory> rxJavaCallAdapterFactoryProvider;
     private Provider<MoshiConverterFactory> moshiConverterFactoryProvider;
     private Provider<HttpLoggingInterceptor> httpLoggingInterceptorProvider;
-    private Provider<RetryOnFailInterceptor> retryOnFailInterceptorProvider;
     private Provider<OkHttpClient> okHttpClientProvider;
     private Provider<UserAgentInterceptor> userAgentInterceptorProvider;
     private Provider<Retrofit> retrofitProvider;
@@ -283,15 +280,8 @@ public class IdenthubComponent {
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule));
         userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create(networkModule));
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule));
-        retryOnFailInterceptorProvider = DoubleCheck.provider(RetryOnFailInterceptorFactory.create());
         verificationPhoneApiProvider = DoubleCheck.provider(ProvideVerificationPhoneApiFactory.create(verificationPhoneModule, retrofitProvider));
-        okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-                networkModule,
-                dynamicBaseUrlInterceptorProvider,
-                userAgentInterceptorProvider,
-                httpLoggingInterceptorProvider,
-                retryOnFailInterceptorProvider
-        ));
+        okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(networkModule, dynamicBaseUrlInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider));
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider));
         verificationPhoneNetworkDataSourceProvider = VerificationPhoneNetworkDataSourceFactory.create(verificationPhoneModule, verificationPhoneApiProvider);
         verificationPhoneRepositoryProvider = DoubleCheck.provider(ProvideVerificationPhoneRepositoryFactory.create(verificationPhoneModule, verificationPhoneNetworkDataSourceProvider));

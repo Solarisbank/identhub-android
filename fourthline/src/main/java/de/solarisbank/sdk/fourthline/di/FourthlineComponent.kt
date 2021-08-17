@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.data.ip.*
-import de.solarisbank.identhub.data.network.interceptor.RetryOnFailInterceptor
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
 import de.solarisbank.identhub.data.person.PersonDataApi
 import de.solarisbank.identhub.data.person.PersonDataApiFactory
@@ -138,7 +137,6 @@ class FourthlineComponent private constructor(
     private lateinit var ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<out Interceptor>
     private lateinit var identificationIdInterceptorProvider: Provider<IdentificationIdInterceptor>
-    private lateinit var retryOnFailInterceptorProvider: Provider<RetryOnFailInterceptor>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
     private lateinit var httpLoggingInterceptorProvider: Provider<HttpLoggingInterceptor>
 
@@ -199,14 +197,8 @@ class FourthlineComponent private constructor(
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(create(networkModule, sessionUrlRepositoryProvider))
         userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create(networkModule))
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
-        retryOnFailInterceptorProvider = DoubleCheck.provider(RetryOnFailInterceptorFactory.create())
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-            networkModule,
-            dynamicBaseUrlInterceptorProvider,
-            identificationIdInterceptorProvider,
-            userAgentInterceptorProvider,
-            httpLoggingInterceptorProvider,
-            retryOnFailInterceptorProvider
+                networkModule, dynamicBaseUrlInterceptorProvider, identificationIdInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider
         ))
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider))

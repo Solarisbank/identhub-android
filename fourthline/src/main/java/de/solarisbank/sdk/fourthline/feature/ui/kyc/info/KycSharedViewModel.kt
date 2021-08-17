@@ -72,8 +72,7 @@ class KycSharedViewModel(
                 Single.zip(
                     personDataUseCase.execute(sessionId).subscribeOn(Schedulers.io()),
                     ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io()),
-                    { personData, ip -> personData to ip }
-                )
+                    {personData, ip -> personData to ip})
                         .doOnSuccess { pair ->
                             Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
                             if(
@@ -106,7 +105,7 @@ class KycSharedViewModel(
                         }
                         .doOnError {
                             Timber.e(it, "fetchPersonDataAndIp() 5")
-                            _personDataStateLiveData.postValue(PersonDataStateDto.GENERIC_ERROR)
+                            _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
                         }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
