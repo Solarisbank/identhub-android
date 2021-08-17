@@ -12,8 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.core.BaseActivity
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.asString
+import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SCAN_FAILED
@@ -22,7 +21,6 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
-import de.solarisbank.sdk.fourthline.onLayoutMeasuredOnce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -145,9 +143,11 @@ class SelfieFragment : SelfieScannerFragment() {
         Timber.d("onSuccess()")
 
         lifecycleScope.launch(Dispatchers.Main) {
-            icon!!.visibility = View.VISIBLE
-            icon!!.setImageLevel(1)
-            warningsLabel!!.setText(R.string.selfie_scanner_scan_successful)
+            icon?.visibility = View.VISIBLE
+            icon?.setImageLevel(1)
+            warningsLabel?.hide()
+            stepName?.setText(R.string.selfie_scanner_scan_successful)
+            stepName?.show()
             kycSharedViewModel.updateKycWithSelfieScannerResult(result)
             activityViewModel.navigateToSelfieResultFragment()
         }

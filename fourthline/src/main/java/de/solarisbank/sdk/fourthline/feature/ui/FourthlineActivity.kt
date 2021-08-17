@@ -74,9 +74,12 @@ class FourthlineActivity : FourthlineBaseActivity() {
         navController.graph = navGraph
         navController.addOnDestinationChangedListener{ controller, destination, arguments ->
                 when (destination.id) {
-                    R.id.documentTypeSelectionFragment -> {
-                        stepIndicator.visibility = View.VISIBLE
+                    R.id.selfieFragment,
+                    R.id.documentScanFragment,
+                    R.id.selfieResultFragment -> {
+                        toggleTopBars(show = false)
                     }
+                    else -> toggleTopBars(show = true)
                 }
         }
     }
@@ -96,8 +99,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         Timber.d("onNavigationChanged; event: ${event}")
         supportActionBar?.setShowHideAnimationEnabled(false)
-        supportActionBar?.show()
-        stepIndicator.show()
+
         event.content?.let {
             when (it.actionId) {
                 R.id.action_selfieFragment_to_selfieResultFragment -> {
@@ -105,19 +107,20 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
                 R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment -> {
+                    toggleTopBars(show = true)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                     setTitle(R.string.fourthline_activity_selfie_step_label)
                 }
                 R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
-                    supportActionBar?.hide()
-                    stepIndicator.hide()
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                 }
                 R.id.action_documentScanFragment_to_documentResultFragment -> {
+                    //toggleTopBars(show = true)
                     Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
                     setTitle(R.string.fourthline_activity_confirm_information_step_label)
                 }
                 R.id.action_welcomeContainerFragment_to_selfieFragment -> {
+                    toggleTopBars(show = false)
                     awaitedDirection = it
                     proceedWithPermissions()
                     stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
@@ -151,6 +154,16 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     setTitle(R.string.fourthline_activity_intro_step_label)
                 }
             }
+        }
+    }
+
+    private fun toggleTopBars(show: Boolean) {
+        if (show) {
+            supportActionBar?.show()
+            stepIndicator.show()
+        } else {
+            supportActionBar?.hide()
+            stepIndicator.hide()
         }
     }
 

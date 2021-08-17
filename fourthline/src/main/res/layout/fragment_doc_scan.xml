@@ -55,6 +55,8 @@
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/documentMask"
+        android:textAlignment="center"
         tools:text="Please scan the front side of your document" />
 
     <LinearLayout
@@ -83,26 +85,6 @@
             android:layout_margin="12dp"
             android:text="@string/document_scanner_scan_success"
             tools:text="Success!" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/progressRoot"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/stepName"
-        app:layout_constraintBottom_toTopOf="@id/documentMask"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:indeterminateDrawable="@drawable/ic_progressbar" />
 
     </LinearLayout>
 

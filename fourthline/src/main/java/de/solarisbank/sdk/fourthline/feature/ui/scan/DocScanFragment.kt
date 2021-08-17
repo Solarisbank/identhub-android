@@ -61,7 +61,6 @@ class DocScanFragment : DocumentScannerFragment() {
     private var punchhole: PunchholeView? = null
     private var retakeButton: Button? = null
     private var confirmButton: Button? = null
-    private var progressRoot: LinearLayout? = null
     private var resultRoot: LinearLayout? = null
     private var tiltingCard: ImageView? = null
     private var docImageView: ImageView? = null
@@ -102,7 +101,6 @@ class DocScanFragment : DocumentScannerFragment() {
         punchhole = null
         retakeButton = null
         confirmButton = null
-        progressRoot = null
         resultRoot = null
         tiltingCard = null
         bulletList = null
@@ -155,7 +153,6 @@ class DocScanFragment : DocumentScannerFragment() {
             confirmButton = findViewById(R.id.confirmButton)
             confirmButton?.setOnClickListener { moveToNextStep() }
             resultRoot = findViewById(R.id.resultRoot)
-            progressRoot = findViewById(R.id.progressRoot)
             tiltingCard = findViewById(R.id.tiltingCard)
             docImageView = findViewById(R.id.docImage)
             bulletList = findViewById(R.id.bulletList)
@@ -313,7 +310,6 @@ class DocScanFragment : DocumentScannerFragment() {
         resultButtons?.hide()
         bulletList?.hide()
         if (isScan) {
-            progressRoot?.show()
             takeSnapshot?.hide()
             showSnapshotJob?.cancel()
             showSnapshotJob = lifecycleScope.launch(Dispatchers.Main) {
@@ -322,7 +318,6 @@ class DocScanFragment : DocumentScannerFragment() {
             }
         } else {
             takeSnapshot?.show()
-            progressRoot?.hide()
         }
         if (tilted) {
             tiltingCard?.setImageResource(imageResource)
@@ -342,7 +337,6 @@ class DocScanFragment : DocumentScannerFragment() {
         scanPreview?.show()
         resultButtons?.show()
         resultRoot?.show()
-        progressRoot?.hide()
         toggleTiltingCard(false)
         docImageView?.hide()
         bulletList?.updateItems(
@@ -379,7 +373,6 @@ class DocScanFragment : DocumentScannerFragment() {
     private fun handleShortScreen() {
         if (isScreenShort(requireContext())) {
             resultRoot?.orientation = LinearLayout.HORIZONTAL
-            progressRoot?.orientation = LinearLayout.HORIZONTAL
         }
     }
 
