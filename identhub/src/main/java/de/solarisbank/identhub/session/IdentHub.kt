@@ -18,10 +18,9 @@ object IdentHub {
     @Synchronized
     fun sessionWithUrl(url: String): IdentHubSession {
         val apiUrl = buildApiUrl(url)
-        if (SESSION != null && SESSION?.sessionUrlString != apiUrl) {
-            clearSession()
-        }
-        return SESSION ?: IdentHubSession(apiUrl).apply {
+        SESSION?.sessionUrl = apiUrl
+        return SESSION ?: IdentHubSession().apply {
+            sessionUrl = apiUrl
             SESSION = this
         }
     }
@@ -29,12 +28,7 @@ object IdentHub {
     @Synchronized
     fun clear() {
         Timber.d("clear(), this: $this")
-        clearSession()
-    }
-
-    private fun clearSession() {
         SESSION?.stop()
-        SESSION = null
     }
 
     const val IDENTIFICATION_ID_KEY = "IDENTIFICATION_ID_KEY"

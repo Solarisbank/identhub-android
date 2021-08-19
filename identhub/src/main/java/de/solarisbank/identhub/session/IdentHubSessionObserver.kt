@@ -22,6 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
 class IdentHubSessionObserver(
     private val successCallback: (IdentHubSessionResult) -> Unit,
@@ -32,13 +33,13 @@ class IdentHubSessionObserver(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var viewModel: IdentHubSessionViewModel? = null
 
-    var fragmentActivity: FragmentActivity? = null
+    var fragmentActivity: WeakReference<FragmentActivity?>? = null
         set(value) {
-            field?.lifecycle?.removeObserver(this)
+            field?.get()?.lifecycle?.removeObserver(this)
             field = value
-            if (value != null) {
-                value.lifecycle.addObserver(this)
-                LocalBroadcastManager.getInstance(value)
+            value?.get()?.lifecycle?.addObserver(this)
+            value?.get()?.let {
+                LocalBroadcastManager.getInstance(it)
                     .registerReceiver(receiver, IntentFilter(IDENTHUB_STEP_ACTION))
             }
         }
@@ -55,8 +56,8 @@ class IdentHubSessionObserver(
                 if (intent.hasExtra(NEXT_STEP_KEY) && !intent.hasExtra(IDENTIFICATION_ID_KEY)) {
                     Timber.d("onReceive 1")
                     intent.getStringExtra(NEXT_STEP_KEY)?.let {
-                        toNextStep(fragmentActivity!!, it, sessionUrl)?.let {
-                                nextStepIntent -> fragmentActivity?.startActivity(nextStepIntent)
+                        toNextStep(fragmentActivity?.get()!!, it, sessionUrl)?.let {
+                                nextStepIntent -> fragmentActivity?.get()?.startActivity(nextStepIntent)
                         }?:run {
                             errorCallback.invoke(
                                 IdentHubSessionFailure(
@@ -89,18 +90,18 @@ class IdentHubSessionObserver(
 
     override fun onCreate(owner: LifecycleOwner) {
         Timber.d("onCreate")
-        IdentHubSessionComponent.getInstance(fragmentActivity!!.applicationContext)
+        IdentHubSessionComponent.getInstance(fragmentActivity?.get()!!.applicationContext)
                 .IdentHubSessionObserverSubComponentFactory()
                 .create()
                 .inject(this)
         initViewModel()
         viewModel?.saveSessionId(sessionUrl)
-        viewModel?.getInitializationStateLiveData()?.observe(fragmentActivity!!, { processInitializationStateResult(it) })
+        viewModel?.getInitializationStateLiveData()?.observe(fragmentActivity?.get()!!, { processInitializationStateResult(it) })
     }
 
     private fun initViewModel() {
         if (viewModel == null) {
-            viewModel = ViewModelProvider(fragmentActivity!!, viewModelFactory(fragmentActivity!!))
+            viewModel = ViewModelProvider(fragmentActivity?.get()!!, viewModelFactory(fragmentActivity?.get()!!))
                 .get(IdentHubSessionViewModel::class.java)
         }
     }
@@ -131,12 +132,12 @@ class IdentHubSessionObserver(
             val navResult = result.getOrNull()!!
             if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
                 Timber.d("processInitializationStateResult 1")
-                fragmentActivity?.startActivity(toFirstStep(fragmentActivity!!, navResult.nextStep, sessionUrl))
+                fragmentActivity?.get()?.startActivity(toFirstStep(fragmentActivity?.get()!!, navResult.nextStep, sessionUrl))
             } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
                 Timber.d("processInitializationStateResult 2")
-                val nextStep = toNextStep(fragmentActivity!!, navResult.nextStep, sessionUrl)
+                val nextStep = toNextStep(fragmentActivity?.get()!!, navResult.nextStep, sessionUrl)
                 if(nextStep != null) {
-                    fragmentActivity?.startActivity(nextStep)
+                    fragmentActivity?.get()?.startActivity(nextStep)
                 } else {
                     errorCallback.invoke(IdentHubSessionFailure(message = "Session aborted", step = null))
                 }
@@ -154,7 +155,7 @@ class IdentHubSessionObserver(
 
     override fun onDestroy(owner: LifecycleOwner) {
         Timber.d("onDestroy")
-        LocalBroadcastManager.getInstance(fragmentActivity!!).unregisterReceiver(receiver)
+        LocalBroadcastManager.getInstance(fragmentActivity?.get()!!).unregisterReceiver(receiver)
         viewModel = null
         super.onDestroy(owner)
     }

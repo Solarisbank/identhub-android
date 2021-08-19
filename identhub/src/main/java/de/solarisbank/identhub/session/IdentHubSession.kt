@@ -8,8 +8,9 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
-class IdentHubSession(val sessionUrlString: String) {
+class IdentHubSession {
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null
@@ -19,6 +20,12 @@ class IdentHubSession(val sessionUrlString: String) {
 
     val isPaymentProcessAvailable: Boolean
         get() = paymentErrorCallback != null || paymentSuccessCallback != null
+
+    internal var sessionUrl: String? = null
+        set(value) {
+            field = value
+            MAIN_PROCESS?.sessionUrl = value
+        }
 
     @MainThread
     @Synchronized
@@ -48,8 +55,8 @@ class IdentHubSession(val sessionUrlString: String) {
                 ::onResultFailure
             )
         }
-        MAIN_PROCESS?.fragmentActivity = fragmentActivity
-        MAIN_PROCESS?.sessionUrl = sessionUrlString
+        MAIN_PROCESS?.fragmentActivity = WeakReference(fragmentActivity)
+        MAIN_PROCESS?.sessionUrl = sessionUrl
     }
 
     @Synchronized
@@ -98,10 +105,13 @@ class IdentHubSession(val sessionUrlString: String) {
         if (MAIN_PROCESS == null) {
             throw NullPointerException("You need to call create method first")
         }
-
+        Timber.d("STARTED : $STARTED; RESUMED : $RESUMED")
         if (!STARTED) {
             MAIN_PROCESS?.obtainLocalIdentificationState()
             STARTED = true
+            if (paymentSuccessCallback == null) {
+                RESUMED = true
+            }
         }
     }
 
@@ -121,15 +131,19 @@ class IdentHubSession(val sessionUrlString: String) {
     private fun reset() {
         Timber.d("reset(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         MAIN_PROCESS?.clearDataOnCompletion()
+        identificationErrorCallback = null
+        paymentSuccessCallback = null
+        paymentErrorCallback = null
+        identificationSuccessCallback = null
         STARTED = false
         RESUMED = false
     }
 
     @Synchronized
-    fun stop() {
+    internal fun stop() {
         Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         reset()
-        MAIN_PROCESS?.fragmentActivity = null
+        MAIN_PROCESS?.fragmentActivity?.clear()
     }
 
     private fun loadAppName(context: Context) {
