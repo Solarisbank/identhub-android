@@ -13,7 +13,12 @@ import de.solarisbank.sdk.core.Optional
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.core.result.throwable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.io.File
 
 class ContractSigningPreviewViewModel(
@@ -29,22 +34,34 @@ class ContractSigningPreviewViewModel(
     private val fetchPdfFilesResultLiveData: MutableLiveData<Result<List<File>>> = MutableLiveData()
 
     fun refreshIdentificationData() {
-        compositeDisposable.add(getIdentificationUseCase.execute(Unit)
-            .flatMapCompletable { result: Result<Identification> ->
-                identificationResultLiveData.postValue(result)
-                if (result.succeeded) {
-                    val identification = result.data!!
-                    fetchingAuthorizedIBanStatusUseCase.execute(identification.id)
-                } else {
-                    throw IllegalArgumentException("Couldn't refresh identification data")
+        compositeDisposable.add(
+            getIdentificationUseCase.execute(Unit)
+                .flatMap{ result: Result<Identification> ->
+                    Timber.d("refreshIdentificationData() 0, result : $result ")
+                    identificationResultLiveData.postValue(result)
+                    return@flatMap if (result.succeeded) {
+                        Timber.d("refreshIdentificationData() 1, result.data!!.id : ${result.data!!.id} ")
+                        fetchingAuthorizedIBanStatusUseCase
+                            .execute(result.data!!.id)
+                            .andThen(getDocumentsUseCase.execute(Unit))
+                    } else {
+                        Single.error(
+                            if (result.throwable != null) result.throwable
+                            else IllegalArgumentException("Couldn't refresh identification data")
+                        )
+                    }
                 }
-            }.subscribe {
-                compositeDisposable.add(getDocumentsUseCase.execute(Unit)
-                    .subscribe({ documentsResultLiveData.postValue(it) }, {
-                        documentsResultLiveData.postValue(Result.createUnknown(it))
-                    })
-                )
-            }
+                .doOnSuccess {
+                    Timber.d("refreshIdentificationData() 2, it : $it ")
+                    documentsResultLiveData.postValue(it)
+                }
+                .doOnError{
+                    Timber.d("refreshIdentificationData() 3, it : $it ")
+                    documentsResultLiveData.postValue(Result.createUnknown(it))
+                }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
         )
     }
 
@@ -65,7 +82,10 @@ class ContractSigningPreviewViewModel(
     }
 
     fun onDocumentActionClicked(document: Document) {
-        compositeDisposable.add(fetchPdfUseCase.execute(document)
+        compositeDisposable.add(
+            fetchPdfUseCase.execute(document)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     fetchPdfResultLiveData.postValue(it)
                 }, {

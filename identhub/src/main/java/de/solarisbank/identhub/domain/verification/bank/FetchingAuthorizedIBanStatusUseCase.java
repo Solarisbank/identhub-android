@@ -7,7 +7,6 @@ import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.usecase.CompletableUseCase;
 import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class FetchingAuthorizedIBanStatusUseCase implements CompletableUseCase<String> {
     private final VerificationBankRepository verificationBankRepository;
@@ -28,7 +27,6 @@ public class FetchingAuthorizedIBanStatusUseCase implements CompletableUseCase<S
                     return identificationWithDocument.getIdentification().isAuthorizationRequiredOrFailed();
                 })
                 .filter(identificationWithDocument -> identificationWithDocument.getIdentification().isAuthorizationRequiredOrFailed())
-                .flatMapCompletable(identification -> verificationBankRepository.save(identificationEntityMapper.from(identification)))
-                .observeOn(AndroidSchedulers.mainThread());
+                .flatMapCompletable(identification -> verificationBankRepository.save(identificationEntityMapper.from(identification)));
     }
 }

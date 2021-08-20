@@ -6,7 +6,6 @@ import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.file.FileController
 import de.solarisbank.sdk.core.Optional
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.File
@@ -22,6 +21,5 @@ class FetchPdfUseCase(
                 .filter { obj: Optional<File> -> obj.isPresent }
                 .first(Optional.empty())
                 .map { NavigationalResult(it) }
-                .observeOn(AndroidSchedulers.mainThread())
     }
 }

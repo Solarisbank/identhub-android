@@ -58,14 +58,15 @@ class ContractSigningViewModel(
     private fun authorizeDocumentOnClick() {
         compositeDisposable.add(
                 clickEventRelay.doOnNext { onAuthorizedLoading() }
-                        .switchMapCompletable {
-                            authorizeContractSignUseCase.execute(Unit)
-                                    .onErrorResumeNext { throwable: Throwable ->
-                                        onAuthorizedError(throwable)
-                                        Completable.complete()
-                                    }
-                        }
-                        .subscribe({ onAuthorizedSucceed() }, { onAuthorizedError(it) }))
+                    .switchMapCompletable {
+                        authorizeContractSignUseCase.execute(Unit)
+                                .onErrorResumeNext { throwable: Throwable ->
+                                    onAuthorizedError(throwable)
+                                    Completable.complete()
+                                }
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ onAuthorizedSucceed() }, { onAuthorizedError(it) }))
     }
 
     private fun onAuthorizedLoading() {
@@ -137,10 +138,10 @@ class ContractSigningViewModel(
         stopTimer()
         compositeDisposable.add(
                 confirmContractSignUseCase.execute(confirmToken)
-                        .andThen(identificationPollingStatusUseCase.execute(Unit))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
+                    .andThen(identificationPollingStatusUseCase.execute(Unit))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
                         {
                             Timber.d("onSubmitButtonClicked, success")
                             identificationResultLiveData.postValue(it)

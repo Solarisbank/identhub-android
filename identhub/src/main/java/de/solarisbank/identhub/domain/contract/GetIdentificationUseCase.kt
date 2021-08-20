@@ -6,7 +6,6 @@ import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class GetIdentificationUseCase(
     private val contractSignRepository: ContractSignRepository,
@@ -19,6 +18,6 @@ class GetIdentificationUseCase(
                 val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
                 NavigationalResult(it, nextStep)
             }
-            .observeOn(AndroidSchedulers.mainThread())
+
     }
 }
