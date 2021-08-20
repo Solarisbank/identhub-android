@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdenthubInteractionBinding
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSession
 import de.solarisbank.identhub.session.IdentHubSessionFailure
 import de.solarisbank.identhub.session.IdentHubSessionResult
 import timber.log.Timber
 
 class IdentHubInteractionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIdenthubInteractionBinding
-    private lateinit var identHubSession: IdentHubSession
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +18,9 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         val view: ConstraintLayout = binding.root
         setContentView(view)
         Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
-        identHubSession = IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
+
+        binding.button.setOnClickListener {
+            IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
             .apply {
                 onCompletionCallback(
                     fragmentActivity = this@IdentHubInteractionActivity,
@@ -28,10 +28,21 @@ class IdentHubInteractionActivity : AppCompatActivity() {
                     errorCallback = this@IdentHubInteractionActivity::onFailure
                 )
                 onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
+                start()
             }
-
-        binding.button.setOnClickListener { identHubSession.start() }
-        binding.resumeButton.setOnClickListener { identHubSession.resume() }
+        }
+        binding.resumeButton.setOnClickListener {
+            IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
+                .apply {
+                    onCompletionCallback(
+                        fragmentActivity = this@IdentHubInteractionActivity,
+                        successCallback = this@IdentHubInteractionActivity::onSuccess,
+                        errorCallback = this@IdentHubInteractionActivity::onFailure
+                    )
+                    onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
+                    resume()
+                }
+        }
     }
 
     private fun onSuccess(result: IdentHubSessionResult) {

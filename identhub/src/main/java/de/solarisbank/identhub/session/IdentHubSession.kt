@@ -55,7 +55,7 @@ class IdentHubSession {
                 ::onResultFailure
             )
         }
-        MAIN_PROCESS?.fragmentActivity = WeakReference(fragmentActivity)
+        MAIN_PROCESS?.fragmentActivity = fragmentActivity
         MAIN_PROCESS?.sessionUrl = sessionUrl
     }
 
@@ -128,7 +128,7 @@ class IdentHubSession {
         }
     }
 
-    private fun reset() {
+    internal fun reset() {
         Timber.d("reset(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
         MAIN_PROCESS?.clearDataOnCompletion()
         identificationErrorCallback = null
@@ -137,13 +137,6 @@ class IdentHubSession {
         identificationSuccessCallback = null
         STARTED = false
         RESUMED = false
-    }
-
-    @Synchronized
-    internal fun stop() {
-        Timber.d("stop(), MAIN_PROCESS : ${MAIN_PROCESS}, this $this")
-        reset()
-        MAIN_PROCESS?.fragmentActivity?.clear()
     }
 
     private fun loadAppName(context: Context) {
