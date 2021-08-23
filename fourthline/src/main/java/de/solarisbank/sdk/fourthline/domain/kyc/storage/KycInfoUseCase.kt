@@ -134,7 +134,9 @@ class KycInfoUseCase(
         var zipCreationStateDto: ZipCreationStateDto = ZipCreationStateDto.ERROR
         if (validateFycInfo(kycInfo)) {
             try {
-                zipCreationStateDto = ZipCreationStateDto.SUCCESS(Zipper().createZipFile(kycInfo, applicationContext))
+                Zipper().createZipFile(kycInfo, applicationContext)?.let {
+                    zipCreationStateDto = ZipCreationStateDto.SUCCESS(it)
+                }
             } catch (zipperError: ZipperError) {
                 when (zipperError) {
                     ZipperError.KycNotValid -> Timber.d("Error in kyc object")

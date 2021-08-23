@@ -109,7 +109,7 @@ class DocScanResultFragment : FourthlineFragment() {
                 kycSharedViewModel.updateExpireDate(expirationDate)
                 kycSharedViewModel.updateDocumentNumber(number)
                 val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
-                if (kycCreationState is ZipCreationStateDto.SUCCESS) {
+                if (kycCreationState is ZipCreationStateDto.SUCCESS && kycCreationState.uri != null) {
                     kycSharedViewModel.kycURI = kycCreationState.uri
                     activityViewModel.navigateToKycUploadFragemnt()
                 } else {
