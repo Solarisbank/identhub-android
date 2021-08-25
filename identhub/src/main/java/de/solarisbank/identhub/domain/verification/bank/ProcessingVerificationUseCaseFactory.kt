@@ -7,14 +7,14 @@ import de.solarisbank.sdk.core.di.internal.Provider
 
 class ProcessingVerificationUseCaseFactory private constructor(
     private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
-    private val jointAccountBankIdPostUseCaseProvider: Provider<JointAccountBankIdPostUseCase>,
+    private val bankIdPostUseCaseProvider: Provider<BankIdPostUseCase>,
     private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 ) : Factory<ProcessingVerificationUseCase> {
 
     override fun get(): ProcessingVerificationUseCase {
         return ProcessingVerificationUseCase(
             identificationPollingStatusUseCaseProvider.get(),
-            jointAccountBankIdPostUseCaseProvider.get(),
+            bankIdPostUseCaseProvider.get(),
             identityInitializationRepositoryProvider.get()
         )
     }
@@ -22,12 +22,12 @@ class ProcessingVerificationUseCaseFactory private constructor(
     companion object {
         fun create(
             identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
-            jointAccountBankIdPostUseCaseProvider: Provider<JointAccountBankIdPostUseCase>,
+            bankIdPostUseCaseProvider: Provider<BankIdPostUseCase>,
             identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
         ): ProcessingVerificationUseCaseFactory {
             return ProcessingVerificationUseCaseFactory(
                 identificationPollingStatusUseCaseProvider,
-                jointAccountBankIdPostUseCaseProvider,
+                bankIdPostUseCaseProvider,
                 identityInitializationRepositoryProvider
             )
         }

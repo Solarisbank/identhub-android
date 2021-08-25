@@ -15,7 +15,7 @@ import timber.log.Timber
 
 class ProcessingVerificationUseCase(
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-    private val jointAccountBankIdPostUseCase: JointAccountBankIdPostUseCase,
+    private val bankIdPostUseCase: BankIdPostUseCase,
     override val identityInitializationRepository: IdentityInitializationRepository
 ) : SingleUseCase<String, ProcessingVerificationDto>(), NextStepSelector {
 
@@ -48,7 +48,7 @@ class ProcessingVerificationUseCase(
                                 }
                                 FailureReason.JOINT_ACCOUNT-> {
                                     Timber.d("processing identification 5")
-                                    val jointResult = jointAccountBankIdPostUseCase.execute(Pair(iban, data!!)).blockingGet()
+                                    val jointResult = bankIdPostUseCase.execute(Pair(iban, data!!)).blockingGet()
                                     if (jointResult.succeeded) {
                                         Timber.d("processing identification 6")
                                         ProcessingVerificationDto.VerificationSuccessful(jointResult.data!!.id)

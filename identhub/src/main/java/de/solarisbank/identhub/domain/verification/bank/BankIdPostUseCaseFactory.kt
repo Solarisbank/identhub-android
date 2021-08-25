@@ -7,10 +7,10 @@ import de.solarisbank.sdk.core.di.internal.Provider
 class BankIdPostUseCaseFactory private constructor(
     private val verificationBankRepositoryProvider: Provider<VerificationBankRepository>,
     private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
-) : Factory<JointAccountBankIdPostUseCase> {
+) : Factory<BankIdPostUseCase> {
 
-    override fun get(): JointAccountBankIdPostUseCase {
-        return JointAccountBankIdPostUseCase(
+    override fun get(): BankIdPostUseCase {
+        return BankIdPostUseCase(
             verificationBankRepositoryProvider.get(),
             identityInitializationRepositoryProvider.get()
         )

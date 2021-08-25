@@ -23,6 +23,8 @@ const val COMPLETED_STEP_KEY = "COMPLETED_STEP_KEY"
 fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): Intent {
     return when(route) {
         FIRST_STEP_DIRECTION.BANK_IBAN.destination -> Intent(context, VerificationBankActivity::class.java)
+        FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination -> Intent(context, VerificationBankActivity::class.java)
+            .also { it.putExtra(FIRST_STEP_KEY, FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination) }
         FIRST_STEP_DIRECTION.QES.destination -> Intent(context, ContractActivity::class.java)
         FIRST_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination -> provideFourthlineActivityIntent(context)
                 .apply { action = FOURTHLINE_FLOW_ACTIVITY_ACTION } //todo remove action
@@ -77,6 +79,7 @@ enum class METHOD(val strValue: String) {
 
 enum class FIRST_STEP_DIRECTION(val destination: String) {
     BANK_IBAN("bank/iban"),
+    BANK_ID_IBAN("bank_id/iban"),
     QES("qes"),
     FOURTHLINE_SIMPLIFIED("fourthline/simplified"),
     FOURTHLINE_UPLOADING("fourthline/uploading")

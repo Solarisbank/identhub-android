@@ -23,6 +23,8 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_DIRECTION
+import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.feature.model.ErrorState
 import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
@@ -40,12 +42,14 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private var progressBar: ProgressBar? = null
     private var submitButton: Button? = null
     private var secondDescription: TextView? = null
+    private var defaultToBankId: Boolean = false
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        initDefaultToBankId()
         return inflater.inflate(R.layout.fragment_verification_bank_iban, container, false)
                 .also {
                     ibanNumber = it.findViewById(R.id.ibanNumber)
@@ -54,6 +58,14 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                     submitButton = it.findViewById(R.id.submitButton)
                     secondDescription = it.findViewById(R.id.secondDescription)
                 }
+    }
+
+    private fun initDefaultToBankId() {
+        requireActivity().intent.getStringExtra(FIRST_STEP_KEY)?.let {
+            if (it == FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination) {
+                defaultToBankId = true
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,7 +145,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         { iBan: String ->
                             Timber.d("submitButton success")
                             sharedViewModel.iban = iBan
-                            ibanViewModel.onSubmitButtonClicked(iBan)
+                            ibanViewModel.onSubmitButtonClicked(iBan, defaultToBankId)
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )

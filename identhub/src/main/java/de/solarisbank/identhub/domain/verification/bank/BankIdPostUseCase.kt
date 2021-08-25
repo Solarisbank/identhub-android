@@ -9,12 +9,12 @@ import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import io.reactivex.Single
 import timber.log.Timber
 
-class JointAccountBankIdPostUseCase(
+class BankIdPostUseCase(
     private val verificationBankRepository: VerificationBankRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
-) : SingleUseCase<Pair<String, IdentificationDto>, IdentificationDto>(), NextStepSelector {
+) : SingleUseCase<Pair<String, IdentificationDto?>, IdentificationDto>(), NextStepSelector {
 
-    override fun invoke(pair: Pair<String, IdentificationDto>): Single<NavigationalResult<IdentificationDto>> {
+    override fun invoke(pair: Pair<String, IdentificationDto?>): Single<NavigationalResult<IdentificationDto>> {
         return verificationBankRepository.postBankIdIdentification(IBan(pair.first))
                 .map { newBankIdIdentification ->
                     Timber.d("newBankIdIdentification : $newBankIdIdentification")
@@ -26,17 +26,24 @@ class JointAccountBankIdPostUseCase(
                             url = newBankIdIdentification.url,
                             status = newBankIdIdentification.status,
                             method = newBankIdIdentification.method,
-                            nextStep = oldBankIdentification.nextStep,
-                            fallbackStep = oldBankIdentification.fallbackStep,
+                            nextStep = oldBankIdentification?.nextStep,
+                            fallbackStep = oldBankIdentification?.fallbackStep,
                             documents = null
                     )
                     Timber.d("combinedIdentification : $combinedIdentification")
                     verificationBankRepository.deleteAll().blockingGet()
                     verificationBankRepository.save(combinedIdentification).blockingGet()
-                    val nextStep = selectNextStep(
-                        oldBankIdentification.nextStep,
-                        oldBankIdentification.fallbackStep
-                    )
+                    val nextStep = if (oldBankIdentification != null) {
+                        selectNextStep(
+                            oldBankIdentification.nextStep,
+                            oldBankIdentification.fallbackStep
+                        )
+                    } else {
+                        selectNextStep(
+                            newBankIdIdentification.nextStep,
+                            newBankIdIdentification.fallbackStep
+                        )
+                    }
                     NavigationalResult(combinedIdentification, nextStep)
                 }
     }

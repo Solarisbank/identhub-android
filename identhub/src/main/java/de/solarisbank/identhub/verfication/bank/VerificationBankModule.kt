@@ -6,6 +6,7 @@ import de.solarisbank.identhub.contract.sign.ContractSigningViewModel
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.*
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
+import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
@@ -18,8 +19,8 @@ class VerificationBankModule {
         return VerificationBankViewModel(savedStateHandle, identificationStepPreferences, getIdentificationUseCase, sessionUrlRepository)
     }
 
-    fun provideVerificationBankIbanViewModel(verifyIBanUseCase: VerifyIBanUseCase): VerificationBankIbanViewModel {
-        return VerificationBankIbanViewModel(verifyIBanUseCase)
+    fun provideVerificationBankIbanViewModel(verifyIBanUseCase: VerifyIBanUseCase, bankIdPostUseCase: BankIdPostUseCase): VerificationBankIbanViewModel {
+        return VerificationBankIbanViewModel(verifyIBanUseCase, bankIdPostUseCase)
     }
 
     fun provideProcessingVerificationViewModel(processingVerificationUseCase: ProcessingVerificationUseCase): ProcessingVerificationViewModel {
