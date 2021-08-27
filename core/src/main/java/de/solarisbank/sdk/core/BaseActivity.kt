@@ -70,6 +70,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
                 negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
                 positiveAction = {
+                    //todo foresee intenttypes and avoid null bundle
                     Timber.d("Quit IdentHub SDK after back button pressed")
                     quit(null)
                 },

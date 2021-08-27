@@ -61,7 +61,11 @@ class ContractSigningPreviewViewModel(
                 }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({
+                Timber.d("refreshIdentificationData() 4, it : $it ")
+            }, {
+                Timber.e(it, "refreshIdentificationData() 5")
+            })
         )
     }
 

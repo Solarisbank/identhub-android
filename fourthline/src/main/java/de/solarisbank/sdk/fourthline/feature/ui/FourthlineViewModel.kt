@@ -14,6 +14,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOU
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
 import timber.log.Timber
+import java.util.*
 
 class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -85,6 +86,7 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
         Timber.d("setFourthlineIdentificationSuccessful, identificationId : $identificationId")
         val bundle = Bundle().apply {
             putString(IdentHub.IDENTIFICATION_ID_KEY, identificationId)
+            putString("uuid", UUID.randomUUID().toString())
         }
         navigateTo(FOURTHLINE_IDENTIFICATION_SUCCESSFULL, bundle)
     }

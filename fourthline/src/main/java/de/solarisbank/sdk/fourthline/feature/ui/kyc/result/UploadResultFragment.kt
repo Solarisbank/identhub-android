@@ -17,6 +17,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.ID
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.NEXT_STEP_ARG
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import timber.log.Timber
+import java.util.*
 
 class UploadResultFragment : FourthlineFragment() {
 
@@ -59,8 +60,14 @@ class UploadResultFragment : FourthlineFragment() {
 
     private fun moveToNextStep(nextStep: String) {
         Timber.d("moveToNextStep : ${nextStep}")
+        //todo move to viewmodel with nextStep parameter
         activityViewModel.postDynamicNavigationNextStep(
-            Bundle().apply { putString(NEXT_STEP_KEY, nextStep) }
+            // todo crate Bundle Factory for navigation subtypes
+            //todo foresee intenttypes and avoid null bundle
+            Bundle().apply {
+                putString(NEXT_STEP_KEY, nextStep)
+                putString("uuid", UUID.randomUUID().toString())
+            }
         )
     }
 

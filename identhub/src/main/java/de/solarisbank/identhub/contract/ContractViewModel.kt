@@ -23,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.UUID.randomUUID
 
 class ContractViewModel(
     savedStateHandle: SavedStateHandle,
@@ -63,6 +64,7 @@ class ContractViewModel(
     }
 
     fun callOnSuccessResult() {
+        Timber.d("callOnSuccessResult()")
         identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)
         compositeDisposable.add(
             getIdentificationUseCase
@@ -75,8 +77,11 @@ class ContractViewModel(
                             Timber.d("onSubmitButtonClicked(), success;  result: $it ")
                             val (id) = (it as Result.Success<Identification>).data
                             val bundle = Bundle()
+                            // todo crate Bundle Factory for navigation subtypes
+                            //todo foresee intenttypes and avoid null bundle
                             bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.CONTRACT_SIGNING.index)
                             bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, id)
+                            bundle.putString("uuid", randomUUID().toString())
                             uiStateLiveData.value = StateUiModel.Success(bundle)
                         } else {
                             Timber.d("onSubmitButtonClicked(), fail;  result: $it ")

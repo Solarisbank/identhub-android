@@ -33,13 +33,16 @@ class IdentHubSessionObserver(
 
     var fragmentActivity: FragmentActivity? = null
         set(value) {
+            val old = field
             field = value
             value?.lifecycle?.addObserver(this)
             value?.let {
+                Timber.d("set fragmentActivity 1")
                 LocalBroadcastManager.getInstance(it)
                     .registerReceiver(receiver, IntentFilter(IDENTHUB_STEP_ACTION))
             } ?: run {
-                field?.let {
+                old?.let {
+                    Timber.d("set fragmentActivity 2")
                     LocalBroadcastManager.getInstance(it).unregisterReceiver(receiver)
                 }
             }
@@ -50,32 +53,54 @@ class IdentHubSessionObserver(
             viewModel?.saveSessionId(value)
         }
 
-    var receiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private var cachedUUID: String? = null
+
+    private var receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Timber.d("onReceive 0")
+            Timber.d("onReceive 0, this: $this, this@IdentHubSessionObserver: ${this@IdentHubSessionObserver}")
             if (intent != null) {
-                if (intent.hasExtra(NEXT_STEP_KEY) && !intent.hasExtra(IDENTIFICATION_ID_KEY)) {
-                    Timber.d("onReceive 1")
-                    intent.getStringExtra(NEXT_STEP_KEY)?.let {
-                        toNextStep(fragmentActivity!!, it, sessionUrl)?.let {
-                                nextStepIntent -> fragmentActivity?.startActivity(nextStepIntent)
-                        }?:run {
-                            errorCallback.invoke(
-                                IdentHubSessionFailure(
-                                    message = "Session aborted",
-                                    step = COMPLETED_STEP.getEnum(intent.getIntExtra(COMPLETED_STEP_KEY, -1))
-                                )
-                            )
+                if (
+                    intent.hasExtra(NEXT_STEP_KEY) // VerificationBank and Fourthline case
+                    && !intent.hasExtra(IDENTIFICATION_ID_KEY)
+                    && intent.hasExtra("uuid")
+                ) {
+                    val intentUuid = intent.getStringExtra("uuid")
+                    if (cachedUUID != intentUuid) {
+                        Timber.d("onReceive 1, $intentUuid")
+                        cachedUUID = intentUuid
+                        intent.getStringExtra(NEXT_STEP_KEY)?.let {
+                            Timber.d("onReceive 1.1${intent.getStringExtra("uuid")}")
+                            toNextStep(fragmentActivity!!, it, sessionUrl)?.let { nextStepIntent ->
+                                fragmentActivity?.startActivity(nextStepIntent)
+                            } ?: run {
+                                errorCallback.invoke(
+                                    IdentHubSessionFailure(
+                                        message = "Session aborted",
+                                        step = COMPLETED_STEP.getEnum(
+                                            intent.getIntExtra(COMPLETED_STEP_KEY, -1)
+                                        )))
+                            }
                         }
-                        return
+                            return
                     }
-                } else if (intent.hasExtra(IDENTIFICATION_ID_KEY) && !intent.hasExtra(NEXT_STEP_KEY)) {
-                    Timber.d("onReceive 2")
-                    successCallback.invoke(IdentHubSessionResult(
-                            intent.getStringExtra(IDENTIFICATION_ID_KEY)!!,
-                            COMPLETED_STEP.getEnum(intent.getIntExtra(COMPLETED_STEP_KEY, -1))
-                    ))
-                } else if (!intent.hasExtra(NEXT_STEP_KEY) && !intent.hasExtra(IDENTIFICATION_ID_KEY)) {
+                } else if (
+                    intent.hasExtra(IDENTIFICATION_ID_KEY) // ContractActivity case
+                    && !intent.hasExtra(NEXT_STEP_KEY)
+                    && intent.hasExtra("uuid")
+                ) {
+                    val intentUuid = intent.getStringExtra("uuid")
+                    Timber.d("onReceive 2, $intentUuid")
+                    if (cachedUUID != intentUuid) {
+                        cachedUUID = intentUuid
+                        successCallback.invoke(
+                            IdentHubSessionResult(
+                                intent.getStringExtra(IDENTIFICATION_ID_KEY)!!,
+                                COMPLETED_STEP.getEnum(intent.getIntExtra(COMPLETED_STEP_KEY, -1))
+                            )
+                        )
+                    }
+                } else if (!intent.hasExtra(NEXT_STEP_KEY) && !intent.hasExtra(IDENTIFICATION_ID_KEY)) {  //onBackPressed case
+                    //todo foresee intenttypes and avoid null bundle
                     Timber.d("onReceive 3")
                     errorCallback.invoke(IdentHubSessionFailure(
                             step = COMPLETED_STEP.getEnum(intent.getIntExtra(COMPLETED_STEP_KEY, -1))
@@ -158,6 +183,7 @@ class IdentHubSessionObserver(
         Timber.d("onDestroy")
         fragmentActivity?.let {
             it.lifecycle.removeObserver(this)
+            Timber.d("fragmentActivity 3")
             LocalBroadcastManager.getInstance(it).unregisterReceiver(receiver)
         }
         viewModel = null

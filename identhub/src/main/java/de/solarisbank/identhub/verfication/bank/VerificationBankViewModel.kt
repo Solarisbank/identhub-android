@@ -20,8 +20,14 @@ import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.domain.navigation.NaviDirection
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+import java.util.*
 
-class VerificationBankViewModel(private val savedStateHandle: SavedStateHandle, private val identificationStepPreferences: IdentificationStepPreferences, private val getIdentificationUseCase: GetIdentificationUseCase, private val sessionUrlRepository: SessionUrlRepository) : ViewModel() {
+class VerificationBankViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val identificationStepPreferences: IdentificationStepPreferences,
+    private val getIdentificationUseCase: GetIdentificationUseCase,
+    private val sessionUrlRepository: SessionUrlRepository
+    ) : ViewModel() {
 
 
     val cancelState = MutableLiveData<Boolean>()
@@ -46,7 +52,10 @@ class VerificationBankViewModel(private val savedStateHandle: SavedStateHandle, 
 
     fun postDynamicNavigationNextStep(nextStep: String?) {
         Timber.d("postDynamicNavigationNextStep, nextStep : $nextStep")
-        navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, Bundle().apply { putString(NEXT_STEP_KEY, nextStep) } ))
+        navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, Bundle().apply {
+            putString(NEXT_STEP_KEY, nextStep)
+            putString("uuid", UUID.randomUUID().toString())
+        } ))
     }
 
     fun moveToEstablishSecureConnection(bankIdentificationUrl: String?, nextStep: String? = null) {
