@@ -7,10 +7,39 @@ It provides an easy way to integrate identification provided by Solarisbank into
 Add `identhub-android` as a dependency to your `build.gradle` file:
 
 ```groovy
+repositories {
+    …
+
+    maven {
+        url "https://maven.pkg.github.com/Solarisbank/identhub-android"
+        credentials {
+            username = ""
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+    maven {
+        url "https://maven.pkg.github.com/Fourthline-com/FourthlineSDK-Android"
+        credentials {
+            username = ""
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
 dependencies {
-    implementation 'de.solarisbank.identhub:identhub-android:0.1.0'
+    implementation 'de.solarisbank.identhub:identhub-android:1.0.4'
+    // Optional integration of Fourthline SDK
+    implementation 'de.solarisbank.identhub:identhub-android-fourthline:1.0.4'
 }
 ```
+
+Then issue a developer access token  https://github.com/settings/tokens with scope `read:packages` and trigger a build from your Terminal like this:
+
+```sh
+GITHUB_TOKEN=<< github token >> ./gradlew :my-app:build
+```
+
+Once the IdentHub SDK has been downloaded, Gradle will use it from your local cache.
 
 ## Usage
 Add the required permissions for IdentHub to your app's `Manifest.xml` file:
