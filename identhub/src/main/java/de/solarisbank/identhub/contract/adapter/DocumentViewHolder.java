@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.data.entity.Document;
+import de.solarisbank.sdk.data.entity.Document;
 
 public class DocumentViewHolder extends RecyclerView.ViewHolder {
 

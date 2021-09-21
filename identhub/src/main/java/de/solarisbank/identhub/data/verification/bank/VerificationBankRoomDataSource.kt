@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.data.verification.bank
 
-import de.solarisbank.identhub.data.dao.DocumentDao
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.entity.Identification
-import de.solarisbank.identhub.data.entity.IdentificationWithDocument
+import de.solarisbank.sdk.data.dao.DocumentDao
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.entity.IdentificationWithDocument
 import io.reactivex.Completable
 import io.reactivex.Single
 

@@ -1,11 +1,11 @@
-package de.solarisbank.identhub.di.database;
+package de.solarisbank.sdk.data.di;
 
 import android.content.Context;
 
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase;
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
 import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase;
 
 public final class DatabaseModuleProvideRoomFactory implements Factory<IdentityRoomDatabase> {
 

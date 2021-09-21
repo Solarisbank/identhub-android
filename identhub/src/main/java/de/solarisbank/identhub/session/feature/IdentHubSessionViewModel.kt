@@ -3,8 +3,8 @@ package de.solarisbank.identhub.session.feature
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

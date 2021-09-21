@@ -3,8 +3,6 @@ package de.solarisbank.identhub.contract.preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.entity.Document
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
@@ -14,6 +12,8 @@ import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.core.result.throwable
+import de.solarisbank.sdk.data.entity.Document
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

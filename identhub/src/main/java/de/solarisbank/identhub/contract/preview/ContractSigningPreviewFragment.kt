@@ -20,8 +20,6 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
-import de.solarisbank.identhub.data.entity.Document
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.Result
@@ -29,6 +27,8 @@ import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.core.result.throwable
 import de.solarisbank.sdk.core.viewModels
+import de.solarisbank.sdk.data.entity.Document
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import java.io.File

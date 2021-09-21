@@ -1,12 +1,12 @@
 package de.solarisbank.identhub.data.verification.bank.factory;
 
-import de.solarisbank.identhub.data.dao.DocumentDao;
-import de.solarisbank.identhub.data.dao.IdentificationDao;
-import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankDataModule;
+import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
 import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.data.dao.DocumentDao;
+import de.solarisbank.sdk.data.dao.IdentificationDao;
 
 public class VerificationBankLocalDataSourceFactory implements Factory<VerificationBankLocalDataSource> {
 

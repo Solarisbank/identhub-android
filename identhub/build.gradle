@@ -96,21 +96,17 @@ afterEvaluate {
 dependencies {
     api project(":core")
     implementation project(":identhub-ui")
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
     implementation kotlinCore
     implementation support
     implementation activity
     implementation rxJava
     implementation lifecycle.libs
     implementation networking.libs
-    implementation room.libs
     implementation viewmodel
-    kapt room.proc
     implementation navigation
     debugImplementation leakCanary
     implementation timber
     testImplementation baseTest
-    testImplementation room.test
     androidTestImplementation espresso
 
     constraints {

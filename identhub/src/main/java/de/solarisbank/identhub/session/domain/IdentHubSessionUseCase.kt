@@ -1,7 +1,6 @@
 package de.solarisbank.identhub.session.domain
 
 import android.content.Context
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
@@ -9,6 +8,7 @@ import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.data.IdentHubSessionRepository
 import de.solarisbank.identhub.session.utils.isServiceRunning
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 import timber.log.Timber
 

@@ -1,14 +1,14 @@
-package de.solarisbank.identhub.data.room
+package de.solarisbank.sdk.data.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import de.solarisbank.identhub.data.dao.DocumentDao
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.entity.Document
-import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.sdk.data.dao.DocumentDao
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.entity.Document
+import de.solarisbank.sdk.data.entity.Identification
 
 @Database(entities = [Document::class, Identification::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)

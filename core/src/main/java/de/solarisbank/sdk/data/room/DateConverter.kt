@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.data.room
+package de.solarisbank.sdk.data.room
 
 import androidx.room.TypeConverter
 import java.util.*

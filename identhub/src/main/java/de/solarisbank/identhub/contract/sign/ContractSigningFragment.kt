@@ -18,7 +18,6 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
-import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
@@ -28,6 +27,7 @@ import de.solarisbank.identhub.verfication.phone.format
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.result.*
 import de.solarisbank.sdk.core.viewModels
+import de.solarisbank.sdk.data.entity.Status
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber

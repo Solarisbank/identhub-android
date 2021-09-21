@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.domain.usecase
 
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.network.transformResult
 import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 
 abstract class SingleUseCase<P, R> {

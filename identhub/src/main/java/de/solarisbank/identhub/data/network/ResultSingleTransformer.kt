@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.data.network
 
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.Type
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 import io.reactivex.SingleSource
 import io.reactivex.SingleTransformer

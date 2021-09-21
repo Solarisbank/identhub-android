@@ -9,13 +9,13 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import de.solarisbank.identhub.data.entity.NavigationalResult
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase.Companion.clearDatabase
 import de.solarisbank.identhub.domain.navigation.router.*
 import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.IdentHubSessionViewModel
 import de.solarisbank.sdk.core.BaseActivity.Companion.IDENTHUB_STEP_ACTION
+import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase.Companion.clearDatabase
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -158,10 +158,11 @@ class IdentHubSessionObserver(
             val navResult = result.getOrNull()!!
             if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
                 Timber.d("processInitializationStateResult 1")
-                fragmentActivity?.startActivity(toFirstStep(fragmentActivity!!, navResult.nextStep, sessionUrl))
+                fragmentActivity?.startActivity(toFirstStep(fragmentActivity!!,
+                    navResult.nextStep!!, sessionUrl))
             } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
                 Timber.d("processInitializationStateResult 2")
-                val nextStep = toNextStep(fragmentActivity!!, navResult.nextStep, sessionUrl)
+                val nextStep = toNextStep(fragmentActivity!!, navResult.nextStep!!, sessionUrl)
                 if(nextStep != null) {
                     fragmentActivity?.startActivity(nextStep)
                 } else {

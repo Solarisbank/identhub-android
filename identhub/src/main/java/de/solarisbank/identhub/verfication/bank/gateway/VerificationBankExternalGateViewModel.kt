@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.sdk.core.di.internal.Preconditions
@@ -12,6 +11,7 @@ import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit

@@ -1,10 +1,10 @@
-package de.solarisbank.identhub.di.database
+package de.solarisbank.sdk.data.di
 
 import android.content.Context
-import de.solarisbank.identhub.data.dao.DocumentDao
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase.Companion.getDatabase
+import de.solarisbank.sdk.data.dao.DocumentDao
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase.Companion.getDatabase
 
 class DatabaseModule {
     fun provideIdentityRoomDatabase(context: Context): IdentityRoomDatabase {

@@ -1,11 +1,11 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 import timber.log.Timber
 

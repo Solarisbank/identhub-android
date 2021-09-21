@@ -1,7 +1,6 @@
 package de.solarisbank.identhub.data.verification.bank.factory;
 
 import de.solarisbank.identhub.data.Mapper;
-import de.solarisbank.identhub.data.entity.IdentificationWithDocument;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankDataModule;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.identhub.data.verification.bank.VerificationBankNetworkDataSource;
@@ -10,6 +9,7 @@ import de.solarisbank.identhub.domain.verification.bank.VerificationBankReposito
 import de.solarisbank.sdk.core.di.internal.Factory;
 import de.solarisbank.sdk.core.di.internal.Preconditions;
 import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.data.entity.IdentificationWithDocument;
 
 public class ProvideVerificationBankRepositoryFactory implements Factory<VerificationBankRepository> {
 

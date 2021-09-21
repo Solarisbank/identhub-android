@@ -3,7 +3,6 @@ package de.solarisbank.identhub.verfication.bank
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase

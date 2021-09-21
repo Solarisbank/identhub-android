@@ -1,14 +1,14 @@
-package de.solarisbank.identhub.di.database
+package de.solarisbank.sdk.data.di
 
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase
 import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Preconditions
 import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 
 class DatabaseModuleProvideIdentificationDaoFactory(
-        private val databaseModule: DatabaseModule,
-        private val identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
+    private val databaseModule: DatabaseModule,
+    private val identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
 ) : Factory<IdentificationDao> {
     override fun get(): IdentificationDao {
         return Preconditions.checkNotNull(
@@ -20,8 +20,8 @@ class DatabaseModuleProvideIdentificationDaoFactory(
     companion object {
         @JvmStatic
         fun create(
-                databaseModule: DatabaseModule,
-                identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
+            databaseModule: DatabaseModule,
+            identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
         ): DatabaseModuleProvideIdentificationDaoFactory {
             return DatabaseModuleProvideIdentificationDaoFactory(
                     databaseModule,

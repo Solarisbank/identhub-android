@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.domain.contract;
 
 import de.solarisbank.identhub.data.TransactionAuthenticationNumber;
-import de.solarisbank.identhub.data.entity.Identification;
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
 import de.solarisbank.identhub.domain.usecase.CompletableUseCase;
+import de.solarisbank.sdk.data.entity.Identification;
 import io.reactivex.Completable;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;

@@ -92,6 +92,10 @@ dependencies {
     implementation activity
     implementation networking.libs
     implementation timber
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
+    api room.libs
+    kapt room.proc
+    testImplementation room.test
     testImplementation baseTest
     androidTestImplementation espresso
 

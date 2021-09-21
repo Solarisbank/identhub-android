@@ -1,11 +1,11 @@
 package de.solarisbank.identhub.data.mapper
 
 import de.solarisbank.identhub.data.Mapper
-import de.solarisbank.identhub.data.entity.Document
-import de.solarisbank.identhub.data.entity.Identification
-import de.solarisbank.identhub.data.entity.IdentificationWithDocument
 import de.solarisbank.identhub.domain.data.dto.DocumentDto
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
+import de.solarisbank.sdk.data.entity.Document
+import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.entity.IdentificationWithDocument
 
 class IdentificationEntityMapper : Mapper<IdentificationDto, IdentificationWithDocument> {
     override fun to(input: IdentificationDto): IdentificationWithDocument {

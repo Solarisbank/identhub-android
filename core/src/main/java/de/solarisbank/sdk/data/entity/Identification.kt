@@ -1,8 +1,8 @@
-package de.solarisbank.identhub.data.entity
+package de.solarisbank.sdk.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import de.solarisbank.identhub.data.entity.Identification.Companion.TABLE_NAME
+import de.solarisbank.sdk.data.entity.Identification.Companion.TABLE_NAME
 
 @Entity(tableName = TABLE_NAME)
 data class Identification(

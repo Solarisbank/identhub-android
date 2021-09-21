@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
-import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
+import de.solarisbank.sdk.data.dao.IdentificationDao
 import retrofit2.Retrofit
 
 class IdentificationModule {

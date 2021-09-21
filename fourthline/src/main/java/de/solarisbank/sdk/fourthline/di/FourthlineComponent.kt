@@ -4,21 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.identhub.data.ip.*
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
 import de.solarisbank.identhub.data.person.PersonDataApi
 import de.solarisbank.identhub.data.person.PersonDataApiFactory
 import de.solarisbank.identhub.data.person.PersonDataDataSource
 import de.solarisbank.identhub.data.person.PersonDataDataSourceFactory
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase
 import de.solarisbank.identhub.data.session.SessionModule
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
 import de.solarisbank.identhub.data.session.factory.ProvideSessionUrlRepositoryFactory
 import de.solarisbank.identhub.data.session.factory.SessionUrlLocalDataSourceFactory.Companion.create
-import de.solarisbank.identhub.di.database.DatabaseModule
-import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDaoFactory
-import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
@@ -38,6 +33,11 @@ import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.di.DatabaseModule
+import de.solarisbank.sdk.data.di.DatabaseModuleProvideIdentificationDaoFactory
+import de.solarisbank.sdk.data.di.DatabaseModuleProvideRoomFactory
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 import de.solarisbank.sdk.fourthline.data.identification.*
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
@@ -165,7 +165,8 @@ class FourthlineComponent private constructor(
         applicationContextProvider = ApplicationContextProvider(libraryComponent)
 
         identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
-        identificationDaoProvider = DoubleCheck.provider(DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
+        identificationDaoProvider = DoubleCheck.provider(
+            DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
 
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
 

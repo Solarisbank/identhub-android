@@ -1,7 +1,7 @@
-package de.solarisbank.identhub.data.dao
+package de.solarisbank.sdk.data.dao
 
 import androidx.room.*
-import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Completable
 import io.reactivex.Single
 

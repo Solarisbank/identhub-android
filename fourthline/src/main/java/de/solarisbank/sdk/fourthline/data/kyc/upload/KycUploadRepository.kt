@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.kyc.upload
 
-import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.fourthline.data.dto.KycUploadResponseDto
 import io.reactivex.Single
 import timber.log.Timber

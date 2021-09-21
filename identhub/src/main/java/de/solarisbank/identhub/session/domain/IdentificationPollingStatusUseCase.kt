@@ -1,13 +1,13 @@
 package de.solarisbank.identhub.session.domain
 
-import de.solarisbank.identhub.data.entity.NavigationalResult
-import de.solarisbank.identhub.data.entity.Status
 import de.solarisbank.identhub.data.utils.toIdentification
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.session.data.identification.IdentificationRepository
+import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.data.entity.Status
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber

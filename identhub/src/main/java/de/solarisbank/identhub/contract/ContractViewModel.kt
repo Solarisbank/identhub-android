@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
@@ -18,6 +17,7 @@ import de.solarisbank.identhub.session.IdentHub.isPaymentResultAvailable
 import de.solarisbank.sdk.core.data.model.StateUiModel
 import de.solarisbank.sdk.core.result.Event
 import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.data.entity.Identification
 import de.solarisbank.sdk.domain.navigation.NaviDirection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

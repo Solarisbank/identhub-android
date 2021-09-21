@@ -4,22 +4,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepositoryImpl
-import de.solarisbank.identhub.domain.session.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.data.initialization.InitializeIdentificationApi
 import de.solarisbank.identhub.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
-import de.solarisbank.identhub.data.room.IdentityRoomDatabase
 import de.solarisbank.identhub.data.session.SessionModule
 import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
 import de.solarisbank.identhub.data.session.factory.ProvideSessionUrlRepositoryFactory
 import de.solarisbank.identhub.data.session.factory.SessionUrlLocalDataSourceFactory
-import de.solarisbank.identhub.di.database.DatabaseModule
-import de.solarisbank.identhub.di.database.DatabaseModuleProvideIdentificationDaoFactory
-import de.solarisbank.identhub.di.database.DatabaseModuleProvideRoomFactory
 import de.solarisbank.identhub.di.network.*
 import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
+import de.solarisbank.identhub.domain.session.IdentityInitializationRepositoryImpl
+import de.solarisbank.identhub.domain.session.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.IdentHubObserverSubcomponent
 import de.solarisbank.identhub.session.IdentHubSessionObserver
@@ -35,6 +30,11 @@ import de.solarisbank.sdk.core.di.internal.Factory
 import de.solarisbank.sdk.core.di.internal.Factory2
 import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.di.DatabaseModule
+import de.solarisbank.sdk.data.di.DatabaseModuleProvideIdentificationDaoFactory
+import de.solarisbank.sdk.data.di.DatabaseModuleProvideRoomFactory
+import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -43,11 +43,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 //todo split to a separate gradle module
 class IdentHubSessionComponent private constructor(
-        val networkModule: NetworkModule,
-        val identHubSessionModule: IdentHubSessionModule,
-        private val sessionModule: SessionModule,
-        private val databaseModule: DatabaseModule,
-        private val applicationContextProvider: ApplicationContextProvider
+    val networkModule: NetworkModule,
+    val identHubSessionModule: IdentHubSessionModule,
+    private val sessionModule: SessionModule,
+    private val databaseModule: DatabaseModule,
+    private val applicationContextProvider: ApplicationContextProvider
 ){
 
     private lateinit var identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
@@ -78,7 +78,8 @@ class IdentHubSessionComponent private constructor(
     private fun initialize() {
 
         identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
-        identificationDaoProvider = DoubleCheck.provider(DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
+        identificationDaoProvider = DoubleCheck.provider(
+            DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
         userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create(networkModule))

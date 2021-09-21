@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
-import de.solarisbank.identhub.data.dao.IdentificationDao
-import de.solarisbank.identhub.data.entity.Identification
+import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Completable
 import io.reactivex.Single
 

@@ -3,12 +3,12 @@ package de.solarisbank.identhub.domain.navigation.router
 import android.content.Context
 import android.content.Intent
 import de.solarisbank.identhub.contract.ContractActivity
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.utils.FOURTHLINE_FLOW_ACTIVITY_ACTION
 import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.identhub.session.utils.provideFourthlineActivityIntent
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivity
+import de.solarisbank.sdk.data.entity.Identification
 import timber.log.Timber
 
 //todo move to core module

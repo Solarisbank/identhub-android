@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.data.utils
 
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.sdk.core.data.model.IdentificationUiModel
+import de.solarisbank.sdk.data.entity.Identification
 
 fun IdentificationDto.toIdentificationUiModel(): IdentificationUiModel {
     return IdentificationUiModel(

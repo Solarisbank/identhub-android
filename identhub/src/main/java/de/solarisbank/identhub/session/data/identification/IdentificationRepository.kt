@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.session.data.identification
 
-import de.solarisbank.identhub.data.entity.Identification
 import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
+import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Completable
 import io.reactivex.Single
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.data.entity.Document;
+import de.solarisbank.sdk.data.entity.Document;
 import io.reactivex.Observable;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {

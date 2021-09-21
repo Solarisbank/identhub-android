@@ -1,6 +1,5 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.data.entity.NavigationalResult
 import de.solarisbank.identhub.data.network.transformResult
 import de.solarisbank.identhub.data.verification.bank.model.IBan
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
@@ -15,6 +14,7 @@ import de.solarisbank.sdk.core.result.Result
 import de.solarisbank.sdk.core.result.Type
 import de.solarisbank.sdk.core.result.data
 import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 import retrofit2.HttpException
 import timber.log.Timber

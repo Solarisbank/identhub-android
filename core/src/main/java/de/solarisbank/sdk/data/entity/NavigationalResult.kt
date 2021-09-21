@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.data.entity
+package de.solarisbank.sdk.data.entity
 
 data class NavigationalResult<T>(
         val data: T,

@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.session.data.identification
 
-import de.solarisbank.identhub.data.dao.IdentificationDao
 import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.data.dao.IdentificationDao
 
 class IdentificationRoomDataSourceFactory private constructor(
         private val identificationModule: IdentificationModule,
