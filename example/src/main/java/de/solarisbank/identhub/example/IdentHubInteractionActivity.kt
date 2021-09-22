@@ -19,7 +19,7 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         setContentView(view)
         Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
 
-        binding.button.setOnClickListener {
+        binding.startButton.setOnClickListener {
             IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
             .apply {
                 onCompletionCallback(
@@ -41,6 +41,20 @@ class IdentHubInteractionActivity : AppCompatActivity() {
                     )
                     onPaymentCallback(this@IdentHubInteractionActivity::onPayment)
                     resume()
+                }
+        }
+        binding.startButtonWithoutOnPayment.setOnClickListener {
+            IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)
+                .apply {
+                    onCompletionCallback(
+                        fragmentActivity = this@IdentHubInteractionActivity,
+                        successCallback = this@IdentHubInteractionActivity::onSuccess,
+                        errorCallback = this@IdentHubInteractionActivity::onFailure
+                    )
+                    /*
+                    onPaymentCallback is not set here
+                     */
+                    start()
                 }
         }
     }

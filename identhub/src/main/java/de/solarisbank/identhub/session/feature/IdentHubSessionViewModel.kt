@@ -24,6 +24,24 @@ class IdentHubSessionViewModel(private val identHubSessionUseCase : IdentHubSess
         identHubSessionUseCase.saveSessionId(url)
     }
 
+    fun obtainNextStep() {
+        compositeDisposable.add(
+            identHubSessionUseCase.getNextStep()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        Timber.d("obtainLocalIdentificationState success: $it")
+                        _initializationStateLiveData.value = Result.success(it)
+                    },
+                    {
+                        Timber.e(it, "obtainLocalIdentificationState fail")
+                        _initializationStateLiveData.value = Result.failure(it)
+                    }
+                )
+        )
+    }
+
     fun obtainLocalIdentificationState() {
         compositeDisposable.add(
                 identHubSessionUseCase.obtainLocalIdentificationState()

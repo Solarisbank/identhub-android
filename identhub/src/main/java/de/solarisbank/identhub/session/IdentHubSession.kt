@@ -8,7 +8,6 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
 class IdentHubSession {
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
@@ -77,8 +76,11 @@ class IdentHubSession {
         if (paymentSuccessCallback != null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
             Timber.d("onResultSuccess 1")
             paymentSuccessCallback(identHubSessionResult)
-        } else if (identificationSuccessCallback != null) {
+        }else if(paymentSuccessCallback == null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
             Timber.d("onResultSuccess 2")
+            MAIN_PROCESS?.obtainNextStep()
+        } else if (identificationSuccessCallback != null) {
+            Timber.d("onResultSuccess 3")
             reset()
             identificationSuccessCallback(identHubSessionResult)
         }

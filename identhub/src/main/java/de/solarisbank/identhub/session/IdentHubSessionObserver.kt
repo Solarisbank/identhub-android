@@ -137,6 +137,11 @@ class IdentHubSessionObserver(
         viewModel?.obtainLocalIdentificationState()
     }
 
+    fun obtainNextStep() {
+        Timber.d("obtainNextStep")
+        viewModel?.obtainNextStep()
+    }
+
     fun clearDataOnCompletion() {
         Timber.d("clearDataOnCompletion")
         compositeDisposable.add(

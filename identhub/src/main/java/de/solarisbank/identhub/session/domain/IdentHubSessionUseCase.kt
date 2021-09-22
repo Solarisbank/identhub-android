@@ -7,7 +7,6 @@ import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
 import de.solarisbank.identhub.domain.session.NextStepSelector
 import de.solarisbank.identhub.domain.session.SessionUrlRepository
 import de.solarisbank.identhub.session.data.IdentHubSessionRepository
-import de.solarisbank.identhub.session.utils.isServiceRunning
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import io.reactivex.Single
 import timber.log.Timber
@@ -25,38 +24,32 @@ class IdentHubSessionUseCase(
         sessionUrlRepository.save(url)
     }
 
-    fun obtainLocalIdentificationState(): Single<NavigationalResult<String>> {
-        Timber.d("obtainLocalIdentificationState()")
-        return Single.just(isServiceRunning(context))
-                .flatMap { isServiceRunning ->
-                    if (isServiceRunning) {
-                        //todo implement uploading status saving
-                        Single.just(NavigationalResult("IdentHubSessionViewModel.LOCAL_IDENTIFICATION_STATE.PROCESSING", "upload_screen"))
-                    } else {
-                        Timber.d("obtainLocalIdentificationState() 0")
-                        identHubSessionRepository
-                                .getSavedIdentificationId()
-                                .map {
-                                    Timber.d("obtainLocalIdentificationState() 1: $it")
-                                    val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
-                                    return@map NavigationalResult(NEXT_STEP_KEY, nextStep)
-                                }
-                                .doOnError{
-                                    Timber.e(it,"doOnError")
-                                }
-                                .onErrorReturnItem(
-                                        identHubSessionRepository.getRequiredIdentificationFlow(sessionUrlRepository.get()!!)
-                                                .map {
-                                                    Timber.d("obtainLocalIdentificationState() 3")
-                                                    identityInitializationRepository.saveInitializationDto(it)
-                                                    val result = NavigationalResult(FIRST_STEP_KEY, it.firstStep)
-                                                    Timber.d("obtainLocalIdentificationState() 4, $result")
-                                                    return@map result
-                                                }.blockingGet()
-                                )
-                    }
-                }
-
+    fun getNextStep(): Single<NavigationalResult<String>> {
+        return identHubSessionRepository
+            .getSavedIdentificationId()
+            .map {
+                Timber.d("obtainLocalIdentificationState() 1: $it")
+                val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
+                return@map NavigationalResult(NEXT_STEP_KEY, nextStep)
+            }
     }
 
+    fun obtainLocalIdentificationState(): Single<NavigationalResult<String>> {
+        Timber.d("obtainLocalIdentificationState()")
+        return identHubSessionRepository
+            .getRequiredIdentificationFlow(sessionUrlRepository.get()!!)
+            .flatMap { initializationDto ->
+                identityInitializationRepository.saveInitializationDto(initializationDto)
+                identHubSessionRepository
+                    .getSavedIdentificationId()
+                    .map {
+                        Timber.d("obtainLocalIdentificationState() 1: $it")
+                        val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
+                        NavigationalResult(NEXT_STEP_KEY, nextStep)
+                    }
+                    .onErrorReturnItem(
+                        NavigationalResult(FIRST_STEP_KEY, initializationDto.firstStep)
+                    )
+            }
+    }
 }
