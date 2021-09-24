@@ -27,9 +27,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.solarisbank.identhub:identhub-android:1.0.4'
+    implementation 'de.solarisbank.identhub:identhub-android:1.0.5'
     // Optional integration of Fourthline SDK
-    implementation 'de.solarisbank.identhub:identhub-android-fourthline:1.0.4'
+    implementation 'de.solarisbank.identhub:identhub-android-fourthline:1.0.5'
 }
 ```
 
