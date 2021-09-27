@@ -1,13 +1,13 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Preconditions
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Preconditions
+import de.solarisbank.sdk.feature.di.internal.Provider
 
 class GetIdentificationUseCaseFactory(
-        private val contractSignRepositoryProvider: Provider<ContractSignRepository>,
-        private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+    private val contractSignRepositoryProvider: Provider<ContractSignRepository>,
+    private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 ) : Factory<GetIdentificationUseCase> {
     override fun get(): GetIdentificationUseCase {
         return Preconditions.checkNotNull(

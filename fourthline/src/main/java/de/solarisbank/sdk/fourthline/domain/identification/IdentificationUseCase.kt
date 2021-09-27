@@ -1,6 +1,6 @@
 package de.solarisbank.sdk.fourthline.domain.identification
 
-import de.solarisbank.identhub.domain.usecase.CompletableUseCase
+import de.solarisbank.sdk.domain.usecase.CompletableUseCase
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers

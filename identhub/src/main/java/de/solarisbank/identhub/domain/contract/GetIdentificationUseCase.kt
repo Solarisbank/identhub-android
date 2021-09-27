@@ -1,10 +1,10 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.domain.session.NextStepSelector
-import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.data.entity.Identification
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 
 class GetIdentificationUseCase(

@@ -1,10 +1,10 @@
 package de.solarisbank.sdk.fourthline.data.location
 
-import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Factory
 
 class LocationRepositoryFactory private constructor(
         private val locationDataSource: LocationDataSource
-) : Factory<LocationRepository>{
+) : Factory<LocationRepository> {
 
     override fun get(): LocationRepository {
         return LocationRepositoryImpl(locationDataSource)

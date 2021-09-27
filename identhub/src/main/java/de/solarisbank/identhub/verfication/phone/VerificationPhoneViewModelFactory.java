@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.sdk.core.di.internal.Factory;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.feature.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public final class VerificationPhoneViewModelFactory implements Factory<ViewModel> {
     private final IdentityModule identityModule;

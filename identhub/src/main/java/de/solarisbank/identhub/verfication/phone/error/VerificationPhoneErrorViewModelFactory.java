@@ -3,7 +3,7 @@ package de.solarisbank.identhub.verfication.phone.error;
 import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.sdk.core.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Factory;
 
 public final class VerificationPhoneErrorViewModelFactory implements Factory<ViewModel> {
     private final IdentityModule identityModule;

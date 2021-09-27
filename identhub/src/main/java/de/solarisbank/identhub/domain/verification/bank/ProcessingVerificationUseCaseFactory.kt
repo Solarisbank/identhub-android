@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 
 class ProcessingVerificationUseCaseFactory private constructor(
     private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,

@@ -1,15 +1,15 @@
 package de.solarisbank.identhub.domain.verification.bank
 
 import de.solarisbank.identhub.domain.data.dto.ProcessingVerificationDto
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.domain.session.NextStepSelector
-import de.solarisbank.identhub.domain.usecase.SingleUseCase
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.data.entity.FailureReason
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 import timber.log.Timber
 

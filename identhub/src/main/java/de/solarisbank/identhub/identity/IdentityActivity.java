@@ -12,11 +12,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubActivity;
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent;
-import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP;
-import de.solarisbank.identhub.session.IdentHubSession;
+import de.solarisbank.identhub.session.feature.IdentHubSession;
+import de.solarisbank.identhub.session.feature.navigation.NaviDirection;
+import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP;
 import de.solarisbank.identhub.ui.SolarisIndicatorView;
-import de.solarisbank.sdk.core.result.Event;
-import de.solarisbank.sdk.domain.navigation.NaviDirection;
+import de.solarisbank.sdk.domain.model.result.Event;
 
 public final class IdentityActivity extends IdentHubActivity {
 

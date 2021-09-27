@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdentitySelectionBinding
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
-import de.solarisbank.identhub.session.utils.buildApiUrl
-import de.solarisbank.identhub.session.utils.isFourthlineModuleAvailable
+import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.identhub.session.feature.utils.isFourthlineModuleAvailable
 import timber.log.Timber
 
 

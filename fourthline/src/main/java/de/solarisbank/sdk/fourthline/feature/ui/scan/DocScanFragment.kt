@@ -21,9 +21,9 @@ import androidx.lifecycle.lifecycleScope
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.document.*
-import de.solarisbank.sdk.core.BaseActivity
-import de.solarisbank.sdk.core.view.BulletListLayout
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.view.BulletListLayout
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.toDocumentType

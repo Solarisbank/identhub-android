@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent

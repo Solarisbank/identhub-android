@@ -9,6 +9,7 @@ import de.solarisbank.sdk.data.dao.DocumentDao
 import de.solarisbank.sdk.data.dao.IdentificationDao
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.utils.DateConverter
 
 @Database(entities = [Document::class, Identification::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)

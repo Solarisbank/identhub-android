@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
-import de.solarisbank.sdk.core.BaseActivity
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity

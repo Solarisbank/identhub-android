@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.verfication.phone;
 
-import de.solarisbank.sdk.core.di.internal.MembersInjector;
-import de.solarisbank.sdk.core.di.internal.Provider;
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
+import de.solarisbank.sdk.feature.di.internal.MembersInjector;
+import de.solarisbank.sdk.feature.di.internal.Provider;
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory;
 
 public final class VerificationPhoneFragmentInjector implements MembersInjector<VerificationPhoneFragment> {
 

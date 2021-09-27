@@ -2,7 +2,7 @@ package de.solarisbank.identhub.base
 
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.di.IdenthubComponent
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.feature.base.BaseActivity
 
 abstract class IdentHubActivity : BaseActivity() {
 

@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.Map;
 
-import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
-import de.solarisbank.sdk.core.di.internal.Factory2;
-import de.solarisbank.sdk.core.di.internal.Provider;
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory;
+import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
+import de.solarisbank.sdk.feature.di.internal.Factory2;
+import de.solarisbank.sdk.feature.di.internal.Provider;
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory;
 
 public final class ActivitySubModule {
 

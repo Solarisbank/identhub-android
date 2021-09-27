@@ -7,13 +7,13 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.sdk.core.Optional
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
-import de.solarisbank.sdk.core.result.throwable
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.model.result.throwable
+import de.solarisbank.sdk.feature.Optional
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -81,7 +81,7 @@ class ContractSigningPreviewViewModel(
         return fetchPdfFilesResultLiveData
     }
 
-    fun getFetchPdfResultLiveData(): LiveData<Result<de.solarisbank.sdk.core.Optional<File>>> {
+    fun getFetchPdfResultLiveData(): LiveData<Result<Optional<File>>> {
         return fetchPdfResultLiveData
     }
 

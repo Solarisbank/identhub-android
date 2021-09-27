@@ -15,6 +15,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        def githubRef = System.getenv("GITHUB_REF")
+        if (githubRef != null) {
+            buildConfigField("String", "SDK_VERSION", "\"${githubRef.split('/')?.getAt(2)}\"")
+        } else {
+            buildConfigField("String", "SDK_VERSION", "\"dev\"")
+        }
     }
 
     buildTypes {
@@ -88,10 +94,12 @@ afterEvaluate {
 dependencies {
     implementation project(":core-ui")
     implementation kotlinCore
+    api rxJava
     implementation support
     implementation activity
-    implementation networking.libs
-    implementation timber
+    api networking.libs
+    api timber
+    api lifecycle.libs
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
     api room.libs
     kapt room.proc

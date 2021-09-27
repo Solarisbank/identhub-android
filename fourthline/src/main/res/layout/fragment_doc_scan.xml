@@ -88,7 +88,7 @@
 
     </LinearLayout>
 
-    <de.solarisbank.sdk.core.view.BulletListLayout
+    <de.solarisbank.sdk.feature.view.BulletListLayout
         android:id="@+id/bulletList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

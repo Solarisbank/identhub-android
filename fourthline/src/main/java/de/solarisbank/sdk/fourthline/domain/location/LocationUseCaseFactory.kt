@@ -1,6 +1,6 @@
 package de.solarisbank.sdk.fourthline.domain.location
 
-import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.fourthline.data.location.LocationRepository
 
 class LocationUseCaseFactory private constructor(

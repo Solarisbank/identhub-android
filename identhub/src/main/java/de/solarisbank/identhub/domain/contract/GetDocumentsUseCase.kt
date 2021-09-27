@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 
 class GetDocumentsUseCase(

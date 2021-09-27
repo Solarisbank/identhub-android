@@ -1,12 +1,12 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.delete
 
 import android.content.Context
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 
 class DeleteKycInfoUseCaseFactory private constructor(
     private val applicationContextProvider: Provider<Context>
-) : Factory<DeleteKycInfoUseCase>{
+) : Factory<DeleteKycInfoUseCase> {
 
     override fun get(): DeleteKycInfoUseCase {
         return DeleteKycInfoUseCase(applicationContextProvider.get())

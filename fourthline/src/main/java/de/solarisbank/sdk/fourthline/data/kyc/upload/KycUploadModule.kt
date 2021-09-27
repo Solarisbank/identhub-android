@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.kyc.upload
 
-import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
-import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
 import retrofit2.Retrofit
 
@@ -16,10 +16,10 @@ class KycUploadModule {
     }
 
     fun provideKycUploadRepository(
-            fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
-            identificationRoomDataSource: IdentificationRoomDataSource,
-            kycUploadRetrofitDataSource: KycUploadRetrofitDataSource,
-            sessionUrlLocalDataSource: SessionUrlLocalDataSource
+        fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
+        identificationRoomDataSource: IdentificationRoomDataSource,
+        kycUploadRetrofitDataSource: KycUploadRetrofitDataSource,
+        sessionUrlLocalDataSource: SessionUrlLocalDataSource
 
     ): KycUploadRepository {
         return KycUploadRepository(

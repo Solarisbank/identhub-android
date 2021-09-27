@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent

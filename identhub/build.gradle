@@ -94,18 +94,14 @@ afterEvaluate {
 }
 
 dependencies {
-    api project(":core")
+    api project(":session")
     implementation project(":identhub-ui")
     implementation kotlinCore
     implementation support
     implementation activity
-    implementation rxJava
-    implementation lifecycle.libs
-    implementation networking.libs
     implementation viewmodel
     implementation navigation
     debugImplementation leakCanary
-    implementation timber
     testImplementation baseTest
     androidTestImplementation espresso
 

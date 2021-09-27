@@ -22,13 +22,15 @@ import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
-import de.solarisbank.sdk.core.result.throwable
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.model.result.throwable
+import de.solarisbank.sdk.feature.Optional
+import de.solarisbank.sdk.feature.PdfIntent
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import java.io.File
@@ -125,10 +127,10 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, Observer { onPdfFileFetched(it) })
     }
 
-    private fun onPdfFileFetched(result: Result<de.solarisbank.sdk.core.Optional<File>>) {
+    private fun onPdfFileFetched(result: Result<Optional<File>>) {
         if (result.succeeded) {
-            val file: de.solarisbank.sdk.core.Optional<File> = result.data!!
-            de.solarisbank.sdk.core.PdfIntent.openFile(context, file.get())
+            val file: Optional<File> = result.data!!
+            PdfIntent.openFile(context, file.get())
         } else {
             Toast.makeText(context, R.string.contract_signing_preview_render_pdf_error, Toast.LENGTH_SHORT).show()
         }

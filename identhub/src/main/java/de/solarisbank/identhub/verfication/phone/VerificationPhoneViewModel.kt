@@ -5,14 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
-import de.solarisbank.identhub.data.verification.phone.model.VerificationPhoneResponse
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.identhub.session.data.verification.phone.model.VerificationPhoneResponse
+import de.solarisbank.sdk.data.entity.CountDownTime
+import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.succeeded
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 

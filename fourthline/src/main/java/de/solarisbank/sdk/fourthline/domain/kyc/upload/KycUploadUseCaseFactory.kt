@@ -1,18 +1,18 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.upload
 
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Preconditions
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Preconditions
+import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 
 class KycUploadUseCaseFactory private constructor(
-        private val kycUploadRepositoryProvider: Provider<KycUploadRepository>,
-        private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
-        private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
-        private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+    private val kycUploadRepositoryProvider: Provider<KycUploadRepository>,
+    private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
+    private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
+    private val identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 
 ) : Factory<KycUploadUseCase> {
     override fun get(): KycUploadUseCase {
@@ -30,10 +30,10 @@ class KycUploadUseCaseFactory private constructor(
     companion object {
         @JvmStatic
         fun create(
-                kycUploadRepositoryProvider: Provider<KycUploadRepository>,
-                deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
-                identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
-                identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+            kycUploadRepositoryProvider: Provider<KycUploadRepository>,
+            deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
+            identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
+            identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
         ): KycUploadUseCaseFactory {
             return KycUploadUseCaseFactory(
                 kycUploadRepositoryProvider,

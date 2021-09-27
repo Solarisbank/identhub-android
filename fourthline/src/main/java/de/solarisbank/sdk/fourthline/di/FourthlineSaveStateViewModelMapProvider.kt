@@ -4,8 +4,8 @@ import androidx.annotation.RestrictTo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
-import de.solarisbank.sdk.core.di.internal.Factory2
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory2
+import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
@@ -24,13 +24,13 @@ import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomeViewModelFactory
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal class FourthlineSaveStateViewModelMapProvider private constructor(
-        private val fourthlineModule: FourthlineModule,
-        private val personDataUseCaseProvider: Provider<PersonDataUseCase>,
-        private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-        private val locationUseCaseProvider: Provider<LocationUseCase>,
-        private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
-        private val kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
-        private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
+    private val fourthlineModule: FourthlineModule,
+    private val personDataUseCaseProvider: Provider<PersonDataUseCase>,
+    private val kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
+    private val locationUseCaseProvider: Provider<LocationUseCase>,
+    private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
+    private val kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
+    private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
 ) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
@@ -53,13 +53,13 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
 
     companion object {
         fun create(
-                fourthlineModule: FourthlineModule,
-                personDataUseCaseProvider: Provider<PersonDataUseCase>,
-                kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
-                locationUseCaseProvider: Provider<LocationUseCase>,
-                ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
-                kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
-                deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
+            fourthlineModule: FourthlineModule,
+            personDataUseCaseProvider: Provider<PersonDataUseCase>,
+            kycInfoUseCaseProvider: Provider<KycInfoUseCase>,
+            locationUseCaseProvider: Provider<LocationUseCase>,
+            ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
+            kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
+            deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
         ): FourthlineSaveStateViewModelMapProvider {
             return FourthlineSaveStateViewModelMapProvider(
                 fourthlineModule,

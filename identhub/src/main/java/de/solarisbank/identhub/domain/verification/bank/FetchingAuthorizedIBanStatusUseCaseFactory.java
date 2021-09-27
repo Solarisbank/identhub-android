@@ -1,11 +1,11 @@
 package de.solarisbank.identhub.domain.verification.bank;
 
-import de.solarisbank.identhub.data.Mapper;
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
-import de.solarisbank.sdk.core.di.internal.Factory;
-import de.solarisbank.sdk.core.di.internal.Preconditions;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.identhub.session.data.Mapper;
+import de.solarisbank.sdk.data.dto.IdentificationDto;
 import de.solarisbank.sdk.data.entity.IdentificationWithDocument;
+import de.solarisbank.sdk.feature.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Preconditions;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public class FetchingAuthorizedIBanStatusUseCaseFactory implements Factory<FetchingAuthorizedIBanStatusUseCase> {
 

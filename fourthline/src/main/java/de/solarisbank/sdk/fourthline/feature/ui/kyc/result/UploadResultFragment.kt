@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_KEY
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
+import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent

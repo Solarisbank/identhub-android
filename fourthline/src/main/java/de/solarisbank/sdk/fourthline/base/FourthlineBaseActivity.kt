@@ -1,6 +1,6 @@
 package de.solarisbank.sdk.fourthline.base
 
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
 import de.solarisbank.sdk.fourthline.di.FourthlineComponent
 

@@ -13,7 +13,7 @@
     public static *** e(...);
 }
 
--keep public interface de.solarisbank.identhub.data.initialization.InitializeIdentificationApi
+-keep public interface de.solarisbank.identhub.session.data.network.InitializeIdentificationApi
 
 -keep public class * {
     public protected *;

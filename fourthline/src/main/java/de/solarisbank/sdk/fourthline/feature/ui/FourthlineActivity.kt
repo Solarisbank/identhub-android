@@ -18,12 +18,12 @@ import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.identhub.session.utils.SHOW_UPLOADING_SCREEN
+import de.solarisbank.identhub.session.feature.IdentHubSession
+import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.identhub.ui.FourStepIndicatorView
 import de.solarisbank.identhub.ui.SolarisIndicatorView
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.domain.navigation.NaviDirection
+import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent

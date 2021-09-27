@@ -1,17 +1,17 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
-import de.solarisbank.identhub.data.person.PersonDataDataSource
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto
-import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
+import de.solarisbank.identhub.session.data.person.PersonDataDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.Identification
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class FourthlineIdentificationRepository(
-        private val fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
-        private val identificationRoomDataSource: IdentificationRoomDataSource,
-        private val personDataDataSource: PersonDataDataSource
+    private val fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
+    private val identificationRoomDataSource: IdentificationRoomDataSource,
+    private val personDataDataSource: PersonDataDataSource
         ) {
 
     fun postFourthlineIdentication(): Single<IdentificationDto> {

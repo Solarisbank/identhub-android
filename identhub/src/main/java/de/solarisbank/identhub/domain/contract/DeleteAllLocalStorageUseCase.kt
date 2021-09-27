@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.domain.usecase.CompletableUseCase
+import de.solarisbank.sdk.domain.usecase.CompletableUseCase
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 

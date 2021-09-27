@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityIdenthubInteractionBinding
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSessionFailure
-import de.solarisbank.identhub.session.IdentHubSessionResult
+import de.solarisbank.identhub.session.feature.IdentHubSessionFailure
+import de.solarisbank.identhub.session.feature.IdentHubSessionResult
 import timber.log.Timber
 
 class IdentHubInteractionActivity : AppCompatActivity() {
@@ -17,7 +17,8 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         binding = ActivityIdenthubInteractionBinding.inflate(layoutInflater)
         val view: ConstraintLayout = binding.root
         setContentView(view)
-        Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
+        Timber.d("onCreate, intent.getStringExtra(IdentHub.SESSION_URL_KEY) : ${intent.getStringExtra(
+            IdentHub.SESSION_URL_KEY)}")
 
         binding.startButton.setOnClickListener {
             IdentHub.sessionWithUrl(intent.getStringExtra(IdentHub.SESSION_URL_KEY)!!)

@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.domain.verification.phone
 
-import de.solarisbank.identhub.data.verification.phone.model.VerificationPhoneResponse
-import de.solarisbank.identhub.domain.usecase.SingleUseCase
+import de.solarisbank.identhub.session.data.verification.phone.model.VerificationPhoneResponse
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 

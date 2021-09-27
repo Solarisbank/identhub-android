@@ -1,9 +1,9 @@
 package de.solarisbank.sdk.fourthline.data.identification.factory
 
-import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
 import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
 
 class ProvideFourthlineIdentificationRoomDataSourceFactory private constructor(

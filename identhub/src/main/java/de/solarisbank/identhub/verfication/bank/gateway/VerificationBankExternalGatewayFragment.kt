@@ -20,9 +20,9 @@ import androidx.webkit.WebViewFeature
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.domain.navigation.router.NEXT_STEP_DIRECTION
+import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel
-import de.solarisbank.sdk.core.result.Result
+import de.solarisbank.sdk.domain.model.result.Result
 import timber.log.Timber
 
 class VerificationBankExternalGatewayFragment : IdentHubFragment() {
@@ -95,7 +95,8 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                                 },
                                 negativeAction = {
                                     Timber.d("Switch to Fourthline after abort button pressed")
-                                    sharedViewModel?.postDynamicNavigationNextStep(NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination)
+                                    sharedViewModel?.postDynamicNavigationNextStep(
+                                        NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination)
                                 }
                             )
                         }

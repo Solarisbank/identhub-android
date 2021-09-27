@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.identity;
 
-import static de.solarisbank.identhub.domain.navigation.router.RouterKt.COMPLETED_STEP_KEY;
 import static de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY;
+import static de.solarisbank.identhub.session.feature.navigation.router.RouterKt.COMPLETED_STEP_KEY;
 import static de.solarisbank.sdk.data.entity.Identification.VERIFICATION_BANK_URL_KEY;
 
 import android.os.Bundle;
@@ -11,14 +11,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
-import de.solarisbank.identhub.domain.navigation.router.COMPLETED_STEP;
 import de.solarisbank.identhub.session.IdentHub;
-import de.solarisbank.sdk.core.result.Event;
-import de.solarisbank.sdk.core.result.Result;
+import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
+import de.solarisbank.identhub.session.feature.navigation.NaviDirection;
+import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP;
 import de.solarisbank.sdk.data.entity.Identification;
-import de.solarisbank.sdk.domain.navigation.NaviDirection;
+import de.solarisbank.sdk.domain.model.result.Event;
+import de.solarisbank.sdk.domain.model.result.Result;
 import io.reactivex.disposables.CompositeDisposable;
 import kotlin.Unit;
 import timber.log.Timber;

@@ -4,40 +4,46 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.ip.*
-import de.solarisbank.identhub.data.network.interceptor.UserAgentInterceptor
-import de.solarisbank.identhub.data.person.PersonDataApi
-import de.solarisbank.identhub.data.person.PersonDataApiFactory
-import de.solarisbank.identhub.data.person.PersonDataDataSource
-import de.solarisbank.identhub.data.person.PersonDataDataSourceFactory
-import de.solarisbank.identhub.data.session.SessionModule
-import de.solarisbank.identhub.data.session.SessionUrlLocalDataSource
-import de.solarisbank.identhub.data.session.factory.ProvideSessionUrlRepositoryFactory
-import de.solarisbank.identhub.data.session.factory.SessionUrlLocalDataSourceFactory.Companion.create
-import de.solarisbank.identhub.di.network.*
-import de.solarisbank.identhub.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
-import de.solarisbank.identhub.domain.session.*
-import de.solarisbank.identhub.session.data.identification.*
-import de.solarisbank.identhub.session.data.mobile.number.MobileNumberApi
-import de.solarisbank.identhub.session.data.mobile.number.MobileNumberApiFactory
-import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSource
-import de.solarisbank.identhub.session.data.mobile.number.MobileNumberDataSourceFactory
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCaseFactory
-import de.solarisbank.sdk.core.di.CoreActivityComponent
-import de.solarisbank.sdk.core.di.LibraryComponent
-import de.solarisbank.sdk.core.di.internal.DoubleCheck
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Factory2
-import de.solarisbank.sdk.core.di.internal.Provider
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
+import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
+import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
+import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory
+import de.solarisbank.identhub.session.data.di.SessionModule
+import de.solarisbank.identhub.session.data.di.SessionUrlLocalDataSourceFactory.Companion.create
+import de.solarisbank.identhub.session.data.ip.*
+import de.solarisbank.identhub.session.data.network.UserAgentInterceptor
+import de.solarisbank.identhub.session.data.person.PersonDataApi
+import de.solarisbank.identhub.session.data.person.PersonDataApiFactory
+import de.solarisbank.identhub.session.data.person.PersonDataDataSource
+import de.solarisbank.identhub.session.data.person.PersonDataDataSourceFactory
+import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryFactory
+import de.solarisbank.sdk.data.api.IdentificationApi
+import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.dao.IdentificationDao
-import de.solarisbank.sdk.data.di.DatabaseModule
-import de.solarisbank.sdk.data.di.DatabaseModuleProvideIdentificationDaoFactory
-import de.solarisbank.sdk.data.di.DatabaseModuleProvideRoomFactory
+import de.solarisbank.sdk.data.datasource.*
+import de.solarisbank.sdk.data.di.*
+import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
+import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory
+import de.solarisbank.sdk.data.di.db.DatabaseModule
+import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideIdentificationDaoFactory
+import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideRoomFactory
+import de.solarisbank.sdk.data.di.network.*
+import de.solarisbank.sdk.data.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
+import de.solarisbank.sdk.data.di.network.api.IdentificationApiFactory
+import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory
+import de.solarisbank.sdk.data.repository.*
 import de.solarisbank.sdk.data.room.IdentityRoomDatabase
+import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.feature.di.CoreActivityComponent
+import de.solarisbank.sdk.feature.di.LibraryComponent
+import de.solarisbank.sdk.feature.di.internal.DoubleCheck
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Factory2
+import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.data.identification.*
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
@@ -173,7 +179,8 @@ class FourthlineComponent private constructor(
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
 
-        sharedPreferencesProvider = DoubleCheck.provider(object : Factory<SharedPreferences> {
+        sharedPreferencesProvider = DoubleCheck.provider(object :
+            Factory<SharedPreferences> {
             override fun get(): SharedPreferences {
                 return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
             }
@@ -190,13 +197,15 @@ class FourthlineComponent private constructor(
         locationRepositoryProvider = LocationRepositoryFactory.create(locationDataSourceProvider.get())
         locationUseCaseProvider = LocationUseCaseFactory.create(locationRepositoryProvider.get())
         identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
-        identificationIdInterceptorProvider = DoubleCheck.provider(object : Factory<IdentificationIdInterceptor> {
+        identificationIdInterceptorProvider = DoubleCheck.provider(object :
+            Factory<IdentificationIdInterceptor> {
             override fun get(): IdentificationIdInterceptor {
                 return IdentificationIdInterceptor(identificationRoomDataSourceProvider.get())
             }
         })
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(create(networkModule, sessionUrlRepositoryProvider))
-        userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create(networkModule))
+        userAgentInterceptorProvider = DoubleCheck.provider(
+            NetworkModuleProvideUserAgentInterceptorFactory.create())
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
                 networkModule, dynamicBaseUrlInterceptorProvider, identificationIdInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider
@@ -209,7 +218,8 @@ class FourthlineComponent private constructor(
         identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()))
         identificationRetrofitDataSourceProvider = DoubleCheck.provider(
             IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()))
-        identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(
+        identificationRepositoryProvider = DoubleCheck.provider(
+            IdentificationRepositoryFactory.create(
             identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
         ))
         fourthlineIdentificationApiProvider = DoubleCheck.provider(ProvideFourthlineIdentificationApiFactory.create(fourthlineIdentificationModule, retrofitProvider))
@@ -247,7 +257,8 @@ class FourthlineComponent private constructor(
         ipDataSourceProvider = DoubleCheck.provider(IpDataSourceFactory.create(ipApiProvider.get()))
         ipRepositoryProvider = DoubleCheck.provider(IpRepositoryFactory.create(ipDataSourceProvider.get()))
         ipObtainingUseCaseProvider = DoubleCheck.provider(IpObtainingUseCaseFactory.create(ipRepositoryProvider.get()))
-        personDataUseCaseProvider = DoubleCheck.provider(object : Factory<PersonDataUseCase> {
+        personDataUseCaseProvider = DoubleCheck.provider(object :
+            Factory<PersonDataUseCase> {
             override fun get(): PersonDataUseCase {
                 return PersonDataUseCase(
                         fourthlineIdentificationRepositoryProvider.get(),
@@ -257,13 +268,15 @@ class FourthlineComponent private constructor(
         })
     }
 
-    internal class ContextProvider(private val activityComponent: CoreActivityComponent) : Provider<Context> {
+    internal class ContextProvider(private val activityComponent: CoreActivityComponent) :
+        Provider<Context> {
         override fun get(): Context {
             return activityComponent.context()
         }
     }
 
-    internal class ApplicationContextProvider(private val libraryComponent: LibraryComponent) : Provider<Context> {
+    internal class ApplicationContextProvider(private val libraryComponent: LibraryComponent) :
+        Provider<Context> {
         override fun get(): Context {
             return libraryComponent.applicationContext()
         }
@@ -280,8 +293,8 @@ class FourthlineComponent private constructor(
     }
 
     inner class FourthlineActivitySubcomponentImpl(
-            val coreActivityComponent: CoreActivityComponent,
-            val fourthlineModule: FourthlineModule
+        val coreActivityComponent: CoreActivityComponent,
+        val fourthlineModule: FourthlineModule
     ) : FourthlineActivitySubcomponent {
 
         private val contextProvider: Provider<Context> = ContextProvider(coreActivityComponent)
@@ -374,13 +387,15 @@ class FourthlineComponent private constructor(
         }
     }
 
-    internal class SharedPreferencesProvider(private val activityComponent: CoreActivityComponent) : Provider<SharedPreferences> {
+    internal class SharedPreferencesProvider(private val activityComponent: CoreActivityComponent) :
+        Provider<SharedPreferences> {
         override fun get(): SharedPreferences {
             return activityComponent.sharedPreferences()
         }
     }
 
-    internal class EmptyMapOfClassOfAndProviderOfViewModelProvider() : Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
+    internal class EmptyMapOfClassOfAndProviderOfViewModelProvider() :
+        Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
         override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
             return emptyMap()
         }

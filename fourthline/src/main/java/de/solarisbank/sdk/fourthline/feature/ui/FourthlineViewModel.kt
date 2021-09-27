@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHubSession
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.domain.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.IdentHubSession
+import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_ERROR
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL

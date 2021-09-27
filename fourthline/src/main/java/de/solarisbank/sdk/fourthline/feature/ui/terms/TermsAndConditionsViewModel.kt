@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.domain.model.result.Event
 
 class TermsAndConditionsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val termsAndConditionCheckedEventLiveData = MutableLiveData<Event<Boolean>>()

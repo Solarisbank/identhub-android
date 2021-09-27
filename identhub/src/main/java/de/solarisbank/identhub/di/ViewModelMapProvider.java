@@ -9,12 +9,11 @@ import java.util.Map;
 import de.solarisbank.identhub.contract.ContractModule;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModelFactory;
-import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
-import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase;
+import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
@@ -22,7 +21,7 @@ import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhon
 import de.solarisbank.identhub.identity.IdentityActivityViewModel;
 import de.solarisbank.identhub.identity.IdentityActivityViewModelFactory;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
+import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
@@ -34,7 +33,8 @@ import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorVie
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorViewModelFactory;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModel;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModelFactory;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class ViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Provider<ViewModel>>> {

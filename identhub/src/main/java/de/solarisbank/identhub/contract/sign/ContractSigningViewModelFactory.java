@@ -7,9 +7,9 @@ import de.solarisbank.identhub.contract.ContractModule;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
-import de.solarisbank.sdk.core.di.internal.Factory2;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.di.internal.Factory2;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public class ContractSigningViewModelFactory implements Factory2<ViewModel, SavedStateHandle> {
     private final ContractModule contractModule;

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase
 import de.solarisbank.identhub.feature.util.toProcessingVerificationState
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

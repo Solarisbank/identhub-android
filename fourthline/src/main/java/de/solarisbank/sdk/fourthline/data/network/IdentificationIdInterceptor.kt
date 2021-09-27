@@ -1,6 +1,6 @@
 package de.solarisbank.sdk.fourthline.data.network
 
-import de.solarisbank.identhub.session.data.identification.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
 import okhttp3.Interceptor
 import okhttp3.Response
 

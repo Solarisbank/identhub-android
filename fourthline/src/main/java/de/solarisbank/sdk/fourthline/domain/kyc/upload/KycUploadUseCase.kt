@@ -1,15 +1,15 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.upload
 
-import de.solarisbank.identhub.data.network.transformResult
-import de.solarisbank.identhub.domain.session.IdentityInitializationRepository
-import de.solarisbank.identhub.domain.session.NextStepSelector
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.Type
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.Type
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.domain.usecase.transformResult
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase

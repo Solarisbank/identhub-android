@@ -1,12 +1,12 @@
 package de.solarisbank.identhub.feature.util
 
 import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto
 import de.solarisbank.identhub.domain.data.dto.ProcessingVerificationDto
 import de.solarisbank.identhub.verfication.bank.SealedVerificationState
 import de.solarisbank.identhub.verfication.bank.VerificationState
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationFragment
-import de.solarisbank.sdk.core.data.model.IdentificationUiModel
+import de.solarisbank.sdk.data.dto.IdentificationDto
+import de.solarisbank.sdk.domain.model.IdentificationUiModel
 
 
 fun IbanVerificationDto.toVerificationState(): VerificationState {

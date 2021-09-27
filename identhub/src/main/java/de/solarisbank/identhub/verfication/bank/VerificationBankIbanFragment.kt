@@ -23,9 +23,9 @@ import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_DIRECTION
-import de.solarisbank.identhub.domain.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.feature.model.ErrorState
+import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
+import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels

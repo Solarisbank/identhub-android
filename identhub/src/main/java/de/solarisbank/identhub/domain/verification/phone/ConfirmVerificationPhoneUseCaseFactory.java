@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.domain.verification.phone;
 
-import de.solarisbank.sdk.core.di.internal.Factory;
-import de.solarisbank.sdk.core.di.internal.Preconditions;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.feature.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Preconditions;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public class ConfirmVerificationPhoneUseCaseFactory implements Factory<ConfirmVerificationPhoneUseCase> {
 

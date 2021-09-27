@@ -2,10 +2,10 @@ package de.solarisbank.identhub.domain.verification.bank;
 
 import java.util.concurrent.TimeUnit;
 
-import de.solarisbank.identhub.data.Mapper;
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto;
-import de.solarisbank.identhub.domain.usecase.CompletableUseCase;
+import de.solarisbank.identhub.session.data.Mapper;
+import de.solarisbank.sdk.data.dto.IdentificationDto;
 import de.solarisbank.sdk.data.entity.IdentificationWithDocument;
+import de.solarisbank.sdk.domain.usecase.CompletableUseCase;
 import io.reactivex.Completable;
 
 public class FetchingAuthorizedIBanStatusUseCase implements CompletableUseCase<String> {

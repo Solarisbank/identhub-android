@@ -2,7 +2,7 @@ package de.solarisbank.identhub.base
 
 import android.os.Bundle
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.sdk.core.BaseFragment
+import de.solarisbank.sdk.feature.base.BaseFragment
 
 abstract class IdentHubFragment : BaseFragment() {
 

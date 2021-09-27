@@ -8,15 +8,15 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto
-import de.solarisbank.identhub.domain.data.dto.MobileNumberDto
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase
-import de.solarisbank.identhub.verfication.phone.CountDownTime
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.succeeded
+import de.solarisbank.sdk.data.dto.IdentificationDto
+import de.solarisbank.sdk.data.dto.MobileNumberDto
+import de.solarisbank.sdk.data.entity.CountDownTime
+import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -25,11 +25,11 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ContractSigningViewModel(
-        savedStateHandle: SavedStateHandle?,
-        private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
-        private val confirmContractSignUseCase: ConfirmContractSignUseCase,
-        private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-        private val getMobileNumberUseCase: GetMobileNumberUseCase
+    savedStateHandle: SavedStateHandle?,
+    private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
+    private val confirmContractSignUseCase: ConfirmContractSignUseCase,
+    private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
+    private val getMobileNumberUseCase: GetMobileNumberUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val countDownTimeEventLiveData: MutableLiveData<Event<CountDownTime>> = MutableLiveData()

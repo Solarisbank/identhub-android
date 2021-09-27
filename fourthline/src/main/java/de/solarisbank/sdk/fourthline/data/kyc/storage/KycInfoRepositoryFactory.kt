@@ -1,11 +1,11 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 
 class KycInfoRepositoryFactory private constructor(
         private val kycInfoInMemoryDataSourceProvider: Provider<KycInfoInMemoryDataSource>
-        ): Factory<KycInfoRepository>{
+        ): Factory<KycInfoRepository> {
 
     override fun get(): KycInfoRepository {
         return KycInfoRepository(kycInfoInMemoryDataSourceProvider.get())

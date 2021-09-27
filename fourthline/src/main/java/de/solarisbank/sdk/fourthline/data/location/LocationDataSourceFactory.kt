@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.location
 
 import android.content.Context
-import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Factory
 
 class LocationDataSourceFactory private constructor(
         private val applicationContext: Context

@@ -1,9 +1,10 @@
 package de.solarisbank.identhub.domain.ip
 
-import de.solarisbank.identhub.data.ip.IpRepository
-import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.identhub.session.data.ip.IpRepository
+import de.solarisbank.sdk.feature.di.internal.Factory
 
-class IpObtainingUseCaseFactory(val ipRepository: IpRepository) : Factory<IpObtainingUseCase> {
+class IpObtainingUseCaseFactory(val ipRepository: IpRepository) :
+    Factory<IpObtainingUseCase> {
 
     override fun get(): IpObtainingUseCase {
         return IpObtainingUseCase(ipRepository)

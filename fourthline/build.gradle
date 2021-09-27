@@ -83,18 +83,19 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation timber
+//    implementation timber
     implementation project(":fourthline-ui")
     implementation project(":identhub")
+    implementation project(":session")
     implementation kotlinCore
     implementation navigation
     implementation support
-    implementation lifecycle.libs
+//    implementation lifecycle.libs
     implementation activity
     implementation viewmodel
     implementation fourthline
-    implementation networking.libs
-    implementation rxJava
+//    implementation networking.libs
+//    implementation rxJava
     testImplementation baseTest
     androidTestImplementation espresso
 

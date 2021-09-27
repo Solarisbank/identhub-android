@@ -1,9 +1,9 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.session.data.identification.IdentificationRepository
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Preconditions
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.data.repository.IdentificationRepository
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Preconditions
+import de.solarisbank.sdk.feature.di.internal.Provider
 
 class GetPersonDataUseCaseFactory(
         private val identificationRepositoryProvider: Provider<IdentificationRepository>

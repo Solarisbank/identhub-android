@@ -2,7 +2,7 @@ package de.solarisbank.sdk.fourthline.base
 
 import android.os.Bundle
 import android.widget.Toast
-import de.solarisbank.sdk.core.BaseFragment
+import de.solarisbank.sdk.feature.base.BaseFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 

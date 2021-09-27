@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.identification.factory
 
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource

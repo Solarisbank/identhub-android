@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
-import de.solarisbank.sdk.core.di.internal.Factory;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.feature.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public final class ProcessingVerificationViewModelFactory implements Factory<ViewModel> {
     private final VerificationBankModule verificationBankModule;

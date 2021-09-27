@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.di
 
 import androidx.lifecycle.ViewModel
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Provider
 import java.util.*
 
 class FourthlineViemModelMapProvider(

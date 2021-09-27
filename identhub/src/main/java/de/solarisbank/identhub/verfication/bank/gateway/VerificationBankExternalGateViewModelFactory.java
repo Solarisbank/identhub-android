@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
-import de.solarisbank.sdk.core.di.internal.Factory2;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.feature.di.internal.Factory2;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public final class VerificationBankExternalGateViewModelFactory implements Factory2<ViewModel, SavedStateHandle> {
     private final VerificationBankModule verificationBankModule;

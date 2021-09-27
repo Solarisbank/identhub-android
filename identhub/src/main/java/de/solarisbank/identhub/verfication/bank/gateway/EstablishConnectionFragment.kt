@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
-import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.domain.model.result.Event
 
 class EstablishConnectionFragment : ProgressIndicatorFragment() {
     private var verificationBankExternalGateViewModel: VerificationBankExternalGateViewModel? = null

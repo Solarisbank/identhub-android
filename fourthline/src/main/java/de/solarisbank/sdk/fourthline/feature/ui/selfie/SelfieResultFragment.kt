@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core.BaseActivity
+import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent

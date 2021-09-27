@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.data.verification.bank.model.IBan
-import de.solarisbank.identhub.domain.data.dto.IdentificationDto
+import de.solarisbank.identhub.session.data.verification.bank.model.IBan
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Completable
 import io.reactivex.Single

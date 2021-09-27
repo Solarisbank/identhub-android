@@ -5,4 +5,5 @@ include ':core-ui'
 include ':identhub-ui'
 include ':fourthline-ui'
 include ':example'
+include ':session'
 rootProject.name = "identhub-android"

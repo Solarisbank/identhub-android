@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.kyc.upload.factory
 
-import de.solarisbank.sdk.core.di.internal.Factory
-import de.solarisbank.sdk.core.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadApi
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadModule
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRetrofitDataSource
@@ -9,7 +9,8 @@ import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRetrofitDataSource
 class ProvideKycUploadDataSourceFactory private constructor(
         private val kycUploadModule: KycUploadModule,
         private val kycUploadApiProvider: Provider<KycUploadApi>
-        ) : Factory<KycUploadRetrofitDataSource> {
+        ) :
+    Factory<KycUploadRetrofitDataSource> {
 
     override fun get(): KycUploadRetrofitDataSource {
         return kycUploadModule.provideKycUploadDataSource(kycUploadApiProvider.get())

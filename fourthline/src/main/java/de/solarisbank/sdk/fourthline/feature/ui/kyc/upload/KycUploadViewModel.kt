@@ -3,7 +3,7 @@ package de.solarisbank.sdk.fourthline.feature.ui.kyc.upload
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.sdk.core.result.Event
+import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers

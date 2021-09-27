@@ -7,7 +7,7 @@ import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.feature.util.toVerificationState
-import de.solarisbank.sdk.core.result.data
+import de.solarisbank.sdk.domain.model.result.data
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

@@ -2,8 +2,8 @@ package de.solarisbank.identhub.file;
 
 import android.content.Context;
 
-import de.solarisbank.sdk.core.di.internal.Factory;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.feature.di.internal.Factory;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 public class FileControllerFactory implements Factory<FileController> {
     private final Provider<Context> contextProvider;

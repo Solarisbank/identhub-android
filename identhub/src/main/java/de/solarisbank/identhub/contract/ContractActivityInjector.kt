@@ -1,10 +1,11 @@
 package de.solarisbank.identhub.contract
 
-import de.solarisbank.sdk.core.di.internal.MembersInjector
-import de.solarisbank.sdk.core.di.internal.Provider
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.feature.di.internal.MembersInjector
+import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 
-class ContractActivityInjector(private val assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory>) : MembersInjector<ContractActivity> {
+class ContractActivityInjector(private val assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory>) :
+    MembersInjector<ContractActivity> {
 
     override fun injectMembers(instance: ContractActivity) {
         injectAssistedViewModelFactory(instance, assistedViewModelFactoryProvider.get())

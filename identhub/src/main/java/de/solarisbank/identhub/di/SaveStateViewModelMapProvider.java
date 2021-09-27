@@ -12,7 +12,6 @@ import de.solarisbank.identhub.contract.ContractViewModel;
 import de.solarisbank.identhub.contract.ContractViewModelFactory;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModelFactory;
-import de.solarisbank.identhub.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
@@ -20,17 +19,18 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
-import de.solarisbank.identhub.domain.session.SessionUrlRepository;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.session.domain.IdentificationPollingStatusUseCase;
+import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
-import de.solarisbank.sdk.core.di.internal.Factory2;
-import de.solarisbank.sdk.core.di.internal.Provider;
+import de.solarisbank.sdk.data.repository.SessionUrlRepository;
+import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.di.internal.Factory2;
+import de.solarisbank.sdk.feature.di.internal.Provider;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {

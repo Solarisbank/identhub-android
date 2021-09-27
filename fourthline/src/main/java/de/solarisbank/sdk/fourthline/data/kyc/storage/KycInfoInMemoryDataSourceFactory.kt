@@ -1,8 +1,9 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
-import de.solarisbank.sdk.core.di.internal.Factory
+import de.solarisbank.sdk.feature.di.internal.Factory
 
-class KycInfoInMemoryDataSourceFactory : Factory<KycInfoInMemoryDataSource> {
+class KycInfoInMemoryDataSourceFactory :
+    Factory<KycInfoInMemoryDataSource> {
 
     override fun get(): KycInfoInMemoryDataSource {
         return KycInfoInMemoryDataSource()

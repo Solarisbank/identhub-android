@@ -6,12 +6,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.sdk.core.di.internal.Preconditions
-import de.solarisbank.sdk.core.result.Event
-import de.solarisbank.sdk.core.result.Result
-import de.solarisbank.sdk.core.result.data
-import de.solarisbank.sdk.core.result.succeeded
 import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.feature.di.internal.Preconditions
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit

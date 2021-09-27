@@ -1,12 +1,13 @@
 package de.solarisbank.sdk.fourthline.feature.ui.kyc.result
 
-import de.solarisbank.sdk.core.di.internal.MembersInjector
-import de.solarisbank.sdk.core.di.internal.Provider
-import de.solarisbank.sdk.core.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.feature.di.internal.MembersInjector
+import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 
 class UploadResultFragmentInjector private constructor(
     private val viewModelFactoryProvider: Provider<AssistedViewModelFactory>
-)  : MembersInjector<UploadResultFragment> {
+)  :
+    MembersInjector<UploadResultFragment> {
 
     override fun injectMembers(instance: UploadResultFragment) {
         injectAssistedViewModelFactory(instance, viewModelFactoryProvider.get())

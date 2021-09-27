@@ -1,10 +1,10 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.identhub.domain.usecase.SingleUseCase
 import de.solarisbank.identhub.file.FileController
-import de.solarisbank.sdk.core.Optional
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.domain.usecase.SingleUseCase
+import de.solarisbank.sdk.feature.Optional
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
