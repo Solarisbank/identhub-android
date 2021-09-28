@@ -10,13 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -33,6 +36,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private var documentTypeList: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var confirmButton: Button? = null
+    private var imageView: ImageView? = null
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
         activityViewModels()
@@ -52,7 +56,14 @@ class DocTypeSelectionFragment: FourthlineFragment() {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
             progressBar = it.findViewById(R.id.progress)
+            imageView = it.findViewById(R.id.scratch)
+            customizeUI()
         }
+    }
+
+    private fun customizeUI() {
+        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
+        confirmButton?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +85,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private fun initRecyclerView() {
         documentTypeList!!.layoutManager = LinearLayoutManager(requireContext())
         documentTypeList!!.setHasFixedSize(true)
-        docTypeAdapter = DocTypeAdapter { type -> confirmButton!!.isEnabled = (type != null) }
+        docTypeAdapter = DocTypeAdapter(customization) { type -> confirmButton!!.isEnabled = (type != null) }
         documentTypeList!!.adapter = docTypeAdapter
         confirmButton!!.setOnClickListener { moveToDocScanFragment() }
     }
@@ -200,6 +211,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         docTypeAdapter = null
         documentTypeList = null
         progressBar = null
+        imageView = null
         super.onDestroyView()
     }
 

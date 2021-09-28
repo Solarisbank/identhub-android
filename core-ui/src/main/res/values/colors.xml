@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ident_hub_color_primary">#FF6432</color>
+    <color name="ident_hub_color_primary_dark">#FF6432</color>
     <color name="ident_hub_color_primaryVariant">#CC5129</color>
     <color name="ident_hub_color_onPrimary">#FFFFFFFF</color>
     <color name="ident_hub_color_secondary">#3284FF</color>
+    <color name="ident_hub_color_secondary_dark">#3284FF</color>
     <color name="ident_hub_color_onSecondary">#FFFFFFFF</color>
     <color name="ident_hub_color_secondaryVariant">#599CFF</color>
     <color name="ident_hub_color_secondaryTint">#F2F7FF</color>
@@ -18,13 +20,13 @@
     <color name="ident_hub_color_info_text">#7E8794</color>
     <color name="ident_hub_color_info_background">#F7F8FA</color>
     <color name="ident_hub_color_edit_text">#414D5D</color>
-    <color name="ident_hub_color_light_button_text_enabled">#3970F3</color>
-    <color name="ident_hub_color_light_button_text_disabled">#9CB8F9</color>
+    <color name="ident_hub_color_light_button_text_enabled">#FFFFFF</color>
+    <color name="ident_hub_color_light_button_text_disabled">#AAFFFFFF</color>
     <color name="ident_hub_color_separator">#E6E6E6</color>
 
-    <color name="ident_hub_color_text_box">#3970F3</color>
+    <color name="ident_hub_color_text_box">#7E8794</color>
     <color name="ident_hub_color_text_box_background">#F4F4F7</color>
-    <color name="ident_hub_color_text_box_border">#3970F3</color>
+    <color name="ident_hub_color_text_box_border">#C9CFD6</color>
 
     <color name="ident_hub_color_black">#FF000000</color>
     <color name="ident_hub_color_black30">#4D000000</color>

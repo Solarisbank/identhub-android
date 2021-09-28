@@ -21,9 +21,9 @@
     <color name="ident_hub_color_edit_text">#BCBCBC</color>
     <color name="ident_hub_color_separator">#33E6E6E6</color>
 
-    <color name="ident_hub_color_text_box">#3970F3</color>
+    <color name="ident_hub_color_text_box">#C9CFD6</color>
     <color name="ident_hub_color_text_box_background">#252525</color>
-    <color name="ident_hub_color_text_box_border">#3970F3</color>
+    <color name="ident_hub_color_text_box_border">#7E8794</color>
 
     <color name="ident_hub_color_black">#FCFCFC</color> <!-- Text View -->
     <color name="ident_hub_color_black30">#4D000000</color>

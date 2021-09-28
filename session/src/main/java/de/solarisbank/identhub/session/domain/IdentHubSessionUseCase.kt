@@ -5,13 +5,14 @@ import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.NextStepSelector
 import io.reactivex.Single
 import timber.log.Timber
 
 class IdentHubSessionUseCase(
     private val identHubSessionRepository: IdentHubSessionRepository,
-    private val sessionUrlRepository: de.solarisbank.sdk.data.repository.SessionUrlRepository,
+    private val sessionUrlRepository: SessionUrlRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
 ) : NextStepSelector {
 

@@ -1,7 +1,6 @@
 package de.solarisbank.identhub.verfication.bank
 
 import android.graphics.Rect
-import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
@@ -12,14 +11,15 @@ import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.addAdapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
@@ -28,20 +28,24 @@ import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRE
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.feature.customization.ButtonStyle
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
+import de.solarisbank.sdk.feature.customization.Customization
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class VerificationBankIbanFragment : IdentHubFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val sharedViewModel: VerificationBankViewModel by lazy<VerificationBankViewModel> { activityViewModels() }
-    private val ibanViewModel: VerificationBankIbanViewModel by lazy<VerificationBankIbanViewModel> { viewModels() }
+    private val sharedViewModel: VerificationBankViewModel by lazy { activityViewModels() }
+    private val ibanViewModel: VerificationBankIbanViewModel by lazy { viewModels() }
 
     private var ibanNumber: EditText? = null
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
     private var submitButton: Button? = null
     private var secondDescription: TextView? = null
+    private var imageView: ImageView? = null
     private var defaultToBankId: Boolean = false
 
     override fun inject(component: FragmentComponent) {
@@ -57,7 +61,14 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
                     secondDescription = it.findViewById(R.id.secondDescription)
+                    imageView = it.findViewById(R.id.image)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        submitButton?.customize(customization, ButtonStyle.Primary)
+        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
     }
 
     private fun initDefaultToBankId() {
@@ -86,7 +97,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         } else {
             Timber.d("setState 2")
             ibanNumber!!.isEnabled = state.isIbanNumberEnabled
-            (ibanNumber!!.background as StateListDrawable).level = state.ibanBackgroundItem
             progressBar!!.isVisible = state.isProgressBarShown
             ibanInputErrorLabel!!.visibility = state.ibanInputErrorLabelVisibility
             submitButton!!.isEnabled = state.isSubmitButtonEnabled
@@ -225,6 +235,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         progressBar = null
         submitButton = null
         secondDescription = null
+        imageView = null
         super.onDestroyView()
     }
 

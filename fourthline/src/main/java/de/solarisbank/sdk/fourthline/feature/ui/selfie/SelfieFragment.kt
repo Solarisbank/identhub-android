@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -43,11 +44,13 @@ class SelfieFragment : SelfieScannerFragment() {
                 .get(FourthlineViewModel::class.java)
     }
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
+    private val kycSharedViewModel: KycSharedViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
     }
 
     lateinit var assistedViewModelFactory: AssistedViewModelFactory
+
+    lateinit var customizationRepository: CustomizationRepository
 
     lateinit var viewModelFactory: ViewModelProvider.Factory
 

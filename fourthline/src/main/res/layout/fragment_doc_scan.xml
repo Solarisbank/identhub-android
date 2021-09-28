@@ -123,12 +123,11 @@
 
         <Button
             android:id="@+id/retakeButton"
-            style="@style/IdentHubPrimaryButton"
+            style="@style/IdentHubAlternativeButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/document_scanner_retake"
-            android:textColor="@color/ident_hub_color_light_button_text_enabled"
             app:layout_constraintEnd_toStartOf="@id/separator"
             app:layout_constraintStart_toStartOf="parent" />
 

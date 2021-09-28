@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="IdentHubTextBox" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@drawable/edittext_level_list_drawable</item>
+        <item name="android:background">@drawable/textbox_drawable_selector</item>
         <item name="android:textColor">@color/edittext_color_selector</item>
     </style>
 

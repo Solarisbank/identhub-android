@@ -11,6 +11,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.ButtonStyle
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -71,7 +73,12 @@ class DocScanResultFragment : FourthlineFragment() {
                     expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
                     expiryDateError = it.findViewById(R.id.expireDateError)
                     continueButton = it.findViewById(R.id.continueButton)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        continueButton?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

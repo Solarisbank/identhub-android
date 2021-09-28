@@ -19,6 +19,7 @@ import de.solarisbank.identhub.session.data.person.PersonDataApiFactory
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.identhub.session.data.person.PersonDataDataSourceFactory
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryFactory
+import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.dao.IdentificationDao
@@ -37,6 +38,14 @@ import de.solarisbank.sdk.data.repository.*
 import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.feature.config.InitializationInfoApi
+import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
+import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
+import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
+import de.solarisbank.sdk.feature.di.BaseFragmentDependencies
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.LibraryComponent
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
@@ -84,15 +93,15 @@ import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossi
 import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.scan.*
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragment
-import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragmentInjector.Companion.injectAssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragment
-import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragmentInjector.Companion.injectAssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsInjector
 import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment
-import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragmentInjector.Companion.injectAssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
-import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector.Companion.injectAssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -101,6 +110,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class FourthlineComponent private constructor(
+    private val coreModule: CoreModule,
     val fourthlineModule: FourthlineModule,
     val activitySubModule: FourthlineActivitySubModule,
     val sessionModule: SessionModule,
@@ -162,6 +172,9 @@ class FourthlineComponent private constructor(
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
     private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
+    private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
+    private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
+    private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
 
     init {
         initialize()
@@ -266,6 +279,17 @@ class FourthlineComponent private constructor(
                 )
             }
         })
+
+        initializationInfoApiProvider = DoubleCheck.provider(InitializationInfoApiFactory(coreModule, retrofitProvider))
+        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider))
+        val customizationSharedPrefsStoreProvider = DoubleCheck.provider(CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider))
+        customizationRepositoryProvider = DoubleCheck.provider(CustomizationRepositoryFactory(
+            coreModule,
+            applicationContextProvider,
+            initializationInfoRetrofitDataSourceProvider,
+            customizationSharedPrefsStoreProvider,
+            sessionUrlRepositoryProvider
+        ))
     }
 
     internal class ContextProvider(private val activityComponent: CoreActivityComponent) :
@@ -309,7 +333,7 @@ class FourthlineComponent private constructor(
                     deleteKycInfoUseCaseProvider
                 )
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
-                DoubleCheck.provider(EmptyMapOfClassOfAndProviderOfViewModelProvider())
+                DoubleCheck.provider(FourthlineViewModelMapProvider(coreModule, customizationRepositoryProvider))
         private var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> =
                 DoubleCheck.provider(FourthlineModuleAssistedViewModelFactory.create(
                         fourthlineModule,
@@ -333,55 +357,55 @@ class FourthlineComponent private constructor(
 
         private inner class FragmentComponentImpl(fourthlineModule: FourthlineModule) : FourthlineFragmentComponent{
 
-            var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> = DoubleCheck.provider(FourthlineModuleAssistedViewModelFactory.create(
+            val assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> = DoubleCheck.provider(FourthlineModuleAssistedViewModelFactory.create(
                     fourthlineModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider
             ))
+            val baseFragmentDependencies = BaseFragmentDependencies(assistedViewModelFactoryProvider, customizationRepositoryProvider)
 
             override fun inject(termsAndConditionsFragment: TermsAndConditionsFragment) {
-                TermsAndConditionsInjector.injectAssistedViewModelFactory(termsAndConditionsFragment, assistedViewModelFactoryProvider.get())
+                TermsAndConditionsInjector(baseFragmentDependencies).injectMembers(termsAndConditionsFragment)
             }
 
             override fun inject(welcomeContainerFragment: WelcomeContainerFragment) {
-                injectAssistedViewModelFactory(
-                        welcomeContainerFragment, assistedViewModelFactoryProvider.get()
-                )
+                WelcomeContainerFragmentInjector(baseFragmentDependencies).injectMembers(welcomeContainerFragment)
             }
 
             override fun inject(welcomePageFragment: WelcomePageFragment) {
-                injectAssistedViewModelFactory(
-                        welcomePageFragment, assistedViewModelFactoryProvider.get()
-                )
+                WelcomePageFragmentInjector(baseFragmentDependencies).injectMembers(welcomePageFragment)
             }
 
             override fun inject(selfieFragment: SelfieFragment) {
-                injectAssistedViewModelFactory(selfieFragment, assistedViewModelFactoryProvider.get())
+                SelfieFragmentInjector(assistedViewModelFactoryProvider, customizationRepositoryProvider)
+                    .injectMembers(selfieFragment)
             }
+
             override fun inject(selfieResultFragment: SelfieResultFragment) {
-                injectAssistedViewModelFactory(selfieResultFragment, assistedViewModelFactoryProvider.get())
+                SelfieResultFragmentInjector(baseFragmentDependencies).injectMembers(selfieResultFragment)
             }
 
             override fun inject(docTypeSelectionFragment: DocTypeSelectionFragment) {
-                DocTypeSelectionFragmentInjector.injectAssistedViewModelFactory(docTypeSelectionFragment, assistedViewModelFactoryProvider.get())
+                DocTypeSelectionFragmentInjector(baseFragmentDependencies).injectMembers(docTypeSelectionFragment)
             }
 
             override fun inject(docScanFragment: DocScanFragment) {
-                DocScanFragmentInjector.injectAssistedViewModelFactory(docScanFragment, assistedViewModelFactoryProvider.get())
+                DocScanFragmentInjector(assistedViewModelFactoryProvider, customizationRepositoryProvider)
+                    .injectMembers(docScanFragment)
             }
 
             override fun inject(docScanResultFragment: DocScanResultFragment) {
-                DocScanResultFragmentInjector.injectAssistedViewModelFactory(docScanResultFragment, assistedViewModelFactoryProvider.get())
+                DocScanResultFragmentInjector(baseFragmentDependencies).injectMembers(docScanResultFragment)
             }
 
             override fun inject(kycUploadFragment: KycUploadFragment) {
-                KycUploadFragmentInjector.injectAssistedViewModelFactory(kycUploadFragment, assistedViewModelFactoryProvider.get())
+                KycUploadFragmentInjector(baseFragmentDependencies).injectMembers(kycUploadFragment)
             }
 
             override fun inject(passingPossibilityFragment: PassingPossibilityFragment) {
-                PassingPossibilityFragmentInjector.injectAssistedViewModelFactory(passingPossibilityFragment, assistedViewModelFactoryProvider.get())
+                PassingPossibilityFragmentInjector(baseFragmentDependencies).injectMembers(passingPossibilityFragment)
             }
 
             override fun inject(uploadResultFragment: UploadResultFragment) {
-                UploadResultFragmentInjector.injectAssistedViewModelFactory(uploadResultFragment, assistedViewModelFactoryProvider.get())
+                UploadResultFragmentInjector(baseFragmentDependencies).injectMembers(uploadResultFragment)
             }
 
         }
@@ -394,13 +418,6 @@ class FourthlineComponent private constructor(
         }
     }
 
-    internal class EmptyMapOfClassOfAndProviderOfViewModelProvider() :
-        Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
-        override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
-            return emptyMap()
-        }
-    }
-
     companion object {
         private val lock = Any()
         private var fourthlineComponent: FourthlineComponent? = null
@@ -409,6 +426,7 @@ class FourthlineComponent private constructor(
             synchronized(lock) {
                 if (fourthlineComponent == null) {
                     fourthlineComponent = FourthlineComponent(
+                        coreModule = CoreModule(),
                         fourthlineModule = FourthlineModule(),
                         sessionModule = SessionModule(),
                         fourthlineIdentificationModule = FourthlineIdentificationModule(),

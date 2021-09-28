@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.ButtonStyle
+import de.solarisbank.sdk.feature.customization.ImageViewTint
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -21,6 +25,7 @@ class SelfieResultFragment : FourthlineFragment() {
     private var imageResult: ImageView? = null
     private var submitButton: Button? = null
     private var retryButton: Button? = null
+    private var successImageView: ImageView? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
@@ -37,7 +42,15 @@ class SelfieResultFragment : FourthlineFragment() {
                     imageResult = it.findViewById(R.id.imageResult)
                     submitButton = it.findViewById(R.id.submitButton)
                     retryButton = it.findViewById(R.id.retryButton)
+                    successImageView = it.findViewById(R.id.successImageView)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        submitButton?.customize(customization)
+        retryButton?.customize(customization, ButtonStyle.Alternative)
+        successImageView?.customize(customization, ImageViewTint.Secondary)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +83,7 @@ class SelfieResultFragment : FourthlineFragment() {
         imageResult = null
         submitButton = null
         retryButton = null
+        successImageView = null
         super.onDestroyView()
     }
 

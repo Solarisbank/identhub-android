@@ -189,33 +189,31 @@
     </ScrollView>
 
     <LinearLayout
-    android:id="@+id/buttonLayout"
-    android:layout_alignParentBottom="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-    <Button
-        android:id="@+id/submitButton"
-        style="@style/IdentHubPrimaryButton"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/default_button_height"
-        android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginBottom="@dimen/margin_4"
-        android:text="@string/contract_signing_sign_action"
-        android:enabled="false"
-        />
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_button_height"
+            android:layout_marginTop="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/contract_signing_sign_action" />
 
-    <Button
-        android:id="@+id/sendNewCode"
-        style="@style/IdentHubPrimaryButton"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/default_button_height"
-        android:layout_marginTop="@dimen/margin_4"
-        android:layout_marginBottom="@dimen/margin_4"
-        android:text="@string/contract_signing_code_request_new_button"
-        android:visibility="gone"
-        />
+        <Button
+            android:id="@+id/sendNewCode"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_button_height"
+            android:layout_marginTop="@dimen/margin_4"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:layout_weight="1"
+            android:text="@string/contract_signing_code_request_new_button"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

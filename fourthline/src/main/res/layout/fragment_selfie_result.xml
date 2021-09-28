@@ -79,7 +79,7 @@
 
     <Button
         android:id="@+id/retryButton"
-        style="@style/IdentHubPrimaryButton"
+        style="@style/IdentHubAlternativeButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/default_button_height"
         android:layout_marginStart="@dimen/margin_16"

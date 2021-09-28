@@ -22,6 +22,8 @@ import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.document.*
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.*
+import de.solarisbank.sdk.feature.customization.Customization
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
@@ -54,7 +56,7 @@ class DocScanFragment : DocumentScannerFragment() {
     }
 
     private var documentMask: AppCompatImageView? = null
-    private var takeSnapshot: View? = null
+    private var takeSnapshot: Button? = null
     private var scanPreview: AppCompatImageView? = null
     private var stepLabel: AppCompatTextView? = null
     private var resultButtons: ViewGroup? = null
@@ -62,13 +64,16 @@ class DocScanFragment : DocumentScannerFragment() {
     private var retakeButton: Button? = null
     private var confirmButton: Button? = null
     private var resultRoot: LinearLayout? = null
+    private var resultImageView: ImageView? = null
     private var tiltingCard: ImageView? = null
     private var docImageView: ImageView? = null
     private var bulletList: BulletListLayout? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var customizationRepository: CustomizationRepository
     private lateinit var currentDocumentType: DocumentType
+    private val customization: Customization by lazy { customizationRepository.get() }
 
     private var cleanupJob: Job? = null
     private var showSnapshotJob: Job? = null
@@ -102,6 +107,7 @@ class DocScanFragment : DocumentScannerFragment() {
         retakeButton = null
         confirmButton = null
         resultRoot = null
+        resultImageView = null
         tiltingCard = null
         bulletList = null
         docImageView = null
@@ -153,6 +159,7 @@ class DocScanFragment : DocumentScannerFragment() {
             confirmButton = findViewById(R.id.confirmButton)
             confirmButton?.setOnClickListener { moveToNextStep() }
             resultRoot = findViewById(R.id.resultRoot)
+            resultImageView = findViewById(R.id.resultImageView)
             tiltingCard = findViewById(R.id.tiltingCard)
             docImageView = findViewById(R.id.docImage)
             bulletList = findViewById(R.id.bulletList)
@@ -161,7 +168,15 @@ class DocScanFragment : DocumentScannerFragment() {
                 punchhole?.punchholeRect = getDocumentDetectionArea()
                 punchhole?.postInvalidate()
             }
+            customizeUI()
         }
+    }
+
+    private fun customizeUI() {
+        confirmButton?.customize(customization)
+        takeSnapshot?.customize(customization)
+        retakeButton?.customize(customization, ButtonStyle.Alternative)
+        resultImageView?.customize(customization, ImageViewTint.Secondary)
     }
 
     override fun getDocumentDetectionArea(): Rect {

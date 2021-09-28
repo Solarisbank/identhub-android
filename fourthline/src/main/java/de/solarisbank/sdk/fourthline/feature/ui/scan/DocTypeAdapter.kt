@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.asString
 
-class DocTypeAdapter(private val isDocTypeDelectedCallback: ((AppliedDocument?) -> Unit)) : RecyclerView.Adapter<DocTypeAdapter.DocTypeViewHolder>() {
+class DocTypeAdapter(private val customization: Customization,
+                     private val isDocTypeDelectedCallback: ((AppliedDocument?) -> Unit)) : RecyclerView.Adapter<DocTypeAdapter.DocTypeViewHolder>() {
 
     private val documentTypes: MutableList<AppliedDocument> = mutableListOf()
     private var selectedDocumentTypeIndex = -1
@@ -31,6 +34,7 @@ class DocTypeAdapter(private val isDocTypeDelectedCallback: ((AppliedDocument?) 
     override fun onBindViewHolder(holder: DocTypeViewHolder, position: Int) {
         val documentType: AppliedDocument = documentTypes[position]
         holder.textView.text = documentType.asString(holder.textView.context)
+        holder.typeRadioButton.customize(customization)
         holder.typeRadioButton.isChecked = position == selectedDocumentTypeIndex
         holder.typeRadioButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

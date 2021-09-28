@@ -10,8 +10,10 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,7 @@ import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.data.entity.Document
 import de.solarisbank.sdk.data.entity.Identification
@@ -46,6 +49,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private var termsAndConditionsString: TextView? = null
     private var additionalTermsAndConditionsDot: TextView? = null
     private var additionalTermsAndConditionsString: TextView? = null
+    private var imageView: ImageView? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -59,7 +63,14 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                     termsAndConditionsString = it.findViewById(R.id.termsAndConditionsString)
                     additionalTermsAndConditionsDot = it.findViewById(R.id.additionalTermsAndConditionsDot)
                     additionalTermsAndConditionsString = it.findViewById(R.id.additionalTermsAndConditionsString)
+                    imageView = it.findViewById(R.id.scratch)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        submitButton?.customize(customization)
+        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,6 +176,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         termsAndConditionsString = null
         additionalTermsAndConditionsDot = null
         additionalTermsAndConditionsString = null
+        imageView = null
         super.onDestroyView()
     }
 

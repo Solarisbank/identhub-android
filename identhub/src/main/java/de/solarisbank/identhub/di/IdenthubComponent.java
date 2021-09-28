@@ -103,6 +103,13 @@ import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMes
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector;
+import de.solarisbank.sdk.feature.config.InitializationInfoApi;
+import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory;
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource;
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory;
+import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory;
+import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore;
+import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.data.api.IdentificationApi;
 import de.solarisbank.sdk.data.api.MobileNumberApi;
 import de.solarisbank.sdk.data.dao.DocumentDao;
@@ -138,6 +145,9 @@ import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.data.room.IdentityRoomDatabase;
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.customization.CustomizationRepository;
+import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory;
+import de.solarisbank.sdk.feature.di.BaseFragmentDependencies;
 import de.solarisbank.sdk.feature.di.CoreActivityComponent;
 import de.solarisbank.sdk.feature.di.LibraryComponent;
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck;
@@ -156,6 +166,7 @@ public class IdenthubComponent {
     private static final Object lock = new Object();
     private static IdenthubComponent identhubComponent = null;
 
+    private final CoreModule coreModule;
     private final VerificationBankModule verficationBankModule;
     private final ContractModule contractModule;
     private final IdentityModule identityModule;
@@ -168,6 +179,10 @@ public class IdenthubComponent {
     private Provider<IdentityRoomDatabase> identityRoomDatabaseProvider;
     private Provider<IdentificationDao> identificationDaoProvider;
     private Provider<DocumentDao> documentDaoProvider;
+
+    private Provider<CustomizationRepository> customizationRepositoryProvider;
+    private Provider<InitializationInfoApi> initializationInfoApiProvider;
+    private Provider<InitializationInfoRetrofitDataSource> initializationInfoRetrofitDataSourceProvider;
 
     private Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptorProvider;
     private Provider<CallAdapter.Factory> rxJavaCallAdapterFactoryProvider;
@@ -218,6 +233,7 @@ public class IdenthubComponent {
 
 
     private IdenthubComponent(
+            CoreModule coreModule,
             LibraryComponent libraryComponent,
             IdentityModule identityModule,
             ActivitySubModule activitySubModule,
@@ -231,6 +247,7 @@ public class IdenthubComponent {
             VerificationBankModule verficationBankModule,
             ContractModule contractModule,
             IdentificationModule identificationModule) {
+        this.coreModule = coreModule;
         this.identityModule = identityModule;
         this.activitySubModule = activitySubModule;
         this.networkModule = networkModule;
@@ -248,6 +265,7 @@ public class IdenthubComponent {
             if (identhubComponent == null) {
                 identhubComponent = new IdenthubComponent.Builder()
                         .setLibraryComponent(libraryComponent)
+                        .setCoreModule(new CoreModule())
                         .setIdentityModule(new IdentityModule())
                         .setActivitySubModule(new ActivitySubModule())
                         .setNetworkModule(new NetworkModule())
@@ -306,6 +324,19 @@ public class IdenthubComponent {
         getDocumentsUseCaseProvider = GetDocumentsUseCaseFactory.create(contractSignRepositoryProvider);
         getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider, identityInitializationRepositoryProvider);
         verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(getIdentificationUseCaseProvider, verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
+
+        initializationInfoApiProvider = DoubleCheck.provider(new InitializationInfoApiFactory(coreModule, retrofitProvider));
+        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(new InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider));
+        Provider<CustomizationSharedPrefsStore> customizationSharedPrefsStoreProvider =
+                DoubleCheck.provider(new CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider));
+
+        customizationRepositoryProvider = DoubleCheck.provider(new CustomizationRepositoryFactory(
+                coreModule,
+                applicationContextProvider,
+                initializationInfoRetrofitDataSourceProvider,
+                customizationSharedPrefsStoreProvider,
+                sessionUrlRepositoryProvider
+        ));
     }
 
 
@@ -314,6 +345,7 @@ public class IdenthubComponent {
     }
 
     private static class Builder {
+        private CoreModule coreModule;
         private IdentityModule identityModule;
         private LibraryComponent libraryComponent;
         private ActivitySubModule activitySubModule;
@@ -321,6 +353,11 @@ public class IdenthubComponent {
         private DatabaseModule databaseModule;
 
         private Builder() {
+        }
+
+        Builder setCoreModule(CoreModule coreModule) {
+            this.coreModule = coreModule;
+            return this;
         }
 
         Builder setIdentityModule(IdentityModule identityModule) {
@@ -350,6 +387,7 @@ public class IdenthubComponent {
 
         public IdenthubComponent build() {
             return new IdenthubComponent(
+                    coreModule,
                     libraryComponent,
                     identityModule,
                     activitySubModule,
@@ -431,6 +469,7 @@ public class IdenthubComponent {
             bankIdPostUseCaseProvider = BankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
             processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, bankIdPostUseCaseProvider, identityInitializationRepositoryProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
+                    coreModule,
                     identityModule,
                     verficationBankModule,
                     contractModule,
@@ -444,7 +483,8 @@ public class IdenthubComponent {
                     IdenthubComponent.this.verifyIBanUseCaseProvider,
                     identificationPollingStatusUseCaseProvider,
                     bankIdPostUseCaseProvider,
-                    processingVerificationUseCaseProvider
+                    processingVerificationUseCaseProvider,
+                    customizationRepositoryProvider
             );
             this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
                     IdenthubComponent.this.authorizeContractSignUseCaseProvider,
@@ -463,9 +503,6 @@ public class IdenthubComponent {
                     getMobileNumberUseCaseProvider
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
-
-
-
         }
 
         @Override
@@ -529,54 +566,56 @@ public class IdenthubComponent {
         private final class FragmentComponentImp implements FragmentComponent {
 
             private final Provider<AssistedViewModelFactory> fragmentAssistedViewModelFactoryProvider;
+            private final BaseFragmentDependencies baseFragmentDependencies;
 
             private FragmentComponentImp() {
                 this.fragmentAssistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
+                this.baseFragmentDependencies = new BaseFragmentDependencies(fragmentAssistedViewModelFactoryProvider, customizationRepositoryProvider);
             }
 
             @Override
             public void inject(VerificationPhoneFragment verificationPhoneFragment) {
-                VerificationPhoneFragmentInjector.injectAssistedViewModelFactory(verificationPhoneFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationPhoneFragmentInjector(baseFragmentDependencies).injectMembers(verificationPhoneFragment);
             }
 
             @Override
             public void inject(VerificationPhoneSuccessMessageFragment successMessageFragment) {
-                VerificationPhoneSuccessMessageFragmentInjector.injectAssistedViewModelFactory(successMessageFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationPhoneSuccessMessageFragmentInjector(baseFragmentDependencies).injectMembers(successMessageFragment);
             }
 
             @Override
             public void inject(VerificationPhoneErrorMessageFragment errorMessageFragment) {
-                VerificationPhoneErrorMessageFragmentInjector.injectAssistedViewModelFactory(errorMessageFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationPhoneErrorMessageFragmentInjector(baseFragmentDependencies).injectMembers(errorMessageFragment);
             }
 
             @Override
             public void inject(VerificationBankIbanFragment verificationBankIbanFragment) {
-                VerificationBankFragmentInjector.injectAssistedViewModelFactory(verificationBankIbanFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationBankFragmentInjector(baseFragmentDependencies).injectMembers(verificationBankIbanFragment);
             }
 
             @Override
             public void inject(VerificationBankExternalGatewayFragment verificationBankExternalGatewayFragment) {
-                VerificationBankExternalGatewayFragmentInjector.injectAssistedViewModelFactory(verificationBankExternalGatewayFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationBankExternalGatewayFragmentInjector(baseFragmentDependencies).injectMembers(verificationBankExternalGatewayFragment);
             }
 
             @Override
             public void inject(ContractSigningFragment contractSigningFragment) {
-                ContractSigningFragmentInjector.injectAssistedViewModelFactory(contractSigningFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new ContractSigningFragmentInjector(baseFragmentDependencies).injectMembers(contractSigningFragment);
             }
 
             @Override
             public void inject(ContractSigningPreviewFragment contractSigningPreviewFragment) {
-                ContractSigningPreviewFragmentInjector.injectAssistedViewModelFactory(contractSigningPreviewFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new ContractSigningPreviewFragmentInjector(baseFragmentDependencies).injectMembers(contractSigningPreviewFragment);
             }
 
             @Override
             public void inject(ProgressIndicatorFragment progressIndicatorFragment) {
-                ProgressIndicatorFragmentInjector.injectAssistedViewModelFactory(progressIndicatorFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new ProgressIndicatorFragmentInjector(baseFragmentDependencies).injectMembers(progressIndicatorFragment);
             }
 
             @Override
             public void inject(VerificationBankIntroFragment verificationBankIntroFragment) {
-                VerificationBankIntroFragmentInjector.injectAssistedViewModelFactory(verificationBankIntroFragment, fragmentAssistedViewModelFactoryProvider.get());
+                new VerificationBankIntroFragmentInjector(baseFragmentDependencies).injectMembers(verificationBankIntroFragment);
             }
         }
     }

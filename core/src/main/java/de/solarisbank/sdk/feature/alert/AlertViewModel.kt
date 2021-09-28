@@ -3,9 +3,13 @@ package de.solarisbank.sdk.feature.alert
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.domain.model.result.Event
 
-class AlertViewModel: ViewModel() {
+class AlertViewModel(
+    private val customizationRepository: CustomizationRepository
+): ViewModel() {
     private val _events = MutableLiveData<Event<AlertEvent>>()
     val events: LiveData<Event<AlertEvent>>
         get() {
@@ -14,6 +18,10 @@ class AlertViewModel: ViewModel() {
 
     fun sendEvent(event: AlertEvent) {
         _events.value = Event(event)
+    }
+
+    fun getCustomization(): Customization {
+        return customizationRepository.get()
     }
 }
 

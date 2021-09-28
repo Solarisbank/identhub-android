@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="actionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">@color/ident_hub_color_primary</item>
+        <item name="background">@color/ident_hub_color_surface</item>
         <item name="titleTextStyle">@style/actionBarTitleStyle</item>
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="actionBarTitleStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">

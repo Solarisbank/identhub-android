@@ -123,7 +123,6 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_8"
-                android:background="@drawable/textbox_drawable_selector"
                 android:hint="@string/verification_bank_input_hint"
                 android:imeOptions="actionDone"
                 android:maxLines="1"

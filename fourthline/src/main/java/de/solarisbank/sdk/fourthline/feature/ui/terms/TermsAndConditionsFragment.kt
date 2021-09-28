@@ -9,8 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -20,8 +23,11 @@ class TermsAndConditionsFragment : FourthlineFragment() {
 
     private var termsText: TextView? = null
     private var submitButton: Button? = null
+    private var imageView: ImageView? = null
+    private var condition1ImageView: ImageView? = null
+    private var condition2ImageView: ImageView? = null
 
-    private val activityViewModel: FourthlineViewModel by lazy<FourthlineViewModel> {
+    private val activityViewModel: FourthlineViewModel by lazy {
         activityViewModels()
     }
 
@@ -30,7 +36,18 @@ class TermsAndConditionsFragment : FourthlineFragment() {
                 .also {
                     termsText = it.findViewById(R.id.termsText)
                     submitButton = it.findViewById(R.id.submitButton)
+                    imageView = it.findViewById(R.id.scratch)
+                    condition1ImageView = it.findViewById(R.id.condition1ImageView)
+                    condition2ImageView = it.findViewById(R.id.condition2ImageView)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
+        submitButton?.customize(customization)
+        condition1ImageView?.customize(customization)
+        condition2ImageView?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +79,9 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     override fun onDestroyView() {
         termsText = null
         submitButton = null
+        imageView = null
+        condition1ImageView = null
+        condition2ImageView = null
         super.onDestroyView()
     }
 }

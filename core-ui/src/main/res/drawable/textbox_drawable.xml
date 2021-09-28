@@ -2,5 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" >
     <solid android:color="@color/ident_hub_color_text_box_background" />
-    <corners android:radius="6dp" />
+    <stroke
+        android:color="@color/ident_hub_color_text_box_border"
+        android:width="@dimen/text_box_border_width" />
+    <corners android:radius="@dimen/default_corner_radius" />
 </shape>

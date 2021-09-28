@@ -29,7 +29,7 @@ abstract class BaseActivity : AppCompatActivity() {
     lateinit var activityComponent: CoreActivityComponent
 
     private val alertViewModel: AlertViewModel by lazy {
-        ViewModelProvider(this)[AlertViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory).get(AlertViewModel::class.java)
     }
 
     private var alertDialogFragment: DialogFragment? = null

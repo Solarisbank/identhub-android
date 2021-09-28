@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.solarisbank.sdk.core.R
+import de.solarisbank.sdk.feature.customization.ButtonStyle
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.domain.model.result.Event
 
 class AlertDialogFragment : BottomSheetDialogFragment() {
@@ -40,6 +42,7 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
     fun initView(view: View) {
         val args = requireArguments()
         val tag = tag ?: TAG
+        val customization = alertViewModel.getCustomization()
 
         view.findViewById<TextView>(R.id.title).apply { text = args.getString(KEY_TITLE) }
         view.findViewById<TextView>(R.id.message).apply { text = args.getString(KEY_MESSAGE) }
@@ -49,6 +52,7 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
                 alertViewModel.sendEvent(AlertEvent.Positive(tag))
                 dismiss()
             }
+            customize(customization, ButtonStyle.Alternative)
         }
         val negativeLabel = args.getString(KEY_NEGATIVE_LABEL)
         if (negativeLabel != null) {
@@ -58,6 +62,7 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
                     alertViewModel.sendEvent(AlertEvent.Negative(tag))
                     dismiss()
                 }
+                customize(customization)
             }
         } else {
             view.findViewById<Button>(R.id.negativeButton).isVisible = false

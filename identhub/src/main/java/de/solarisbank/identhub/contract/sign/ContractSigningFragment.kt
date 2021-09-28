@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
@@ -21,6 +19,7 @@ import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.MobileNumberDto
@@ -43,13 +42,14 @@ class ContractSigningFragment : IdentHubFragment() {
     private var codeInput: EditText? = null
     private var currentFocusedEditText: View? = null
     private var description: TextView? = null
-    private var sendNewCode: TextView? = null
+    private var sendNewCode: Button? = null
     private var newCodeCounter: TextView? = null
     private var transactionDescription: TextView? = null
     private var errorMessage: TextView? = null
     private var submitButton: Button? = null
     private var progress: ProgressBar? = null
     private var codeProgress: ProgressBar? = null
+    private var imageView: ImageView? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -67,8 +67,15 @@ class ContractSigningFragment : IdentHubFragment() {
                     submitButton = it.findViewById(R.id.submitButton)
                     progress = it.findViewById(R.id.progress)
                     codeProgress = it.findViewById(R.id.codeProgress)
-
+                    imageView = it.findViewById(R.id.scratch)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        submitButton?.customize(customization)
+        sendNewCode?.customize(customization)
+        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -245,6 +252,7 @@ class ContractSigningFragment : IdentHubFragment() {
         submitButton = null
         progress = null
         codeProgress = null
+        imageView = null
         super.onDestroyView()
     }
 

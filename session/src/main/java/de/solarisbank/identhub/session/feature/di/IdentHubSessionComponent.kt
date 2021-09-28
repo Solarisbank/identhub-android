@@ -27,6 +27,14 @@ import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.data.room.IdentityRoomDatabase
+import de.solarisbank.sdk.feature.config.InitializationInfoApi
+import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
+import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
+import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
+import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Factory2
@@ -40,6 +48,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 //todo split to a separate gradle module
 class IdentHubSessionComponent private constructor(
+    val coreModule: CoreModule,
     val networkModule: NetworkModule,
     val identHubSessionModule: IdentHubSessionModule,
     private val sessionModule: SessionModule,
@@ -67,6 +76,9 @@ class IdentHubSessionComponent private constructor(
     private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     private lateinit var identityInitializationSharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+    private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
+    private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
+    private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
 
     init {
         initialize()
@@ -150,6 +162,23 @@ class IdentHubSessionComponent private constructor(
                         )
             }
         })
+
+        initializationInfoApiProvider = DoubleCheck.provider(InitializationInfoApiFactory(coreModule, retrofitProvider))
+        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
+            InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider)
+        )
+        val customizationSharedPrefsStoreProvider = DoubleCheck.provider(
+            CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider)
+        )
+        customizationRepositoryProvider = DoubleCheck.provider(
+            CustomizationRepositoryFactory(
+                coreModule,
+                applicationContextProvider,
+                initializationInfoRetrofitDataSourceProvider,
+                customizationSharedPrefsStoreProvider,
+                sessionUrlRepositoryProvider
+            )
+        )
     }
 
     internal class ApplicationContextProvider(val applicationContext: Context) :
@@ -183,7 +212,7 @@ class IdentHubSessionComponent private constructor(
                 })
 
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
-                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get()))
+                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), customizationRepositoryProvider))
 
         private var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> =
                 DoubleCheck.provider(
@@ -195,29 +224,22 @@ class IdentHubSessionComponent private constructor(
                 )
 
         override fun inject(identHubSessionObserver: IdentHubSessionObserver) {
-            IdentHubSessionObserverInjector.injectAssistedViewModelFactory(identHubSessionObserver, assistedViewModelFactoryProvider.get())
+            IdentHubSessionObserverInjector.injectAssistedViewModelFactory(identHubSessionObserver,
+                assistedViewModelFactoryProvider.get())
         }
 
     }
 
     internal class IdentHubViewModelProvider(
         private val identHubSessionModule: IdentHubSessionModule,
-        private val identHubSessionUseCase: IdentHubSessionUseCase
+        private val identHubSessionUseCase: IdentHubSessionUseCase,
+        private val customizationRepositoryProvider: Provider<CustomizationRepository>,
     ) : Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
         override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
             return (LinkedHashMap<Class<out ViewModel>, Provider<ViewModel>>() )
                     .also {
-                        it.put(IdentHubSessionViewModel::class.java, IdentHubSessionViewModelFactory.create(identHubSessionModule, identHubSessionUseCase))
+                        it[IdentHubSessionViewModel::class.java] = IdentHubSessionViewModelFactory(identHubSessionModule, identHubSessionUseCase, customizationRepositoryProvider)
                     }
-        }
-
-        companion object {
-            fun create(
-                identHubSessionModule: IdentHubSessionModule,
-                identHubSessionUseCase: IdentHubSessionUseCase
-            ): IdentHubViewModelProvider {
-                return IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCase)
-            }
         }
     }
 
@@ -229,6 +251,7 @@ class IdentHubSessionComponent private constructor(
             synchronized(lock) {
                 if(identHubSessionComponent == null) {
                     identHubSessionComponent = IdentHubSessionComponent(
+                            coreModule = CoreModule(),
                             networkModule = NetworkModule(),
                             databaseModule = DatabaseModule(),
                             sessionModule = SessionModule(),
