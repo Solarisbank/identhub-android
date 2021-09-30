@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.sdk.data.entity.Document;
+import de.solarisbank.sdk.data.dto.DocumentDto;
 import io.reactivex.Observable;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
-    private List<Document> documents = new ArrayList<>();
+    private List<DocumentDto> documents = new ArrayList<>();
 
-    private PublishRelay<Document> actionClickRelay = PublishRelay.create();
+    private PublishRelay<DocumentDto> actionClickRelay = PublishRelay.create();
 
-    public Observable<Document> getActionOnClickObservable() {
+    public Observable<DocumentDto> getActionOnClickObservable() {
         return actionClickRelay.hide();
     }
 
@@ -34,7 +34,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
-        Document document = documents.get(position);
+        DocumentDto document = documents.get(position);
         holder.bind(document);
         holder.bindAction(view -> {
             actionClickRelay.accept(document);
@@ -50,11 +50,11 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
         this.documents.clear();
     }
 
-    public void add(List<Document> documents) {
+    public void add(List<DocumentDto> documents) {
         this.documents.addAll(documents);
     }
 
-    public List<Document> getItems() {
+    public List<DocumentDto> getItems() {
         return documents;
     }
 }

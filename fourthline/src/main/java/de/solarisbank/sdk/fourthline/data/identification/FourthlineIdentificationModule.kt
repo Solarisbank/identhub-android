@@ -2,8 +2,7 @@ package de.solarisbank.sdk.fourthline.data.identification
 
 
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
-import de.solarisbank.sdk.data.dao.IdentificationDao
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import retrofit2.Retrofit
 
 class FourthlineIdentificationModule {
@@ -18,20 +17,15 @@ class FourthlineIdentificationModule {
         return FourthlineIdentificationRetrofitDataSource(fourthlineIdentificationApi)
     }
 
-    fun provideFourthlineIdentificationRoomDataSource(
-        identificationDao: IdentificationDao
-    ): IdentificationRoomDataSource {
-        return IdentificationRoomDataSource(identificationDao)
-    }
 
     fun provideFourthlineIdentificationRepository(
         fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
-        identificationRoomDataSource: IdentificationRoomDataSource,
+        identificationLocalDataSource: IdentificationLocalDataSource,
         personDataDataSource: PersonDataDataSource
     ): FourthlineIdentificationRepository {
         return FourthlineIdentificationRepository(
                 fourthlineIdentificationRetrofitDataSource,
-                identificationRoomDataSource,
+                identificationLocalDataSource,
                 personDataDataSource
         )
     }

@@ -14,7 +14,7 @@ import de.solarisbank.identhub.session.data.preferences.IdentificationStepPrefer
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP_KEY
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.model.StateUiModel
 import de.solarisbank.sdk.domain.model.result.Event
@@ -75,7 +75,7 @@ class ContractViewModel(
                     {
                         if (it is Result.Success<*>) {
                             Timber.d("onSubmitButtonClicked(), success;  result: $it ")
-                            val (id) = (it as Result.Success<Identification>).data
+                            val (id) = (it as Result.Success<IdentificationDto>).data
                             val bundle = Bundle()
                             // todo crate Bundle Factory for navigation subtypes
                             //todo foresee intenttypes and avoid null bundle

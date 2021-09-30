@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.solarisbank.identhub.R;
-import de.solarisbank.sdk.data.entity.Document;
+import de.solarisbank.sdk.data.dto.DocumentDto;
 
 public class DocumentViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,7 +21,7 @@ public class DocumentViewHolder extends RecyclerView.ViewHolder {
         title = holderView.findViewById(R.id.title);
     }
 
-    public void bind(Document document) {
+    public void bind(DocumentDto document) {
         SpannableString spannableString = SpannableString.valueOf(getDocTypeString(document.getDocumentType()));
         spannableString.setSpan(new UnderlineSpan(), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         title.setText(spannableString);

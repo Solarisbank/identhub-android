@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.utils.*
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import timber.log.Timber
 
 const val STATUS_KEY = "STATUS_KEY"
@@ -59,8 +59,8 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
     }
 }
 
-fun isIdentificationIdCreationRequired(entity: Identification): Boolean {
-    return isIdentificationIdCreationRequired(method = entity.method, nextStep = entity.nextStep)
+fun isIdentificationIdCreationRequired(identificationDto: IdentificationDto): Boolean {
+    return isIdentificationIdCreationRequired(method = identificationDto.method, nextStep = identificationDto.nextStep)
 }
 
 fun isIdentificationIdCreationRequired(method: String?, nextStep: String?): Boolean {

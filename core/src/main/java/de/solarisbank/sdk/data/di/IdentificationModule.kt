@@ -1,12 +1,13 @@
 package de.solarisbank.sdk.data.di
 
 import de.solarisbank.sdk.data.api.IdentificationApi
-import de.solarisbank.sdk.data.dao.IdentificationDao
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSourceImpl
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
+import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
 import de.solarisbank.sdk.data.repository.IdentificationRepository
+import de.solarisbank.sdk.feature.di.internal.Provider
 import retrofit2.Retrofit
 
 class IdentificationModule {
@@ -19,17 +20,17 @@ class IdentificationModule {
         return IdentificationRetrofitDataSourceImpl(identificationApi)
     }
 
-    fun provideIdentificationRoomDataSource(identificationDao: IdentificationDao): IdentificationRoomDataSource {
-        return IdentificationRoomDataSource(identificationDao)
+    fun provideIdentificationLocalDataSource(): Provider<out IdentificationLocalDataSource> {
+        return IdentificationInMemoryDataSourceFactory.create()
     }
 
     fun provideIdentificationStatusRepository(
-        identificationRoomDataSource: IdentificationRoomDataSource,
+        identificationLocalDataSource: IdentificationLocalDataSource,
         identificationStatusRetrofitDataSource: IdentificationRetrofitDataSource,
         mobileNumberDataSource: MobileNumberDataSource
     ): IdentificationRepository {
         return IdentificationRepository(
-                identificationRoomDataSource,
+                identificationLocalDataSource,
                 identificationStatusRetrofitDataSource,
                 mobileNumberDataSource
                 )

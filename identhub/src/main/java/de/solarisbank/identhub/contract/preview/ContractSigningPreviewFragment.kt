@@ -26,8 +26,8 @@ import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
-import de.solarisbank.sdk.data.entity.Document
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.dto.DocumentDto
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
@@ -98,7 +98,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         viewModel.getIdentificationData().observe(viewLifecycleOwner, Observer { onIdentification(it) } )
     }
 
-    private fun onIdentification(result: Result<Identification>) {
+    private fun onIdentification(result: Result<IdentificationDto>) {
         if (result.succeeded) {
             if (result.data!!.method == "bank_id") {
                 termsAndConditionsString!!.setText(R.string.contract_signing_terms_bank_id_label)
@@ -151,7 +151,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, Observer { onDocumentResultChanged(it) })
     }
 
-    private fun onDocumentResultChanged(result: Result<List<Document>>) {
+    private fun onDocumentResultChanged(result: Result<List<DocumentDto>>) {
         if (result.succeeded) {
             adapter.clear()
             adapter.add(result.data)
@@ -165,7 +165,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         Timber.e(throwable, "Could not open pdf file")
     }
 
-    private fun onDocumentActionClicked(document: Document) {
+    private fun onDocumentActionClicked(document: DocumentDto) {
         viewModel.onDocumentActionClicked(document)
     }
 

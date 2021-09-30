@@ -39,7 +39,12 @@ android {
 }
 
 dependencies {
-    api project(":core")
+    implementation timber
+    implementation lifecycle.libs
+    implementation networking.libs
+    implementation rxJava
+    
+    implementation project(":core")
 //    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
 
     implementation kotlinCore

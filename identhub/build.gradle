@@ -94,6 +94,12 @@ afterEvaluate {
 }
 
 dependencies {
+    implementation timber
+    implementation lifecycle.libs
+    implementation networking.libs
+    implementation rxJava
+
+    api project(":core")
     api project(":session")
     implementation project(":identhub-ui")
     implementation kotlinCore

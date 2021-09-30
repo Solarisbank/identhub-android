@@ -1,9 +1,7 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
 import de.solarisbank.identhub.session.data.verification.bank.model.IBan
-import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
@@ -21,7 +19,6 @@ import timber.log.Timber
 import java.net.HttpURLConnection
 
 class VerifyIBanUseCase(
-    private val getIdentificationUseCase: GetIdentificationUseCase,
     private val verificationBankRepository: VerificationBankRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
 ) : SingleUseCase<String, IbanVerificationDto>(), NextStepSelector {
@@ -52,57 +49,52 @@ class VerifyIBanUseCase(
                         return@onErrorResumeNext Single.error(t)
                     }
                 }
-                .flatMapCompletable { identificationDto: IdentificationDto -> verificationBankRepository.save(identificationDto) }
-                .andThen(
-                        getIdentificationUseCase.execute(Unit)
-                                .map {
-                                    Timber.d("andThen")
-                                    val data = it.data!!
-                                    val nextStep = selectNextStep(data.nextStep, data.fallbackStep)
-                                    return@map NavigationalResult(data.url, nextStep)
-                                }
-                )
-                .transformResult()
-                .map {
-
-                    var ibanVerificationDto : IbanVerificationDto
-                    if (it.succeeded) {
-                        Timber.d("Iban verification result 1 : ${it.data}, ${it.nextStep}")
-                        ibanVerificationDto =  IbanVerificationDto.IbanVerificationSuccessful(it.data, it.nextStep)
-                    } else if (it is Result.Error){
-                        val type = it.type
-                        Timber.d("Iban verification result $it, code : $code")
-                        val initializationDto = getInitializationDto()
-                        if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto!!.fallbackStep != null) {
-                            ibanVerificationDto = if (
-                                    initializationDto?.allowedRetries != null &&
-                                    ibanAttemts < getInitializationDto()!!.allowedRetries
-                            ) {
-                                Timber.d("Iban verification result 2")
-                                IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, true)
-                            } else {
-                                Timber.d("Iban verification result 3")
-                                IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
-                            }
-                        } else if (type is Type.UnprocessableEntity) {
-                            Timber.d("Iban verification result 4")
-                            ibanVerificationDto = IbanVerificationDto.AlreadyIdentifiedSuccessfullyError
-                        } else if(type is Type.PreconditionFailed && code == IDENTIFICATION_ATTEMPTS_EXCEEDED) {
-                            Timber.d("Iban verification result 5")
-                            ibanVerificationDto = IbanVerificationDto.ExceedMaximumAttemptsError
-                        } else if(type is Type.PreconditionFailed) {
-                            Timber.d("Iban verification result 5.1")
-                            ibanVerificationDto = IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
+            .map { identificationDto ->
+                verificationBankRepository.save(identificationDto).blockingGet()
+                val nextStep = selectNextStep(identificationDto.nextStep, identificationDto.fallbackStep)
+                Timber.d("map, nextStep = $nextStep")
+                return@map NavigationalResult(identificationDto.url, nextStep)
+            }
+            .transformResult()
+            .map {
+                var ibanVerificationDto : IbanVerificationDto
+                if (it.succeeded) {
+                    Timber.d("Iban verification result 1 : ${it.data}, ${it.nextStep}")
+                    ibanVerificationDto =  IbanVerificationDto.IbanVerificationSuccessful(it.data, it.nextStep)
+                } else if (it is Result.Error){
+                    val type = it.type
+                    Timber.d("Iban verification result $it, code : $code")
+                    val initializationDto = getInitializationDto()
+                    if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto!!.fallbackStep != null) {
+                        ibanVerificationDto = if (
+                                initializationDto?.allowedRetries != null &&
+                                ibanAttemts < getInitializationDto()!!.allowedRetries
+                        ) {
+                            Timber.d("Iban verification result 2")
+                            IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, true)
                         } else {
-                            Timber.d("Iban verification result 6")
-                            ibanVerificationDto = IbanVerificationDto.GenericError
+                            Timber.d("Iban verification result 3")
+                            IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
                         }
+                    } else if (type is Type.UnprocessableEntity) {
+                        Timber.d("Iban verification result 4")
+                        ibanVerificationDto = IbanVerificationDto.AlreadyIdentifiedSuccessfullyError
+                    } else if(type is Type.PreconditionFailed && code == IDENTIFICATION_ATTEMPTS_EXCEEDED) {
+                        Timber.d("Iban verification result 5")
+                        ibanVerificationDto = IbanVerificationDto.ExceedMaximumAttemptsError
+                    } else if(type is Type.PreconditionFailed) {
+                        Timber.d("Iban verification result 5.1")
+                        ibanVerificationDto = IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
                     } else {
-                        Timber.d("Iban verification result 7")
+                        Timber.d("Iban verification result 6")
                         ibanVerificationDto = IbanVerificationDto.GenericError
                     }
-                    NavigationalResult(ibanVerificationDto)
+                } else {
+                    Timber.d("Iban verification result 7")
+                    ibanVerificationDto = IbanVerificationDto.GenericError
                 }
+                NavigationalResult(ibanVerificationDto)
+            }
     }
 
     private fun Result.Error.parseErrorCode() : String? {

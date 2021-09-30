@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.domain.contract
 
 import de.solarisbank.identhub.file.FileController
-import de.solarisbank.sdk.data.entity.Document
+import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.feature.Optional
@@ -13,8 +13,8 @@ import java.io.File
 class FetchPdfUseCase(
         private val contractSignRepository: ContractSignRepository,
         private val fileController: FileController
-) : SingleUseCase<Document, Optional<File>>() {
-    override fun invoke(document: Document): Single<NavigationalResult<Optional<File>>> {
+) : SingleUseCase<DocumentDto, Optional<File>>() {
+    override fun invoke(document: DocumentDto): Single<NavigationalResult<Optional<File>>> {
         return Single.concat(Single.just(fileController[document.name]),
                 contractSignRepository.fetchDocumentFile(document.id)
                         .map { responseBody: Response<ResponseBody> -> fileController.save(document.name, responseBody.body()!!.source()) })

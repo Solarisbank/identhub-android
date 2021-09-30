@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
@@ -22,20 +23,15 @@ import de.solarisbank.identhub.session.data.repository.IdentityInitializationRep
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
-import de.solarisbank.sdk.data.dao.IdentificationDao
 import de.solarisbank.sdk.data.datasource.*
 import de.solarisbank.sdk.data.di.*
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory
-import de.solarisbank.sdk.data.di.db.DatabaseModule
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideIdentificationDaoFactory
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideRoomFactory
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.sdk.data.di.network.api.IdentificationApiFactory
 import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory
 import de.solarisbank.sdk.data.repository.*
-import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.feature.config.InitializationInfoApi
@@ -57,7 +53,6 @@ import de.solarisbank.sdk.fourthline.data.identification.*
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
-import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRoomDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
@@ -116,7 +111,6 @@ class FourthlineComponent private constructor(
     val sessionModule: SessionModule,
     val fourthlineIdentificationModule: FourthlineIdentificationModule,
     val networkModule: NetworkModule,
-    private val databaseModule: DatabaseModule,
     private val libraryComponent: LibraryComponent,
     private val kycUploadModule: KycUploadModule,
     private val identificationModule: IdentificationModule
@@ -124,8 +118,6 @@ class FourthlineComponent private constructor(
 
     private lateinit var applicationContextProvider: Provider<Context>
     private lateinit var deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
-    private lateinit var identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
-    private lateinit var identificationDaoProvider: Provider<IdentificationDao>
 
     private lateinit var retrofitProvider: Provider<Retrofit>
     private lateinit var moshiConverterFactoryProvider: Provider<MoshiConverterFactory>
@@ -134,7 +126,7 @@ class FourthlineComponent private constructor(
 
     private lateinit var fourthlineIdentificationApiProvider: Provider<FourthlineIdentificationApi>
     private lateinit var fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>
-    private lateinit var identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>
+    private lateinit var identificationLocalDataSourceProvider: Provider<out IdentificationLocalDataSource>
     private lateinit var personDataApiProvider: Provider<PersonDataApi>
     private lateinit var personDataDataSourceProvider: Provider<PersonDataDataSource>
     private lateinit var fourthlineIdentificationRepositoryProvider: Provider<FourthlineIdentificationRepository>
@@ -182,11 +174,7 @@ class FourthlineComponent private constructor(
 
     private fun initialize() {
         applicationContextProvider = ApplicationContextProvider(libraryComponent)
-
-        identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
-        identificationDaoProvider = DoubleCheck.provider(
-            DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
-
+        identificationLocalDataSourceProvider = IdentHub.getIdentificationLocalDataSourceProvider()
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
@@ -209,11 +197,11 @@ class FourthlineComponent private constructor(
         locationDataSourceProvider = LocationDataSourceFactory.create(applicationContextProvider.get())
         locationRepositoryProvider = LocationRepositoryFactory.create(locationDataSourceProvider.get())
         locationUseCaseProvider = LocationUseCaseFactory.create(locationRepositoryProvider.get())
-        identificationRoomDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRoomDataSourceFactory.create(fourthlineIdentificationModule, identificationDaoProvider))
+
         identificationIdInterceptorProvider = DoubleCheck.provider(object :
             Factory<IdentificationIdInterceptor> {
             override fun get(): IdentificationIdInterceptor {
-                return IdentificationIdInterceptor(identificationRoomDataSourceProvider.get())
+                return IdentificationIdInterceptor(identificationLocalDataSourceProvider.get())
             }
         })
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(create(networkModule, sessionUrlRepositoryProvider))
@@ -221,10 +209,19 @@ class FourthlineComponent private constructor(
             NetworkModuleProvideUserAgentInterceptorFactory.create())
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-                networkModule, dynamicBaseUrlInterceptorProvider, identificationIdInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider
+            networkModule,
+            dynamicBaseUrlInterceptorProvider,
+            identificationIdInterceptorProvider,
+            userAgentInterceptorProvider,
+            httpLoggingInterceptorProvider
         ))
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
-        retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider))
+        retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(
+            networkModule,
+            moshiConverterFactoryProvider,
+            okHttpClientProvider,
+            rxJavaCallAdapterFactoryProvider
+        ))
         mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get())
         mobileNumberDataSourceProvider =
             MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get())
@@ -233,10 +230,18 @@ class FourthlineComponent private constructor(
             IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()))
         identificationRepositoryProvider = DoubleCheck.provider(
             IdentificationRepositoryFactory.create(
-            identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
+            identificationLocalDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
         ))
-        fourthlineIdentificationApiProvider = DoubleCheck.provider(ProvideFourthlineIdentificationApiFactory.create(fourthlineIdentificationModule, retrofitProvider))
-        fourthlineIdentificationRetrofitDataSourceProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRetrofitDataSourceFactory.create(fourthlineIdentificationModule, fourthlineIdentificationApiProvider))
+        fourthlineIdentificationApiProvider = DoubleCheck.provider(
+            ProvideFourthlineIdentificationApiFactory.create(
+                fourthlineIdentificationModule,
+                retrofitProvider
+            ))
+        fourthlineIdentificationRetrofitDataSourceProvider = DoubleCheck.provider(
+            ProvideFourthlineIdentificationRetrofitDataSourceFactory.create(
+                fourthlineIdentificationModule,
+                fourthlineIdentificationApiProvider
+            ))
         kycUploadApiProvider = DoubleCheck.provider(ProviderKycUploadApiFactory.create(kycUploadModule, retrofitProvider))
         kycUploadRetrofitDataSourceProvider = DoubleCheck.provider(ProvideKycUploadDataSourceFactory.create(kycUploadModule, kycUploadApiProvider))
 
@@ -245,19 +250,25 @@ class FourthlineComponent private constructor(
         fourthlineIdentificationRepositoryProvider = DoubleCheck.provider(ProvideFourthlineIdentificationRepositoryFactory.create(
                 fourthlineIdentificationModule,
                 fourthlineIdentificationRetrofitDataSourceProvider,
-                identificationRoomDataSourceProvider,
+                identificationLocalDataSourceProvider,
                 personDataDataSourceProvider
         ))
 
         identificationRepositoryProvider = DoubleCheck.provider(
             IdentificationRepositoryFactory.create(
-            identificationRoomDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
+            identificationLocalDataSourceProvider.get(), identificationRetrofitDataSourceProvider.get(), mobileNumberDataSourceProvider.get()
         ))
         identificationPollingStatusUseCaseProvider = DoubleCheck.provider(
             IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()))
 
 
-        kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(kycUploadModule, fourthlineIdentificationRetrofitDataSourceProvider, identificationRoomDataSourceProvider, kycUploadRetrofitDataSourceProvider, sessionUrlLocalDataSourceProvider))
+        kycUploadRepositoryProvider = DoubleCheck.provider(ProviderKycUploadRepositoryFactory.create(
+            kycUploadModule,
+            fourthlineIdentificationRetrofitDataSourceProvider,
+            identificationLocalDataSourceProvider,
+            kycUploadRetrofitDataSourceProvider,
+            sessionUrlLocalDataSourceProvider
+        ))
         kycUploadUseCaseProvider = KycUploadUseCaseFactory.create(
             kycUploadRepositoryProvider,
             deleteKycInfoUseCaseProvider,
@@ -433,7 +444,6 @@ class FourthlineComponent private constructor(
                         activitySubModule = FourthlineActivitySubModule(),
                         networkModule = NetworkModule(),
                         libraryComponent = libraryComponent,
-                        databaseModule = DatabaseModule(),
                         kycUploadModule = KycUploadModule(),
                         identificationModule = IdentificationModule()
                     )

@@ -2,6 +2,8 @@ package de.solarisbank.identhub.session
 
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
+import de.solarisbank.sdk.feature.di.internal.Provider
 import timber.log.Timber
 
 object IdentHub {
@@ -10,6 +12,10 @@ object IdentHub {
     }
 
     private var SESSION: IdentHubSession? = null
+
+    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+        return SESSION!!.getIdentificationLocalDataSourceProvider()
+    }
 
     @Synchronized
     fun isPaymentResultAvailable(): Boolean {
@@ -34,4 +40,5 @@ object IdentHub {
 
     const val IDENTIFICATION_ID_KEY = "IDENTIFICATION_ID_KEY"
     const val SESSION_URL_KEY = "SESSION_URL_KEY"
+    const val VERIFICATION_BANK_URL_KEY = "VERIFICATION_BANK_URL_KEY"
 }

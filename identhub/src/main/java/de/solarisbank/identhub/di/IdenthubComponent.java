@@ -54,12 +54,10 @@ import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
-import de.solarisbank.identhub.session.data.Mapper;
+import de.solarisbank.identhub.session.IdentHub;
 import de.solarisbank.identhub.session.data.contract.ContractSignApi;
-import de.solarisbank.identhub.session.data.contract.ContractSignLocalDataSource;
 import de.solarisbank.identhub.session.data.contract.ContractSignModule;
 import de.solarisbank.identhub.session.data.contract.ContractSignNetworkDataSource;
-import de.solarisbank.identhub.session.data.contract.factory.ContractSignLocalDataSourceFactory;
 import de.solarisbank.identhub.session.data.contract.factory.ContractSignNetworkDataSourceFactory;
 import de.solarisbank.identhub.session.data.contract.factory.ProvideContractSignApiFactory;
 import de.solarisbank.identhub.session.data.contract.factory.ProvideContractSignRepositoryFactory;
@@ -68,19 +66,15 @@ import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInte
 import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory;
 import de.solarisbank.identhub.session.data.di.SessionModule;
 import de.solarisbank.identhub.session.data.di.SessionUrlLocalDataSourceFactory;
-import de.solarisbank.identhub.session.data.mapper.MapperModule;
-import de.solarisbank.identhub.session.data.mapper.factory.IdentificationEntityMapperFactory;
 import de.solarisbank.identhub.session.data.network.UserAgentInterceptor;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferencesFactory;
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryImpl;
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankApi;
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankDataModule;
-import de.solarisbank.identhub.session.data.verification.bank.VerificationBankLocalDataSource;
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankNetworkDataSource;
 import de.solarisbank.identhub.session.data.verification.bank.factory.ProvideVerificationBankApiFactory;
 import de.solarisbank.identhub.session.data.verification.bank.factory.ProvideVerificationBankRepositoryFactory;
-import de.solarisbank.identhub.session.data.verification.bank.factory.VerificationBankLocalDataSourceFactory;
 import de.solarisbank.identhub.session.data.verification.bank.factory.VerificationBankNetworkDataSourceFactory;
 import de.solarisbank.identhub.session.data.verification.phone.VerificationPhoneApi;
 import de.solarisbank.identhub.session.data.verification.phone.VerificationPhoneModule;
@@ -112,20 +106,13 @@ import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore;
 import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.data.api.IdentificationApi;
 import de.solarisbank.sdk.data.api.MobileNumberApi;
-import de.solarisbank.sdk.data.dao.DocumentDao;
-import de.solarisbank.sdk.data.dao.IdentificationDao;
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource;
 import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource;
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource;
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource;
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource;
 import de.solarisbank.sdk.data.di.IdentificationModule;
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory;
-import de.solarisbank.sdk.data.di.datasource.IdentificationRoomDataSourceFactory;
 import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory;
-import de.solarisbank.sdk.data.di.db.DatabaseModule;
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideDocumentDaoFactory;
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideIdentificationDaoFactory;
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideRoomFactory;
 import de.solarisbank.sdk.data.di.network.NetworkModule;
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory;
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideHttpLoggingInterceptorFactory;
@@ -135,14 +122,11 @@ import de.solarisbank.sdk.data.di.network.NetworkModuleProvideRetrofitFactory;
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideRxJavaCallAdapterFactory;
 import de.solarisbank.sdk.data.di.network.api.IdentificationApiFactory;
 import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory;
-import de.solarisbank.sdk.data.dto.IdentificationDto;
-import de.solarisbank.sdk.data.entity.IdentificationWithDocument;
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor;
 import de.solarisbank.sdk.data.repository.IdentificationRepository;
 import de.solarisbank.sdk.data.repository.IdentificationRepositoryFactory;
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
-import de.solarisbank.sdk.data.room.IdentityRoomDatabase;
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
 import de.solarisbank.sdk.feature.customization.CustomizationRepository;
@@ -172,13 +156,9 @@ public class IdenthubComponent {
     private final IdentityModule identityModule;
     private final ActivitySubModule activitySubModule;
     private final NetworkModule networkModule;
-    private final DatabaseModule databaseModule;
     private final IdentificationModule identificationModule;
 
     private Provider<Context> applicationContextProvider;
-    private Provider<IdentityRoomDatabase> identityRoomDatabaseProvider;
-    private Provider<IdentificationDao> identificationDaoProvider;
-    private Provider<DocumentDao> documentDaoProvider;
 
     private Provider<CustomizationRepository> customizationRepositoryProvider;
     private Provider<InitializationInfoApi> initializationInfoApiProvider;
@@ -201,7 +181,6 @@ public class IdenthubComponent {
 
     private Provider<VerificationPhoneApi> verificationPhoneApiProvider;
     private Provider<VerificationPhoneNetworkDataSource> verificationPhoneNetworkDataSourceProvider;
-    private Provider<VerificationBankLocalDataSource> verificationBankLocalDataSourceProvider;
     private Provider<VerificationPhoneRepository> verificationPhoneRepositoryProvider;
     private Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider;
     private Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider;
@@ -216,14 +195,12 @@ public class IdenthubComponent {
     private Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
     private Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
-    private Provider<ContractSignLocalDataSource> contractSignLocalDataSourceProvider;
-    private Provider<Mapper<IdentificationDto, IdentificationWithDocument>> identificationEntityMapperProvider;
 
     private Provider<IdentificationApi> identificationApiProvider;
     private Provider<IdentificationRetrofitDataSource> identificationRetrofitDataSourceProvider;
     private Provider<MobileNumberApi> mobileNumberApiProvider;
     private Provider<MobileNumberDataSource> mobileNumberDataSourceProvider;
-    private Provider<IdentificationRoomDataSource> identificationRoomDataSourceProvider;
+    private Provider<? extends IdentificationLocalDataSource> identificationLocalDataSourceProvider;
     private Provider<IdentificationRepository> identificationRepositoryProvider;
     private Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
     private Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider;
@@ -238,9 +215,7 @@ public class IdenthubComponent {
             IdentityModule identityModule,
             ActivitySubModule activitySubModule,
             NetworkModule networkModule,
-            DatabaseModule databaseModule,
             ContractSignModule contractSignModule,
-            MapperModule mapperModule,
             VerificationPhoneModule verificationPhoneModule,
             SessionModule sessionModule,
             VerificationBankDataModule verificationBankDataModule,
@@ -251,11 +226,9 @@ public class IdenthubComponent {
         this.identityModule = identityModule;
         this.activitySubModule = activitySubModule;
         this.networkModule = networkModule;
-        this.databaseModule = databaseModule;
         this.verficationBankModule = verficationBankModule;
         this.contractModule = contractModule;
         this.identificationModule = identificationModule;
-        initializeMapper(mapperModule);
         initialize(libraryComponent, contractSignModule, sessionModule, verificationBankDataModule, verificationPhoneModule);
     }
 
@@ -269,24 +242,15 @@ public class IdenthubComponent {
                         .setIdentityModule(new IdentityModule())
                         .setActivitySubModule(new ActivitySubModule())
                         .setNetworkModule(new NetworkModule())
-                        .setDatabaseModule(new DatabaseModule())
                         .build();
             }
             return identhubComponent;
         }
     }
 
-    private void initializeMapper(MapperModule mapperModule) {
-        identificationEntityMapperProvider = DoubleCheck.provider(IdentificationEntityMapperFactory.create(mapperModule));
-    }
-
     private void initialize(LibraryComponent libraryComponent, ContractSignModule contractSignModule, SessionModule sessionModule, VerificationBankDataModule verificationBankDataModule, VerificationPhoneModule verificationPhoneModule) {
         applicationContextProvider = new ApplicationContextProvider(libraryComponent);
-
-        identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider));
-        identificationDaoProvider = DoubleCheck.provider(DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider));
-        documentDaoProvider = DoubleCheck.provider(DatabaseModuleProvideDocumentDaoFactory.create(databaseModule, identityRoomDatabaseProvider));
-
+        identificationLocalDataSourceProvider = IdentHub.INSTANCE.getIdentificationLocalDataSourceProvider();
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule));
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider));
         sharedPreferencesProvider = DoubleCheck.provider((Factory<SharedPreferences>) () -> applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE));
@@ -306,13 +270,12 @@ public class IdenthubComponent {
 
         contractSignApiProvider = DoubleCheck.provider(ProvideContractSignApiFactory.create(contractSignModule, retrofitProvider));
         contractSignNetworkDataSourceProvider = ContractSignNetworkDataSourceFactory.create(contractSignModule, contractSignApiProvider);
-        contractSignLocalDataSourceProvider = ContractSignLocalDataSourceFactory.create(contractSignModule, documentDaoProvider, identificationDaoProvider);
-        contractSignRepositoryProvider = DoubleCheck.provider(ProvideContractSignRepositoryFactory.create(contractSignModule, contractSignNetworkDataSourceProvider, contractSignLocalDataSourceProvider, identificationEntityMapperProvider));
+        contractSignRepositoryProvider = DoubleCheck.provider(ProvideContractSignRepositoryFactory.create(contractSignModule, contractSignNetworkDataSourceProvider, identificationLocalDataSourceProvider));
 
         verificationBankApiProvider = DoubleCheck.provider(ProvideVerificationBankApiFactory.create(verificationBankDataModule, retrofitProvider));
         verificationBankNetworkDataSourceProvider = VerificationBankNetworkDataSourceFactory.create(verificationBankDataModule, verificationBankApiProvider);
-        verificationBankLocalDataSourceProvider = VerificationBankLocalDataSourceFactory.create(documentDaoProvider, identificationDaoProvider, verificationBankDataModule);
-        verificationBankRepositoryProvider = DoubleCheck.provider(ProvideVerificationBankRepositoryFactory.create(identificationEntityMapperProvider, verificationBankDataModule, verificationBankNetworkDataSourceProvider, verificationBankLocalDataSourceProvider));
+        verificationBankRepositoryProvider =
+                DoubleCheck.provider(ProvideVerificationBankRepositoryFactory.create(verificationBankDataModule, verificationBankNetworkDataSourceProvider, identificationLocalDataSourceProvider));
 
         authorizeContractSignUseCaseProvider = AuthorizeContractSignUseCaseFactory.create(contractSignRepositoryProvider);
         confirmContractSignUseCaseProvider = ConfirmContractSignUseCaseFactory.create(contractSignRepositoryProvider);
@@ -320,10 +283,10 @@ public class IdenthubComponent {
 
         authorizeVerificationPhoneUseCaseProvider = AuthorizeVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider);
         confirmVerificationPhoneUseCaseProvider = ConfirmVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider);
-        fetchingAuthorizedIBanStatusUseCaseProvider = FetchingAuthorizedIBanStatusUseCaseFactory.create(identificationEntityMapperProvider, verificationBankRepositoryProvider);
+        fetchingAuthorizedIBanStatusUseCaseProvider = FetchingAuthorizedIBanStatusUseCaseFactory.create(verificationBankRepositoryProvider);
         getDocumentsUseCaseProvider = GetDocumentsUseCaseFactory.create(contractSignRepositoryProvider);
         getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider, identityInitializationRepositoryProvider);
-        verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(getIdentificationUseCaseProvider, verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
+        verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
 
         initializationInfoApiProvider = DoubleCheck.provider(new InitializationInfoApiFactory(coreModule, retrofitProvider));
         initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(new InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider));
@@ -350,7 +313,6 @@ public class IdenthubComponent {
         private LibraryComponent libraryComponent;
         private ActivitySubModule activitySubModule;
         private NetworkModule networkModule;
-        private DatabaseModule databaseModule;
 
         private Builder() {
         }
@@ -380,11 +342,6 @@ public class IdenthubComponent {
             return this;
         }
 
-        public Builder setDatabaseModule(DatabaseModule databaseModule) {
-            this.databaseModule = databaseModule;
-            return this;
-        }
-
         public IdenthubComponent build() {
             return new IdenthubComponent(
                     coreModule,
@@ -392,9 +349,7 @@ public class IdenthubComponent {
                     identityModule,
                     activitySubModule,
                     networkModule,
-                    databaseModule,
                     new ContractSignModule(),
-                    new MapperModule(),
                     new VerificationPhoneModule(),
                     new SessionModule(),
                     new VerificationBankDataModule(),
@@ -456,11 +411,10 @@ public class IdenthubComponent {
 
             identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()));
             identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
-            identificationRoomDataSourceProvider = DoubleCheck.provider(IdentificationRoomDataSourceFactory.create(identificationModule, identificationDaoProvider.get()));
             mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get());
             mobileNumberDataSourceProvider = MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get());
             identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(
-                    identificationRoomDataSourceProvider.get(),
+                    identificationLocalDataSourceProvider.get(),
                     identificationRetrofitDataSourceProvider.get(),
                     mobileNumberDataSourceProvider.get()
             ));

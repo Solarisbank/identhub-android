@@ -13,13 +13,10 @@ import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
 import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.navigation.router.*
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.entity.NavigationalResult
-import de.solarisbank.sdk.data.room.IdentityRoomDatabase.Companion.clearDatabase
 import de.solarisbank.sdk.feature.base.BaseActivity.Companion.IDENTHUB_STEP_ACTION
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import de.solarisbank.sdk.feature.di.internal.Provider
 import timber.log.Timber
 
 class IdentHubSessionObserver(
@@ -28,7 +25,6 @@ class IdentHubSessionObserver(
 ) : DefaultLifecycleObserver {
 
     lateinit var viewModelFactory: (FragmentActivity) -> ViewModelProvider.Factory
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var viewModel: IdentHubSessionViewModel? = null
 
     var fragmentActivity: FragmentActivity? = null
@@ -52,6 +48,12 @@ class IdentHubSessionObserver(
             field = value
             viewModel?.saveSessionId(value)
         }
+
+    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+        return IdentHubSessionComponent
+            .getInstance(fragmentActivity!!.applicationContext)
+            .getIdentificationLocalDataSourceProvider()
+    }
 
     private var cachedUUID: String? = null
 
@@ -143,18 +145,6 @@ class IdentHubSessionObserver(
     fun obtainNextStep() {
         Timber.d("obtainNextStep")
         viewModel?.obtainNextStep()
-    }
-
-    fun clearDataOnCompletion() {
-        Timber.d("clearDataOnCompletion")
-        compositeDisposable.add(
-            Observable.defer { Observable.just(clearDatabase()) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { Timber.d("Database successfully cleared") },
-                    { Timber.e(it) })
-        )
     }
 
     private fun processInitializationStateResult(

@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.identification.factory
 
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
@@ -11,7 +11,7 @@ import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificatio
 class ProvideFourthlineIdentificationRepositoryFactory private constructor(
     private val fourthlineIdentificationModule: FourthlineIdentificationModule,
     private val fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>,
-    private val identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>,
+    private val identificationRoomDataSourceProvider: Provider<out IdentificationLocalDataSource>,
     private val personDataDataSourceProvider: Provider<PersonDataDataSource>
         ) :
     Factory<FourthlineIdentificationRepository> {
@@ -28,7 +28,7 @@ class ProvideFourthlineIdentificationRepositoryFactory private constructor(
         fun create(
             fourthlineIdentificationModule: FourthlineIdentificationModule,
             fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>,
-            identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>,
+            identificationRoomDataSourceProvider: Provider<out IdentificationLocalDataSource>,
             personDataDataSourceProvider: Provider<PersonDataDataSource>
         ) : ProvideFourthlineIdentificationRepositoryFactory {
             return ProvideFourthlineIdentificationRepositoryFactory(

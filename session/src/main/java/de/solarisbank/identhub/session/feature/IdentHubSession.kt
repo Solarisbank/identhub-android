@@ -7,6 +7,8 @@ import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
+import de.solarisbank.sdk.feature.di.internal.Provider
 import timber.log.Timber
 
 class IdentHubSession {
@@ -39,6 +41,10 @@ class IdentHubSession {
         this.identificationSuccessCallback = successCallback
 
         initMainProcess(fragmentActivity)
+    }
+
+    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+        return MAIN_PROCESS!!.getIdentificationLocalDataSourceProvider()
     }
 
     private fun initMainProcess(fragmentActivity: FragmentActivity) {
@@ -132,7 +138,6 @@ class IdentHubSession {
 
     internal fun reset() {
         Timber.d("reset(), MAIN_PROCESS : $MAIN_PROCESS, this $this")
-        MAIN_PROCESS?.clearDataOnCompletion()
         identificationErrorCallback = null
         paymentSuccessCallback = null
         paymentErrorCallback = null

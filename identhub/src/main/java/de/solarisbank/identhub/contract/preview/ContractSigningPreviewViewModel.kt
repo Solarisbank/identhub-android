@@ -7,8 +7,8 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.sdk.data.entity.Document
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.dto.DocumentDto
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
@@ -28,15 +28,15 @@ class ContractSigningPreviewViewModel(
         private val fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val documentsResultLiveData: MutableLiveData<Result<List<Document>>> = MutableLiveData()
-    private val identificationResultLiveData: MutableLiveData<Result<Identification>> = MutableLiveData()
+    private val documentsResultLiveData: MutableLiveData<Result<List<DocumentDto>>> = MutableLiveData()
+    private val identificationResultLiveData: MutableLiveData<Result<IdentificationDto>> = MutableLiveData()
     private val fetchPdfResultLiveData: MutableLiveData<Result<Optional<File>>> = MutableLiveData()
     private val fetchPdfFilesResultLiveData: MutableLiveData<Result<List<File>>> = MutableLiveData()
 
     fun refreshIdentificationData() {
         compositeDisposable.add(
             getIdentificationUseCase.execute(Unit)
-                .flatMap{ result: Result<Identification> ->
+                .flatMap{ result: Result<IdentificationDto> ->
                     Timber.d("refreshIdentificationData() 0, result : $result ")
                     identificationResultLiveData.postValue(result)
                     return@flatMap if (result.succeeded) {
@@ -69,11 +69,11 @@ class ContractSigningPreviewViewModel(
         )
     }
 
-    fun getIdentificationData(): LiveData<Result<Identification>> {
+    fun getIdentificationData(): LiveData<Result<IdentificationDto>> {
         return identificationResultLiveData
     }
 
-    fun getDocumentsResultLiveData(): LiveData<Result<List<Document>>> {
+    fun getDocumentsResultLiveData(): LiveData<Result<List<DocumentDto>>> {
         return documentsResultLiveData
     }
 
@@ -85,7 +85,7 @@ class ContractSigningPreviewViewModel(
         return fetchPdfResultLiveData
     }
 
-    fun onDocumentActionClicked(document: Document) {
+    fun onDocumentActionClicked(document: DocumentDto) {
         compositeDisposable.add(
             fetchPdfUseCase.execute(document)
             .subscribeOn(Schedulers.io())

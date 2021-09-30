@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.domain.contract
 
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.domain.NextStepSelector
@@ -10,9 +10,9 @@ import io.reactivex.Single
 class GetIdentificationUseCase(
     private val contractSignRepository: ContractSignRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
-) : SingleUseCase<Unit, Identification>(), NextStepSelector {
+) : SingleUseCase<Unit, IdentificationDto>(), NextStepSelector {
 
-    override fun invoke(param: Unit): Single<NavigationalResult<Identification>> {
+    override fun invoke(param: Unit): Single<NavigationalResult<IdentificationDto>> {
         return contractSignRepository.getIdentification()
             .map {
                 val nextStep = selectNextStep(it.nextStep, it.fallbackStep)

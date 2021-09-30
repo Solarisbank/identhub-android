@@ -5,7 +5,6 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.repository.IdentificationRepository
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
-import de.solarisbank.sdk.data.utils.toIdentification
 import de.solarisbank.sdk.domain.NextStepSelector
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -58,7 +57,7 @@ class IdentificationPollingStatusUseCase(
                             }
                             .doOnSuccess {
                                 identificationRepository
-                                        .insertIdentification(it.toIdentification())
+                                        .insertIdentification(it)
                                         .blockingGet()
                             }
                 }

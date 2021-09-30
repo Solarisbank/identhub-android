@@ -17,16 +17,12 @@ import de.solarisbank.identhub.session.data.repository.IdentityInitializationRep
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.feature.IdentHubSessionObserver
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
-import de.solarisbank.sdk.data.dao.IdentificationDao
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
-import de.solarisbank.sdk.data.di.db.DatabaseModule
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideIdentificationDaoFactory
-import de.solarisbank.sdk.data.di.db.DatabaseModuleProvideRoomFactory
+import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
-import de.solarisbank.sdk.data.room.IdentityRoomDatabase
 import de.solarisbank.sdk.feature.config.InitializationInfoApi
 import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
@@ -52,12 +48,9 @@ class IdentHubSessionComponent private constructor(
     val networkModule: NetworkModule,
     val identHubSessionModule: IdentHubSessionModule,
     private val sessionModule: SessionModule,
-    private val databaseModule: DatabaseModule,
     private val applicationContextProvider: ApplicationContextProvider
 ){
 
-    private lateinit var identityRoomDatabaseProvider: Provider<IdentityRoomDatabase>
-    private lateinit var identificationDaoProvider: Provider<IdentificationDao>
     private lateinit var moshiConverterFactoryProvider: Provider<MoshiConverterFactory>
     private lateinit var okHttpClientProvider: Provider<OkHttpClient>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
@@ -69,7 +62,7 @@ class IdentHubSessionComponent private constructor(
     private lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
-    private lateinit var identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>
+    private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationInMemoryDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
     private lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
@@ -84,11 +77,12 @@ class IdentHubSessionComponent private constructor(
         initialize()
     }
 
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationInMemoryDataSource> {
+        return identificationInMemoryDataSourceProvider
+    }
+
     private fun initialize() {
 
-        identityRoomDatabaseProvider = DoubleCheck.provider(DatabaseModuleProvideRoomFactory.create(databaseModule, applicationContextProvider))
-        identificationDaoProvider = DoubleCheck.provider(
-            DatabaseModuleProvideIdentificationDaoFactory.create(databaseModule, identityRoomDatabaseProvider))
         rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
         userAgentInterceptorProvider = DoubleCheck.provider(
@@ -138,17 +132,17 @@ class IdentHubSessionComponent private constructor(
             }
         })
 
-        identificationRoomDataSourceProvider = DoubleCheck.provider(object :
-            Factory<IdentificationRoomDataSource> {
-            override fun get(): IdentificationRoomDataSource {
-                return IdentificationRoomDataSource(identificationDaoProvider.get())
-            }
-        })
+        identificationInMemoryDataSourceProvider = DoubleCheck.provider(
+            IdentificationInMemoryDataSourceFactory.create()
+        )
 
         identHubSessionRepositoryProvider = DoubleCheck.provider(object :
             Factory<IdentHubSessionRepository> {
             override fun get(): IdentHubSessionRepository {
-                return IdentHubSessionRepository(dynamicIdetityRetrofitDataSourceProvider.get(), identificationRoomDataSourceProvider.get())
+                return IdentHubSessionRepository(
+                    dynamicIdetityRetrofitDataSourceProvider.get(),
+                    identificationInMemoryDataSourceProvider.get()
+                )
             }
         })
 
@@ -253,7 +247,6 @@ class IdentHubSessionComponent private constructor(
                     identHubSessionComponent = IdentHubSessionComponent(
                             coreModule = CoreModule(),
                             networkModule = NetworkModule(),
-                            databaseModule = DatabaseModule(),
                             sessionModule = SessionModule(),
                             identHubSessionModule = IdentHubSessionModule(),
                             applicationContextProvider = ApplicationContextProvider(applicationContext)

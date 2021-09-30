@@ -1,18 +1,18 @@
 package de.solarisbank.identhub.session.data.repository
 
 import de.solarisbank.identhub.session.data.datasource.DynamicIdetityRetrofitDataSource
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.InitializationDto
-import de.solarisbank.sdk.data.entity.Identification
 import io.reactivex.Single
 
 class IdentHubSessionRepository(
     private val dynamicIdetityRetrofitDataSource: DynamicIdetityRetrofitDataSource,
-    private val identificationRoomDataSource: IdentificationRoomDataSource
+    private val identificationRoomDataSource: IdentificationLocalDataSource
         ) {
 
-        fun getSavedIdentificationId(): Single<Identification> {
-                return identificationRoomDataSource.getIdentification()
+        fun getSavedIdentificationId(): Single<IdentificationDto> {
+                return identificationRoomDataSource.getIdentificationDto()
         }
 
         fun getRequiredIdentificationFlow(url: String): Single<InitializationDto> {

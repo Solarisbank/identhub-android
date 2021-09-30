@@ -31,7 +31,6 @@ class BankIdPostUseCase(
                             documents = null
                     )
                     Timber.d("combinedIdentification : $combinedIdentification")
-                    verificationBankRepository.deleteAll().blockingGet()
                     verificationBankRepository.save(combinedIdentification).blockingGet()
                     val nextStep = if (oldBankIdentification != null) {
                         selectNextStep(

@@ -1,8 +1,8 @@
 package de.solarisbank.identhub.identity;
 
 import static de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY;
+import static de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY;
 import static de.solarisbank.identhub.session.feature.navigation.router.RouterKt.COMPLETED_STEP_KEY;
-import static de.solarisbank.sdk.data.entity.Identification.VERIFICATION_BANK_URL_KEY;
 
 import android.os.Bundle;
 
@@ -16,7 +16,7 @@ import de.solarisbank.identhub.session.IdentHub;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection;
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP;
-import de.solarisbank.sdk.data.entity.Identification;
+import de.solarisbank.sdk.data.dto.IdentificationDto;
 import de.solarisbank.sdk.domain.model.result.Event;
 import de.solarisbank.sdk.domain.model.result.Result;
 import io.reactivex.disposables.CompositeDisposable;
@@ -76,7 +76,7 @@ public final class IdentityActivityViewModel extends ViewModel {
         if (IdentHub.INSTANCE.isPaymentResultAvailable()) {
             compositeDisposable.add(getIdentificationUseCase.execute(Unit.INSTANCE).subscribe(result -> {
                 if (result instanceof Result.Success) {
-                    Identification identification = ((Result.Success<Identification>) result).getData();
+                    IdentificationDto identification = ((Result.Success<IdentificationDto>) result).getData();
                     Bundle bundle = new Bundle();
                     bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.VERIFICATION_BANK.getIndex());
                     bundle.putString(IDENTIFICATION_ID_KEY, identification.getId());

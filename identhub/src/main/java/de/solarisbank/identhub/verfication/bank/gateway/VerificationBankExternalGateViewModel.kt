@@ -6,7 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.sdk.data.entity.Identification
+import de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
@@ -27,7 +28,7 @@ class VerificationBankExternalGateViewModel(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     init {
-        val verificationBankUrl = savedStateHandle.get<String>(Identification.VERIFICATION_BANK_URL_KEY)
+        val verificationBankUrl = savedStateHandle.get<String>(VERIFICATION_BANK_URL_KEY)
         Preconditions.checkNotNull(verificationBankUrl, "Verification bank url cannot be null")
         verificationBankUrlLiveDataEvent = MutableLiveData(verificationBankUrl!!)
     }
@@ -45,7 +46,7 @@ class VerificationBankExternalGateViewModel(
 
     fun getVerificationResultLiveData(): LiveData<Result<Any>> {
         compositeDisposable.add(getIdentificationUseCase.execute(Unit)
-                .flatMapCompletable { result: Result<Identification> ->
+                .flatMapCompletable { result: Result<IdentificationDto> ->
                     if (result.succeeded) {
                         val identification = result.data!!
                         fetchingAuthorizedIBanStatusUseCase.execute(identification.id)

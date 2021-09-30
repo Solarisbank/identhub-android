@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline.data.kyc.upload.factory
 
-import de.solarisbank.sdk.data.datasource.IdentificationRoomDataSource
+
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Preconditions
@@ -13,7 +14,7 @@ import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRetrofitDataSource
 class ProviderKycUploadRepositoryFactory(
     private val kycUploadModule: KycUploadModule,
     private val fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>,
-    private val identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>,
+    private val identificationLocalDataSourceProvider: Provider<out IdentificationLocalDataSource>,
     private val kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>,
     private val sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
 ) : Factory<KycUploadRepository> {
@@ -22,7 +23,7 @@ class ProviderKycUploadRepositoryFactory(
         return Preconditions.checkNotNull(
                 kycUploadModule.provideKycUploadRepository(
                         fourthlineIdentificationRetrofitDataSourceProvider.get(),
-                        identificationRoomDataSourceProvider.get(),
+                        identificationLocalDataSourceProvider.get(),
                         kycUploadRetrofitDataSourceProvider.get(),
                         sessionUrlLocalDataSourceProvider.get()
                 )
@@ -33,14 +34,14 @@ class ProviderKycUploadRepositoryFactory(
         @JvmStatic
         fun create(kycUploadModule: KycUploadModule,
                    fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>,
-                   identificationRoomDataSourceProvider: Provider<IdentificationRoomDataSource>,
+                   identificationLocalDataSourceProvider: Provider<out IdentificationLocalDataSource>,
                    kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>,
                    sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
         ): ProviderKycUploadRepositoryFactory {
             return ProviderKycUploadRepositoryFactory(
                     kycUploadModule,
                     fourthlineIdentificationRetrofitDataSourceProvider,
-                    identificationRoomDataSourceProvider,
+                    identificationLocalDataSourceProvider,
                     kycUploadRetrofitDataSourceProvider,
                     sessionUrlLocalDataSourceProvider
             )
