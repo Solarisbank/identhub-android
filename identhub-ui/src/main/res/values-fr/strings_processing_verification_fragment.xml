@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payment_init_auth_person_title">Compte non pris en charge</string>
+    <string name="payment_init_auth_person_message">Malheureusement, le compte que vous avez sélectionné n’est pas pris en charge par Bankident.</string>
+    <string name="payment_init_failed_title">L’identification a échoué</string>
+    <string name="payment_init_failed_message">Malheureusement, le paiement n’a pas abouti. Veuillez réessayer OU Vous pouvez vous identifier avec un scan d’identité à la place.</string>
+    <string name="payment_init_expired_title">L’identification a échoué</string>
+    <string name="payment_init_expired_message">Malheureusement, l’initiation du paiement n’a pas réussi</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="your_id_document">Scegli il tuo ID</string>
+    <string name="document_scanner_retake">Ripetere</string>
+    <string name="document_scanner_confirm">Confermare</string>
+    <string name="document_scanner_take_picture">Fai una foto</string>
+    <string name="document_scanner_warning_too_dark">Il documento è troppo scuro</string>
+    <string name="document_scanner_warning_device_not_steady">Il cellulare non è in una posizione stabile</string>
+    <string name="document_scanner_warning_recognition_models_not_downloaded">Controlla la tua connessione internet e/o lo spazio disponibile</string>
+    <string name="document_scanner_file_side_front">Davanti</string>
+    <string name="document_scanner_file_side_back">Indietro</string>
+    <string name="document_scanner_file_side_inside_left">Dentro a sinistra</string>
+    <string name="document_scanner_file_side_inside_right">Dentro a destra</string>
+    <string name="document_scanner_file_tilted">Angolato</string>
+    <string name="document_scanner_main_text_scan">Per favore, fai una scansione o una foto del %1$s del tuo ID.</string>
+    <string name="document_scanner_main_text_picture">Si prega di fare una foto %1$s del %2$s del documento di identità.</string>
+    <string name="document_scanner_scan_success">Foto creata</string>
+    <string name="document_scanner_auto_scan_list_title">Scansione automatica</string>
+    <string name="document_scanner_auto_scan_list_item1">Se il documento è leggibile, viene eseguita una scansione automatica</string>
+    <string name="document_scanner_auto_scan_list_item2">È anche possibile una scansione manuale</string>
+    <string name="document_scanner_clear_picture_list_title">Ti sembra tutto giusto?</string>
+    <string name="document_scanner_clear_picture_list_item1">Il testo è leggibile?</string>
+    <string name="document_scanner_clear_picture_list_item2">Niente oscura l\'immagine?</string>
+    <string name="document_scanner_clear_picture_list_item3">Nella foto sono visibili tutti gli angoli?</string>
+</resources>

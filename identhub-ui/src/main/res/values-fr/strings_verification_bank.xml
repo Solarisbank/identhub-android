@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verification_bank_title">Vérifiez votre identité.</string>
+    <string name="verification_bank_description">Selon la fonctionnalité de votre compte bancaire, vous vérifierez en vous connectant à votre banque en ligne ou en prenant une selfie et en scannant votre pièce d’identité/passeport.</string>
+    <string name="verification_bank_second_description">Veuillez fournir l’IBAN de votre compte bancaire et nous vérifierons la meilleure option pour vous.</string>
+    <string name="verification_bank_encrypted_label">Transmission codée active</string>
+    <string name="verification_bank_input_label">Iban</string>
+    <string name="verification_bank_action_submit">Démarrer la vérification du paiement</string>
+    <string name="verification_bank_notice_label">Remarque</string>
+    <string name="verification_bank_notice_value">Si vous vous identifiez avec un compte que vous n’utilisez pas pour recevoir vos revenus, vous pourriez ne pas être pris en compte pour les plans de versement de la Samsung Pay Card.</string>
+    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
+    <string name="verification_bank_input_not_valid_message">Le format de l’IBAN n’est pas valide !</string>
+    <string name="verification_bank_action_next_step">Continuer</string>
+    <string name="verification_bank_error_title">Erreur de vérification du paiement</string>
+    <string name="verification_bank_error_message">Malheureusement, nous n’avons pas été en mesure de traiter avec succès l’initiation du paiement. Veuillez réessayer. Assurez-vous d’avoir suffisamment de fonds sur votre compte et d’avoir accès au second facteur de votre banque (p. ex. pushTAN, photoTAN, etc.).</string>
+    <string name="verification_bank_success_title">Vérification du paiement réussie</string>
+    <string name="verification_bank_success_message">Continuer pour signer les documents et terminer votre processus d’identification.</string>
+    <string name="verification_bank_action_quit">Quitter</string>
+    <string name="verification_bank_action_retry">Réessayer la vérification IBAN</string>
+</resources>

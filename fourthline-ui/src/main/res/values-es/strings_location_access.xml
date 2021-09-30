@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_location_title">Ubicación del dispositivo</string>
+    <string name="device_location_subtitle">Necesitamos la ubicación de tu dispositivo para continuar</string>
+    <string name="continue_button_text">Continuar y cargar</string>
+</resources>

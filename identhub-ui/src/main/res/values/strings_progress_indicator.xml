@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="progress_indicator_secure_connection_message">Establishing secure connection to your bank…</string>
     <string name="progress_indicator_precessing_verification_message">Processing verification…</string>

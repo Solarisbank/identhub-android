@@ -8,6 +8,5 @@
     <string name="fourthline_terms_description_end">um die Verifizierung Ihrer Identität im folgenden Prozess abzuschließen.</string>
     <string name="fourthline_terms_notice_title">Hinweis</string>
     <string name="fourthline_terms_conditions_apply">Ich habe die Hinweise zum Datenschutz von SAFENED Fourthline zur Kenntnis genommen.</string>
-    <!-- The part of the above string that should by hyperlinked -->
     <string name="fourthline_terms_conditions_apply_link_section">Datenschutz von SAFENED Fourthline</string>
 </resources>

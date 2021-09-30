@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identity_activity_label_progress">Progression de l’identification</string>
+    <string name="identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
+    <string name="identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
+    <string name="identity_dialog_quit_process_positive_button">Quitter</string>
+    <string name="identity_dialog_quit_process_negative_button">Rester</string>
+    <string name="identity_activity_first_step_label">Vérification du téléphone</string>
+    <string name="identity_activity_second_step_label">Vérifier l’identité</string>
+    <string name="identity_activity_third_step_label">Signer votre demande</string>
+    <string name="identity_activity_fourth_step_label">Service</string>
+    <string name="identity_activity_next_step">Suivant : %1$s</string>
+    <string name="identity_dialog_fallback_process_negative_button">Vérifier avec le document d’identité</string>
+    <string name="identity_dialog_fallback_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
+    <string name="identity_dialog_fallback_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.\n\nVous pouvez également vérifier votre identité à l’aide d’une pièce d’identité. Dans ce cas, veuillez choisir « Vérifier avec le document d’identité ».\n\nPour toute question, veuillez contacter le service clientèle de Samsung Pay au 06196-77 555 30 pour plus d’informations.</string>
+</resources>

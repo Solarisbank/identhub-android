@@ -1,18 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="verification_bank_title">Verify your identity.</string>
     <string name="verification_bank_description">Depending on the functionality of your bank account you will verify by logging into your online banking or by taking a selfie and scanning your ID/Passport.</string>
     <string name="verification_bank_second_description">Please provide your bank account IBAN and we will check the best option for you.</string>
     <string name="verification_bank_encrypted_label">Encripted transmission active</string>
-
     <string name="verification_bank_input_label">Iban</string>
     <string name="verification_bank_action_submit">Initiate Payment Verification</string>
     <string name="verification_bank_notice_label">Notice</string>
     <string name="verification_bank_notice_value">If you identify yourself with an account that you don’t use to receive your income, you might not be considered for Samsung Pay Card instalment plans.</string>
-
     <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">IBAN format is not valid!</string>
     <string name="verification_bank_action_next_step">Continue</string>
-
     <string name="verification_bank_error_title">Payment verification error</string>
     <string name="verification_bank_error_message">Unfortunately we were not able to successfully process the payment initiation. Please try again. Make sure that you have sufficient funds on your account and access to the second factor of your bank (e.g. pushTAN, photoTAN, etc.).</string>
     <string name="verification_bank_success_title">Payment verification successful</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_not_active_title">Error de ubicación</string>
+    <string name="location_not_active_message">Habilitar ubicación</string>
+    <string name="enable_location_button">Habilitar</string>
+    <string name="retry_location_button">Reintentar</string>
+    <string name="quit_location_button">Salir</string>
+    <string name="location_fetching_error_title">Error de ubicación</string>
+    <string name="location_fetching_error_message">No se obtuvo la ubicación</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_doc_scan_result_title">Confirma que la información de tu documento es correcta</string>
+    <string name="fourthline_doc_scan_document_number">Número de documento</string>
+    <string name="fourthline_doc_scan_date_of_issue">Fecha de emisión</string>
+    <string name="fourthline_doc_scan_expiry_date">Fecha de caducidad del documento</string>
+    <string name="fourthline_doc_scan_date_placeholder">Seleccionar</string>
+    <string name="fourthline_doc_scan_issue_future_error">Error, la fecha de emisión es futura.</string>
+    <string name="fourthline_doc_scan_date_past_error">Error, la fecha de emisión es posterior a la fecha de caducidad</string>
+    <string name="fourthline_doc_scan_expiry_past_error">Error, la fecha de caducidad expira en el pasado</string>
+    <string name="fourthline_doc_scan_deriving_error">Se ha producido un error al derivar los datos</string>
+    <string name="fourthline_doc_scan_continue_button">Continuar</string>
+</resources>

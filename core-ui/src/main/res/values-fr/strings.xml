@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="session_expire">Votre session est sur le point d’expirer :</string>
+    <string name="identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
+    <string name="identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
+    <string name="identity_dialog_quit_process_positive_button">Quitter</string>
+    <string name="identity_dialog_quit_process_negative_button">Rester</string>
+    <string name="ok_button">OK</string>
+    <string name="generic_error_title">Erreur inconnue</string>
+    <string name="generic_error_message">La vérification n’a pas pu être effectuée</string>
+</resources>

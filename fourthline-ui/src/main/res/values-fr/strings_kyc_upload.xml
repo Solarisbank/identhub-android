@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kyc_upload_button_submit">Continuer</string>
+    <string name="failure_fraud_headline">L’identification a échoué</string>
+    <string name="failure_fraud_message">Malheureusement, nous n’avons pas pu vous identifier avec succès.</string>
+    <string name="failure_fraud_button">OK</string>
+    <string name="failure_no_fraud_headline">L’identification a échoué</string>
+    <string name="failure_no_fraud_message">Une erreur s’est produite pendant votre identification. Veuillez réessayer. Assurez-vous que toutes les photos sont prises avec une bonne qualité, un bon éclairage et que les documents sont lisibles.</string>
+    <string name="failure_no_fraud_positive">Réessayer</string>
+    <string name="failure_no_fraud_negative">Quitter</string>
+    <string name="kyc_upload_verification_title">Vérification</string>
+    <string name="kyc_upload_verification_subtitle_1">Veuillez attendre la vérification de vos données.</string>
+    <string name="kyc_upload_verification_subtitle_2">Le téléchargement peut prendre quelques minutes.</string>
+    <string name="kyc_upload_verification_button">Continuer</string>
+    <string name="kyc_upload_provider_error_title">Une erreur s’est produite lors du téléchargement de vos données</string>
+    <string name="kyc_upload_provider_error_subtitle">Malheureusement, vos données n’ont pas pu être confirmées. Veuillez réessayer.</string>
+    <string name="kyc_upload_provider_error_button">Réessayer</string>
+    <string name="kyc_upload_generic_error_title">Une erreur s’est produite lors du téléchargement de vos données</string>
+    <string name="kyc_upload_generic_error_subtitle">Malheureusement, vos données n’ont pas pu être confirmées. Veuillez réessayer</string>
+    <string name="kyc_upload_generic_error_button">Réessayer</string>
+    <string name="kyc_upload_success_title">Félicitations, votre vérification est terminée</string>
+    <string name="kyc_upload_success_subtitle">Vos données ont été confirmées avec succès</string>
+    <string name="kyc_upload_success_button">Continuer</string>
+    <string name="kyc_upload_to_next_title">Félicitations, votre vérification est terminée</string>
+    <string name="kyc_upload_to_next_subtitle">Vos données ont été confirmées avec succès</string>
+    <string name="kyc_upload_to_next_button">Continuer</string>
+</resources>

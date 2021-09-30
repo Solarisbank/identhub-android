@@ -8,7 +8,6 @@
     <string name="scanner_error_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz.</string>
     <string name="scanner_error_unknown">Unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.</string>
     <string name="scanner_error_multiple_faces_detected">Mehrere Gesichter erkannt.</string>
-
     <string name="scanner_error_title">Fehler beim Scannen</string>
     <string name="scanner_error_scan_button_retry">erneut versuchen</string>
     <string name="scanner_error_scan_button_quit">Verlassen</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identity_dialog_quit_process_title">Sei sicuro di voler uscire dal processo di registrazione?</string>
+    <string name="identity_dialog_quit_process_message">I tuoi progressi non verranno salvati. La prossima volta che proverai, ricomincerai dall\'inizio.</string>
+    <string name="identity_dialog_quit_process_positive_button">Uscire</string>
+    <string name="identity_dialog_quit_process_negative_button">Rimanere</string>
+    <string name="ok_button">OK</string>
+    <string name="generic_error_title">Errore sconosciuto</string>
+    <string name="generic_error_message">La tua verifica non può essere completata</string>
+</resources>

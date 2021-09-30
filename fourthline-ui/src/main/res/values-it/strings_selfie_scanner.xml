@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="selfie_scanner_scan_successful">Scansione riuscita</string>
+    <string name="selfie_scanner_retake">Ripetere</string>
+    <string name="selfie_scanner_confirm">Confermare</string>
+    <string name="selfie_intro">Il tuo viso è chiaramente visibile e all\'interno dello schermo?</string>
+    <string name="selfie_manual">Si prega di fare una foto selfie</string>
+    <string name="selfie_turn_left">Per favore gira la testa a sinistra</string>
+    <string name="selfie_turn_right">Per favore gira la testa a destra</string>
+    <string name="selfie_step_scanning">Riconoscimento…</string>
+    <string name="selfie_step_checking_liveness">Comprobando la viveza...</string>
+    <string name="selfie_result_successful">Scansione riuscita</string>
+    <string name="selfie_not_steady">Il cellulare non è in una posizione stabile</string>
+    <string name="selfie_face_detected">Volto riconosciuto con successo</string>
+    <string name="selfie_checking_liveliness">Comprobando la viveza...</string>
+    <string name="selfie_scan_successful">Scansione riuscita</string>
+    <string name="selfie_scan_error">Scansione non riuscita</string>
+    <string name="selfie_warning_not_detected">Volto non riconosciuto</string>
+    <string name="selfie_warning_not_in_frame">Adatta il tuo viso alla cornice della foto</string>
+    <string name="selfie_warning_too_close">Tieni il telefono più lontano dal tuo viso</string>
+    <string name="selfie_warning_too_far">Tieni il telefono più vicino al tuo viso</string>
+    <string name="selfie_warning_yaw_too_big">Guarda dritto nella fotocamera</string>
+    <string name="selfie_warning_eyes_closed">Apri entrambi gli occhi</string>
+    <string name="selfie_warning_device_not_steady">Il cellulare non è in una posizione stabile</string>
+</resources>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="verification_phone_description">Enter the 6-digit code sent to %1$s.</string>
     <string name="verification_phone_error_message">Wrong TAN. You need to request a new TAN and try again.</string>

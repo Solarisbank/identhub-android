@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verification_bank_title">Verifica tu identidad.</string>
+    <string name="verification_bank_description">Dependiendo de la funcionalidad de tu cuenta bancaria, la podrás verificar accediendo a tu banca online o haciéndote un selfie y escaneando tu DNI/Pasaporte.</string>
+    <string name="verification_bank_second_description">Indica el IBAN de tu cuenta bancaria y comprobaremos la mejor opción para ti.</string>
+    <string name="verification_bank_encrypted_label">Transmisión encriptada activa</string>
+    <string name="verification_bank_input_label">IBAN</string>
+    <string name="verification_bank_action_submit">Iniciar la verificación del pago</string>
+    <string name="verification_bank_notice_label">Aviso</string>
+    <string name="verification_bank_notice_value">Si te identificas con una cuenta que no utilizas para recibir tus ingresos, es posible que no se tenga en cuenta para los planes de pago a plazos de Samsung Pay Card.</string>
+    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
+    <string name="verification_bank_input_not_valid_message">El formato IBAN no es válido.</string>
+    <string name="verification_bank_action_next_step">Continuar</string>
+    <string name="verification_bank_error_title">Error de verificación del pago</string>
+    <string name="verification_bank_error_message">Lamentablemente no hemos podido procesar con éxito el inicio del pago. Vuelve a intentarlo. Asegúrate de que tienes fondos suficientes en tu cuenta y acceso al segundo factor de tu banco (por ejemplo, pushTAN, photoTAN, etc.).</string>
+    <string name="verification_bank_success_title">Verificación del pago realizada con éxito</string>
+    <string name="verification_bank_success_message">Continúa firmando los documentos para finalizar tu proceso de identificación.</string>
+    <string name="verification_bank_action_quit">Salir</string>
+    <string name="verification_bank_action_retry">Vuelve a intentar la verificación del IBAN</string>
+</resources>

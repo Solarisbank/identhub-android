@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="payment_init_auth_person_title">Cuenta no admitida</string>
+    <string name="payment_init_auth_person_message">Lamentablemente la cuenta que has seleccionado no es compatible con Bankident.</string>
+    <string name="payment_init_failed_title">Identificación fallida</string>
+    <string name="payment_init_failed_message">Lamentablemente, el pago no se ha realizado correctamente. Inténtalo de nuevo O indentifícate escaneando tu documento en su lugar.</string>
+    <string name="payment_init_expired_title">Identificación fallida</string>
+    <string name="payment_init_expired_message">Lamentablemente, la iniciación del pago no se ha realizado correctamente.</string>
+</resources>

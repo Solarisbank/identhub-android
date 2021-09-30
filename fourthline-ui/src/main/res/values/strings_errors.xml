@@ -8,7 +8,6 @@
     <string name="scanner_error_models_not_downloaded">Check internet connection and/or free space available</string>
     <string name="scanner_error_unknown">Unexpected error occurred. Please try again.</string>
     <string name="scanner_error_multiple_faces_detected">Multiple faces detected</string>
-
     <string name="scanner_error_title">Scan error</string>
     <string name="scanner_error_scan_button_retry">Retry</string>
     <string name="scanner_error_scan_button_quit">Quit</string>

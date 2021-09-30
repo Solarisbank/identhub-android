@@ -1,19 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="verification_bank_title">Verifizierung Ihrer Identität.</string>
     <string name="verification_bank_description">Im Idealfall können Sie sich über Ihr existierendes Bankkonto verifizieren. Unter Umständen ist auch eine Verifizierung Ihrer Identität via eines Selfie-Fotos und Scans Ihres Personalausweises/Reisepasses möglich.</string>
     <string name="verification_bank_second_description">Bitte geben Sie die IBAN Ihres Bankkontos ein und wir prüfen die beste Option für Sie.</string>
     <string name="verification_bank_encrypted_label">Verschlüsselte Übertragung aktiv</string>
-
     <string name="verification_bank_input_label">Iban</string>
     <string name="verification_bank_action_submit">Initiate Payment Verification</string>
-
     <string name="verification_bank_notice_label">Hinweise</string>
     <string name="verification_bank_notice_value">Wenn Sie sich mit einem Konto ohne Gehaltseingang identifizieren, können wir Sie möglicherweise nicht für unsere Ratenzahlungs-Funktion der Samsung Pay Karte freischalten.</string>
-
     <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">IBAN Format is not valid!</string>
     <string name="verification_bank_action_next_step">Weiter</string>
-
     <string name="verification_bank_error_title">Payment verification error</string>
     <string name="verification_bank_error_message">Unfortunately we were not able to successfully process the payment initiation. Please try again. Make sure that you have sufficient funds on your account and access to the second factor of your bank (e.g. pushTAN, photoTAN, etc.).</string>
     <string name="verification_bank_success_title">Payment verification successful</string>

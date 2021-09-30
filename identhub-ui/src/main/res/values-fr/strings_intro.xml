@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_intro_title">Démarrer identification</string>
+    <string name="onboarding_intro_description">Vous devez saisir les informations de votre compte bancaire pour vérifier votre identité.</string>
+    <string name="onboarding_intro_step_1">1. fournir votre IBAN</string>
+    <string name="onboarding_intro_step_2">2. transférer €0,05</string>
+    <string name="onboarding_intro_step_3">3. signer électroniquement les documents</string>
+    <string name="onboarding_intro_verify_button">Démarrer identification</string>
+    <string name="onboarding_intro_quit">Retour au site</string>
+</resources>

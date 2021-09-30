@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="identity_dialog_quit_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
     <string name="identity_dialog_quit_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.</string>

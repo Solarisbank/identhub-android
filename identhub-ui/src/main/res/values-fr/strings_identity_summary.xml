@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identity_summary_title">Identification réussie !</string>
+    <string name="identity_summary_description">Vous avez terminé le processus d’identification ! Télécharger les documents et les sauvegarder dans un endroit sûr, pour référence ultérieure.</string>
+    <string name="identity_summary_finish_action">Terminer</string>
+</resources>

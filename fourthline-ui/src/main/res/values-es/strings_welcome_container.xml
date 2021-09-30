@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_welcome_container_title">A continuación, hazte un selfie.</string>
+    <string name="fourthline_welcome_container_first_tick">La aplicación reconocerá su cara.</string>
+    <string name="fourthline_welcome_container_second_tick">Prueba la viveza siguiendo las instrucciones que aparecen en la pantalla.</string>
+    <string name="fourthline_welcome_container_description">Asegúrate de que hay suficiente luz para el selfie. Si llevas gafas, asegúrate de que no hay reflejos.</string>
+    <string name="fourthline_welcome_container_notice">Si el escáner no reconoce tu cara, se produce un error de tiempo de espera después de 10 segundos y tendrás que volver a iniciar el proceso de escaneo del selfie.</string>
+    <string name="fourthline_welcome_container_continue_button">Continuar</string>
+    <string name="fourthline_permission_rationale_title">Permisos</string>
+    <string name="fourthline_permission_rationale_message">No podemos completar el proceso de identificación sin estos permisos. Permite el acceso para completar el proceso de identificación.</string>
+    <string name="fourthline_permission_rationale_ok">Permitir</string>
+    <string name="fourthline_permission_rationale_quit">Salir</string>
+</resources>

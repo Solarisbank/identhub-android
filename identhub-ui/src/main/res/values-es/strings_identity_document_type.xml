@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qes_document">Documento QES</string>
+    <string name="loan_mandate_contract">Documento contractual</string>
+    <string name="signed_qes_document">Documento QES firmado</string>
+    <string name="signed_loan_mandate_contract">Documento contractual firmado</string>
+</resources>

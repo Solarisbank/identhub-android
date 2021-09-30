@@ -2,20 +2,9 @@
 <resources>
     <string name="welcome_title">Welcome</string>
     <string name="welcome_page_1_guide_title">Smile for the camera</string>
-    <string name="welcome_page_1_guide">
-        "Your selfie will be compared to the one in your ID
-        document. Don't worry, it's never going to see the
-        light of day, we promise!"
-    </string>
+    <string name="welcome_page_1_guide">"Your selfie will be compared to the one in your ID\ndocument. Don't worry, it's never going to see the\nlight of day, we promise!"</string>
     <string name="welcome_page_2_guide_title">Scan your ID document</string>
-    <string name="welcome_page_2_guide">
-        "With this we can make sure that you're really who
-        you say you are and avoid identity theft."
-    </string>
+    <string name="welcome_page_2_guide">"With this we can make sure that you're really who\nyou say you are and avoid identity theft."</string>
     <string name="welcome_page_3_guide_title">Submit your case</string>
-    <string name="welcome_page_3_guide">
-        Last thing you need to do is enabling your location
-        &amp; submitting your case!
-        How easy is that?
-    </string>
+    <string name="welcome_page_3_guide">Last thing you need to do is enabling your location\n&amp; submitting your case!\nHow easy is that?</string>
 </resources>

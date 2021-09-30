@@ -6,7 +6,6 @@
     <string name="fourthline_welcome_container_description">Stellen Sie sicher, dass Sie genug Licht haben. Wenn Sie eine Brille tragen achten Sie darauf, dass diese nicht spiegelt.</string>
     <string name="fourthline_welcome_container_notice">Wenn die App Ihr Gesicht nicht erkennt, wird nach 10 Sekunden ein Zeitlimit erreicht und Sie werden den Prozess von vorne beginnen müssen.</string>
     <string name="fourthline_welcome_container_continue_button">Weiter</string>
-
     <string name="fourthline_permission_rationale_title">Berechtigungen</string>
     <string name="fourthline_permission_rationale_message">Wir können den Identifikationsprozess nicht ohne diese Berechtigungen abschließen. Bitte erlauben Sie den benötigten Zugriff um den Identifikationsprozess abzuschließen.</string>
     <string name="fourthline_permission_rationale_ok">Zulassen</string>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fourthline_terms_button_submit">Ulteriore</string>
+    <string name="fourthline_terms_verify_title">Verifica la tua identità</string>
+    <string name="fourthline_terms_description_start">Scatta una foto selfie e scansiona il tuo documento d\'identità o il passaporto.\n\nConsenti a Samsung Pay di accedere</string>
+    <string name="fourthline_terms_description_list_item1">La tua posizione</string>
+    <string name="fourthline_terms_description_list_item2">La tua fotocamera</string>
+    <string name="fourthline_terms_description_end">Per completare la verifica della tua identità nel seguente processo.</string>
+    <string name="fourthline_terms_notice_title">Nota</string>
+    <string name="fourthline_terms_conditions_apply">Ho preso atto delle informazioni sulla protezione dei dati di SAFENED Fourthline.</string>
+    <string name="fourthline_terms_conditions_apply_link_section">Protezione dei dati da SAFENED Fourthline</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="already_identified_title">Déjà identifié avec succès</string>
+    <string name="already_identified_message">Il semble que vous vous êtes déjà identifié avec succès auparavant. Malheureusement, vous ne pouvez pas vous identifier à nouveau.</string>
+    <string name="invalid_iban_title">Malheureusement, l’IBAN que vous avez saisi n’est pas valide ou n’est pas pris en charge.</string>
+    <string name="invalid_iban_message">L’IBAN que vous avez fourni ne peut pas être utilisé pour l’identification. Veuillez réessayer.</string>
+    <string name="excess_attempts_title">Tentatives maximales dépassées</string>
+    <string name="excess_attempts_message">Malheureusement, vous avez dépassé le nombre maximum de tentatives d’identification. Malheureusement, nous ne pouvons pas vous identifier correctement.</string>
+    <string name="retry_button">Réessayer</string>
+    <string name="invalid_iban_retry_button">Réessayer avec un IBAN différent</string>
+    <string name="invalid_iban_ok_button">S’identifier avec une autre méthode</string>
+    <string name="about_identity_verification_title">À propos de la vérification de l’identité</string>
+    <string name="about_identity_verification_message">Il vous sera demandé de créer une signature électronique en vous connectant à votre compte bancaire existant, où une transaction de référence automatique de 5 cents sera lancée pour fournir une preuve. Vos 5 centimes seront automatiquement reversés sur votre compte par la suite.</string>
+</resources>
