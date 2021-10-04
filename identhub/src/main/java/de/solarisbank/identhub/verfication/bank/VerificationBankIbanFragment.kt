@@ -14,12 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.addAdapter
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.di.FragmentComponent
@@ -28,10 +23,12 @@ import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRE
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.core.viewModels
-import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.feature.customization.customizeLinks
+import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
+import de.solarisbank.sdk.feature.view.BulletListLayout
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -46,6 +43,11 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private var submitButton: Button? = null
     private var secondDescription: TextView? = null
     private var imageView: ImageView? = null
+    private var termsCheckBox: CheckBox? = null
+    private var termsDisclaimer: TextView? = null
+    private var termsLayout: View? = null
+    private var noticeBulletList: BulletListLayout? = null
+
     private var defaultToBankId: Boolean = false
 
     override fun inject(component: FragmentComponent) {
@@ -62,6 +64,12 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                     submitButton = it.findViewById(R.id.submitButton)
                     secondDescription = it.findViewById(R.id.secondDescription)
                     imageView = it.findViewById(R.id.image)
+                    termsCheckBox = it.findViewById(R.id.termsCheckBox)
+                    termsCheckBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState() }
+                    termsDisclaimer = it.findViewById(R.id.termsDisclaimer)
+                    termsLayout = it.findViewById(R.id.termsLayout)
+                    noticeBulletList = it.findViewById(R.id.noticeBulletList)
+                    updateBulletList()
                     customizeUI()
                 }
     }
@@ -69,6 +77,23 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private fun customizeUI() {
         submitButton?.customize(customization, ButtonStyle.Primary)
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
+        termsCheckBox?.customize(customization)
+        termsDisclaimer?.customizeLinks(customization)
+    }
+
+    private fun updateBulletList() {
+        val notice = getString(R.string.verification_bank_notice_value)
+        if (notice.isNotBlank()) {
+            noticeBulletList?.isVisible = true
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info)
+            noticeBulletList?.updateItems(
+                title = getString(R.string.verification_bank_notice_label),
+                titleStyle = BulletListLayout.TitleStyle.Notice(drawable),
+                items = listOf(notice)
+            )
+        } else {
+            noticeBulletList?.isVisible = false
+        }
     }
 
     private fun initDefaultToBankId() {
@@ -86,7 +111,15 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private fun observeVerifyResult() {
-        ibanViewModel.getVerificationStateLiveData().observe(viewLifecycleOwner, Observer { setState(it) })
+        ibanViewModel.getVerificationStateLiveData().observe(viewLifecycleOwner, { setState(it) })
+        ibanViewModel.getTermsAgreedLiveData().observe(viewLifecycleOwner, { agreed ->
+            if (agreed) {
+                termsCheckBox?.isChecked = true
+                termsLayout?.isVisible = false
+            } else {
+                termsCheckBox?.isVisible = true
+            }
+        })
     }
 
     private fun setState(state: VerificationState) {
@@ -97,9 +130,10 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         } else {
             Timber.d("setState 2")
             ibanNumber!!.isEnabled = state.isIbanNumberEnabled
+            termsCheckBox!!.isEnabled = state.isIbanNumberEnabled
             progressBar!!.isVisible = state.isProgressBarShown
             ibanInputErrorLabel!!.visibility = state.ibanInputErrorLabelVisibility
-            submitButton!!.isEnabled = state.isSubmitButtonEnabled
+            submitButton!!.isEnabled = state.isSubmitButtonEnabled && termsCheckBox!!.isChecked
 
             if (state is ErrorState) {
                 Timber.d("setState 3")
@@ -145,6 +179,12 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         setState(SealedVerificationState.IbanIput())
     }
 
+    private fun updateSubmitButtonState() {
+        submitButton!!.isEnabled =
+            ibanNumber!!.text.toString().replace(" ", "").length >= MIN_IBAN_LENGTH
+                    && termsCheckBox!!.isChecked
+    }
+
     private fun initViews() {
         Timber.d("initViews()")
         setState(SealedVerificationState.IbanIput())
@@ -160,6 +200,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
         addInfoToDescription()
+        setTermsText()
     }
 
     private fun addInfoToDescription() {
@@ -183,6 +224,16 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         secondDescription!!.movementMethod = LinkMovementMethod.getInstance()
     }
 
+    private fun setTermsText() {
+        val termsPartText = getString(R.string.identhub_terms_agreement_terms)
+        val privacyPartText = getString(R.string.identhub_terms_agreement_privacy)
+        val termsText = getString(R.string.identhub_terms_agreement, termsPartText, privacyPartText)
+        val spanned = termsText.linkOccurrenceOf(termsPartText, termsLink)
+        spanned.linkOccurrenceOf(privacyPartText, privacyLink)
+        termsDisclaimer?.text = spanned
+        termsDisclaimer?.movementMethod = LinkMovementMethod.getInstance()
+    }
+
     private val ibanTextValidator = object : TextWatcher {
         private var lastChangedText: String = ""
         private var locked: Boolean = false
@@ -192,7 +243,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            submitButton!!.isEnabled = ibanNumber!!.text.toString().replace(" ", "").length >= MIN_IBAN_LENGTH
+            updateSubmitButtonState()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -236,11 +287,17 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         submitButton = null
         secondDescription = null
         imageView = null
+        termsCheckBox = null
+        termsDisclaimer = null
+        termsLayout = null
+        noticeBulletList = null
         super.onDestroyView()
     }
 
     companion object {
         private const val MIN_IBAN_LENGTH = 15
+        private const val privacyLink = "https://www.solarisbank.com/en/privacy-policy/"
+        private const val termsLink = "https://www.solarisbank.com/en/customer-information/"
     }
 }
 

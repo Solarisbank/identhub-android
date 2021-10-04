@@ -13,6 +13,7 @@ import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternal
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 
 class VerificationBankModule {
     fun provideVerificationBankActivityViewModel(
@@ -31,9 +32,10 @@ class VerificationBankModule {
 
     fun provideVerificationBankIbanViewModel(
         verifyIBanUseCase: VerifyIBanUseCase,
-        bankIdPostUseCase: BankIdPostUseCase
+        bankIdPostUseCase: BankIdPostUseCase,
+        initializationInfoRepository: InitializationInfoRepository
     ): VerificationBankIbanViewModel {
-        return VerificationBankIbanViewModel(verifyIBanUseCase, bankIdPostUseCase)
+        return VerificationBankIbanViewModel(verifyIBanUseCase, bankIdPostUseCase, initializationInfoRepository)
     }
 
     fun provideProcessingVerificationViewModel(

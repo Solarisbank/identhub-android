@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.sdk.data.entity.NavigationalResult
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class IdentHubSessionViewModel(
     private val identHubSessionUseCase : IdentHubSessionUseCase,
-    private val customizationRepository: CustomizationRepository
+    private val initializationInfoRepository: InitializationInfoRepository
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -51,7 +51,7 @@ class IdentHubSessionViewModel(
         compositeDisposable.add(
             Single.zip(
                 identHubSessionUseCase.obtainLocalIdentificationState(),
-                customizationRepository.initialize(),
+                initializationInfoRepository.obtainInfo(),
                 { navigationResult, _ -> navigationResult }
             )
                 .subscribeOn(Schedulers.io())

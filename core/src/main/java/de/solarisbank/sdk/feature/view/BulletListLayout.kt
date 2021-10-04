@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.feature.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,10 +16,12 @@ class BulletListLayout @JvmOverloads constructor(
         orientation = VERTICAL
     }
 
-    fun updateItems(title: CharSequence? = null, items: List<CharSequence>) {
+    fun updateItems(title: CharSequence? = null,
+                    items: List<CharSequence>,
+                    titleStyle: TitleStyle = TitleStyle.SimpleBold) {
         removeAllViews()
         title?.let {
-            addTitle(it)
+            addTitle(it, titleStyle)
 
         }
         items.forEach {
@@ -26,8 +29,17 @@ class BulletListLayout @JvmOverloads constructor(
         }
     }
 
-    private fun addTitle(title: CharSequence) {
-        val titleView = TextView(context, null, 0, R.style.IdentHubTextView_HeadLine3)
+    private fun addTitle(title: CharSequence, style: TitleStyle) {
+        val titleView: TextView = when (style) {
+            is TitleStyle.SimpleBold -> TextView(context, null, 0, R.style.IdentHubTextView_HeadLine3)
+            is TitleStyle.Notice -> {
+                TextView(context, null, 0, R.style.IdentHubTextView_Small_13).apply {
+                    setCompoundDrawablesWithIntrinsicBounds(style.drawable, null, null, null)
+                    compoundDrawablePadding = (8f * resources.displayMetrics.density).toInt()
+                }
+            }
+        }
+
         titleView.text = title
 
         addView(titleView)
@@ -55,5 +67,10 @@ class BulletListLayout @JvmOverloads constructor(
         layout.addView(titleView)
 
         addView(layout)
+    }
+
+    sealed class TitleStyle {
+        object SimpleBold: TitleStyle()
+        class Notice(val drawable: Drawable?): TitleStyle()
     }
 }

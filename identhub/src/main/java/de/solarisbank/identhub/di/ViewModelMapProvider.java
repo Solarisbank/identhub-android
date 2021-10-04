@@ -35,6 +35,7 @@ import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSucces
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModelFactory;
 import de.solarisbank.sdk.feature.alert.AlertViewModel;
 import de.solarisbank.sdk.feature.alert.AlertViewModelFactory;
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
 import de.solarisbank.sdk.feature.customization.CustomizationRepository;
 import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
@@ -60,6 +61,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final Provider<BankIdPostUseCase> bankIdPostUseCaseProvider;
     private final Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider;
     private final Provider<CustomizationRepository> customizationRepositoryProvider;
+    private final Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
 
     public ViewModelMapProvider(
             CoreModule coreModule,
@@ -77,7 +79,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
             Provider<BankIdPostUseCase> bankIdPostUseCaseProvider,
             Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider,
-            Provider<CustomizationRepository> customizationRepositoryProvider
+            Provider<CustomizationRepository> customizationRepositoryProvider,
+            Provider<InitializationInfoRepository> initializationInfoRepositoryProvider
     ) {
         this.coreModule = coreModule;
         this.identityModule = identityModule;
@@ -95,6 +98,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.bankIdPostUseCaseProvider = bankIdPostUseCaseProvider;
         this.processingVerificationUseCaseProvider = processingVerificationUseCaseProvider;
         this.customizationRepositoryProvider = customizationRepositoryProvider;
+        this.initializationInfoRepositoryProvider = initializationInfoRepositoryProvider;
     }
 
     public static ViewModelMapProvider create(
@@ -113,7 +117,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
             Provider<BankIdPostUseCase> bankIdPostUseCaseProvider,
             Provider<ProcessingVerificationUseCase> processingVerificationUseCaseProvider,
-            Provider<CustomizationRepository> customizationRepositoryProvider
+            Provider<CustomizationRepository> customizationRepositoryProvider,
+            Provider<InitializationInfoRepository> initializationInfoRepositoryProvider
     ) {
         return new ViewModelMapProvider(
                 coreModule,
@@ -131,7 +136,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 identificationPollingStatusUseCaseProvider,
                 bankIdPostUseCaseProvider,
                 processingVerificationUseCaseProvider,
-                customizationRepositoryProvider
+                customizationRepositoryProvider,
+                initializationInfoRepositoryProvider
         );
     }
 
@@ -144,7 +150,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         map.put(VerificationPhoneViewModel.class, VerificationPhoneViewModelFactory.create(identityModule, authorizeVerificationPhoneUseCaseProvider, confirmVerificationPhoneUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
         map.put(VerificationPhoneErrorViewModel.class, VerificationPhoneErrorViewModelFactory.create(identityModule));
-        map.put(VerificationBankIbanViewModel.class, VerificationBankIbanViewModelFactory.create(verificationBankModule, verifyIBanUseCaseProvider, bankIdPostUseCaseProvider));
+        map.put(VerificationBankIbanViewModel.class, new VerificationBankIbanViewModelFactory(verificationBankModule, verifyIBanUseCaseProvider, bankIdPostUseCaseProvider, initializationInfoRepositoryProvider));
         map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, processingVerificationUseCaseProvider));
         map.put(AlertViewModel.class, new AlertViewModelFactory(coreModule, customizationRepositoryProvider));
 

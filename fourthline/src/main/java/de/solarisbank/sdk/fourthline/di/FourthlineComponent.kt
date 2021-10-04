@@ -20,7 +20,7 @@ import de.solarisbank.identhub.session.data.person.PersonDataApiFactory
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.identhub.session.data.person.PersonDataDataSourceFactory
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryFactory
-import de.solarisbank.sdk.feature.di.CoreModule
+import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.datasource.*
@@ -34,15 +34,12 @@ import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory
 import de.solarisbank.sdk.data.repository.*
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.feature.config.InitializationInfoApi
-import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
+import de.solarisbank.sdk.feature.config.*
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
+import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.LibraryComponent
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
@@ -165,8 +162,7 @@ class FourthlineComponent private constructor(
     private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
-    private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
-    private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
+    private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
 
     init {
         initialize()
@@ -291,15 +287,14 @@ class FourthlineComponent private constructor(
             }
         })
 
-        initializationInfoApiProvider = DoubleCheck.provider(InitializationInfoApiFactory(coreModule, retrofitProvider))
-        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider))
-        val customizationSharedPrefsStoreProvider = DoubleCheck.provider(CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider))
+        initializationInfoRepositoryProvider = IdentHubSessionComponent
+            .getInstance(applicationContextProvider.get())
+            .getInitializationInfoRepositoryProvider()
+
         customizationRepositoryProvider = DoubleCheck.provider(CustomizationRepositoryFactory(
             coreModule,
             applicationContextProvider,
-            initializationInfoRetrofitDataSourceProvider,
-            customizationSharedPrefsStoreProvider,
-            sessionUrlRepositoryProvider
+            initializationInfoRepositoryProvider
         ))
     }
 

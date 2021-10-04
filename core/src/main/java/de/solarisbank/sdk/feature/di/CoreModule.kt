@@ -1,14 +1,14 @@
 package de.solarisbank.sdk.feature.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryImpl
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.config.InitializationInfoApi
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
+import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryImpl
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore
+import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.customization.CustomizationRepositoryImpl
 import de.solarisbank.sdk.feature.di.internal.Provider
 import retrofit2.Retrofit
 
@@ -19,15 +19,11 @@ class CoreModule {
 
     fun provideCustomizationRepository(
         context: Context,
-        initializationInfoRetrofitDataSource: InitializationInfoRetrofitDataSource,
-        customizationSharedPrefsStore: CustomizationSharedPrefsStore,
-        sessionUrlRepository: SessionUrlRepository
+        initializationInfoRepository: InitializationInfoRepository
     ): CustomizationRepository {
         return CustomizationRepositoryImpl(
             context,
-            initializationInfoRetrofitDataSource,
-            customizationSharedPrefsStore,
-            sessionUrlRepository
+            initializationInfoRepository
         )
     }
 
@@ -39,7 +35,13 @@ class CoreModule {
         return InitializationInfoRetrofitDataSource(api)
     }
 
-    fun provideCustomizationSharedPrefsStore(sharedPreferences: SharedPreferences): CustomizationSharedPrefsStore {
-        return CustomizationSharedPrefsStore(sharedPreferences)
+    fun provideInitializationInfoRepository(
+        initializationInfoRetrofitDataSource: InitializationInfoRetrofitDataSource,
+        sessionUrlRepository: SessionUrlRepository
+    ): InitializationInfoRepository {
+        return InitializationInfoRepositoryImpl(
+            initializationInfoRetrofitDataSource,
+            sessionUrlRepository
+        )
     }
 }

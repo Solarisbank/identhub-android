@@ -1,10 +1,6 @@
 package de.solarisbank.sdk.fourthline
 
 import android.content.Context
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
@@ -15,6 +11,7 @@ import com.fourthline.vision.document.DocumentScannerStepWarning
 import com.fourthline.vision.selfie.SelfieScannerError
 import com.fourthline.vision.selfie.SelfieScannerStep
 import com.fourthline.vision.selfie.SelfieScannerWarning
+import de.solarisbank.sdk.feature.extension.boldOccurrenceOf
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.text.ParseException
@@ -113,23 +110,6 @@ fun DocumentScannerStep.asString(docType: DocumentType, context: Context): CharS
         string = string.boldOccurrenceOf(tilted)
         string.boldOccurrenceOf(side)
     }
-}
-
-fun CharSequence.boldOccurrenceOf(string: String): CharSequence {
-    return spanOccurrenceOf(string, StyleSpan(Typeface.BOLD))
-}
-
-fun CharSequence.spanOccurrenceOf(string: String, span: Any): CharSequence {
-    val spannable = if (this is SpannableString) {
-        this
-    } else {
-        SpannableString(this)
-    }
-    val index = spannable.toString().indexOf(string)
-    if (index >= 0) {
-        spannable.setSpan(span, index, index + string.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
-    }
-    return spannable
 }
 
 fun DocumentScannerStep.isScan(docType: DocumentType): Boolean {

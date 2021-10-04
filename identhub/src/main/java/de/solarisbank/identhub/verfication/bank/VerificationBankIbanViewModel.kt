@@ -8,6 +8,7 @@ import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.feature.util.toVerificationState
 import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,14 +17,25 @@ import timber.log.Timber
 class VerificationBankIbanViewModel(
     private val verifyIBanUseCase: VerifyIBanUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
+    initializationInfoRepository: InitializationInfoRepository
 ) : ViewModel() {
+
     private val verifyResultLiveData: MutableLiveData<VerificationState> = MutableLiveData()
+    private val termsAgreedLiveData: MutableLiveData<Boolean> = MutableLiveData()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private var ibanAttemts = 0
+    private var ibanAttempts = 0
+
+    init {
+        termsAgreedLiveData.value = initializationInfoRepository.isTermsAgreed()
+    }
 
     fun getVerificationStateLiveData(): LiveData<VerificationState> {
         return verifyResultLiveData
+    }
+
+    fun getTermsAgreedLiveData(): LiveData<Boolean> {
+        return termsAgreedLiveData
     }
 
     fun onSubmitButtonClicked(iBan: String, useBankId: Boolean) {
@@ -57,7 +69,7 @@ class VerificationBankIbanViewModel(
 
     private fun verifyIbanAndCreateBankIdentification(iBan: String) {
         verifyResultLiveData.value = SealedVerificationState.Loading()
-        ibanAttemts++
+        ibanAttempts++
         compositeDisposable.add(verifyIBanUseCase.execute(iBan)
             .map {
                 it.data!!.toVerificationState()
