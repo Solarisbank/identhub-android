@@ -96,15 +96,16 @@ dependencies {
     implementation viewmodel
     implementation fourthline
 
-    testImplementation baseTest
     androidTestImplementation espresso
 
-    constraints {
-        androidTestImplementation('junit:junit') {
-            version {
-                require junitVersion
-            }
-        }
-    }
+    testImplementation mockkTest
+
+//    constraints {
+//        androidTestImplementation('junit:junit') {
+//            version {
+//                require junitVersion
+//            }
+//        }
+//    }
 }
 

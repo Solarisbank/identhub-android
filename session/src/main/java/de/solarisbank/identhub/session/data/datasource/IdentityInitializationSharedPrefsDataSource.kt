@@ -6,9 +6,11 @@ import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.dto.PartnerSettingsDto
 import timber.log.Timber
 
-class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences: SharedPreferences) {
+class IdentityInitializationSharedPrefsDataSource(
+    private val sharedPreferences: SharedPreferences
+    ) : IdentityInitializationDataSource {
 
-    fun saveInitializationDto(initializationDto: InitializationDto) {
+    override fun saveInitializationDto(initializationDto: InitializationDto) {
         with(sharedPreferences.edit()) {
             putString(FIRST_STEP_KEY, initializationDto.firstStep)
             putString(FALLBACK_STEP, initializationDto.fallbackStep)
@@ -22,7 +24,7 @@ class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences:
         Timber.d("saveInitializationDto() data: $initializationDto")
     }
 
-    fun getInitializationDto(): InitializationDto? {
+    override fun getInitializationDto(): InitializationDto? {
         return try {
             InitializationDto(
                 firstStep = sharedPreferences.getString(FIRST_STEP_KEY, null)!!,
@@ -42,7 +44,7 @@ class IdentityInitializationSharedPrefsDataSource(private val sharedPreferences:
 
     }
 
-    fun deleteInitializationDto() {
+    override fun deleteInitializationDto() {
         with(sharedPreferences.edit()) {
             remove(ALLOWED_ATTEMPTS_AMOUNT)
             commit()

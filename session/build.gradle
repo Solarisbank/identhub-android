@@ -8,6 +8,10 @@ android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
+    sourceSets {
+        test.java.srcDirs += ["${project(':core').projectDir}/src/test/java"]
+    }
+
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
@@ -36,6 +40,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -50,7 +59,7 @@ dependencies {
     implementation kotlinCore
     implementation support
     implementation activity
-    kapt room.proc
-    testImplementation baseTest
+
+    testImplementation mockkTest
     androidTestImplementation espresso
 }
