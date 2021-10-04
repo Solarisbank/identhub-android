@@ -17,6 +17,7 @@ repositories {
             password = System.getenv("GITHUB_TOKEN")
         }
     }
+    // Optional integration of Fourthline SDK
     maven {
         url "https://maven.pkg.github.com/Fourthline-com/FourthlineSDK-Android"
         credentials {
@@ -40,6 +41,9 @@ GITHUB_TOKEN=<< github token >> ./gradlew :my-app:build
 ```
 
 Once the IdentHub SDK has been downloaded, Gradle will use it from your local cache.
+
+### Optional dependency to Fourthline SDK
+The Fourthline SDK is not publicly available. Please get in contact with Solarisbank to request access to it.
 
 ## Usage
 Add the required permissions for IdentHub to your app's `Manifest.xml` file:
