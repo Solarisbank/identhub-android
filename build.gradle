@@ -32,8 +32,8 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+configurations {
+    testArtifacts.extendsFrom testRuntime
 }
 
 apply from: 'buildsystem/dependencies.gradle'

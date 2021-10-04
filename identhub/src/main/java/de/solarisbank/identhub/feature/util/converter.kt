@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.feature.util
 
-import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
+import de.solarisbank.identhub.domain.data.dto.IbanVerificationModel
 import de.solarisbank.identhub.domain.data.dto.ProcessingVerificationDto
 import de.solarisbank.identhub.verfication.bank.SealedVerificationState
 import de.solarisbank.identhub.verfication.bank.VerificationState
@@ -9,16 +9,16 @@ import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.IdentificationUiModel
 
 
-fun IbanVerificationDto.toVerificationState(): VerificationState {
+fun IbanVerificationModel.toVerificationState(): VerificationState {
     return when (this) {
-        is IbanVerificationDto.IbanVerificationSuccessful ->
+        is IbanVerificationModel.IbanVerificationSuccessful ->
             SealedVerificationState.IbanVerificationSuccessful(this.bankIdentificationUrl, this.nextStep)
-        is IbanVerificationDto.InvalidBankIdError ->
+        is IbanVerificationModel.InvalidBankIdError ->
             SealedVerificationState.InvalidBankIdError(this.nextStep, this.retryAllowed)
-        is IbanVerificationDto.AlreadyIdentifiedSuccessfullyError ->
+        is IbanVerificationModel.AlreadyIdentifiedSuccessfullyError ->
             SealedVerificationState.AlreadyIdentifiedSuccessfullyError()
-        is IbanVerificationDto.GenericError -> SealedVerificationState.GenericError()
-        is IbanVerificationDto.ExceedMaximumAttemptsError -> SealedVerificationState.ExceedMaximumAttemptsError()
+        is IbanVerificationModel.GenericError -> SealedVerificationState.GenericError()
+        is IbanVerificationModel.ExceedMaximumAttemptsError -> SealedVerificationState.ExceedMaximumAttemptsError()
     }
 }
 

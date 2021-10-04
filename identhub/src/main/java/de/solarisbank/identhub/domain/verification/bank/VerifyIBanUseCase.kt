@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.domain.verification.bank
 
-import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
+import de.solarisbank.identhub.domain.data.dto.IbanVerificationModel
 import de.solarisbank.identhub.session.data.verification.bank.model.IBan
 import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
@@ -21,11 +21,11 @@ import java.net.HttpURLConnection
 class VerifyIBanUseCase(
     private val verificationBankRepository: VerificationBankRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
-) : SingleUseCase<String, IbanVerificationDto>(), NextStepSelector {
+) : SingleUseCase<String, IbanVerificationModel>(), NextStepSelector {
 
     private var ibanAttemts = 0
 
-    override fun invoke(iBan: String): Single<NavigationalResult<IbanVerificationDto>> {
+    override fun invoke(iBan: String): Single<NavigationalResult<IbanVerificationModel>> {
         ibanAttemts++
         var code: String? = null
         return verificationBankRepository.postVerify(IBan(iBan))
@@ -57,10 +57,10 @@ class VerifyIBanUseCase(
             }
             .transformResult()
             .map {
-                var ibanVerificationDto : IbanVerificationDto
+                var ibanVerificationDto : IbanVerificationModel
                 if (it.succeeded) {
                     Timber.d("Iban verification result 1 : ${it.data}, ${it.nextStep}")
-                    ibanVerificationDto =  IbanVerificationDto.IbanVerificationSuccessful(it.data, it.nextStep)
+                    ibanVerificationDto =  IbanVerificationModel.IbanVerificationSuccessful(it.data, it.nextStep)
                 } else if (it is Result.Error){
                     val type = it.type
                     Timber.d("Iban verification result $it, code : $code")
@@ -71,27 +71,27 @@ class VerifyIBanUseCase(
                                 ibanAttemts < getInitializationDto()!!.allowedRetries
                         ) {
                             Timber.d("Iban verification result 2")
-                            IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, true)
+                            IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, true)
                         } else {
                             Timber.d("Iban verification result 3")
-                            IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
+                            IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
                         }
                     } else if (type is Type.UnprocessableEntity) {
                         Timber.d("Iban verification result 4")
-                        ibanVerificationDto = IbanVerificationDto.AlreadyIdentifiedSuccessfullyError
+                        ibanVerificationDto = IbanVerificationModel.AlreadyIdentifiedSuccessfullyError
                     } else if(type is Type.PreconditionFailed && code == IDENTIFICATION_ATTEMPTS_EXCEEDED) {
                         Timber.d("Iban verification result 5")
-                        ibanVerificationDto = IbanVerificationDto.ExceedMaximumAttemptsError
+                        ibanVerificationDto = IbanVerificationModel.ExceedMaximumAttemptsError
                     } else if(type is Type.PreconditionFailed) {
                         Timber.d("Iban verification result 5.1")
-                        ibanVerificationDto = IbanVerificationDto.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
+                        ibanVerificationDto = IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
                     } else {
                         Timber.d("Iban verification result 6")
-                        ibanVerificationDto = IbanVerificationDto.GenericError
+                        ibanVerificationDto = IbanVerificationModel.GenericError
                     }
                 } else {
                     Timber.d("Iban verification result 7")
-                    ibanVerificationDto = IbanVerificationDto.GenericError
+                    ibanVerificationDto = IbanVerificationModel.GenericError
                 }
                 NavigationalResult(ibanVerificationDto)
             }

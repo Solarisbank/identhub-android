@@ -102,17 +102,15 @@ dependencies {
     implementation support
     implementation activity
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
-//    api room.libs
-//    kapt room.proc
-//    testImplementation room.test
-    testImplementation baseTest
+
+    testImplementation mockkTest
     androidTestImplementation espresso
 
-    constraints {
-        androidTestImplementation('junit:junit') {
-            version {
-                require junitVersion
-            }
-        }
-    }
+//    constraints {
+//        androidTestImplementation('junit:junit') {
+//            version {
+//                require junitVersion
+//            }
+//        }
+//    }
 }

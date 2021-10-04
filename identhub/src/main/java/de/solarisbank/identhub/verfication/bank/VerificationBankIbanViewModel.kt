@@ -3,7 +3,7 @@ package de.solarisbank.identhub.verfication.bank
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.domain.data.dto.IbanVerificationDto
+import de.solarisbank.identhub.domain.data.dto.IbanVerificationModel
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase
 import de.solarisbank.identhub.feature.util.toVerificationState
@@ -38,7 +38,7 @@ class VerificationBankIbanViewModel(
         compositeDisposable.add(
             bankIdPostUseCase.execute(Pair(iBan, null))
                 .map {
-                    IbanVerificationDto.IbanVerificationSuccessful(it.data!!.url, it.nextStep)
+                    IbanVerificationModel.IbanVerificationSuccessful(it.data!!.url, it.nextStep)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

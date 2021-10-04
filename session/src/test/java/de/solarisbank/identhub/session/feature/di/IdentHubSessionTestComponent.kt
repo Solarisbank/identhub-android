@@ -8,7 +8,6 @@ import de.solarisbank.identhub.session.data.datasource.DynamicIdetityRetrofitDat
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
-import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory
 import de.solarisbank.identhub.session.data.di.SessionModule
 import de.solarisbank.identhub.session.data.di.SessionUrlLocalDataSourceFactory
 import de.solarisbank.identhub.session.data.network.InitializeIdentificationApi
@@ -24,12 +23,12 @@ import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFac
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.feature.config.InitializationInfoApi
 import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
 import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
 import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore
 import de.solarisbank.sdk.feature.di.CoreModule
@@ -38,6 +37,8 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
+import io.mockk.every
+import io.mockk.mockk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -45,12 +46,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 //todo split to a separate gradle module
-class IdentHubSessionComponent private constructor(
+class IdentHubSessionTestComponent private constructor(
     val coreModule: CoreModule,
     val networkModule: NetworkModule,
     val identHubSessionModule: IdentHubSessionModule,
     private val sessionModule: SessionModule,
-    private val applicationContextProvider: ApplicationContextProvider
+//    private val applicationContextProvider: ApplicationContextProvider
 ){
 
     private lateinit var moshiConverterFactoryProvider: Provider<MoshiConverterFactory>
@@ -61,15 +62,15 @@ class IdentHubSessionComponent private constructor(
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
 
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
-    private lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
+    lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
     private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationInMemoryDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
-    private lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
+    lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
     private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
-    private lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
+    lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
@@ -92,16 +93,15 @@ class IdentHubSessionComponent private constructor(
             NetworkModuleProvideUserAgentInterceptorFactory.create())
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
-        sharedPreferencesProvider = DoubleCheck.provider(object :
-            Factory<SharedPreferences> {
-            override fun get(): SharedPreferences {
-                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
-            }
-        })
+        sharedPreferencesProvider = Factory<SharedPreferences> { mockk<SharedPreferences>() }
         identityInitializationDataSourceProvider = DoubleCheck.provider(object :
             Factory<IdentityInitializationDataSource> {
             override fun get(): IdentityInitializationSharedPrefsDataSource {
-                return IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get())
+                return mockk<IdentityInitializationSharedPrefsDataSource>() {
+                    every { saveInitializationDto(any()) } returns Unit
+                    every { getInitializationDto() } returns null
+                    every { deleteInitializationDto() } returns Unit
+                }
             }
         })
         identityInitializationRepositoryProvider = DoubleCheck.provider(object :
@@ -110,7 +110,12 @@ class IdentHubSessionComponent private constructor(
                 return IdentityInitializationRepositoryImpl(identityInitializationDataSourceProvider.get())
             }
         })
-        sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
+        sessionUrlRepositoryProvider = Factory<SessionUrlRepository> {
+            mockk<SessionUrlRepository>() {
+                every { get() } returns "/"
+                every { save(any()) } returns Unit
+            }
+        }
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
                 networkModule, userAgentInterceptorProvider, httpLoggingInterceptorProvider
@@ -167,15 +172,7 @@ class IdentHubSessionComponent private constructor(
         customizationSharedPrefsStoreProvider = DoubleCheck.provider(
             CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider)
         )
-        customizationRepositoryProvider = DoubleCheck.provider(
-            CustomizationRepositoryFactory(
-                coreModule,
-                applicationContextProvider,
-                initializationInfoRetrofitDataSourceProvider,
-                customizationSharedPrefsStoreProvider,
-                sessionUrlRepositoryProvider
-            )
-        )
+        customizationRepositoryProvider = Factory<CustomizationRepository> { mockk<CustomizationRepository>() }
     }
 
     internal class ApplicationContextProvider(val applicationContext: Context) :
@@ -235,29 +232,31 @@ class IdentHubSessionComponent private constructor(
         override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
             return (LinkedHashMap<Class<out ViewModel>, Provider<ViewModel>>() )
                     .also {
-                        it[IdentHubSessionViewModel::class.java] = IdentHubSessionViewModelFactory(identHubSessionModule, identHubSessionUseCase, customizationRepositoryProvider)
+                        it[IdentHubSessionViewModel::class.java] =
+                            IdentHubSessionViewModelFactory(
+                                identHubSessionModule,
+                                identHubSessionUseCase,
+                                customizationRepositoryProvider
+                            )
                     }
         }
     }
 
     companion object {
         private val lock = Any()
-        private var identHubSessionComponent: IdentHubSessionComponent? = null
+        private var identHubSessionTestComponent: IdentHubSessionTestComponent? = null
 
-        fun getInstance(applicationContext: Context): IdentHubSessionComponent {
-            synchronized(lock) {
-                if(identHubSessionComponent == null) {
-                    identHubSessionComponent = IdentHubSessionComponent(
-                            coreModule = CoreModule(),
-                            networkModule = NetworkModule(),
-                            sessionModule = SessionModule(),
-                            identHubSessionModule = IdentHubSessionModule(),
-                            applicationContextProvider = ApplicationContextProvider(applicationContext)
-                    )
-                }
-            }
-            return identHubSessionComponent!!
+        fun getTestInstance(networkModule: NetworkModule): IdentHubSessionTestComponent {
+            return IdentHubSessionTestComponent(
+                coreModule = CoreModule(),
+                networkModule = networkModule,
+                sessionModule = SessionModule(),
+                identHubSessionModule = IdentHubSessionModule()
+            )
         }
+
+
+
     }
 
 }
