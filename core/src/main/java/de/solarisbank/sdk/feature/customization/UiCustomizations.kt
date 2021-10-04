@@ -5,10 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RadioButton
-import de.solarisbank.sdk.feature.customization.Customization
+import android.widget.*
 
 sealed class ButtonStyle {
     object Primary : ButtonStyle()
@@ -47,7 +44,7 @@ fun RadioButton.customize(customization: Customization) {
         return
     }
 
-    buttonTintList = ColorStateList.valueOf(customization.colors.secondary)
+    buttonTintList = ColorStateList.valueOf(customization.colors.themeSecondary(context))
 }
 
 fun ImageView.customize(customization: Customization, tint: ImageViewTint = ImageViewTint.Secondary) {
@@ -60,4 +57,20 @@ fun ImageView.customize(customization: Customization, tint: ImageViewTint = Imag
         is ImageViewTint.Secondary -> customization.colors.themeSecondary(context)
     }
     imageTintList = ColorStateList.valueOf(color)
+}
+
+fun CheckBox.customize(customization: Customization) {
+    if (!customization.enabled) {
+        return
+    }
+
+    buttonTintList = ColorStateList.valueOf(customization.colors.themeSecondary(context))
+}
+
+fun TextView.customizeLinks(customization: Customization) {
+    if (!customization.enabled) {
+        return
+    }
+
+    setLinkTextColor(customization.colors.themeSecondary(context))
 }

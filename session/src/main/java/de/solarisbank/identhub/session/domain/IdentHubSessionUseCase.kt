@@ -9,6 +9,7 @@ import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.NextStepSelector
 import io.reactivex.Single
 import timber.log.Timber
+import java.lang.IllegalStateException
 
 class IdentHubSessionUseCase(
     private val identHubSessionRepository: IdentHubSessionRepository,
@@ -41,6 +42,7 @@ class IdentHubSessionUseCase(
                     .map {
                         Timber.d("obtainLocalIdentificationState() 1: $it")
                         val nextStep = selectNextStep(it.nextStep, it.fallbackStep)
+                            ?: throw IllegalStateException("NextStep is null")
                         NavigationalResult(NEXT_STEP_KEY, nextStep)
                     }
                     .onErrorReturnItem(

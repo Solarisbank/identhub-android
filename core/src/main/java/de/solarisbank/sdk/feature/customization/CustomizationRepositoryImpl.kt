@@ -7,6 +7,7 @@ import androidx.annotation.ColorRes
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.data.dto.StyleDto
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -14,40 +15,15 @@ import timber.log.Timber
 
 class CustomizationRepositoryImpl(
     private val context: Context,
-    private val initializationInfoRetrofitDataSource: InitializationInfoRetrofitDataSource,
-    private val customizationSharedPrefsStore: CustomizationSharedPrefsStore,
-    private val sessionUrlRepository: SessionUrlRepository
+    private val initializationInfoRepository: InitializationInfoRepository
     ): CustomizationRepository {
 
-    override fun initialize(): Single<Customization> {
-        val cached = customizationSharedPrefsStore.get()
-        return if (cached != null) {
-            refresh()
-            Single.just(cached)
-        } else {
-            fetchCustomization()
-        }
-    }
+    var cached: Customization? = null
 
     override fun get(): Customization {
-        return customizationSharedPrefsStore.get() ?: createCustomization()
-    }
-
-    private fun fetchCustomization(): Single<Customization> {
-        return initializationInfoRetrofitDataSource.getInfo(sessionUrlRepository.get()!!)
-            .map {
-                createCustomization(it.style)
-            }
-            .doOnSuccess {
-                customizationSharedPrefsStore.put(it)
-            }
-    }
-
-    @SuppressLint("CheckResult")
-    private fun refresh() {
-        fetchCustomization()
-            .subscribeOn(Schedulers.io())
-            .subscribe({}, {})
+        return cached ?: createCustomization(initializationInfoRepository.getStyle()).also {
+            cached = it
+        }
     }
 
     private fun createCustomization(style: StyleDto? = null): Customization {

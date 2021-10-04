@@ -82,6 +82,7 @@ import de.solarisbank.identhub.session.data.verification.phone.VerificationPhone
 import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneApiFactory;
 import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneRepositoryFactory;
 import de.solarisbank.identhub.session.data.verification.phone.factory.VerificationPhoneNetworkDataSourceFactory;
+import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivity;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankFragmentInjector;
@@ -97,13 +98,6 @@ import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMes
 import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector;
-import de.solarisbank.sdk.feature.config.InitializationInfoApi;
-import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory;
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource;
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory;
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory;
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore;
-import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.data.api.IdentificationApi;
 import de.solarisbank.sdk.data.api.MobileNumberApi;
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource;
@@ -129,10 +123,17 @@ import de.solarisbank.sdk.data.repository.IdentityInitializationRepository;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.config.InitializationInfoApi;
+import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory;
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
+import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryFactory;
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource;
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory;
 import de.solarisbank.sdk.feature.customization.CustomizationRepository;
 import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory;
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies;
 import de.solarisbank.sdk.feature.di.CoreActivityComponent;
+import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.feature.di.LibraryComponent;
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck;
 import de.solarisbank.sdk.feature.di.internal.Factory;
@@ -161,8 +162,7 @@ public class IdenthubComponent {
     private Provider<Context> applicationContextProvider;
 
     private Provider<CustomizationRepository> customizationRepositoryProvider;
-    private Provider<InitializationInfoApi> initializationInfoApiProvider;
-    private Provider<InitializationInfoRetrofitDataSource> initializationInfoRetrofitDataSourceProvider;
+    private Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
 
     private Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptorProvider;
     private Provider<CallAdapter.Factory> rxJavaCallAdapterFactoryProvider;
@@ -288,20 +288,16 @@ public class IdenthubComponent {
         getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider, identityInitializationRepositoryProvider);
         verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
 
-        initializationInfoApiProvider = DoubleCheck.provider(new InitializationInfoApiFactory(coreModule, retrofitProvider));
-        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(new InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider));
-        Provider<CustomizationSharedPrefsStore> customizationSharedPrefsStoreProvider =
-                DoubleCheck.provider(new CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider));
+        initializationInfoRepositoryProvider = IdentHubSessionComponent.Companion
+                .getInstance(applicationContextProvider.get())
+                .getInitializationInfoRepositoryProvider();
 
         customizationRepositoryProvider = DoubleCheck.provider(new CustomizationRepositoryFactory(
                 coreModule,
                 applicationContextProvider,
-                initializationInfoRetrofitDataSourceProvider,
-                customizationSharedPrefsStoreProvider,
-                sessionUrlRepositoryProvider
+                initializationInfoRepositoryProvider
         ));
     }
-
 
     public IdentHubActivitySubcomponent.Factory activitySubcomponent() {
         return new ActivitySubcomponentFactory();
@@ -438,7 +434,8 @@ public class IdenthubComponent {
                     identificationPollingStatusUseCaseProvider,
                     bankIdPostUseCaseProvider,
                     processingVerificationUseCaseProvider,
-                    customizationRepositoryProvider
+                    customizationRepositoryProvider,
+                    initializationInfoRepositoryProvider
             );
             this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
                     IdenthubComponent.this.authorizeContractSignUseCaseProvider,

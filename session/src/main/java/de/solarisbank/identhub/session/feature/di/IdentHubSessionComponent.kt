@@ -24,14 +24,9 @@ import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFac
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
-import de.solarisbank.sdk.feature.config.InitializationInfoApi
-import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
+import de.solarisbank.sdk.feature.config.*
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
@@ -71,10 +66,7 @@ class IdentHubSessionComponent private constructor(
     private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     private lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
-    private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
-    private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
-    private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
-    private lateinit var customizationSharedPrefsStoreProvider: Provider<CustomizationSharedPrefsStore>
+    private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
 
     init {
         initialize()
@@ -82,6 +74,10 @@ class IdentHubSessionComponent private constructor(
 
     fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationInMemoryDataSource> {
         return identificationInMemoryDataSourceProvider
+    }
+
+    fun getInitializationInfoRepositoryProvider(): Provider<InitializationInfoRepository> {
+        return initializationInfoRepositoryProvider
     }
 
     private fun initialize() {
@@ -160,22 +156,16 @@ class IdentHubSessionComponent private constructor(
             }
         })
 
-        initializationInfoApiProvider = DoubleCheck.provider(InitializationInfoApiFactory(coreModule, retrofitProvider))
-        initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
+        val initializationInfoApiProvider = DoubleCheck.provider(InitializationInfoApiFactory(coreModule, retrofitProvider))
+        val initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
             InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider)
         )
-        customizationSharedPrefsStoreProvider = DoubleCheck.provider(
-            CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider)
-        )
-        customizationRepositoryProvider = DoubleCheck.provider(
-            CustomizationRepositoryFactory(
-                coreModule,
-                applicationContextProvider,
-                initializationInfoRetrofitDataSourceProvider,
-                customizationSharedPrefsStoreProvider,
-                sessionUrlRepositoryProvider
-            )
-        )
+
+        initializationInfoRepositoryProvider = DoubleCheck.provider(InitializationInfoRepositoryFactory(
+            coreModule,
+            initializationInfoRetrofitDataSourceProvider,
+            sessionUrlRepositoryProvider
+        ))
     }
 
     internal class ApplicationContextProvider(val applicationContext: Context) :
@@ -209,7 +199,7 @@ class IdentHubSessionComponent private constructor(
                 })
 
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
-                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), customizationRepositoryProvider))
+                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), initializationInfoRepositoryProvider))
 
         private var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> =
                 DoubleCheck.provider(
@@ -230,12 +220,12 @@ class IdentHubSessionComponent private constructor(
     internal class IdentHubViewModelProvider(
         private val identHubSessionModule: IdentHubSessionModule,
         private val identHubSessionUseCase: IdentHubSessionUseCase,
-        private val customizationRepositoryProvider: Provider<CustomizationRepository>,
+        private val initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>,
     ) : Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
         override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
             return (LinkedHashMap<Class<out ViewModel>, Provider<ViewModel>>() )
                     .also {
-                        it[IdentHubSessionViewModel::class.java] = IdentHubSessionViewModelFactory(identHubSessionModule, identHubSessionUseCase, customizationRepositoryProvider)
+                        it[IdentHubSessionViewModel::class.java] = IdentHubSessionViewModelFactory(identHubSessionModule, identHubSessionUseCase, initializationInfoRepositoryProvider)
                     }
         }
     }

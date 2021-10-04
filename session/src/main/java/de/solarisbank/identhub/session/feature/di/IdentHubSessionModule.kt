@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
@@ -22,9 +23,9 @@ class IdentHubSessionModule {
 
     fun provideIdentHubSessionViewModel(
         identHubSessionUseCase: IdentHubSessionUseCase,
-        customizationRepository: CustomizationRepository
+        initializationInfoRepository: InitializationInfoRepository
     ): IdentHubSessionViewModel {
-        return IdentHubSessionViewModel(identHubSessionUseCase, customizationRepository)
+        return IdentHubSessionViewModel(identHubSessionUseCase, initializationInfoRepository)
     }
 
 }

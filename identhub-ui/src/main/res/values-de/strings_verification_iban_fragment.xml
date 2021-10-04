@@ -11,4 +11,7 @@
     <string name="invalid_iban_ok_button">Identifizieren mit Ausweis</string>
     <string name="about_identity_verification_title">Über die Verifizierung Ihrer Identität</string>
     <string name="about_identity_verification_message">Durch das Einloggen in das Online Banking ihres existierenden Bankkontos wird eine automatische Referenztransaktion von 5 Cent ausgelöst. Hierdurch wird eine qualifizierte, elektronische Unterschrift erzeugt, die Ihre Identität einwandfrei bestätigt. Im Anschluss werden die 5 Cent automatisch wieder zurück auf Ihr Bankkonto überwiesen.</string>
+    <string name="identhub_terms_agreement">Ich stimme der %1$s und den %2$s zu</string>
+    <string name="identhub_terms_agreement_terms">AGBs</string>
+    <string name="identhub_terms_agreement_privacy">Datenschutzerklärung</string>
 </resources>

@@ -7,7 +7,7 @@
     <string name="verification_bank_input_label">IBAN</string>
     <string name="verification_bank_action_submit">Iniciar la verificación del pago</string>
     <string name="verification_bank_notice_label">Aviso</string>
-    <string name="verification_bank_notice_value">Si te identificas con una cuenta que no utilizas para recibir tus ingresos, es posible que no se tenga en cuenta para los planes de pago a plazos de Samsung Pay Card.</string>
+    <string name="verification_bank_notice_value" />
     <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">El formato IBAN no es válido.</string>
     <string name="verification_bank_action_next_step">Continuar</string>

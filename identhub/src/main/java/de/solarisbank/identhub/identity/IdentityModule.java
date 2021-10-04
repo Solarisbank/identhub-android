@@ -52,11 +52,6 @@ public final class IdentityModule {
     }
 
     @NonNull
-    public VerificationBankIbanViewModel provideVerificationBankViewModel(final VerifyIBanUseCase verifyIBanUseCase, final BankIdPostUseCase bankIdPostUseCase) {
-        return new VerificationBankIbanViewModel(verifyIBanUseCase, bankIdPostUseCase);
-    }
-
-    @NonNull
     public ProcessingVerificationViewModel provideProcessingVerificationViewModel(ProcessingVerificationUseCase processingVerificationUseCase) {
         return new ProcessingVerificationViewModel(processingVerificationUseCase);
     }
