@@ -41,6 +41,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+            testLogging.showStandardStreams = true
+            testLogging {
+                events "PASSED", "FAILED", "SKIPPED", "STANDARD_OUT", "STANDARD_ERROR"
+            }
+        }
+    }
 }
 
 afterEvaluate {

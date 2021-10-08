@@ -24,13 +24,8 @@ import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
-import de.solarisbank.sdk.feature.config.InitializationInfoApi
-import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
+import de.solarisbank.sdk.feature.config.*
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsCacheFactory
-import de.solarisbank.sdk.feature.customization.CustomizationSharedPrefsStore
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
@@ -75,7 +70,7 @@ class IdentHubSessionTestComponent private constructor(
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
     private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
-    private lateinit var customizationSharedPrefsStoreProvider: Provider<CustomizationSharedPrefsStore>
+    private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
 
     init {
         initialize()
@@ -169,10 +164,13 @@ class IdentHubSessionTestComponent private constructor(
         initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
             InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider)
         )
-        customizationSharedPrefsStoreProvider = DoubleCheck.provider(
-            CustomizationSharedPrefsCacheFactory(coreModule, sharedPreferencesProvider)
-        )
         customizationRepositoryProvider = Factory<CustomizationRepository> { mockk<CustomizationRepository>() }
+
+        initializationInfoRepositoryProvider = DoubleCheck.provider(InitializationInfoRepositoryFactory(
+            coreModule,
+            initializationInfoRetrofitDataSourceProvider,
+            sessionUrlRepositoryProvider
+        ))
     }
 
     internal class ApplicationContextProvider(val applicationContext: Context) :
@@ -206,7 +204,7 @@ class IdentHubSessionTestComponent private constructor(
                 })
 
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
-                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), customizationRepositoryProvider))
+                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), initializationInfoRepositoryProvider))
 
         private var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> =
                 DoubleCheck.provider(
@@ -227,7 +225,7 @@ class IdentHubSessionTestComponent private constructor(
     internal class IdentHubViewModelProvider(
         private val identHubSessionModule: IdentHubSessionModule,
         private val identHubSessionUseCase: IdentHubSessionUseCase,
-        private val customizationRepositoryProvider: Provider<CustomizationRepository>,
+        private val initializtionInfoRepositoryProvider: Provider<InitializationInfoRepository>,
     ) : Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
         override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
             return (LinkedHashMap<Class<out ViewModel>, Provider<ViewModel>>() )
@@ -236,7 +234,7 @@ class IdentHubSessionTestComponent private constructor(
                             IdentHubSessionViewModelFactory(
                                 identHubSessionModule,
                                 identHubSessionUseCase,
-                                customizationRepositoryProvider
+                                initializtionInfoRepositoryProvider
                             )
                     }
         }
