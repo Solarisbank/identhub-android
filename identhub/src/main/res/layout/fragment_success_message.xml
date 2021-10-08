@@ -35,7 +35,7 @@
         style="@style/IdentHubTextView.HeadLine2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Congratulations, you have unlocked Splitpay on your Samsung Pay Card!"
+        android:text="Congratulations!"
         android:layout_marginTop="@dimen/margin_16"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"

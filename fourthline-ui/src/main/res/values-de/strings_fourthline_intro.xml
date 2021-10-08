@@ -2,7 +2,7 @@
 <resources>
     <string name="fourthline_terms_button_submit">Weiter</string>
     <string name="fourthline_terms_verify_title">Verifizieren Sie Ihre Identität</string>
-    <string name="fourthline_terms_description_start">Bitte machen Sie ein Selfie-Foto und scannen Sie Ihren Personalausweis oder Reisepass. \n\nBitte Erlauben Sie Samsung Pay Zugriff auf</string>
+    <string name="fourthline_terms_description_start">Bitte machen Sie ein Selfie-Foto und scannen Sie Ihren Personalausweis oder Reisepass. \n\nBitte Erlauben Sie den Zugriff auf</string>
     <string name="fourthline_terms_description_list_item1">Ihren Standort</string>
     <string name="fourthline_terms_description_list_item2">Ihre Kamera</string>
     <string name="fourthline_terms_description_end">um die Verifizierung Ihrer Identität im folgenden Prozess abzuschließen.</string>

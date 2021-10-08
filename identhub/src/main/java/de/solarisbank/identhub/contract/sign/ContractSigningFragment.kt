@@ -190,7 +190,7 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun observableInputs() {
-        Timber.d("observableInputs, Samsung")
+        Timber.d("observableInputs")
         disposable = RxView.clicks(submitButton!!)
                 .flatMapSingle {
                     onStateOfDigitInputChanged(LOADING_STATE)
