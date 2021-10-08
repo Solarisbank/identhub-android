@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Run tests
-        run: ./gradlew :core:test :identhub:test :fourthline:test
+        run: ./gradlew :core:test :identhub:test :fourthline:test :session:test
         env:
           FOURTHLINE_GRADLE_TOKEN: ${{ secrets.FOURTHLINE_GRADLE_TOKEN }}
       - name: Build release
