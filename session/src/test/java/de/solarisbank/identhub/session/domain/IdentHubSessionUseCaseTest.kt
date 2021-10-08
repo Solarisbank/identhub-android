@@ -16,7 +16,7 @@ class IdentHubSessionUseCaseTest : StringSpec ({
                 "\"first_step\":\"bank/iban\"," +
                 "\"fallback_step\":\"fourthline/simplified\"," +
                 "\"allowed_retries\":5," +
-                "\"fourthline_provider\":\"SolarisBankSamsung\"," +
+                "\"fourthline_provider\":\"SolarisBank\"," +
                 "\"partner_settings\":{\"default_to_fallback_step\":true}" +
                 "}"
 

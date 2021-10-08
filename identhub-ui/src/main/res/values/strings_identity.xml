@@ -12,5 +12,5 @@
     <string name="identity_activity_next_step">Next: %1$s</string>
     <string name="identity_dialog_fallback_process_negative_button">Verify with ID</string>
     <string name="identity_dialog_fallback_process_title">Are you sure you want to quit the onboarding process?</string>
-    <string name="identity_dialog_fallback_process_message">Your progress will be lost. You will be required to repeat the steps next time.\n\nAlternatively, you can verify your identity with an identification document. In that case please chose \'Verify with ID\'.\n\nFor questions, please contact Samsung Pay Customer Support at 06196-77 555 30 for more information.</string>
+    <string name="identity_dialog_fallback_process_message">Your progress will be lost. You will be required to repeat the steps next time.\n\nAlternatively, you can verify your identity with an identification document. In that case please chose \'Verify with ID\'.</string>
 </resources>

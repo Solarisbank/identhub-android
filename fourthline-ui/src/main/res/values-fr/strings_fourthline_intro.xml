@@ -2,7 +2,7 @@
 <resources>
     <string name="fourthline_terms_button_submit">Suivant</string>
     <string name="fourthline_terms_verify_title">Vérifier votre identité</string>
-    <string name="fourthline_terms_description_start">Prenez un selfie et scannez votre carte d’identité ou votre passeport pour vérifier votre identité. Aucun VideoIdent ou PostIdent n’est requis.\n\nVeuillez autoriser l’accès à Samsung Pay :</string>
+    <string name="fourthline_terms_description_start">Prenez un selfie et scannez votre carte d’identité ou votre passeport pour vérifier votre identité. Aucun VideoIdent ou PostIdent n’est requis.\n\nVeuillez autoriser l’accès à:</string>
     <string name="fourthline_terms_description_list_item1">Votre localisation</string>
     <string name="fourthline_terms_description_list_item2">Votre appareil photo</string>
     <string name="fourthline_terms_description_end">afin d’effectuer l’identification.</string>
