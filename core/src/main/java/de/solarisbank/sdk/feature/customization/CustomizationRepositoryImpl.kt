@@ -1,16 +1,11 @@
 package de.solarisbank.sdk.feature.customization
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import androidx.annotation.ColorRes
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.data.dto.StyleDto
-import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class CustomizationRepositoryImpl(
