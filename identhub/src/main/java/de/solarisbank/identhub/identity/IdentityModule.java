@@ -11,18 +11,13 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
-import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCase;
-import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
-import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
-import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
-import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationViewModel;
-import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel;
-import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorViewModel;
+import de.solarisbank.identhub.verfication.phone.PhoneVerificationUseCase;
+import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModel;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModel;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
 
@@ -36,19 +31,13 @@ public final class IdentityModule {
     }
 
     @NonNull
-    public VerificationPhoneViewModel provideVerificationPhoneViewModel(final AuthorizeVerificationPhoneUseCase authorizeVerificationPhoneUseCase,
-                                                                        final ConfirmVerificationPhoneUseCase confirmVerificationPhoneUseCase) {
-        return new VerificationPhoneViewModel(authorizeVerificationPhoneUseCase, confirmVerificationPhoneUseCase);
+    public PhoneVerificationViewModel providePhoneVerificationViewModel(final PhoneVerificationUseCase phoneVerificationUseCase) {
+        return new PhoneVerificationViewModel(phoneVerificationUseCase);
     }
 
     @NonNull
     public VerificationPhoneSuccessViewModel provideVerificationPhoneSuccessViewModel() {
         return new VerificationPhoneSuccessViewModel();
-    }
-
-    @NonNull
-    public VerificationPhoneErrorViewModel provideVerificationPhoneErrorViewModel() {
-        return new VerificationPhoneErrorViewModel();
     }
 
     @NonNull
@@ -58,14 +47,12 @@ public final class IdentityModule {
 
     @NonNull
     public ContractSigningViewModel provideContractSigningViewModel(
-            final SavedStateHandle savedStateHandle,
             final AuthorizeContractSignUseCase authorizeContractSignUseCase,
             final ConfirmContractSignUseCase confirmContractSignUseCase,
             final IdentificationPollingStatusUseCase identificationPollingStatusUseCase,
             final GetMobileNumberUseCase getMobileNumberUseCase
     ) {
         return new ContractSigningViewModel(
-                savedStateHandle,
                 authorizeContractSignUseCase,
                 confirmContractSignUseCase,
                 identificationPollingStatusUseCase,

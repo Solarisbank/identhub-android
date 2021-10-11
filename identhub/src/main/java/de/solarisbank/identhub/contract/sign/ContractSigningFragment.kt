@@ -17,7 +17,7 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.di.FragmentComponent
-import de.solarisbank.identhub.verfication.phone.VerificationPhoneViewModel
+import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModel
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
@@ -199,7 +199,7 @@ class ContractSigningFragment : IdentHubFragment() {
                             .toList()
                 }
                 .map { it.joinToString("") }
-                .filter { token: String -> token.length == VerificationPhoneViewModel.MIN_CODE_LENGTH }
+                .filter { token: String -> token.length == PhoneVerificationViewModel.MIN_CODE_LENGTH }
                 .subscribe(
                         { token: String -> viewModel.onSubmitButtonClicked(token) },
                         { Timber.e(it, "Something went wrong") }

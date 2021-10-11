@@ -35,14 +35,12 @@ class ContractModule {
 
 
     fun provideContractSigningViewModel(
-        savedStateHandle: SavedStateHandle,
         authorizeContractSignUseCase: AuthorizeContractSignUseCase,
         confirmContractSignUseCase: ConfirmContractSignUseCase,
         identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
         getMobileNumberUseCase: GetMobileNumberUseCase
     ): ContractSigningViewModel {
         return ContractSigningViewModel(
-                savedStateHandle,
                 authorizeContractSignUseCase,
                 confirmContractSignUseCase,
                 identificationPollingStatusUseCase,

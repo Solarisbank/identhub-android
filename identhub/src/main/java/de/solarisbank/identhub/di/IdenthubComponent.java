@@ -92,10 +92,8 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragmentInj
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragmentInjector;
-import de.solarisbank.identhub.verfication.phone.VerificationPhoneFragment;
-import de.solarisbank.identhub.verfication.phone.VerificationPhoneFragmentInjector;
-import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragment;
-import de.solarisbank.identhub.verfication.phone.error.VerificationPhoneErrorMessageFragmentInjector;
+import de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment;
+import de.solarisbank.identhub.verfication.phone.PhoneVerificationFragmentInjector;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector;
 import de.solarisbank.sdk.data.api.IdentificationApi;
@@ -123,12 +121,7 @@ import de.solarisbank.sdk.data.repository.IdentityInitializationRepository;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
-import de.solarisbank.sdk.feature.config.InitializationInfoApi;
-import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory;
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
-import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryFactory;
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource;
-import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory;
 import de.solarisbank.sdk.feature.customization.CustomizationRepository;
 import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory;
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies;
@@ -262,9 +255,9 @@ public class IdenthubComponent {
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule));
         userAgentInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideUserAgentInterceptorFactory.create());
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule));
-        verificationPhoneApiProvider = DoubleCheck.provider(ProvideVerificationPhoneApiFactory.create(verificationPhoneModule, retrofitProvider));
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(networkModule, dynamicBaseUrlInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider));
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider));
+        verificationPhoneApiProvider = DoubleCheck.provider(ProvideVerificationPhoneApiFactory.create(verificationPhoneModule, retrofitProvider));
         verificationPhoneNetworkDataSourceProvider = VerificationPhoneNetworkDataSourceFactory.create(verificationPhoneModule, verificationPhoneApiProvider);
         verificationPhoneRepositoryProvider = DoubleCheck.provider(ProvideVerificationPhoneRepositoryFactory.create(verificationPhoneModule, verificationPhoneNetworkDataSourceProvider));
 
@@ -418,7 +411,7 @@ public class IdenthubComponent {
             identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()));
             bankIdPostUseCaseProvider = BankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
             processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, bankIdPostUseCaseProvider, identityInitializationRepositoryProvider);
-            this.mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
+            this.mapOfClassOfAndProviderOfViewModelProvider = new ViewModelMapProvider(
                     coreModule,
                     identityModule,
                     verficationBankModule,
@@ -435,23 +428,22 @@ public class IdenthubComponent {
                     bankIdPostUseCaseProvider,
                     processingVerificationUseCaseProvider,
                     customizationRepositoryProvider,
-                    initializationInfoRepositoryProvider
+                    initializationInfoRepositoryProvider,
+                    authorizeContractSignUseCaseProvider,
+                    confirmContractSignUseCaseProvider,
+                    getMobileNumberUseCaseProvider
             );
-            this.saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
-                    IdenthubComponent.this.authorizeContractSignUseCaseProvider,
-                    IdenthubComponent.this.confirmContractSignUseCaseProvider,
+            this.saveStateViewModelMapProvider = new SaveStateViewModelMapProvider(
                     deleteAllLocalStorageUseCaseProvider,
-                    fetchPdfUseCaseProvider,
                     IdenthubComponent.this.getDocumentsUseCaseProvider,
                     IdenthubComponent.this.getIdentificationUseCaseProvider,
-                    IdenthubComponent.this.identificationPollingStatusUseCaseProvider,
                     IdenthubComponent.this.fetchingAuthorizedIBanStatusUseCaseProvider,
+                    initializationInfoRepositoryProvider,
                     IdenthubComponent.this.identityModule,
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.sessionUrlRepositoryProvider,
                     IdenthubComponent.this.verficationBankModule,
-                    IdenthubComponent.this.contractModule,
-                    getMobileNumberUseCaseProvider
+                    IdenthubComponent.this.contractModule
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
         }
@@ -525,18 +517,13 @@ public class IdenthubComponent {
             }
 
             @Override
-            public void inject(VerificationPhoneFragment verificationPhoneFragment) {
-                new VerificationPhoneFragmentInjector(baseFragmentDependencies).injectMembers(verificationPhoneFragment);
+            public void inject(PhoneVerificationFragment phoneVerificationFragment) {
+                new PhoneVerificationFragmentInjector(baseFragmentDependencies).injectMembers(phoneVerificationFragment);
             }
 
             @Override
             public void inject(VerificationPhoneSuccessMessageFragment successMessageFragment) {
                 new VerificationPhoneSuccessMessageFragmentInjector(baseFragmentDependencies).injectMembers(successMessageFragment);
-            }
-
-            @Override
-            public void inject(VerificationPhoneErrorMessageFragment errorMessageFragment) {
-                new VerificationPhoneErrorMessageFragmentInjector(baseFragmentDependencies).injectMembers(errorMessageFragment);
             }
 
             @Override

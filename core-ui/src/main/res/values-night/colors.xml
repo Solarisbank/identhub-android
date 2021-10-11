@@ -20,6 +20,7 @@
     <color name="ident_hub_color_info_background">#7E8794</color>
     <color name="ident_hub_color_edit_text">#BCBCBC</color>
     <color name="ident_hub_color_separator">#33E6E6E6</color>
+    <color name="ident_hub_color_highlight">#33FFFFFF</color>
 
     <color name="ident_hub_color_text_box">#C9CFD6</color>
     <color name="ident_hub_color_text_box_background">#252525</color>

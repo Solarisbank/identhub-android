@@ -67,7 +67,6 @@ class IdentHubSessionTestComponent private constructor(
     private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
-    private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
     private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
     private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
@@ -164,8 +163,6 @@ class IdentHubSessionTestComponent private constructor(
         initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
             InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider)
         )
-        customizationRepositoryProvider = Factory<CustomizationRepository> { mockk<CustomizationRepository>() }
-
         initializationInfoRepositoryProvider = DoubleCheck.provider(InitializationInfoRepositoryFactory(
             coreModule,
             initializationInfoRetrofitDataSourceProvider,

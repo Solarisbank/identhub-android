@@ -6,7 +6,7 @@
     <string name="contract_signing_preview_notice_label">Visualizza i tuoi documenti qui:</string>
     <string name="contract_signing_preview_download_action">Visualizza tutti i documenti</string>
     <string name="contract_signing_preview_send_code_action">Ricevi e firma il codice</string>
-    <string name="contract_signing_description">Inserisci il codice di verifica inviato al tuo telefono (% 1 $ s).</string>
+    <string name="contract_signing_description">Inserisci il codice di verifica inviato al tuo telefono (%1$s).</string>
     <string name="contract_signing_notice_title">Non sei riuscito a completare il processo?</string>
     <string name="contract_signing_sign_action">Firma e invia</string>
     <string name="contract_signing_code_expires">Scade in %1$s</string>

@@ -23,6 +23,7 @@
     <color name="ident_hub_color_light_button_text_enabled">#FFFFFF</color>
     <color name="ident_hub_color_light_button_text_disabled">#AAFFFFFF</color>
     <color name="ident_hub_color_separator">#E6E6E6</color>
+    <color name="ident_hub_color_highlight">#33000000</color>
 
     <color name="ident_hub_color_text_box">#7E8794</color>
     <color name="ident_hub_color_text_box_background">#F4F4F7</color>

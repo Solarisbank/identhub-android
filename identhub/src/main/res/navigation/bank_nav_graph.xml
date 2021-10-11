@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/verificationBankIbanFragment">
+    android:id="@+id/nav_graph">
+
     <fragment
         android:id="@+id/verificationBankIntroFragment"
         android:name="de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment"
@@ -52,6 +52,14 @@
         android:id="@+id/processingVerificationFragment"
         android:name="de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationFragment"
         android:label="ProcessingVerificationFragment">
+    </fragment>
+    <fragment
+        android:id="@+id/phoneVerificationFragment"
+        android:name="de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment"
+        android:label="phoneVerificationFragment" >
+        <action
+            android:id="@+id/action_phoneVerificationFragment_to_verificationBankIbanFragment"
+            app:destination="@id/verificationBankIbanFragment" />
     </fragment>
 
 </navigation>
