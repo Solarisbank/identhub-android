@@ -8,6 +8,7 @@ class DefaultCountDownTimer(
 
     private var currentMillisUntilFinished: Long = 0
     private val listeners: ArrayList<OnTickListener> = arrayListOf()
+
     fun addListener(onTickListener: OnTickListener) {
         listeners.add(onTickListener)
     }

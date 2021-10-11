@@ -25,7 +25,6 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ContractSigningViewModel(
-    savedStateHandle: SavedStateHandle?,
     private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
     private val confirmContractSignUseCase: ConfirmContractSignUseCase,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,

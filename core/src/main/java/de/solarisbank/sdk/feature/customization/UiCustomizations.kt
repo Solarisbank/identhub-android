@@ -6,10 +6,12 @@ import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.widget.*
+import de.solarisbank.sdk.core.R
 
 sealed class ButtonStyle {
     object Primary : ButtonStyle()
     object Alternative : ButtonStyle()
+    object SecondaryNoBackground: ButtonStyle()
 }
 
 sealed class ImageViewTint {
@@ -22,8 +24,19 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
         return
     }
 
-    if (style != ButtonStyle.Primary) {
-        return
+    val backgroundColor: Int
+    val textColorStateList: ColorStateList
+
+    when(style) {
+        is ButtonStyle.Alternative -> return
+        is ButtonStyle.Primary -> {
+            backgroundColor = customization.colors.themePrimary(context)
+            textColorStateList = context.getColorStateList(R.color.button_textcolor_selector)
+        }
+        is ButtonStyle.SecondaryNoBackground -> {
+            backgroundColor = context.getColor(R.color.ident_hub_color_surface)
+            textColorStateList = ColorStateList.valueOf(customization.colors.themeSecondary(context))
+        }
     }
 
     val cornerRadii = Array(8) { customization.dimens.buttonRadius }
@@ -31,12 +44,14 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
     val mask = ShapeDrawable(shape)
 
 
-    mask.paint.color = customization.colors.themePrimary(context)
+    mask.paint.color = backgroundColor
 
-    val highlightColor = Color.parseColor("#33000000")
+    val highlightColor = context.getColor(R.color.ident_hub_color_highlight)
     val drawable = RippleDrawable(ColorStateList.valueOf(highlightColor), mask, mask)
     background = drawable
     stateListAnimator = null
+
+    setTextColor(textColorStateList)
 }
 
 fun RadioButton.customize(customization: Customization) {

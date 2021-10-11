@@ -166,7 +166,7 @@ class IdentHubSession {
         val ACTION_NEXT_STEP: Int = 99
 
         @kotlin.jvm.JvmField
-        var hasPhoneVerification: Boolean = false
+        var hasPhoneVerification: Boolean = true
 
         @kotlin.jvm.JvmField
         var appName: String = "Unknown"

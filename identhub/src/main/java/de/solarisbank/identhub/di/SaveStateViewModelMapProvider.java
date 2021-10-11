@@ -10,15 +10,10 @@ import java.util.Map;
 import de.solarisbank.identhub.contract.ContractModule;
 import de.solarisbank.identhub.contract.ContractViewModel;
 import de.solarisbank.identhub.contract.ContractViewModelFactory;
-import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
-import de.solarisbank.identhub.contract.sign.ContractSigningViewModelFactory;
-import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
-import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
-import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
@@ -29,6 +24,7 @@ import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternal
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
 import de.solarisbank.sdk.feature.di.internal.Factory2;
 import de.solarisbank.sdk.feature.di.internal.Provider;
 
@@ -38,105 +34,53 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
     private final ContractModule contractModule;
-    private final Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
-    private final Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
     private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
-    private final Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider;
     private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
-    private final Provider<FetchPdfUseCase> fetchPdfUseCaseProvider;
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
     private final Provider<SessionUrlRepository> sessionUrlRepositoryProvider;
-    private final Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider;
+    private final Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
 
     public SaveStateViewModelMapProvider(
-            Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider,
-            Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider,
             Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
             Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
             Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
-            Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
+            Provider<InitializationInfoRepository> initializationInfoRepositoryProvider,
             IdentityModule identityModule,
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
             VerificationBankModule verificationBankModule,
-            ContractModule contractModule,
-            Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider
+            ContractModule contractModule
     ) {
-        this.authorizeContractSignUseCaseProvider = authorizeContractSignUseCaseProvider;
-        this.confirmContractSignUseCaseProvider = confirmContractSignUseCaseProvider;
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
         this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
         this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
-        this.identificationPollingStatusUseCaseProvider = identificationPollingStatusUseCaseProvider;
-        this.fetchPdfUseCaseProvider = fetchPdfUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
         this.verificationBankModule = verificationBankModule;
         this.contractModule = contractModule;
-        this.getMobileNumberUseCaseProvider = getMobileNumberUseCaseProvider;
-    }
-
-    public static SaveStateViewModelMapProvider create(
-            Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider,
-            Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider,
-            Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider,
-            Provider<FetchPdfUseCase> fetchPdfUseCaseProvider,
-            Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
-            Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
-            Provider<IdentificationPollingStatusUseCase> identificationPollingStatusUseCaseProvider,
-            Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
-            IdentityModule identityModule,
-            Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
-            Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
-            VerificationBankModule verificationBankModule,
-            ContractModule contractModule,
-            Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider
-    ) {
-        return new SaveStateViewModelMapProvider(
-                authorizeContractSignUseCaseProvider,
-                confirmContractSignUseCaseProvider,
-                deleteAllLocalStorageUseCaseProvider,
-                getDocumentsUseCaseProvider,
-                getIdentificationUseCaseProvider,
-                identificationPollingStatusUseCaseProvider,
-                fetchingAuthorizedIBanStatusUseCaseProvider,
-                fetchPdfUseCaseProvider,
-                identityModule,
-                identificationStepPreferencesProvider,
-                sessionUrlRepositoryProvider,
-                verificationBankModule,
-                contractModule,
-                getMobileNumberUseCaseProvider
-        );
+        this.initializationInfoRepositoryProvider = initializationInfoRepositoryProvider;
     }
 
     @Override
     public Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> get() {
         Map<Class<? extends ViewModel>, Factory2<ViewModel, SavedStateHandle>> map = new LinkedHashMap<>(3);
 
-        map.put(ContractSigningViewModel.class, ContractSigningViewModelFactory.create(
-                contractModule,
-                authorizeContractSignUseCaseProvider,
-                confirmContractSignUseCaseProvider,
-                identificationPollingStatusUseCaseProvider,
-                getMobileNumberUseCaseProvider
-        ));
         map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(
                 verificationBankModule,
                 fetchingAuthorizedIBanStatusUseCaseProvider,
                 getIdentificationUseCaseProvider
         ));
-        map.put(VerificationBankViewModel.class, VerificationBankViewModelFactory.create(
+        map.put(VerificationBankViewModel.class, new VerificationBankViewModelFactory(
                 verificationBankModule,
                 identificationStepPreferencesProvider,
                 getIdentificationUseCaseProvider,
-                sessionUrlRepositoryProvider
+                sessionUrlRepositoryProvider,
+                initializationInfoRepositoryProvider
         ));
         map.put(ContractViewModel.class, ContractViewModelFactory.create(
                 contractModule,

@@ -20,13 +20,15 @@ class VerificationBankModule {
         savedStateHandle: SavedStateHandle,
         identificationStepPreferences: IdentificationStepPreferences,
         getIdentificationUseCase: GetIdentificationUseCase,
-        sessionUrlRepository: SessionUrlRepository
+        sessionUrlRepository: SessionUrlRepository,
+        initializationInfoRepository: InitializationInfoRepository
     ): VerificationBankViewModel {
         return VerificationBankViewModel(
             savedStateHandle,
             identificationStepPreferences,
             getIdentificationUseCase,
-            sessionUrlRepository
+            sessionUrlRepository,
+            initializationInfoRepository
         )
     }
 
@@ -45,14 +47,12 @@ class VerificationBankModule {
     }
 
     fun provideContractSigningViewModel(
-        savedStateHandle: SavedStateHandle,
         authorizeContractSignUseCase: AuthorizeContractSignUseCase,
         confirmContractSignUseCase: ConfirmContractSignUseCase,
         getIdentificationUseCase: IdentificationPollingStatusUseCase,
         getMobileNumberUseCase: GetMobileNumberUseCase
     ): ContractSigningViewModel {
         return ContractSigningViewModel(
-                savedStateHandle,
                 authorizeContractSignUseCase,
                 confirmContractSignUseCase,
                 getIdentificationUseCase,

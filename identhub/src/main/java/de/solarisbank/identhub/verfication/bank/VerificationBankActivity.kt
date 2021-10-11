@@ -38,7 +38,13 @@ class VerificationBankActivity : IdentHubActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
         val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
-        navHostFragment.navController.setGraph(navGraph, intent.extras)
+        if (viewModel.isPhoneVerified()) {
+            navGraph.startDestination = R.id.verificationBankIbanFragment
+        } else {
+            navGraph.startDestination = R.id.phoneVerificationFragment
+        }
+        navHostFragment.navController
+            .setGraph(navGraph, intent.extras)
         initView(savedInstanceState)
     }
 
@@ -97,8 +103,9 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun setSubStep(naviDirection: NaviDirection) {
       if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment ||
-            naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||
-            naviDirection.actionId == R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment) {
+          naviDirection.actionId == R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment ||
+          naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||
+          naviDirection.actionId == R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment) {
             stepIndicatorStep = SolarisIndicatorView.SECOND_STEP
         } else if (naviDirection.actionId == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
             stepIndicatorStep = SolarisIndicatorView.THIRD_STEP

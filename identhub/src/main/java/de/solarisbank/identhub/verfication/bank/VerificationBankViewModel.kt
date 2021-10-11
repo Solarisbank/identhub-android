@@ -18,6 +18,7 @@ import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.util.*
@@ -26,7 +27,8 @@ class VerificationBankViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val identificationStepPreferences: IdentificationStepPreferences,
     private val getIdentificationUseCase: GetIdentificationUseCase,
-    private val sessionUrlRepository: SessionUrlRepository
+    private val sessionUrlRepository: SessionUrlRepository,
+    private val initializationInfoRepository: InitializationInfoRepository
     ) : ViewModel() {
 
 
@@ -48,6 +50,10 @@ class VerificationBankViewModel(
 
     fun getNaviDirectionEvent(): LiveData<Event<NaviDirection>> {
         return navigationActionId
+    }
+
+    fun isPhoneVerified(): Boolean {
+        return initializationInfoRepository.isPhoneVerified()
     }
 
     fun postDynamicNavigationNextStep(nextStep: String?) {
@@ -78,6 +84,10 @@ class VerificationBankViewModel(
 
     fun navigateToIBanVerification() {
         navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment)
+    }
+
+    fun navigateToPhoneVerificationSuccess() {
+        navigateTo(R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment)
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {

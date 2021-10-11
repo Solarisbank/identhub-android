@@ -9,7 +9,11 @@ class CountDownTime @JvmOverloads constructor(
 )
 
 fun CountDownTime.format(): String {
+    return formatMinutesAndSeconds(currentValue)
+}
+
+fun formatMinutesAndSeconds(milliSeconds: Long): String {
     return String.format(Locale.getDefault(), "%02d:%02d",
-            TimeUnit.MILLISECONDS.toMinutes(currentValue) % 60,
-            TimeUnit.MILLISECONDS.toSeconds(currentValue) % 60)
+        TimeUnit.MILLISECONDS.toMinutes(milliSeconds) % 60,
+        TimeUnit.MILLISECONDS.toSeconds(milliSeconds) % 60)
 }
