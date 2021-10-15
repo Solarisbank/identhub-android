@@ -18,8 +18,8 @@ import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.identhub.ui.FourStepIndicatorView
 import de.solarisbank.identhub.ui.SolarisIndicatorView
@@ -38,7 +38,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private lateinit var navHostFragment: View
     private lateinit var stepIndicator: FourStepIndicatorView
 
-    private var awaitedDirection: NaviDirection? = null
+    private var awaitedDirection: NaviDirection.FragmentDirection? = null
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
     override fun inject(activitySubcomponent: FourthlineActivitySubcomponent) {
@@ -97,62 +97,75 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
-        Timber.d("onNavigationChanged; event: ${event}")
+        Timber.d("onNavigationChanged 0; event: ${event}")
         supportActionBar?.setShowHideAnimationEnabled(false)
 
         event.content?.let {
-            when (it.actionId) {
-                R.id.action_selfieFragment_to_selfieResultFragment -> {
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_selfie_step_label)
+            when (it) {
+                is NaviDirection.FragmentDirection -> {
+                    Timber.d("onNavigationChanged 1; it: ${it}")
+                    when (it.actionId) {
+                        R.id.action_selfieFragment_to_selfieResultFragment -> {
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_selfie_step_label)
+                        }
+                        R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment -> {
+                            toggleTopBars(show = true)
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_selfie_step_label)
+                        }
+                        R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                        }
+                        R.id.action_documentScanFragment_to_documentResultFragment -> {
+                            //toggleTopBars(show = true)
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_confirm_information_step_label)
+                        }
+                        R.id.action_welcomeContainerFragment_to_selfieFragment -> {
+                            toggleTopBars(show = false)
+                            awaitedDirection = it
+                            proceedWithPermissions()
+                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            setTitle(R.string.fourthline_activity_selfie_step_label)
+                        }
+                        R.id.action_selfieResultFragment_to_documentTypeSelectionFragment,
+                        R.id.action_documentScanFragment_to_documentTypeSelectionFragment -> {
+                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_select_id_step_label)
+                        }
+                        R.id.action_documentResultFragment_to_kycUploadFragment -> {
+                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_verifying_step_label)
+                        }
+                        R.id.action_reset_to_welcome_screen -> {
+                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            navGraph.startDestination = R.id.welcomeContainerFragment
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_intro_step_label)
+                        }
+                        else -> {
+                            Navigation.findNavController(navHostFragment)
+                                .navigate(it.actionId, it.args)
+                            setTitle(R.string.fourthline_activity_intro_step_label)
+                        }
+                    }
                 }
-                R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment -> {
-                    toggleTopBars(show = true)
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_selfie_step_label)
+
+                is SessionStepResult -> {
+                    Timber.d("onNavigationChanged 2; it: ${it}")
+                    quit(it)
                 }
-                R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                }
-                R.id.action_documentScanFragment_to_documentResultFragment -> {
-                    //toggleTopBars(show = true)
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_confirm_information_step_label)
-                }
-                R.id.action_welcomeContainerFragment_to_selfieFragment -> {
-                    toggleTopBars(show = false)
-                    awaitedDirection = it
-                    proceedWithPermissions()
-                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
-                    setTitle(R.string.fourthline_activity_selfie_step_label)
-                }
-                R.id.action_selfieResultFragment_to_documentTypeSelectionFragment,
-                R.id.action_documentScanFragment_to_documentTypeSelectionFragment-> {
-                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_select_id_step_label)
-                }
-                R.id.action_documentResultFragment_to_kycUploadFragment -> {
-                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_verifying_step_label)
-                }
-                R.id.action_reset_to_welcome_screen -> {
-                    stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
-                    navGraph.startDestination = R.id.welcomeContainerFragment
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_intro_step_label)
-                }
-                FOURTHLINE_IDENTIFICATION_SUCCESSFULL, IdentHubSession.ACTION_NEXT_STEP -> {
-                    quit(it.args)
-                }
-                FOURTHLINE_IDENTIFICATION_ERROR -> {
-                    quit(null)
-                }
-                else -> {
-                    Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
-                    setTitle(R.string.fourthline_activity_intro_step_label)
-                }
+
             }
         }
     }

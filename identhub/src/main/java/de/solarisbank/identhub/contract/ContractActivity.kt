@@ -8,12 +8,11 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.identhub.ui.StepIndicator
-import de.solarisbank.sdk.domain.model.StateUiModel
 import de.solarisbank.sdk.domain.model.result.Event
 import timber.log.Timber
 
@@ -50,26 +49,24 @@ class ContractActivity : IdentHubActivity() {
     private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ContractViewModel::class.java)
-        viewModel.getNaviDirectionEvent().observe(this, Observer { event: Event<NaviDirection> -> onNavigationChanged(event) })
-        viewModel.getUiState().observe(this, { onIdentificationStatusChanged(it) })
-    }
-
-    private fun onIdentificationStatusChanged(model: StateUiModel<Bundle?>) {
-        Timber.d("onIdentificationStatusChanged, model : ${model.data}")
-        viewModel.sendResult(model.data)
+        viewModel.getNaviDirectionEvent().observe(
+            this, Observer
+            { event: Event<NaviDirection> -> onNavigationChanged(event) }
+        )
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         val naviDirection = event.content
+        Timber.d("onNavigationChanged 0, naviDirection: ${naviDirection}")
         if (naviDirection != null) {
-            viewModel.doOnNavigationChanged(naviDirection.actionId)
-            when (naviDirection.actionId) {
-                IdentityActivityViewModel.ACTION_QUIT, IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> {
+            when (naviDirection) {
+                is SessionStepResult -> {
                     Timber.d("onNavigationChanged 1")
-                    quit(naviDirection.args)
+                    quit(naviDirection)
                 }
-                else -> {
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(naviDirection.actionId, naviDirection.args)
+                is NaviDirection.FragmentDirection -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(naviDirection.actionId, naviDirection.args)
                 }
             }
         }

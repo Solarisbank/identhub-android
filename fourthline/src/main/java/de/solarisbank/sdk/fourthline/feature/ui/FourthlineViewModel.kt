@@ -6,19 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_ERROR
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
 import timber.log.Timber
 import java.util.*
 
 class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : ViewModel() {
-
-//    val lastStep = MutableLiveData<>()
 
     private val _navigationActionId = MutableLiveData<Event<NaviDirection>>()
     val navigationActionId = _navigationActionId as LiveData<Event<NaviDirection>>
@@ -69,7 +66,7 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
         )
     }
 
-    fun navigateToWeViewFragment(url: String) {
+    fun navigateToWebViewFragment(url: String) {
         val bundle = Bundle().apply { putString(WEB_VIEW_URL_KEY, url) }
         navigateTo(R.id.action_termsAndConditionsFragment_to_webViewFragment, bundle)
     }
@@ -92,15 +89,20 @@ class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : Vie
     }
 
     fun setFourthlineIdentificationFailure() {
-        navigateTo(FOURTHLINE_IDENTIFICATION_ERROR, null)
+        _navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult())
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle? = null) {
-        _navigationActionId.value = Event(NaviDirection(actionId, bundle))
+        _navigationActionId.value = Event(NaviDirection.FragmentDirection(actionId, bundle))
     }
 
-    fun postDynamicNavigationNextStep(arguments: Bundle) {
-        _navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, arguments))
+    fun postDynamicNavigationNextStep(nextStep: String) {
+        Timber.d("postDynamicNavigationNextStep. nextStep : $nextStep")
+        _navigationActionId.value =
+            Event<NaviDirection>(NaviDirection.NextStepStepResult(
+                nextStep,
+                COMPLETED_STEP.VERIFICATION_BANK.index
+            ))
     }
 
     companion object {

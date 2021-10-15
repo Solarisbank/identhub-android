@@ -7,6 +7,7 @@ interface LibraryComponent {
     fun activityComponent(): CoreActivityComponent.Factory
 
     fun applicationContext(): Context
+
 }
 
 

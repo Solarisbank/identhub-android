@@ -1,12 +1,14 @@
 package de.solarisbank.identhub.session
 
 import de.solarisbank.identhub.session.feature.IdentHubSession
+import de.solarisbank.identhub.session.feature.di.IdentHubSessionReceiver
+import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.utils.buildApiUrl
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Provider
 import timber.log.Timber
 
-object IdentHub {
+object IdentHub : IdentHubSessionReceiver {
     init {
         Timber.d("init, this: $this")
     }
@@ -41,4 +43,8 @@ object IdentHub {
     const val IDENTIFICATION_ID_KEY = "IDENTIFICATION_ID_KEY"
     const val SESSION_URL_KEY = "SESSION_URL_KEY"
     const val VERIFICATION_BANK_URL_KEY = "VERIFICATION_BANK_URL_KEY"
+
+    override fun setSessionResult(sessionStepResult: SessionStepResult) {
+        SESSION!!.setSessionResult(sessionStepResult)
+    }
 }

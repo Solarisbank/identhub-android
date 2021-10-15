@@ -7,12 +7,8 @@ import de.solarisbank.identhub.R
 import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.feature.model.ErrorState
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
-import de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP_KEY
 import de.solarisbank.sdk.core.viewModels
 import timber.log.Timber
-import java.util.*
 
 class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     private val processingVerificationViewModel: ProcessingVerificationViewModel by lazy<ProcessingVerificationViewModel> { viewModels() }
@@ -30,11 +26,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
         when (result) {
             is ProcessingVerificationResult.VerificationSuccessful -> {
-                sharedViewModel.callOnPaymentResult(Bundle().apply {
-                    putString(IDENTIFICATION_ID_KEY, result.id)
-                    putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.VERIFICATION_BANK.index)
-                    putString("uuid", UUID.randomUUID().toString())
-                })
+                sharedViewModel.callOnPaymentResult(result.id)
             }
             is ErrorState -> {
                 showAlert(result)
