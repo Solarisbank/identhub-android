@@ -1,29 +1,23 @@
 package de.solarisbank.identhub.contract
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.IdentHub.isPaymentResultAvailable
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP_KEY
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
-import de.solarisbank.sdk.domain.model.StateUiModel
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.UUID.randomUUID
 
 class ContractViewModel(
     savedStateHandle: SavedStateHandle,
@@ -33,11 +27,6 @@ class ContractViewModel(
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val navigationActionId = MutableLiveData<Event<NaviDirection>>()
-    private val uiStateLiveData = MutableLiveData<StateUiModel<Bundle?>>()
-
-    fun getUiState(): LiveData<StateUiModel<Bundle?>> {
-        return uiStateLiveData
-    }
 
     init {
         if (savedStateHandle.contains(IdentHub.SESSION_URL_KEY)) {
@@ -49,22 +38,17 @@ class ContractViewModel(
         return navigationActionId
     }
 
-    fun doOnNavigationChanged(actionId: Int) {
-        if (isPaymentResultAvailable() && actionId == IdentityActivityViewModel.ACTION_STOP_WITH_RESULT) {
-            identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK)
-        }
-    }
-
-    fun callOnFailureResult() {
-        navigationActionId.value = Event<NaviDirection>(NaviDirection(actionId = IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, null))
-    }
-
     fun navigateToContractSigningProcess() {
-        navigateTo(R.id.action_contractSigningPreviewFragment_to_contractSigningFragment)
+        navigationActionId.postValue(
+            Event(
+                NaviDirection.FragmentDirection(
+                    R.id.action_contractSigningPreviewFragment_to_contractSigningFragment
+                )
+            )
+        )
     }
 
     fun callOnSuccessResult() {
-        Timber.d("callOnSuccessResult()")
         identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)
         compositeDisposable.add(
             getIdentificationUseCase
@@ -76,32 +60,16 @@ class ContractViewModel(
                         if (it is Result.Success<*>) {
                             Timber.d("onSubmitButtonClicked(), success;  result: $it ")
                             val (id) = (it as Result.Success<IdentificationDto>).data
-                            val bundle = Bundle()
-                            // todo crate Bundle Factory for navigation subtypes
-                            //todo foresee intenttypes and avoid null bundle
-                            bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.CONTRACT_SIGNING.index)
-                            bundle.putString(IdentHub.IDENTIFICATION_ID_KEY, id)
-                            bundle.putString("uuid", randomUUID().toString())
-                            uiStateLiveData.value = StateUiModel.Success(bundle)
+                            navigationActionId.value =
+                                Event(NaviDirection.VerificationSuccessfulStepResult(id, COMPLETED_STEP.CONTRACT_SIGNING.index))
                         } else {
                             Timber.d("onSubmitButtonClicked(), fail;  result: $it ")
                         }
                     }, {
                         Timber.e(it, "Cannot load identification data")
-                        uiStateLiveData.value = StateUiModel.Error(null)
+                        navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult())
                     })
         )
     }
 
-    fun sendResult(bundle: Bundle?) {
-        navigateTo(IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, bundle)
-    }
-
-    private fun navigateTo(actionId: Int, bundle: Bundle?) {
-        navigationActionId.postValue(Event(NaviDirection(actionId, bundle)))
-    }
-
-    private fun navigateTo(actionId: Int) {
-        navigateTo(actionId, null)
-    }
 }

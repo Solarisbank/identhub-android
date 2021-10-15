@@ -2,9 +2,9 @@ package de.solarisbank.identhub.base
 
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.di.IdenthubComponent
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.identhub.session.feature.base.SessionNavigationActivity
 
-abstract class IdentHubActivity : BaseActivity() {
+abstract class IdentHubActivity : SessionNavigationActivity() {
 
     val identHubActivitySubcomponent: IdentHubActivitySubcomponent by lazy {
         IdenthubComponent.getInstance(libraryComponent)

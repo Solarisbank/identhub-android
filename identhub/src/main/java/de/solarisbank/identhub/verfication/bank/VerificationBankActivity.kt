@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
@@ -85,23 +84,23 @@ class VerificationBankActivity : IdentHubActivity() {
         Timber.d("onNavigationChanged, naviDirection : $naviDirection")
 
         if (naviDirection != null) {
-            val naviActionId = naviDirection.actionId
-            viewModel.doOnNavigationChanged(naviActionId)
-
-            when (naviActionId) {
-                IdentHubSession.ACTION_NEXT_STEP -> quit(naviDirection.args!!)
-                IdentityActivityViewModel.ACTION_STOP_WITH_RESULT -> quit(naviDirection.args)
-                else -> {
+            when (naviDirection) {
+                is NaviDirection.FragmentDirection -> {
+                    val naviActionId = naviDirection.actionId
                     setSubStep(naviDirection)
                     Navigation
-                            .findNavController(this, R.id.nav_host_fragment)
-                            .navigate(naviActionId, naviDirection.args)
+                        .findNavController(this, R.id.nav_host_fragment)
+                        .navigate(naviActionId, naviDirection.args)
+                }
+                is NaviDirection.PaymentSuccessfulStepResult -> {
+                    quit(naviDirection)
                 }
             }
+
         }
     }
 
-    private fun setSubStep(naviDirection: NaviDirection) {
+    private fun setSubStep(naviDirection: NaviDirection.FragmentDirection) {
       if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment ||
           naviDirection.actionId == R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment ||
           naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||

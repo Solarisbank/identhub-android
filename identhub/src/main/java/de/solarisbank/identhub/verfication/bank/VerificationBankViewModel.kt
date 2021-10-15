@@ -7,21 +7,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
-import de.solarisbank.identhub.identity.IdentityActivityViewModel
 import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
 import de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY
-import de.solarisbank.identhub.session.IdentHub.isPaymentResultAvailable
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
-import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
-import java.util.*
 
 class VerificationBankViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -58,10 +53,8 @@ class VerificationBankViewModel(
 
     fun postDynamicNavigationNextStep(nextStep: String?) {
         Timber.d("postDynamicNavigationNextStep, nextStep : $nextStep")
-        navigationActionId.value = Event<NaviDirection>(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, Bundle().apply {
-            putString(NEXT_STEP_KEY, nextStep)
-            putString("uuid", UUID.randomUUID().toString())
-        } ))
+        navigationActionId.value =
+            Event<NaviDirection>(NaviDirection.NextStepStepResult(nextStep))
     }
 
     fun moveToEstablishSecureConnection(bankIdentificationUrl: String?, nextStep: String? = null) {
@@ -74,12 +67,12 @@ class VerificationBankViewModel(
         navigateTo(R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment)
     }
 
-    fun callOnPaymentResult(bundle: Bundle) {
-        navigationActionId.value = Event<NaviDirection>(NaviDirection(actionId = IdentityActivityViewModel.ACTION_STOP_WITH_RESULT, bundle))
+    fun callOnPaymentResult(identificationId: String) {
+        navigationActionId.value = Event(NaviDirection.PaymentSuccessfulStepResult(identificationId))
     }
 
     fun callOnFailure() {
-        navigateTo(IdentityActivityViewModel.ACTION_STOP_WITH_RESULT)
+        navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult(COMPLETED_STEP.VERIFICATION_BANK.index))
     }
 
     fun navigateToIBanVerification() {
@@ -92,10 +85,9 @@ class VerificationBankViewModel(
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
         if (nextStep != null) {
-            bundle?.putString(NEXT_STEP_KEY, nextStep)
-            navigationActionId.postValue(Event(NaviDirection(IdentHubSession.ACTION_NEXT_STEP, bundle)))
+            navigationActionId.postValue(Event(NaviDirection.NextStepStepResult(nextStep)))
         } else {
-            navigationActionId.postValue(Event(NaviDirection(actionId, bundle)))
+            navigationActionId.postValue(Event(NaviDirection.FragmentDirection(actionId, bundle)))
         }
     }
 
@@ -114,14 +106,6 @@ class VerificationBankViewModel(
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()
-    }
-
-    fun doOnNavigationChanged(actionId: Int) {
-        if (isPaymentResultAvailable() && actionId == ACTION_STOP_WITH_RESULT) {
-            identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK)
-        } else if (actionId == ACTION_SUMMARY_WITH_RESULT) {
-            identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)
-        }
     }
 
     fun getLastCompletedStep(): COMPLETED_STEP? {

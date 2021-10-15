@@ -2,12 +2,10 @@ package de.solarisbank.sdk.feature.base
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
@@ -38,7 +36,6 @@ abstract class BaseActivity : AppCompatActivity() {
         injectMe()
         super.onCreate(savedInstanceState)
         initViewModel()
-        initBackButtonBehavior()
     }
 
     protected open fun injectMe() {
@@ -59,26 +56,7 @@ abstract class BaseActivity : AppCompatActivity() {
         finish()
     }
 
-    companion object {
-        const val IDENTHUB_STEP_ACTION = "IDENTHUB_STEP_ACTION"
-    }
 
-    private fun initBackButtonBehavior() {
-        onBackPressedDispatcher.addCallback(this) {
-            showAlertFragment(
-                title = getString(R.string.identity_dialog_quit_process_title),
-                message = getString(R.string.identity_dialog_quit_process_message),
-                positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
-                negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
-                positiveAction = {
-                    //todo foresee intenttypes and avoid null bundle
-                    Timber.d("Quit IdentHub SDK after back button pressed")
-                    quit(null)
-                },
-                tag = "BackButtonAlert"
-            )
-        }
-    }
 
     fun showAlertFragment(
         title: String,
@@ -111,4 +89,7 @@ abstract class BaseActivity : AppCompatActivity() {
         alertDialogFragment = null
     }
 
+    companion object {
+        const val IDENTHUB_STEP_ACTION = "IDENTHUB_STEP_ACTION"
+    }
 }

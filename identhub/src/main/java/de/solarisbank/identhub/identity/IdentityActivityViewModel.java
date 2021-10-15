@@ -61,7 +61,7 @@ public final class IdentityActivityViewModel extends ViewModel {
     }
 
     private void navigateTo(int actionId, Bundle bundle) {
-        navigationActionId.postValue(new Event<>(new NaviDirection(actionId, bundle)));
+        navigationActionId.postValue(new Event<>(new NaviDirection.FragmentDirection(actionId, bundle)));
     }
 
     private void navigateTo(int actionId) {

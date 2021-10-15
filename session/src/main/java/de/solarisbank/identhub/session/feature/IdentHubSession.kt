@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
+import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Provider
@@ -159,6 +160,10 @@ class IdentHubSession {
         if (appInfo != null) {
             appName =  packageManager.getApplicationLabel(appInfo).toString()
         }
+    }
+
+    fun setSessionResult(sessionStepResult: SessionStepResult) {
+        MAIN_PROCESS?.setSessionResult(sessionStepResult)
     }
 
     companion object {
