@@ -41,8 +41,10 @@ class IdentHubSessionObserver(
     }
 
     fun setSessionResult(sessionStepResult: SessionStepResult) {
+        Timber.d("setSessionResult 0 : $sessionStepResult")
         when (sessionStepResult) {
             is NaviDirection.NextStepStepResult -> {
+                Timber.d("setSessionResult 1")
                 sessionStepResult.nextStep?.let {
                     toNextStep(fragmentActivity!!, it, sessionUrl)?.let { nextStepIntent ->
                         fragmentActivity?.startActivity(nextStepIntent)
@@ -58,12 +60,13 @@ class IdentHubSessionObserver(
                 }
             }
             is NaviDirection.PaymentSuccessfulStepResult -> {
+                Timber.d("setSessionResult 2")
                 successCallback.invoke(
                     sessionStepResult.result
                 )
             }
             is NaviDirection.VerificationSuccessfulStepResult -> {
-                Timber.d("onReceive 2")
+                Timber.d("setSessionResult 3")
                 successCallback.invoke(
                     IdentHubSessionResult(
                         sessionStepResult.identificationId,
@@ -72,6 +75,7 @@ class IdentHubSessionObserver(
                 )
             }
             is NaviDirection.VerificationFailureStepResult -> {
+                Timber.d("setSessionResult 4")
                 errorCallback.invoke(IdentHubSessionFailure(
                     step = sessionStepResult.completedStep?.let{
                         COMPLETED_STEP.getEnum(sessionStepResult.completedStep)

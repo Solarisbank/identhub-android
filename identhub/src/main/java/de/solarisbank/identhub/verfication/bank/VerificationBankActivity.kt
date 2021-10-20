@@ -12,6 +12,7 @@ import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.identhub.ui.StepIndicator
@@ -92,7 +93,8 @@ class VerificationBankActivity : IdentHubActivity() {
                         .findNavController(this, R.id.nav_host_fragment)
                         .navigate(naviActionId, naviDirection.args)
                 }
-                is NaviDirection.PaymentSuccessfulStepResult -> {
+                is SessionStepResult -> {
+                    Timber.d("onNavigationChanged 2; naviDirection: ${naviDirection}")
                     quit(naviDirection)
                 }
             }
