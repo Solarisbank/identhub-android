@@ -51,6 +51,11 @@ class VerificationBankViewModel(
         return initializationInfoRepository.isPhoneVerified()
     }
 
+    fun callOnPaymentResult(identificationId: String) {
+        Timber.d("callOnPaymentResult")
+        navigationActionId.value = Event(NaviDirection.PaymentSuccessfulStepResult(identificationId))
+    }
+
     fun postDynamicNavigationNextStep(nextStep: String?) {
         Timber.d("postDynamicNavigationNextStep, nextStep : $nextStep")
         navigationActionId.value =
@@ -67,11 +72,8 @@ class VerificationBankViewModel(
         navigateTo(R.id.action_establishConnectionFragment_to_verificationBankExternalGatewayFragment)
     }
 
-    fun callOnPaymentResult(identificationId: String) {
-        navigationActionId.value = Event(NaviDirection.PaymentSuccessfulStepResult(identificationId))
-    }
-
     fun callOnFailure() {
+        Timber.d("callOnFailure")
         navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult(COMPLETED_STEP.VERIFICATION_BANK.index))
     }
 
@@ -85,8 +87,10 @@ class VerificationBankViewModel(
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
         if (nextStep != null) {
+            Timber.d("navigateTo nextStep")
             navigationActionId.postValue(Event(NaviDirection.NextStepStepResult(nextStep)))
         } else {
+            Timber.d("navigateTo fragmentDirection")
             navigationActionId.postValue(Event(NaviDirection.FragmentDirection(actionId, bundle)))
         }
     }
