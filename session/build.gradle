@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
@@ -46,6 +47,46 @@ android {
             testLogging.showStandardStreams = true
             testLogging {
                 events "PASSED", "FAILED", "SKIPPED", "STANDARD_OUT", "STANDARD_ERROR"
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            def githubRef = System.getenv("GITHUB_REF")
+            if (githubRef != null) {
+                maven(MavenPublication) {
+                    from components.release
+                    groupId = project.group
+                    artifactId = 'identhub-android-session'
+                    // Version should match the release tag
+                    version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
+
+
+                    pom {
+                        name = 'IdentHub'
+                        description = 'Solarisbank IdentHub Android SDK'
+                        developers {
+                            developer {
+                                name = 'Solarisbank AG'
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}"
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
             }
         }
     }
