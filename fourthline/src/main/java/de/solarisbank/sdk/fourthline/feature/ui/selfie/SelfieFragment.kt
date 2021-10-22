@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.Customization
 import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -38,6 +41,7 @@ class SelfieFragment : SelfieScannerFragment() {
     private var icon: ImageView? = null
     private var warningsLabel: TextView? = null
     private var livenessMask: ImageView? = null
+    private var progressBar: ProgressBar? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
@@ -55,6 +59,10 @@ class SelfieFragment : SelfieScannerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var cleanupJob: Job? = null
+
+    private val customization: Customization by lazy {
+        customizationRepository.get()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
@@ -108,7 +116,13 @@ class SelfieFragment : SelfieScannerFragment() {
                     warningsLabel = it.findViewById(R.id.warningsLabel)
                     hintTextView = it.findViewById(R.id.hintTextView)
                     livenessMask = it.findViewById(R.id.livenessMask)
+                    progressBar = it.findViewById(R.id.progressBar)
+                    customizeUI()
                 }
+    }
+
+    private fun customizeUI() {
+        progressBar?.customize(customization)
     }
 
     override fun onFail(error: SelfieScannerError) {
@@ -176,6 +190,7 @@ class SelfieFragment : SelfieScannerFragment() {
         icon = null
         warningsLabel = null
         livenessMask = null
+        progressBar = null
         cleanupJob?.cancel()
         super.onDestroyView()
     }

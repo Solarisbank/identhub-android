@@ -76,6 +76,8 @@ class ContractSigningFragment : IdentHubFragment() {
         submitButton?.customize(customization)
         sendNewCode?.customize(customization)
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
+        progress?.customize(customization)
+        codeProgress?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

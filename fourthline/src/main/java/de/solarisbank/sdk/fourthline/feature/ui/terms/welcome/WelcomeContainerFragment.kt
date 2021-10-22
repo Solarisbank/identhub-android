@@ -19,8 +19,6 @@ class WelcomeContainerFragment : FourthlineFragment() {
 
     private var startbutton: Button? = null
     private var imageView: ImageView? = null
-    private var firstTick: ImageView? = null
-    private var secondTick: ImageView? = null
 
     private val sharedViewModel: FourthlineViewModel by lazy { activityViewModels() }
 
@@ -33,8 +31,6 @@ class WelcomeContainerFragment : FourthlineFragment() {
                 .also {
                     startbutton = it.findViewById(R.id.startButton)
                     imageView = it.findViewById(R.id.image)
-                    firstTick = it.findViewById(R.id.firstTick)
-                    secondTick = it.findViewById(R.id.secondTick)
                     customizeUI()
                 }
     }
@@ -42,8 +38,6 @@ class WelcomeContainerFragment : FourthlineFragment() {
     private fun customizeUI() {
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         startbutton?.customize(customization)
-        firstTick?.customize(customization)
-        secondTick?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,8 +53,6 @@ class WelcomeContainerFragment : FourthlineFragment() {
     override fun onDestroyView() {
         startbutton = null
         imageView = null
-        firstTick = null
-        secondTick = null
         super.onDestroyView()
     }
 

@@ -24,7 +24,7 @@ public class ApplicationProcessingFragment extends ProgressIndicatorFragment {
     @Override
     protected void initViews() {
         super.initViews();
-        icon.setOnClickListener(v -> {
+        progressBar.setOnClickListener(v -> {
             //todo could be navigated with deeplink
 //            Intent intent = new Intent(getContext(), IdentitySummaryActivity.class);
 //            startActivity(intent);

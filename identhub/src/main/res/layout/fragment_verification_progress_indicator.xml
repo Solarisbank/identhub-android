@@ -31,15 +31,14 @@
         app:layout_constraintGuide_end="24dp" />
 
     <ProgressBar
+        style="@style/progressBarStyle"
         android:id="@+id/icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/title"

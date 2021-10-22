@@ -59,47 +59,25 @@
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/image" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/firstTick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_4"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_tick_blue"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/welcomeTitle" />
-
-            <TextView
+            <de.solarisbank.sdk.feature.view.StartImageTextView
                 android:id="@+id/firstTickInfo"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_12"
                 android:text="@string/fourthline_welcome_container_first_tick"
+                android:layout_marginTop="@dimen/margin_8"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-                app:layout_constraintStart_toEndOf="@+id/firstTick"
-                app:layout_constraintTop_toTopOf="@+id/firstTick" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/secondTick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12"
-                android:paddingTop="@dimen/margin_4"
-                android:src="@drawable/ic_tick_blue"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/firstTickInfo" />
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle"/>
 
-            <TextView
+            <de.solarisbank.sdk.feature.view.StartImageTextView
                 android:id="@+id/secondTickInfo"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_12"
                 android:text="@string/fourthline_welcome_container_second_tick"
+                android:layout_marginTop="@dimen/margin_4"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-                app:layout_constraintStart_toEndOf="@+id/secondTick"
-                app:layout_constraintTop_toTopOf="@+id/secondTick" />
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/firstTickInfo"/>
 
             <TextView
                 android:id="@+id/description"

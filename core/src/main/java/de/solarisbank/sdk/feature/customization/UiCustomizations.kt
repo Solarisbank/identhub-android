@@ -89,3 +89,11 @@ fun TextView.customizeLinks(customization: Customization) {
 
     setLinkTextColor(customization.colors.themeSecondary(context))
 }
+
+fun ProgressBar.customize(customization: Customization) {
+    if (!customization.enabled) {
+        return
+    }
+
+    indeterminateTintList = ColorStateList.valueOf(customization.colors.themePrimary(context))
+}

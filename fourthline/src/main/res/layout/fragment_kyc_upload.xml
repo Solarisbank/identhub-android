@@ -35,10 +35,10 @@
 
 
     <ProgressBar
+        style="@style/progressBarStyle"
         android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
         android:layout_width="@dimen/kyc_upload_progress_size"
-        android:layout_height="47.2dp"
+        android:layout_height="@dimen/kyc_upload_progress_size"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@+id/topGuideline"
