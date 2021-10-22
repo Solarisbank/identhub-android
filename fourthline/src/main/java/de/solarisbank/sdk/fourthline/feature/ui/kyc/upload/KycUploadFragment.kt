@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
@@ -50,6 +51,7 @@ class KycUploadFragment : FourthlineFragment() {
                     subtitle = it.findViewById(R.id.subtitle)
                     progressBar = it.findViewById(R.id.progressBar)
                     errorImage = it.findViewById(R.id.errorImage)
+                    customizeUI()
                 }
     }
 
@@ -57,6 +59,10 @@ class KycUploadFragment : FourthlineFragment() {
         super.onViewCreated(view, savedInstanceState)
         kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner) { it.content?.let { statusDto -> setUiState(statusDto) }}
         kycUploadViewModel.uploadKyc(File(kycSharedViewModel.kycURI!!))
+    }
+
+    private fun customizeUI() {
+        progressBar?.customize(customization)
     }
 
     private fun setUiState(statusDto: KycUploadStatusDto) {

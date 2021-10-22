@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.base.IdentHubFragment;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
+import de.solarisbank.sdk.feature.customization.UiCustomizationsKt;
 
 public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
@@ -23,7 +25,7 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
 
     protected VerificationBankViewModel sharedViewModel;
 
-    protected View icon;
+    protected ProgressBar progressBar;
     protected TextView title;
     protected TextView description;
 
@@ -31,7 +33,7 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_verification_progress_indicator, container, false);
-        icon = root.findViewById(R.id.icon);
+        progressBar = root.findViewById(R.id.icon);
         title = root.findViewById(R.id.title);
         description = root.findViewById(R.id.description);
         return root;
@@ -44,11 +46,6 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     }
 
     protected void initViews() {
-        int iconResource = getIconResource();
-        if (icon instanceof ImageView && iconResource != NO_RESOURCE) {
-            ((ImageView) icon).setImageResource(iconResource);
-        }
-
         title.setText(getTitleResource());
 
         int messageResource = getMessageResource();
@@ -56,6 +53,12 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
             description.setText(messageResource);
             description.setVisibility(View.VISIBLE);
         }
+
+        customizeUI();
+    }
+
+    protected void customizeUI() {
+        UiCustomizationsKt.customize(progressBar, getCustomization());
     }
 
     @StringRes

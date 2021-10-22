@@ -72,84 +72,43 @@
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <ImageView
-                android:id="@+id/done1"
-                android:layout_width="wrap_content"
+
+            <de.solarisbank.sdk.feature.view.StartImageTextView
+                android:id="@+id/description1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_4"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_tick_blue"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
-            <TextView
-                android:id="@+id/description"
-                style="@style/IdentHubTextView.Regular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8"
-                android:text="@string/contract_signing_preview_description"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/done1"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintTop_toTopOf="@id/done1" />
-
-
-            <ImageView
-                android:id="@+id/done2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_4"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_tick_blue"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
-
-            <TextView
+            <de.solarisbank.sdk.feature.view.StartImageTextView
                 android:id="@+id/description2"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8"
-                android:text="@string/contract_signing_preview_description2"
+                android:layout_marginTop="@dimen/margin_4"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/done2"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintTop_toTopOf="@id/done2" />
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/description1" />
 
-            <ImageView
-                android:id="@+id/done3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_4"
-                android:layout_marginTop="@dimen/margin_16"
-                android:src="@drawable/ic_tick_blue"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/description2"
-
-                />
-
-            <TextView
+            <de.solarisbank.sdk.feature.view.StartImageTextView
                 android:id="@+id/description3"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8"
-                android:text="@string/contract_signing_preview_description3"
+                android:layout_marginTop="@dimen/margin_4"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/done3"
-                app:layout_constraintTop_toBottomOf="@+id/description2"
-                app:layout_constraintTop_toTopOf="@id/done3" />
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/description2" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="done3, description3" />
+                app:constraint_referenced_ids="description3" />
 
             <ImageView
                 android:id="@+id/noticeImage"

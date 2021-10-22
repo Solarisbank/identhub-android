@@ -64,6 +64,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private fun customizeUI() {
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         confirmButton?.customize(customization)
+        progressBar?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

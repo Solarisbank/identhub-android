@@ -53,10 +53,10 @@
         tools:text="@string/selfie_intro" />
 
     <ProgressBar
+        style="@style/progressBarStyle"
         android:id="@+id/progressBar"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/punchhole"
         app:layout_constraintStart_toStartOf="@+id/punchhole"

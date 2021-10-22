@@ -12,6 +12,6 @@
     </style>
 
     <style name="IdentHubTheme" parent="@style/IdentHubBaseTheme">
-
+        <item name="startImageTextViewStyle">@style/defaultStartImageTextViewStyle</item>
     </style>
 </resources>

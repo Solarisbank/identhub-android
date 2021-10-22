@@ -34,10 +34,10 @@
         app:layout_constraintGuide_end="30dp"/>
 
     <ProgressBar
+        style="@style/progressBarStyle"
         android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/ic_progressbar"
         android:layout_width="@dimen/kyc_upload_progress_size"
-        android:layout_height="47.2dp"
+        android:layout_height="@dimen/kyc_upload_progress_size"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"

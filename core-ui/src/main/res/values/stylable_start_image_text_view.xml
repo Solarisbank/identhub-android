@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="startImageTextViewStyle" format="reference" />
+
+    <declare-styleable name="StartImageTextView">
+        <attr name="android:text" />
+        <attr name="android:drawable" />
+        <attr name="textTopMargin" format="dimension" />
+        <attr name="hideIfTextIsEmpty" format="boolean" />
+    </declare-styleable>
+
+    <style name="defaultStartImageTextViewStyle">
+        <item name="android:drawable">@drawable/ic_tick_blue</item>
+        <item name="textTopMargin">2dp</item>
+        <item name="hideIfTextIsEmpty">true</item>
+    </style>
+</resources>
