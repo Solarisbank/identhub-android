@@ -85,10 +85,9 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         val notice = getString(R.string.verification_bank_notice_value)
         if (notice.isNotBlank()) {
             noticeBulletList?.isVisible = true
-            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_info)
             noticeBulletList?.updateItems(
                 title = getString(R.string.verification_bank_notice_label),
-                titleStyle = BulletListLayout.TitleStyle.Notice(drawable),
+                titleStyle = BulletListLayout.TitleStyle.Notice,
                 items = listOf(notice)
             )
         } else {
