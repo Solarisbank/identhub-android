@@ -58,9 +58,10 @@ class TermsAndConditionsFragment : FourthlineFragment() {
         val link = getString(R.string.fourthline_terms_conditions_link)
         val termsSpanned = terms.linkOccurrenceOf(termsLinkSection, link, linkAllIfNotFound = true)
         bulletList?.updateItems(
-            getString(R.string.contract_signing_preview_notice),
-            listOf(termsSpanned),
-            titleStyle = BulletListLayout.TitleStyle.Notice
+            title = getString(R.string.contract_signing_preview_notice),
+            items = listOf(termsSpanned),
+            titleStyle = BulletListLayout.TitleStyle.Notice,
+            customization = customization
         )
         submitButton?.setOnClickListener { activityViewModel.navigateFromTcToWelcomeContainerFragment() }
     }
