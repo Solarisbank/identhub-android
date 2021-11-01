@@ -1,12 +1,15 @@
 package de.solarisbank.sdk.feature.view
 
 import android.content.Context
+import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import de.solarisbank.sdk.core.R
+import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.feature.customization.customizeLinks
 
 class BulletListLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -21,13 +24,14 @@ class BulletListLayout @JvmOverloads constructor(
 
     fun updateItems(title: CharSequence? = null,
                     items: List<CharSequence>,
-                    titleStyle: TitleStyle = TitleStyle.SimpleBold) {
+                    titleStyle: TitleStyle = TitleStyle.SimpleBold,
+                    customization: Customization? = null) {
         removeAllViews()
         title?.let {
             addTitle(it, titleStyle)
         }
         items.forEach {
-            addBulletItem(it)
+            addBulletItem(it, customization)
         }
     }
 
@@ -51,7 +55,7 @@ class BulletListLayout @JvmOverloads constructor(
         }
     }
 
-    private fun addBulletItem(title: CharSequence) {
+    private fun addBulletItem(title: CharSequence, customization: Customization?) {
         val layout = LinearLayout(context)
         layout.orientation = HORIZONTAL
 
@@ -67,6 +71,10 @@ class BulletListLayout @JvmOverloads constructor(
 
         val titleView = TextView(context, null, 0, R.style.IdentHubTextView_Regular)
         titleView.text = title
+        titleView.movementMethod = LinkMovementMethod.getInstance()
+        customization?.let {
+            titleView.customizeLinks(it)
+        }
         layout.addView(titleView)
 
         addView(layout)
