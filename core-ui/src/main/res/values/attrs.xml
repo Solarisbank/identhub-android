@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="linearStepIndicatorStyle" format="reference"/>
+    <declare-styleable name="StepIndicator">
+        <attr name="stepsAmount" format="enum">
+            <enum name="amount2" value="2"/>
+            <enum name="amount3" value="3"/>
+            <enum name="amount4" value="4"/>
+            <enum name="amount5" value="5"/>
+            <enum name="amount6" value="6"/>
+            <enum name="amount7" value="7"/>
+            <enum name="amount8" value="8"/>
+            <enum name="amount9" value="9"/>
+        </attr>
+        <attr name="areLabelsVisible" format="boolean"/>
+        <attr name="innerSegmentMargin" format="dimension" />
+        <attr name="currentStepLabelStyle" format="reference"/>
+        <attr name="nextStepLabelStyle" format="reference"/>
+        <attr name="labelMargin" format="dimension" />
+    </declare-styleable>
+</resources>

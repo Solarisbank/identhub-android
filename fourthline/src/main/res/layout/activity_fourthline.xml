@@ -36,15 +36,14 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="16dp"/>
 
-    <de.solarisbank.identhub.ui.FourStepIndicatorView
+    <de.solarisbank.sdk.feature.view.ConstraintStepIndicator
         android:id="@+id/stepIndicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:stepsAmount="amount4"
         android:layout_marginTop="23dp"
-        android:layout_marginStart="@dimen/step_indicator_side_margin"
-        android:layout_marginEnd="@dimen/step_indicator_side_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintTop_toTopOf="parent"
         />
 

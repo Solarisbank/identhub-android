@@ -6,15 +6,29 @@
     android:layout_height="match_parent"
     android:background="@color/ident_hub_color_surface">
 
-    <de.solarisbank.identhub.ui.FourStepIndicatorView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"/>
+
+    <de.solarisbank.sdk.feature.view.ConstraintStepIndicator
         android:id="@+id/stepIndicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/step_indicator_side_margin"
-        android:layout_marginEnd="@dimen/step_indicator_side_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintTop_toTopOf="parent"
+        app:stepsAmount="amount3"
         android:layout_marginTop="@dimen/margin_12" />
 
     <androidx.fragment.app.FragmentContainerView

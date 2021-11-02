@@ -121,6 +121,7 @@ dependencies {
     implementation rxJava
 
     api project(":core")
+    api project(":core-ui")
     api project(":session")
     implementation project(":identhub-ui")
     implementation kotlinCore
