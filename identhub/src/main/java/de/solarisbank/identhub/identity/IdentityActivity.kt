@@ -10,13 +10,13 @@ import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import timber.log.Timber
 
 class IdentityActivity : IdentHubActivity() {
     private lateinit var viewModel: IdentityActivityViewModel
-    private lateinit var stepIndicator: SolarisIndicatorView
+    private lateinit var stepIndicator: ConstraintStepIndicator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_identity)
@@ -47,7 +47,7 @@ class IdentityActivity : IdentHubActivity() {
         if (!IdentHubSession.hasPhoneVerification) {
             startStep = COMPLETED_STEP.VERIFICATION_BANK.index
         }
-        stepIndicator.setStep(lastCompletedStep?.index ?: startStep)
+        stepIndicator.setPassedStep(lastCompletedStep?.index ?: startStep)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {
@@ -70,10 +70,10 @@ class IdentityActivity : IdentHubActivity() {
                     Timber.d("onNavigationChanged 1; it: ${it}")
                     when (it.actionId) {
                         R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment -> {
-                            stepIndicator.setStep(SolarisIndicatorView.SECOND_STEP)
+                            stepIndicator.setPassedStep(2)
                         }
                         R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment -> {
-                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            stepIndicator.setPassedStep(3)
                         }
                     }
                 }

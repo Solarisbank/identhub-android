@@ -14,15 +14,14 @@ import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.ui.SolarisIndicatorView
-import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import timber.log.Timber
 
 class VerificationBankActivity : IdentHubActivity() {
     private lateinit var viewModel: VerificationBankViewModel
-    private lateinit var stepIndicator: StepIndicator
-    private var stepIndicatorStep = SolarisIndicatorView.FIRST_STEP
+    private lateinit var stepIndicator: ConstraintStepIndicator
+    private var stepIndicatorStep = 1
     private var stepIndicatorVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +56,8 @@ class VerificationBankActivity : IdentHubActivity() {
             if (!IdentHubSession.hasPhoneVerification) {
                 startStep = COMPLETED_STEP.VERIFICATION_BANK.index
             }
+            stepIndicator.setCurrentStepLabel("Bank verification") //todo create ticket for translation
+            stepIndicator.setNextStepLabel("Next: Sign contract") //todo create ticket for translation
             stepIndicatorStep = lastCompletedStep?.index ?: startStep
             stepIndicatorVisible = true
         }
@@ -107,9 +108,9 @@ class VerificationBankActivity : IdentHubActivity() {
           naviDirection.actionId == R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment ||
           naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||
           naviDirection.actionId == R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment) {
-            stepIndicatorStep = SolarisIndicatorView.SECOND_STEP
+            stepIndicatorStep = 2
         } else if (naviDirection.actionId == R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment) {
-            stepIndicatorStep = SolarisIndicatorView.THIRD_STEP
+            stepIndicatorStep = 3
         }
 
         stepIndicatorVisible = when (naviDirection.actionId) {
@@ -129,7 +130,7 @@ class VerificationBankActivity : IdentHubActivity() {
         } else {
             View.GONE
         }
-        stepIndicator.setStep(stepIndicatorStep)
+        stepIndicator.setPassedStep(stepIndicatorStep)
     }
 
     private fun onCancel(state: Boolean?) {

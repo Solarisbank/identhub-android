@@ -21,9 +21,8 @@ import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
-import de.solarisbank.identhub.ui.FourStepIndicatorView
-import de.solarisbank.identhub.ui.SolarisIndicatorView
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
@@ -36,7 +35,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private lateinit var viewModel: FourthlineViewModel
 
     private lateinit var navHostFragment: View
-    private lateinit var stepIndicator: FourStepIndicatorView
+    private lateinit var stepIndicator: ConstraintStepIndicator
 
     private var awaitedDirection: NaviDirection.FragmentDirection? = null
     private lateinit var navController: NavController
@@ -58,7 +57,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
         stepIndicator = findViewById(R.id.stepIndicator)
-        stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+        stepIndicator.setCurrentStepLabel("ID verification")
+        stepIndicator.setPassedStep(3)
     }
 
     private fun initGraph() {
@@ -130,24 +130,24 @@ class FourthlineActivity : FourthlineBaseActivity() {
                             toggleTopBars(show = false)
                             awaitedDirection = it
                             proceedWithPermissions()
-                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            stepIndicator.setPassedStep(3)
                             setTitle(R.string.fourthline_activity_selfie_step_label)
                         }
                         R.id.action_selfieResultFragment_to_documentTypeSelectionFragment,
                         R.id.action_documentScanFragment_to_documentTypeSelectionFragment -> {
-                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            stepIndicator.setPassedStep(3)
                             Navigation.findNavController(navHostFragment)
                                 .navigate(it.actionId, it.args)
                             setTitle(R.string.fourthline_activity_select_id_step_label)
                         }
                         R.id.action_documentResultFragment_to_kycUploadFragment -> {
-                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            stepIndicator.setPassedStep(3)
                             Navigation.findNavController(navHostFragment)
                                 .navigate(it.actionId, it.args)
                             setTitle(R.string.fourthline_activity_verifying_step_label)
                         }
                         R.id.action_reset_to_welcome_screen -> {
-                            stepIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+                            stepIndicator.setPassedStep(3)
                             navGraph.startDestination = R.id.welcomeContainerFragment
                             Navigation.findNavController(navHostFragment)
                                 .navigate(it.actionId, it.args)

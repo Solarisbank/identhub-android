@@ -106,7 +106,7 @@ dependencies {
     implementation networking.libs
     implementation rxJava
 
-    implementation project(":core-ui")
+    api project(":core-ui")
     implementation kotlinCore
     implementation support
     implementation activity
@@ -115,11 +115,4 @@ dependencies {
     testImplementation mockkTest
     androidTestImplementation espresso
 
-//    constraints {
-//        androidTestImplementation('junit:junit') {
-//            version {
-//                require junitVersion
-//            }
-//        }
-//    }
 }

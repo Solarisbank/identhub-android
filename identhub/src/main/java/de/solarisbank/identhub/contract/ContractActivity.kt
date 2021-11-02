@@ -11,14 +11,13 @@ import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
-import de.solarisbank.identhub.ui.SolarisIndicatorView
-import de.solarisbank.identhub.ui.StepIndicator
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
     private lateinit var viewModel: ContractViewModel
-    private lateinit var solarisIndicator: StepIndicator
+    private lateinit var solarisIndicator: ConstraintStepIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +37,8 @@ class ContractActivity : IdentHubActivity() {
 
     private fun initView() {
         solarisIndicator = findViewById(R.id.stepIndicator)
-        solarisIndicator.setStep(SolarisIndicatorView.THIRD_STEP)
+        solarisIndicator.setCurrentStepLabel("Sign documents") //todo create ticket for translation
+        solarisIndicator.setPassedStep(3)
         setTitle(R.string.identity_activity_third_step_label)
     }
 

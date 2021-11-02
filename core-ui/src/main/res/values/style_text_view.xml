@@ -5,7 +5,7 @@
         <item name="android:textColor">@color/ident_hub_color_black</item>
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0</item>
-        <item name="fontFamily">sans-serif></item>
+        <item name="fontFamily">sans-serif</item>
     </style>
 
     <style name="IdentHubTextView.Bold">
@@ -111,4 +111,14 @@
     <style name="IdentHubTextView.Info">
         <item name="android:textColor">@color/ident_hub_color_info_text</item>
     </style>
+
+    <style name="CurrentStepLabelCommon" parent="IdentHubTextView">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NextStepLabelCommon" parent="IdentHubTextView">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>
