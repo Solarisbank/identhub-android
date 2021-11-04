@@ -6,6 +6,7 @@
         <item name="currentStepLabelStyle">@style/CurrentStepLabelCommon</item>
         <item name="nextStepLabelStyle">@style/NextStepLabelCommon</item>
         <item name="areLabelsVisible">true</item>
+        <item name="startEndSegmentParentMargin">0dp</item>
         <item name="labelMargin">8dp</item>
     </style>
 </resources>

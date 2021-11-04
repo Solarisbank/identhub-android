@@ -33,6 +33,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     private lateinit var nextStepLabel: TextView
     private var currentStepLabelTextSize: Float = 0f
     private var nextStepLabelTextSize: Float = 0f
+    private var startEndSegmentParentMargin: Int = 0
 
     private val barrier = Barrier(context).apply {
         tag = "barrier"
@@ -61,7 +62,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                     style1.getDimensionPixelSize(R.styleable.StepIndicator_innerSegmentMargin, 0)
 
                 labelBottomMarginDp = style1.getDimensionPixelSize(R.styleable.StepIndicator_labelMargin,0)
-
+                startEndSegmentParentMargin = style1.getDimensionPixelSize(R.styleable.StepIndicator_startEndSegmentParentMargin,0)
                 areLabelsVisible = style1.getBoolean(R.styleable.StepIndicator_areLabelsVisible, false)
 
                 val ta = context.obtainStyledAttributes(
@@ -196,7 +197,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                 0 -> {
                     Timber.d("makeConstraints 1")
                     set.setMargin(segment.id, ConstraintSet.END, halfInnerSegmentMarginDp)
-                    set.connect(segment.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+                    set.connect(segment.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, startEndSegmentParentMargin)
                     set.connect(segment.id, ConstraintSet.END, segmentList[i+1].id, ConstraintSet.START)
                     set.connect(segment.id, ConstraintSet.TOP, barrier.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
                     set.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
@@ -224,7 +225,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                     Timber.d("makeConstraints 4")
                     set.setMargin(segment.id, ConstraintSet.START, halfInnerSegmentMarginDp)
                     set.connect(segment.id, ConstraintSet.START, segmentList[i - 1].id, ConstraintSet.END)
-                    set.connect(segment.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+                    set.connect(segment.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, startEndSegmentParentMargin)
                     set.connect(segment.id, ConstraintSet.TOP, barrier.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
                     set.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
                     set.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
