@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="linearStepIndicatorStyle" format="reference"/>
+    <attr name="stepIndicatorStyle" format="reference"/>
     <declare-styleable name="StepIndicator">
         <attr name="stepsAmount" format="enum">
             <enum name="amount2" value="2"/>
@@ -16,6 +16,7 @@
         <attr name="innerSegmentMargin" format="dimension" />
         <attr name="currentStepLabelStyle" format="reference"/>
         <attr name="nextStepLabelStyle" format="reference"/>
+        <attr name="startEndSegmentParentMargin" format="dimension" />
         <attr name="labelMargin" format="dimension" />
     </declare-styleable>
 </resources>
