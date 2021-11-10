@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.contract.sign
 
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.contract.ContractModule
+import de.solarisbank.identhub.contract.ContractUiModule
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
@@ -10,7 +10,7 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Provider
 
 class ContractSigningViewModelFactory(
-    private val contractModule: ContractModule,
+    private val contractUiModule: ContractUiModule,
     private val authorizeContractSignUseCaseProvider: Provider<AuthorizeContractSignUseCase>,
     private val confirmContractSignUseCaseProvider: Provider<ConfirmContractSignUseCase>,
     private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
@@ -18,7 +18,7 @@ class ContractSigningViewModelFactory(
 ) : Factory<ViewModel> {
 
     override fun get(): ViewModel {
-        return contractModule.provideContractSigningViewModel(
+        return contractUiModule.provideContractSigningViewModel(
             authorizeContractSignUseCaseProvider.get(),
             confirmContractSignUseCaseProvider.get(),
             identificationPollingStatusUseCaseProvider.get(),

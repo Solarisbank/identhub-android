@@ -11,6 +11,7 @@ import io.kotest.matchers.string.startWith
 import io.kotest.matchers.types.shouldBeInstanceOf
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
 class VerifyIBanUseCaseTest : StringSpec({
@@ -116,13 +117,28 @@ class VerifyIBanUseCaseTest : StringSpec({
 
     }
 
-    val verifyIBanUseCase = IdentHubTestComponent
-        .getTestInstance(NetworkModuleTestFactory(dispatcher).provideNetworkModule())
-        .verifyIBanUseCaseProvider
-        .get()
+    var verifyIBanUseCase: VerifyIBanUseCase? = null
+    var mockWebServer: MockWebServer? = null
+
+    beforeSpec {
+        mockWebServer = MockWebServer().apply {
+            this.dispatcher = dispatcher
+            start(0)
+        }
+        verifyIBanUseCase = IdentHubTestComponent
+            .getTestInstance(
+                networkModule = NetworkModuleTestFactory(mockWebServer!!).provideNetworkModule()
+            )
+            .verifyIBanUseCaseProvider
+            .get()
+    }
+
+    afterSpec { mockWebServer!!.shutdown() }
+
+
 
     "IbanJointAccount200" {
-        val answer: Result<IbanVerificationModel> = verifyIBanUseCase.execute(IbanJointAccountNumber).blockingGet()
+        val answer: Result<IbanVerificationModel> = verifyIBanUseCase!!.execute(IbanJointAccountNumber).blockingGet()
 
         answer.shouldBeInstanceOf<Result.Success<IbanVerificationModel>>()
         answer.data.shouldBeInstanceOf<IbanVerificationModel.IbanVerificationSuccessful>()
@@ -138,7 +154,7 @@ class VerifyIBanUseCaseTest : StringSpec({
 
     "IbanInvalid400" {
 
-        val answer: Result<IbanVerificationModel> = verifyIBanUseCase.execute(IbanInvalidNumber).blockingGet()
+        val answer: Result<IbanVerificationModel> = verifyIBanUseCase!!.execute(IbanInvalidNumber).blockingGet()
 
         answer.shouldBeInstanceOf<Result.Success<IbanVerificationModel>>()
         answer.data.shouldBeInstanceOf<IbanVerificationModel.InvalidBankIdError>()

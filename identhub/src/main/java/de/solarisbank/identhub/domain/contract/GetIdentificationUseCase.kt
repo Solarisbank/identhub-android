@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.domain.contract
 
+import de.solarisbank.identhub.data.contract.ContractSignRepository
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository

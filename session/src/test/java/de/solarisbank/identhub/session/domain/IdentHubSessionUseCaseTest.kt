@@ -7,6 +7,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
 class IdentHubSessionUseCaseTest : StringSpec ({
@@ -40,15 +41,30 @@ class IdentHubSessionUseCaseTest : StringSpec ({
 
     }
 
-    val identHubSessionUseCase =
-        IdentHubSessionTestComponent
-            .getTestInstance(NetworkModuleTestFactory(dispatcher).provideNetworkModule())
+    val mockWebServer = MockWebServer().apply {
+        this.dispatcher = dispatcher
+    }
+
+    var identHubSessionUseCase: IdentHubSessionUseCase? = null
+
+    beforeSpec {
+        mockWebServer.start(0)
+        identHubSessionUseCase = IdentHubSessionTestComponent
+            .getTestInstance(
+                networkModule = NetworkModuleTestFactory(mockWebServer)
+                    .provideNetworkModule()
+            )
             .identHubSessionUseCaseProvider
             .get()
+    }
+
+    afterSpec {
+        mockWebServer.shutdown()
+    }
 
     "initializationSuccessful200Response"{
         val identificationState: NavigationalResult<String> =
-            identHubSessionUseCase.obtainLocalIdentificationState().blockingGet()
+            identHubSessionUseCase!!.obtainLocalIdentificationState().blockingGet()
 
         identificationState.data shouldBe "FIRST_STEP_KEY"
         identificationState.nextStep shouldBe "bank/iban"

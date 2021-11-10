@@ -22,7 +22,7 @@ class FourthlineIdentificationRepository(
     }
 
     fun getLastSavedLocalIdentification(): Single<IdentificationDto> {
-        return identificationRoomDataSource.getIdentificationDto()
+        return identificationRoomDataSource.obtainIdentificationDto()
     }
 
     fun getPersonData(identificationId: String): Single<PersonDataDto> {

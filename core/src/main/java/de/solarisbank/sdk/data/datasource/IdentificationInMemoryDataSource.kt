@@ -10,7 +10,7 @@ class IdentificationInMemoryDataSource : IdentificationLocalDataSource {
     private val lock: ReentrantReadWriteLock = ReentrantReadWriteLock()
     private var identificationDto: IdentificationDto? = null
 
-    override fun getIdentificationDto(): Single<IdentificationDto> {
+    override fun obtainIdentificationDto(): Single<IdentificationDto> {
         lock.readLock().lock()
         try {
             return if (identificationDto != null) {
