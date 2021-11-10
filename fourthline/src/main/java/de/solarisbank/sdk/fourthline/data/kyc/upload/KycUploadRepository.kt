@@ -13,8 +13,8 @@ class KycUploadRepository(
         ) {
 
     fun uploadKyc(file: File): Single<KycUploadResponseDto> {
-        Timber.d("identificationRoomDataSource.getIdentification() : ${identificationLocalDataSource.getIdentificationDto()}")
-        return identificationLocalDataSource.getIdentificationDto()
+        Timber.d("identificationRoomDataSource.getIdentification() : ${identificationLocalDataSource.obtainIdentificationDto()}")
+        return identificationLocalDataSource.obtainIdentificationDto()
                 .flatMap {
                     identification ->
                     identificationLocalDataSource.saveIdentification(identification.apply { status = Status.UPLOAD.label })

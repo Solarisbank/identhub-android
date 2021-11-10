@@ -6,9 +6,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.contract.ContractActivity
 import de.solarisbank.identhub.contract.ContractActivityInjector.Companion.injectAssistedViewModelFactory
-import de.solarisbank.identhub.contract.ContractModule
+import de.solarisbank.identhub.contract.ContractUiModule
+import de.solarisbank.identhub.data.contract.ContractSignApi
+import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
+import de.solarisbank.identhub.data.contract.ContractSignRepository
+import de.solarisbank.identhub.data.di.contract.ContractSignModule
 import de.solarisbank.identhub.domain.contract.*
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCaseFactory.Companion.create
+import de.solarisbank.identhub.domain.di.contract.*
+import de.solarisbank.identhub.domain.di.contract.GetIdentificationUseCaseFactory.Companion.create
 import de.solarisbank.identhub.domain.verification.bank.*
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCaseFactory.Companion.create
 import de.solarisbank.identhub.domain.verification.phone.*
@@ -17,12 +22,6 @@ import de.solarisbank.identhub.file.FileControllerFactory
 import de.solarisbank.identhub.identity.IdentityActivity
 import de.solarisbank.identhub.identity.IdentityActivityInjector
 import de.solarisbank.identhub.identity.IdentityModule
-import de.solarisbank.identhub.session.data.contract.ContractSignApi
-import de.solarisbank.identhub.session.data.contract.ContractSignModule
-import de.solarisbank.identhub.session.data.contract.ContractSignNetworkDataSource
-import de.solarisbank.identhub.session.data.contract.factory.ContractSignNetworkDataSourceFactory
-import de.solarisbank.identhub.session.data.contract.factory.ProvideContractSignApiFactory
-import de.solarisbank.identhub.session.data.contract.factory.ProvideContractSignRepositoryFactory.Companion.create
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
 import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory.Companion.create
 import de.solarisbank.identhub.session.data.di.SessionModule
@@ -52,7 +51,6 @@ import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.data.di.IdentificationModule
-import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
@@ -91,7 +89,7 @@ class IdentHubTestComponent {
 
     private lateinit var coreModule: CoreModule
     private lateinit var verficationBankModule: VerificationBankModule
-    private lateinit var contractModule: ContractModule
+    private lateinit var contractUiModule: ContractUiModule
     private lateinit var identityModule: IdentityModule
 //    private lateinit var activitySubModule: ActivitySubModule
     private lateinit var networkModule: NetworkModule
@@ -111,9 +109,9 @@ class IdentHubTestComponent {
     private lateinit var retrofitProvider: Provider<Retrofit>
     private lateinit var contractSignApiProvider: Provider<ContractSignApi>
     private lateinit var contractSignNetworkDataSourceProvider: Provider<ContractSignNetworkDataSource>
-    private lateinit var contractSignRepositoryProvider: Provider<ContractSignRepository>
-    private lateinit var authorizeContractSignUseCaseProvider: Provider<AuthorizeContractSignUseCase>
-    private lateinit var confirmContractSignUseCaseProvider: Provider<ConfirmContractSignUseCase>
+    lateinit var contractSignRepositoryProvider: Provider<ContractSignRepository>
+    lateinit var authorizeContractSignUseCaseProvider: Provider<AuthorizeContractSignUseCase>
+    lateinit var confirmContractSignUseCaseProvider: Provider<ConfirmContractSignUseCase>
     private lateinit var deleteAllLocalStorageUseCaseProvider: Provider<DeleteAllLocalStorageUseCase>
     private lateinit var verificationPhoneApiProvider: Provider<VerificationPhoneApi>
     private lateinit var verificationPhoneNetworkDataSourceProvider: Provider<VerificationPhoneNetworkDataSource>
@@ -127,7 +125,7 @@ class IdentHubTestComponent {
     private lateinit var verificationBankRepositoryProvider: Provider<VerificationBankRepository>
     lateinit var verifyIBanUseCaseProvider: Provider<VerifyIBanUseCase>
     private lateinit var fetchingAuthorizedIBanStatusUseCaseProvider: Provider<FetchingAuthorizedIBanStatusUseCase>
-    private lateinit var getDocumentsUseCaseProvider: Provider<GetDocumentsUseCase>
+    lateinit var getDocumentsUseCaseProvider: Provider<GetDocumentsUseCase>
     private lateinit var getIdentificationUseCaseProvider: Provider<GetIdentificationUseCase>
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
@@ -154,7 +152,7 @@ class IdentHubTestComponent {
         sessionModule: SessionModule,
         verificationBankDataModule: VerificationBankDataModule,
         verficationBankModule: VerificationBankModule,
-        contractModule: ContractModule,
+        contractUiModule: ContractUiModule,
         identificationModule: IdentificationModule
     ) {
         this.coreModule = coreModule
@@ -162,7 +160,7 @@ class IdentHubTestComponent {
 //        this.activitySubModule = activitySubModule
         this.networkModule = networkModule
         this.verficationBankModule = verficationBankModule
-        this.contractModule = contractModule
+        this.contractUiModule = contractUiModule
         this.identificationModule = identificationModule
         initialize(
 //            libraryComponent,
@@ -181,9 +179,8 @@ class IdentHubTestComponent {
         verificationPhoneModule: VerificationPhoneModule
     ) {
 //        applicationContextProvider = ApplicationContextProvider(libraryComponent)
-        identificationLocalDataSourceProvider = DoubleCheck.provider(
-            IdentificationInMemoryDataSourceFactory.create()
-        )
+        identificationLocalDataSourceProvider =
+            identificationModule.provideIdentificationLocalDataSource()
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(
             create(sessionModule)
         )
@@ -256,20 +253,20 @@ class IdentHubTestComponent {
                 verificationPhoneNetworkDataSourceProvider
             )
         )
-        contractSignApiProvider = DoubleCheck.provider(
-            ProvideContractSignApiFactory.create(
-                contractSignModule,
-                retrofitProvider
-            )
-        )
+        contractSignApiProvider =
+            contractSignModule.provideContractSignApi(retrofitProvider.get())
+
         contractSignNetworkDataSourceProvider =
-            ContractSignNetworkDataSourceFactory.create(contractSignModule, contractSignApiProvider)
-        contractSignRepositoryProvider = DoubleCheck.provider(
-            create(
-                contractSignModule, contractSignNetworkDataSourceProvider,
-                identificationLocalDataSourceProvider!!
+            contractSignModule.provideContractSignNetworkDataSource(
+                contractSignApiProvider.get()
             )
-        )
+
+        contractSignRepositoryProvider =
+            contractSignModule.provideContractSignRepository(
+                contractSignNetworkDataSourceProvider.get(),
+                identificationLocalDataSourceProvider.get()
+            )
+
         verificationBankApiProvider = DoubleCheck.provider(
             ProvideVerificationBankApiFactory.create(
                 verificationBankDataModule,
@@ -291,8 +288,6 @@ class IdentHubTestComponent {
             AuthorizeContractSignUseCaseFactory.create(contractSignRepositoryProvider)
         confirmContractSignUseCaseProvider =
             ConfirmContractSignUseCaseFactory.create(contractSignRepositoryProvider)
-        deleteAllLocalStorageUseCaseProvider =
-            DeleteAllLocalStorageUseCaseFactory.create(contractSignRepositoryProvider)
         authorizeVerificationPhoneUseCaseProvider =
             AuthorizeVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider)
         confirmVerificationPhoneUseCaseProvider =
@@ -343,6 +338,8 @@ class IdentHubTestComponent {
         private lateinit var libraryComponent: LibraryComponent
         private lateinit var activitySubModule: ActivitySubModule
         private lateinit var networkModule: NetworkModule
+        private lateinit var identificationModule: IdentificationModule
+        private lateinit var contractSignModule: ContractSignModule
         fun setCoreModule(coreModule: CoreModule): Builder {
             this.coreModule = coreModule
             return this
@@ -368,6 +365,16 @@ class IdentHubTestComponent {
             return this
         }
 
+        fun setIdentificationModule(identificationModule: IdentificationModule): Builder {
+            this.identificationModule = identificationModule
+            return this
+        }
+
+        fun setContractSignModule(contractSignModule: ContractSignModule): Builder {
+            this.contractSignModule = contractSignModule
+            return this
+        }
+
         fun build(): IdentHubTestComponent {
             return IdentHubTestComponent(
                 coreModule,
@@ -375,13 +382,13 @@ class IdentHubTestComponent {
                 identityModule,
 //                activitySubModule,
                 networkModule,
-                ContractSignModule(),
+                contractSignModule,
                 VerificationPhoneModule(),
                 SessionModule(),
                 VerificationBankDataModule(),
                 VerificationBankModule(),
-                ContractModule(),
-                IdentificationModule()
+                ContractUiModule(),
+                identificationModule,
             )
         }
     }
@@ -409,7 +416,7 @@ class IdentHubTestComponent {
         private lateinit var identificationStepPreferencesProvider: Provider<IdentificationStepPreferences>
         private lateinit var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory>
         private lateinit var fileControllerProvider: Provider<FileController>
-        private lateinit var fetchPdfUseCaseProvider: Provider<FetchPdfUseCase>
+        lateinit var fetchPdfUseCaseProvider: Provider<FetchPdfUseCase>
         private lateinit var bankIdPostUseCaseProvider: Provider<BankIdPostUseCase>
         lateinit var processingVerificationUseCaseProvider: Provider<ProcessingVerificationUseCase>
         private lateinit var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>>
@@ -639,13 +646,23 @@ class IdentHubTestComponent {
 
     companion object {
 
-        fun getTestInstance(networkModule: NetworkModule): IdentHubTestComponent {
+        //todo modify real IdentHubComponent to allow the passing of mocked Modules
+        fun getTestInstance(
+            coreModule: CoreModule = CoreModule(),
+            identityModule: IdentityModule = IdentityModule(),
+            activitySubModule: ActivitySubModule = ActivitySubModule(),
+            networkModule: NetworkModule = NetworkModule(),
+            identificationModule: IdentificationModule = IdentificationModule(),
+            contractSignModule: ContractSignModule = ContractSignModule()
+        ): IdentHubTestComponent {
             return Builder()
                 .setLibraryComponent(mockk<LibraryComponent>())
-                .setCoreModule(CoreModule())
-                .setIdentityModule(IdentityModule())
-                .setActivitySubModule(ActivitySubModule())
+                .setCoreModule(coreModule)
+                .setIdentityModule(identityModule)
+                .setActivitySubModule(activitySubModule)
                 .setNetworkModule(networkModule)
+                .setIdentificationModule(identificationModule)
+                .setContractSignModule(contractSignModule)
                 .build()
         }
     }

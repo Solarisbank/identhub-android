@@ -7,7 +7,6 @@ import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -15,13 +14,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-//todo add MockWebServer
-class NetworkModuleTestFactory(val dispatcher: Dispatcher, val port: Int = 0) {
+class NetworkModuleTestFactory(val mockWebServer: MockWebServer) {
     private val TIMEOUT = 90L
-    private val mockWebServer = MockWebServer().apply {
-        this.dispatcher = this@NetworkModuleTestFactory.dispatcher
-        this.start(this@NetworkModuleTestFactory.port)
-    }
+
     private val okHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)

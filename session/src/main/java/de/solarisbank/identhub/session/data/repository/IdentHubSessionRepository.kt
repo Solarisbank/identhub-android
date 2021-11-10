@@ -12,7 +12,7 @@ class IdentHubSessionRepository(
         ) {
 
         fun getSavedIdentificationId(): Single<IdentificationDto> {
-                return identificationRoomDataSource.getIdentificationDto()
+                return identificationRoomDataSource.obtainIdentificationDto()
         }
 
         fun getRequiredIdentificationFlow(url: String): Single<InitializationDto> {

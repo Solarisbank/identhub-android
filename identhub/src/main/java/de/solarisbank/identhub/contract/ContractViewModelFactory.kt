@@ -9,14 +9,14 @@ import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 
 class ContractViewModelFactory(
-    private val contractModule: ContractModule,
+    private val contractUiModule: ContractUiModule,
     private val identificationStepPreferencesProvider: Provider<IdentificationStepPreferences>,
     private val sessionUrlRepositoryProvider: Provider<SessionUrlRepository>,
     private val getIdentificationUseCaseProvider: Provider<GetIdentificationUseCase>
     ) : Factory2<ViewModel, SavedStateHandle> {
 
     override fun create(savedStateHandle: SavedStateHandle): ViewModel {
-        return contractModule.provideContractViewModel(
+        return contractUiModule.provideContractViewModel(
             savedStateHandle, identificationStepPreferencesProvider.get(),
             sessionUrlRepositoryProvider.get(),
             getIdentificationUseCaseProvider.get()
@@ -26,13 +26,13 @@ class ContractViewModelFactory(
     companion object {
         @JvmStatic
         fun create(
-            contractModule: ContractModule,
+            contractUiModule: ContractUiModule,
             identificationStepPreferencesProvider: Provider<IdentificationStepPreferences>,
             sessionUrlRepositoryProvider: Provider<SessionUrlRepository>,
             getIdentificationUseCaseProvider: Provider<GetIdentificationUseCase>
         ): Factory2<ViewModel, SavedStateHandle> {
             return ContractViewModelFactory(
-                contractModule,
+                contractUiModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
                 getIdentificationUseCaseProvider

@@ -7,8 +7,12 @@ import de.solarisbank.sdk.data.repository.IdentificationRepository
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 
-class GetMobileNumberUseCase(private val identificationRepository: IdentificationRepository): SingleUseCase<Unit, MobileNumberDto>() {
+class GetMobileNumberUseCase(
+    private val identificationRepository: IdentificationRepository
+    ): SingleUseCase<Unit, MobileNumberDto>() {
     override fun invoke(param: Unit): Single<NavigationalResult<MobileNumberDto>> {
-        return identificationRepository.getMobileNumber().map { NavigationalResult<MobileNumberDto>(it) }
+        return identificationRepository
+            .getMobileNumber()
+            .map { NavigationalResult(it) }
     }
 }

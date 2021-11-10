@@ -15,7 +15,7 @@ class IdentificationRepository(
         ) {
 
         fun getStoredIdentification(): Single<IdentificationDto> {
-                return identificationRoomDataSource.getIdentificationDto()
+                return identificationRoomDataSource.obtainIdentificationDto()
         }
 
         fun getRemoteIdentificationDto(identificatioId: String): Single<IdentificationDto> {

@@ -2,7 +2,6 @@ package de.solarisbank.identhub.contract.sign
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
@@ -132,7 +131,7 @@ class ContractSigningViewModel(
         return counterFinished
     }
 
-    fun onSubmitButtonClicked(confirmToken: String?) {
+    fun onSubmitButtonClicked(confirmToken: String) {
         Timber.d("onSubmitButtonClicked, confrimToken: $confirmToken")
         stopTimer()
         compositeDisposable.add(

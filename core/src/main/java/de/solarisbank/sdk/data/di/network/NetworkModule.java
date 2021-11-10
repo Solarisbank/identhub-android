@@ -25,7 +25,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 public final class NetworkModule {
     private static final long TIMEOUT = 90L;
 
-    public DynamicBaseUrlInterceptor provideDynamicBaseUrlInterceptor(SessionUrlRepository sessionUrlRepository) {
+    public DynamicBaseUrlInterceptor provideDynamicBaseUrlInterceptor(
+            SessionUrlRepository sessionUrlRepository
+    ) {
         return new DynamicBaseUrlInterceptor(sessionUrlRepository);
     }
 

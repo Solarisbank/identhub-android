@@ -7,11 +7,10 @@ import androidx.lifecycle.ViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.solarisbank.identhub.contract.ContractModule;
+import de.solarisbank.identhub.contract.ContractUiModule;
 import de.solarisbank.identhub.contract.ContractViewModel;
 import de.solarisbank.identhub.contract.ContractViewModelFactory;
 import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
-import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
@@ -23,7 +22,6 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
-import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
 import de.solarisbank.sdk.feature.di.internal.Factory2;
 import de.solarisbank.sdk.feature.di.internal.Provider;
@@ -33,7 +31,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
 
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
-    private final ContractModule contractModule;
+    private final ContractUiModule contractUiModule;
     private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
     private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
@@ -52,7 +50,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
             VerificationBankModule verificationBankModule,
-            ContractModule contractModule
+            ContractUiModule contractUiModule
     ) {
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
         this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
@@ -62,7 +60,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
         this.verificationBankModule = verificationBankModule;
-        this.contractModule = contractModule;
+        this.contractUiModule = contractUiModule;
         this.initializationInfoRepositoryProvider = initializationInfoRepositoryProvider;
     }
 
@@ -83,7 +81,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 initializationInfoRepositoryProvider
         ));
         map.put(ContractViewModel.class, ContractViewModelFactory.create(
-                contractModule,
+                contractUiModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
                 getIdentificationUseCaseProvider

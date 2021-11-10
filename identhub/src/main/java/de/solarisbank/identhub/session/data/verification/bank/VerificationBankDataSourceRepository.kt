@@ -13,7 +13,7 @@ class VerificationBankDataSourceRepository(
     private val identificationLocalDataSource: IdentificationLocalDataSource
 ) : VerificationBankRepository {
     override fun getIdentification(): Single<IdentificationDto> {
-        return identificationLocalDataSource.getIdentificationDto()
+        return identificationLocalDataSource.obtainIdentificationDto()
     }
 
     override fun getVerificationStatus(identificationId: String): Single<IdentificationDto> {

@@ -12,7 +12,7 @@ class IdentificationIdInterceptor(
 
         if (original.url().toString().contains(IDENTIFICATION_ID_STUB)) {
             var updated = ""
-            identificationLocalDataSource.getIdentificationDto().blockingGet()
+            identificationLocalDataSource.obtainIdentificationDto().blockingGet()
                     .let {
                 updated = original.url()
                         .toString()

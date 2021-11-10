@@ -13,7 +13,6 @@ import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.domain.model.result.throwable
-import de.solarisbank.sdk.feature.Optional
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,7 +29,7 @@ class ContractSigningPreviewViewModel(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val documentsResultLiveData: MutableLiveData<Result<List<DocumentDto>>> = MutableLiveData()
     private val identificationResultLiveData: MutableLiveData<Result<IdentificationDto>> = MutableLiveData()
-    private val fetchPdfResultLiveData: MutableLiveData<Result<Optional<File>>> = MutableLiveData()
+    private val fetchPdfResultLiveData: MutableLiveData<Result<File?>> = MutableLiveData()
     private val fetchPdfFilesResultLiveData: MutableLiveData<Result<List<File>>> = MutableLiveData()
 
     fun refreshIdentificationData() {
@@ -81,7 +80,7 @@ class ContractSigningPreviewViewModel(
         return fetchPdfFilesResultLiveData
     }
 
-    fun getFetchPdfResultLiveData(): LiveData<Result<Optional<File>>> {
+    fun getFetchPdfResultLiveData(): LiveData<Result<File?>> {
         return fetchPdfResultLiveData
     }
 

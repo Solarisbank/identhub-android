@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.solarisbank.identhub.contract.ContractModule;
+import de.solarisbank.identhub.contract.ContractUiModule;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModelFactory;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
@@ -52,7 +52,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final CoreModule coreModule;
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
-    private final ContractModule contractModule;
+    private final ContractUiModule contractUiModule;
 
     private final Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider;
     private final Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider;
@@ -75,7 +75,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             CoreModule coreModule,
             IdentityModule identityModule,
             VerificationBankModule verificationBankModule,
-            ContractModule contractModule,
+            ContractUiModule contractUiModule,
             Provider<AuthorizeVerificationPhoneUseCase> authorizeVerificationPhoneUseCaseProvider,
             Provider<ConfirmVerificationPhoneUseCase> confirmVerificationPhoneUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsFromVerificationBankUseCaseProvider,
@@ -96,7 +96,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.coreModule = coreModule;
         this.identityModule = identityModule;
         this.verificationBankModule = verificationBankModule;
-        this.contractModule = contractModule;
+        this.contractUiModule = contractUiModule;
         this.authorizeVerificationPhoneUseCaseProvider = authorizeVerificationPhoneUseCaseProvider;
         this.confirmVerificationPhoneUseCaseProvider = confirmVerificationPhoneUseCaseProvider;
         this.getDocumentsFromVerificationBankUseCaseProvider = getDocumentsFromVerificationBankUseCaseProvider;
@@ -127,8 +127,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             }
         };
 
-        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider, getIdentificationUseCaseProvider, fetchingAuthorizedIBanStatusUseCaseProvider));
-        map.put(ContractSigningViewModel.class, new ContractSigningViewModelFactory(contractModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, identificationPollingStatusUseCaseProvider, getMobileNumberUseCaseProvider));
+        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractUiModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider, getIdentificationUseCaseProvider, fetchingAuthorizedIBanStatusUseCaseProvider));
+        map.put(ContractSigningViewModel.class, new ContractSigningViewModelFactory(contractUiModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, identificationPollingStatusUseCaseProvider, getMobileNumberUseCaseProvider));
         map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(PhoneVerificationViewModel.class, new PhoneVerificationViewModelFactory(identityModule, phoneVerificationUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
