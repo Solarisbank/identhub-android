@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="already_identified_title">Already identified successfully</string>
-    <string name="already_identified_message">Looks like you already identified successfully before. Unfortunately you can\'t identify again.</string>
     <string name="invalid_iban_title">Unfortunately the IBAN you entered is invalid or not supported.</string>
     <string name="invalid_iban_message">The IBAN you provided cannot be used for identification. Please try again.</string>
     <string name="excess_attempts_title">Maximum attempts exceeded</string>

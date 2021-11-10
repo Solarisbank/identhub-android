@@ -67,14 +67,6 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
-    protected fun String.getStringRes(): String{
-        return requireContext().resources.getString(
-                requireContext().resources.getIdentifier(
-                        this, "string", requireContext().packageName
-                )
-        )
-    }
-
     override fun onDestroyView() {
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null

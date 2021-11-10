@@ -20,15 +20,4 @@
         <item name="android:textColor">@color/edittext_color_selector</item>
     </style>
 
-    <style name="IdentHubEditTextOneDigit" parent="Widget.AppCompat.EditText">
-        <item name="android:textColor">@color/edittext_color_selector</item>
-        <item name="android:background">@drawable/edittext_level_list_drawable</item>
-        <item name="android:layout_width">32dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:inputType">number</item>
-        <item name="android:maxLength">1</item>
-        <item name="singleLine">true</item>
-        <item name="android:gravity">center</item>
-    </style>
-
 </resources>

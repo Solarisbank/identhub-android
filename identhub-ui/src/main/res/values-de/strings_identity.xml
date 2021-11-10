@@ -8,7 +8,6 @@
     <string name="identity_activity_first_step_label">Verifizierung der Telefonnummer</string>
     <string name="identity_activity_second_step_label">Überprüfen der Identität</string>
     <string name="identity_activity_third_step_label">Unterzeichnen Sie Ihren Kartenantrag</string>
-    <string name="identity_activity_fourth_step_label">In Bearbeitung</string>
     <string name="identity_activity_next_step">Next: %1$s</string>
     <string name="identity_dialog_fallback_process_negative_button">Verifizieren mit ID</string>
     <string name="identity_dialog_fallback_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>

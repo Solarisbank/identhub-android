@@ -2,12 +2,8 @@
 <resources>
     <string name="contract_signing_preview_title">Nearly there!</string>
     <string name="contract_signing_preview_subtitle">In the following please sign your application by entering the code that will be send to your phone.</string>
-    <string name="contract_signing_preview_description"></string>
-    <string name="contract_signing_preview_description2"></string>
-    <string name="contract_signing_preview_description3"></string>
     <string name="contract_signing_preview_notice">Notice</string>
     <string name="contract_signing_preview_notice_label">View your documents</string>
-    <string name="contract_signing_preview_download_action">Download all documents</string>
     <string name="contract_signing_preview_send_code_action">Send code to sign</string>
     <string name="contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
     <string name="contract_signing_notice_title">You couldn\'t complete the process?</string>
@@ -17,8 +13,6 @@
     <string name="contract_signing_code_expires">Expires in %1$s</string>
     <string name="contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
     <string name="contract_signing_code_request_new_button">Request new code</string>
-    <string name="contract_signing_preview_code_description">Enter the 6-digit code sent to %1$s.</string>
-    <string name="contract_signing_preview_new_code">Send new code</string>
     <string name="contract_signing_preview_sign_action">Submit and sign</string>
     <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
     <string name="contract_signing_terms_label">The T&amp;Cs apply</string>

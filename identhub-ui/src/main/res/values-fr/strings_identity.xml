@@ -8,7 +8,6 @@
     <string name="identity_activity_first_step_label">Vérification du téléphone</string>
     <string name="identity_activity_second_step_label">Vérifier l’identité</string>
     <string name="identity_activity_third_step_label">Signer votre demande</string>
-    <string name="identity_activity_fourth_step_label">Service</string>
     <string name="identity_activity_next_step">Suivant : %1$s</string>
     <string name="identity_dialog_fallback_process_negative_button">Vérifier avec le document d’identité</string>
     <string name="identity_dialog_fallback_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>

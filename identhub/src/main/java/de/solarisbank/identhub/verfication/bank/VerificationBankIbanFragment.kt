@@ -146,11 +146,11 @@ class VerificationBankIbanFragment : IdentHubFragment() {
             is SealedVerificationState.InvalidBankIdError -> {
                 Timber.d("showAlert 1, state.retryAllowed ${state.retryAllowed}")
                 showAlertFragment(
-                        title = state.dialogTitle.getStringRes(),
-                        message = state.dialogMessage.getStringRes(),
+                        title = getString(state.dialogTitleId),
+                        message = getString(state.dialogTitleId),
                         positiveLabel = getString(R.string.invalid_iban_ok_button),
                         positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
-                        negativeLabel = if (state.retryAllowed) state.dialogNegativeLabel.getStringRes() else null,
+                        negativeLabel = if (state.retryAllowed) getString(state.dialogNegativeLabelId) else null,
                         negativeAction = if (state.retryAllowed) ({ retryInputIBan() }) else null,
                         cancelAction =
                         if (state.retryAllowed) ({ retryInputIBan() })
@@ -162,9 +162,9 @@ class VerificationBankIbanFragment : IdentHubFragment() {
             is SealedVerificationState.GenericError -> {
                 Timber.d("showAlert 2")
                 showAlertFragment(
-                        title = state.dialogTitle.getStringRes(),
-                        message = state.dialogMessage.getStringRes(),
-                        positiveLabel = state.dialogPositiveLabel.getStringRes(),
+                        title = getString(state.dialogTitleId),
+                        message = getString(state.dialogMessageId),
+                        positiveLabel = getString(state.dialogPositiveLabelId),
                         positiveAction = { sharedViewModel.callOnFailure() },
                         cancelAction = { sharedViewModel.callOnFailure() }
                 )
@@ -343,10 +343,10 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitle = "generic_error_title"
-        override val dialogMessage = "generic_error_message"
-        override val dialogPositiveLabel = "ok_button"
-        override val dialogNegativeLabel = null
+        override val dialogTitleId = R.string.generic_error_title
+        override val dialogMessageId = R.string.generic_error_message
+        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogNegativeLabelId = null
     }
 
     class InvalidBankIdError(val nextStep: String, val retryAllowed: Boolean) :
@@ -356,10 +356,10 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.VISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitle = "invalid_iban_title"
-        override val dialogMessage = "invalid_iban_message"
-        override val dialogPositiveLabel = "ok_button"
-        override val dialogNegativeLabel = "retry_button"
+        override val dialogTitleId = R.string.invalid_iban_title
+        override val dialogMessageId = R.string.invalid_iban_message
+        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogNegativeLabelId = R.string.retry_button
     }
 
     class AlreadyIdentifiedSuccessfullyError: SealedVerificationState(), ErrorState {
@@ -368,10 +368,10 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitle = "already_identified_title"
-        override val dialogMessage = "already_identified_title"
-        override val dialogPositiveLabel = "ok_button"
-        override val dialogNegativeLabel = null
+        override val dialogTitleId = R.string.already_identified_title
+        override val dialogMessageId = R.string.already_identified_title
+        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogNegativeLabelId = null
     }
 
     class ExceedMaximumAttemptsError: SealedVerificationState(), ErrorState {
@@ -380,9 +380,9 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitle = "excess_attempts_title"
-        override val dialogMessage = "excess_attempts_message"
-        override val dialogPositiveLabel = "ok_button"
-        override val dialogNegativeLabel = null
+        override val dialogTitleId = R.string.excess_attempts_title
+        override val dialogMessageId = R.string.excess_attempts_message
+        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogNegativeLabelId = null
     }
 }

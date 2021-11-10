@@ -18,20 +18,11 @@
         <item name="android:textSize">26sp</item>
     </style>
 
-    <style name="IdentHubTextView.HeadLine24" parent="IdentHubTextView">
-        <item name="android:textSize">24sp</item>
-    </style>
-
     <style name="IdentHubTextView.HeadLine2" parent="IdentHubTextView">
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="IdentHubTextView.HeadLine3" parent="IdentHubTextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="IdentHubTextView.HeadLine15" parent="IdentHubTextView">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -60,10 +51,6 @@
 
     <!-- small -->
 
-    <style name="IdentHubTextView.Small_24">
-        <item name="android:textSize">24sp</item>
-    </style>
-
     <style name="IdentHubTextView.Small_16">
         <item name="android:textSize">16sp</item>
     </style>
@@ -88,28 +75,16 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="IdentHubTextView.Small.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <!-- tiny -->
 
     <style name="IdentHubTextView.Tiny">
         <item name="android:textSize">11sp</item>
     </style>
 
-    <style name="IdentHubTextView.Tiny.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
 
     <!-- error message -->
     <style name="IdentHubTextView.Tiny.Error">
         <item name="android:textColor">@color/ident_hub_color_error</item>
-    </style>
-
-    <style name="IdentHubTextView.Info">
-        <item name="android:textColor">@color/ident_hub_color_info_text</item>
     </style>
 
     <style name="CurrentStepLabelCommon" parent="IdentHubTextView">

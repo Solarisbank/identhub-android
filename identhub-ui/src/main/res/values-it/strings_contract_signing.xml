@@ -4,7 +4,6 @@
     <string name="contract_signing_preview_subtitle">Si prega di firmare la richiesta della carta facendo clic su \"Ricevi e firma codice\" di seguito, quindi inserisci il codice a 4 cifre nell\'apposito campo.</string>
     <string name="contract_signing_preview_notice">Nota</string>
     <string name="contract_signing_preview_notice_label">Visualizza i tuoi documenti qui:</string>
-    <string name="contract_signing_preview_download_action">Visualizza tutti i documenti</string>
     <string name="contract_signing_preview_send_code_action">Ricevi e firma il codice</string>
     <string name="contract_signing_description">Inserisci il codice di verifica inviato al tuo telefono (%1$s).</string>
     <string name="contract_signing_notice_title">Non sei riuscito a completare il processo?</string>

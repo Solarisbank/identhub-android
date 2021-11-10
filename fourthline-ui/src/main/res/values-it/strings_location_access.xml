@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="device_location_title">Posizione del dispositivo</string>
-    <string name="device_location_subtitle">Consenti l\'accesso alla tua posizione</string>
-    <string name="continue_button_text">Continua a caricare</string>
-</resources>

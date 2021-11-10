@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="your_id_document">Elige el tipo de documento</string>
     <string name="document_scanner_retake">Volver a hacer la foto</string>
     <string name="document_scanner_confirm">Confirmar</string>
     <string name="document_scanner_take_picture">Hacer foto</string>
@@ -15,9 +14,6 @@
     <string name="document_scanner_main_text_scan">Escanea o haz o una foto del %1$s de tu documento de identificación.</string>
     <string name="document_scanner_main_text_picture">Haz una %1$foto del %2$s de su documento de identificación.</string>
     <string name="document_scanner_scan_success">Imagen correcta</string>
-    <string name="document_scanner_auto_scan_list_title">Escaneo automático</string>
-    <string name="document_scanner_auto_scan_list_item1">Si el documento es claro y legible, la aplicación hará un escaneo automático</string>
-    <string name="document_scanner_auto_scan_list_item2">Si no funciona, haz un escaneo manual</string>
     <string name="document_scanner_clear_picture_list_title">¿Se ve todo bien?</string>
     <string name="document_scanner_clear_picture_list_item1">¿Se puede leer el texto?</string>
     <string name="document_scanner_clear_picture_list_item2">¿No hay nada que cubra la imagen?</string>

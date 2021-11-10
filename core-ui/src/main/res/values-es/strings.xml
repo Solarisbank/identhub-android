@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="copyright">Desarrollado por</string>
-    <string name="session_expire">Tu sesión está a punto de caducar:</string>
     <string name="identity_dialog_quit_process_title">¿Estás seguro de que deseas abandonar el proceso de registro?</string>
     <string name="identity_dialog_quit_process_message">Tu progreso se perderá. La próxima vez deberás repetir los pasos ya realizados.</string>
     <string name="identity_dialog_quit_process_positive_button">Salir</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="session_expire">Votre session est sur le point d’expirer :</string>
     <string name="identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
     <string name="identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
     <string name="identity_dialog_quit_process_positive_button">Quitter</string>

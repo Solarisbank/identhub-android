@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="device_location_title">Gerätestandort</string>
-    <string name="device_location_subtitle">Bitte erlauben Sie Zugriff auf Ihren Standort</string>
-    <string name="continue_button_text">Weiter zum Upload</string>
-</resources>

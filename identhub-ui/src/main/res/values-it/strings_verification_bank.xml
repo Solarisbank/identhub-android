@@ -4,17 +4,9 @@
     <string name="verification_bank_description">A seconda della funzionalità del tuo conto bancario, verificherai accedendo al tuo online banking o facendo un selfie e scansionando il tuo ID/Passaporto.</string>
     <string name="verification_bank_second_description">Inserisci l\'IBAN del tuo conto bancario e verificheremo l\'opzione migliore per te.</string>
     <string name="verification_bank_encrypted_label">Trasmissione criptata attiva</string>
-    <string name="verification_bank_input_label">Iban</string>
-    <string name="verification_bank_action_submit">Avvia la verifica del pagamento</string>
     <string name="verification_bank_notice_label">Nota</string>
     <string name="verification_bank_notice_value" />
     <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="verification_bank_input_not_valid_message">Il formato IBAN non è valido!</string>
     <string name="verification_bank_action_next_step">Continuare</string>
-    <string name="verification_bank_error_title">Errore di verifica del pagamento</string>
-    <string name="verification_bank_error_message">Purtroppo non siamo stati in grado di elaborare correttamente l\'avvio del pagamento. Per favore riprova. Assicurati di avere fondi sufficienti sul tuo conto e accedi al secondo fattore di sicurezza della tua banca (es. pushTAN, photoTAN, ecc.).</string>
-    <string name="verification_bank_success_title">Verifica del pagamento riuscita</string>
-    <string name="verification_bank_success_message">Continua a firmare i documenti per completare il processo di identificazione.</string>
-    <string name="verification_bank_action_quit">Uscire</string>
-    <string name="verification_bank_action_retry">Riprova la verifica dell\'IBAN</string>
 </resources>

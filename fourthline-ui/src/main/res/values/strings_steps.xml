@@ -3,7 +3,6 @@
     <string name="fourthline_activity_intro_step_label">Verify identity</string>
     <string name="fourthline_activity_selfie_step_label">Take a selfie</string>
     <string name="fourthline_activity_select_id_step_label">Select your ID type</string>
-    <string name="fourthline_activity_scan_document_step_label">Take pictures of your document</string>
     <string name="fourthline_activity_confirm_information_step_label">Confirm information</string>
     <string name="fourthline_activity_verifying_step_label">Verification</string>
 </resources>
