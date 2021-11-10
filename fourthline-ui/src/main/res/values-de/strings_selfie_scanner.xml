@@ -10,11 +10,6 @@
     <string name="selfie_step_scanning">Erkennen…</string>
     <string name="selfie_step_checking_liveness">Lebendigkeitsprüfung…</string>
     <string name="selfie_result_successful">Scan erfolgreich</string>
-    <string name="selfie_not_steady">Handy ist nicht in einer stabilen Position</string>
-    <string name="selfie_face_detected">Gesicht erfolgreich erkannt</string>
-    <string name="selfie_checking_liveliness">Lebendigkeitsprüfung…</string>
-    <string name="selfie_scan_successful">Scan erfolgreich</string>
-    <string name="selfie_scan_error">Fehler beim Scannen</string>
     <string name="selfie_warning_not_detected">Gesicht nicht erkannt</string>
     <string name="selfie_warning_not_in_frame">Gesicht an den Fotorahmen anpassen</string>
     <string name="selfie_warning_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="already_identified_title">Già identificato con successo</string>
-    <string name="already_identified_message">Ti sei già identificato con successo. Pertanto, non puoi identificarti di nuovo.</string>
     <string name="invalid_iban_title">Purtroppo l\'IBAN che hai inserito non è supportato.</string>
     <string name="invalid_iban_message">L\'IBAN inserito non può essere utilizzato per l\'identificazione. Prova un altro IBAN o scegli la verifica con ID.</string>
     <string name="excess_attempts_title">Numero massimo di tentativi di identificazione raggiunto</string>

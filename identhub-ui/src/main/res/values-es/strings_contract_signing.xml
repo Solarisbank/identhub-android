@@ -4,7 +4,6 @@
     <string name="contract_signing_preview_subtitle">A continuación, firma tu solicitud introduciendo el código que enviará a tu teléfono.</string>
     <string name="contract_signing_preview_notice">Aviso</string>
     <string name="contract_signing_preview_notice_label">Visualiza tus documentos</string>
-    <string name="contract_signing_preview_download_action">Descargar todos los documentos</string>
     <string name="contract_signing_preview_send_code_action">Enviar código para firmar</string>
     <string name="contract_signing_description">Se ha enviado un código de verificación a tu teléfono (%1$s). Introduce el código a continuación</string>
     <string name="contract_signing_notice_title">¿No ha podido completar el proceso?</string>
@@ -12,8 +11,6 @@
     <string name="contract_signing_code_expires">Caduca en %1$s</string>
     <string name="contract_signing_code_request_new">El código era incorrecto o inválido.\nSolicita un nuevo código e inténtalo de nuevo.</string>
     <string name="contract_signing_code_request_new_button">Solicitar un nuevo código</string>
-    <string name="contract_signing_preview_code_description">Introducir el código de 6 dígitos enviado a %1$s.</string>
-    <string name="contract_signing_preview_new_code">Enviar nuevo código</string>
     <string name="contract_signing_preview_sign_action">Enviar y firmar</string>
     <string name="contract_signing_preview_transaction_info">El ID de tu operación es %1$s.\nAsegúrate de que es el mismo en el SMS que acabas de recibir.</string>
     <string name="contract_signing_terms_label">Se aplican los Términos y condiciones</string>

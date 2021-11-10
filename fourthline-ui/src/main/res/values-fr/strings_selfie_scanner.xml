@@ -10,11 +10,6 @@
     <string name="selfie_step_scanning">Détection en cours...</string>
     <string name="selfie_step_checking_liveness">Vérification de la preuve de vie...</string>
     <string name="selfie_result_successful">Scan réussi</string>
-    <string name="selfie_not_steady">Appareil instable</string>
-    <string name="selfie_face_detected">Visage détecté \navec succès</string>
-    <string name="selfie_checking_liveliness">Vérification de la preuve de vie...</string>
-    <string name="selfie_scan_successful">Scan réussi</string>
-    <string name="selfie_scan_error">Erreur de scan</string>
     <string name="selfie_warning_not_detected">Visage non détecté</string>
     <string name="selfie_warning_not_in_frame">Ajuster le visage au cadre</string>
     <string name="selfie_warning_too_close">Éloigner le téléphone</string>

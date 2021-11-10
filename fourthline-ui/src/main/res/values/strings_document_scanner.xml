@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="your_id_document">Choose your document type</string>
     <string name="document_scanner_retake">Retake</string>
     <string name="document_scanner_confirm">Confirm</string>
     <string name="document_scanner_take_picture">Take picture</string>
@@ -15,9 +14,6 @@
     <string name="document_scanner_main_text_scan">Please take a scan or picture of the %1$s of your identification document.</string>
     <string name="document_scanner_main_text_picture">Please take a %1$spicture of the %2$s of your identification document.</string>
     <string name="document_scanner_scan_success">Picture successful</string>
-    <string name="document_scanner_auto_scan_list_title">Automatic scan</string>
-    <string name="document_scanner_auto_scan_list_item1">If the document is clear and readable the app will automatically take a scan</string>
-    <string name="document_scanner_auto_scan_list_item2">If it doesn\'t work do a manual scan</string>
     <string name="document_scanner_clear_picture_list_title">Does everything look good?</string>
     <string name="document_scanner_clear_picture_list_item1">Is the text readable?</string>
     <string name="document_scanner_clear_picture_list_item2">Is nothing covering the picture?</string>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="terms_and_condition_title">Términos y condiciones</string>
-    <string name="terms_and_condition_description">Para continuar, lee atentamente y acepta la Declaración de privacidad y los Términos y condiciones</string>
-    <string name="terms_and_condition_action_submit">Continuar</string>
-    <string name="terms_and_condition_checkbox_label">Estoy de acuerdo con la Declaración de privacidad y\nlos Términos y condiciones</string>
-    <string name="terms_and_condition_label">Términos y condiciones</string>
-    <string name="privacy_statement_label">Declaración de privacidad</string>
-</resources>

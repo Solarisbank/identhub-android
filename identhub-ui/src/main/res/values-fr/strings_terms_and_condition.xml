@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="terms_and_condition_title">Conditions générales</string>
-    <string name="terms_and_condition_description">Afin de poursuivre, veuillez lire attentivement et accepter la déclaration de confidentialité et les conditions générales d’utilisation</string>
-    <string name="terms_and_condition_action_submit">Continuer</string>
-    <string name="terms_and_condition_checkbox_label">J’accepte la déclaration de confidentialité et les conditions générales</string>
-    <string name="terms_and_condition_label">Conditions générales</string>
-    <string name="privacy_statement_label">Déclaration de confidentialité</string>
-</resources>

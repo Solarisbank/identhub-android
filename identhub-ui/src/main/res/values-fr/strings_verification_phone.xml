@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="verification_phone_description">Saisir le code à 6 chiffres envoyé à %1$s.</string>
-    <string name="verification_phone_error_message">TAN incorrect. Vous devez demander un nouveau TAN et réessayer.</string>
     <string name="verification_phone_request_code">Demander un nouveau code dans  %1$s.</string>
-    <string name="verification_phone_action_submit">Soumettre le code</string>
-    <string name="verification_phone_action_new_code">Envoyer un nouveau code</string>
     <string name="verification_phone_status_verifying">Vérification en cours...</string>
     <string name="verification_phone_error_title">Erreur de vérification du téléphone</string>
     <string name="verification_phone_error_default_message">Une erreur s’est produite.</string>

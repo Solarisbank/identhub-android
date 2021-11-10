@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="terms_and_condition_title">Termini &amp; Condizioni</string>
-    <string name="terms_and_condition_description">Per procedere, leggere attentamente e accettare l\'Informativa sulla privacy e le politiche sui Termini &amp; Condizioni</string>
-    <string name="terms_and_condition_action_submit">Continua</string>
-    <string name="terms_and_condition_checkbox_label">Accetto l\'Informativa sulla privacy e\nTermini &amp; Condizioni</string>
-    <string name="terms_and_condition_label">Termini &amp; Condizioni</string>
-    <string name="privacy_statement_label">Informativa sulla Privacy</string>
-</resources>

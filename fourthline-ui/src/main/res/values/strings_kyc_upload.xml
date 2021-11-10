@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kyc_upload_button_submit">Continue</string>
     <string name="failure_fraud_headline">Identification failed</string>
     <string name="failure_fraud_message">Unfortunately we could not identify you successfully.</string>
     <string name="failure_fraud_button">OK</string>
@@ -8,13 +7,8 @@
     <string name="failure_no_fraud_message">Something went wrong during your identification. Please try again. Make sure that all pictures are taken with good quality, lighting and that documents are readable.</string>
     <string name="failure_no_fraud_positive">Try again</string>
     <string name="failure_no_fraud_negative">Quit</string>
-    <string name="kyc_upload_verification_title">Verification</string>
     <string name="kyc_upload_verification_subtitle_1">Please wait for the verification of your data.</string>
     <string name="kyc_upload_verification_subtitle_2">The upload may take a couple of minutes.</string>
-    <string name="kyc_upload_verification_button">Continue</string>
-    <string name="kyc_upload_provider_error_title">There was an error uploading your data</string>
-    <string name="kyc_upload_provider_error_subtitle">Unfortunately your data could not be confirmed. Please try again.</string>
-    <string name="kyc_upload_provider_error_button">Retry</string>
     <string name="kyc_upload_generic_error_title">There was an error uploading your data</string>
     <string name="kyc_upload_generic_error_subtitle">Unfortunately your data could not be confirmed. Please try again</string>
     <string name="kyc_upload_generic_error_button">Retry</string>

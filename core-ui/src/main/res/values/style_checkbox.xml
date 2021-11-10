@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="IdentHubPrimaryCheckBox" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:reparentWithOverlay">@style/IdentHubThemeOverlayCheckBox</item>
-    </style>
-
-    <style name="IdentHubThemeOverlayCheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/ident_hub_color_primaryVariant</item>
-        <item name="colorSecondary">@color/ident_hub_color_primaryVariant</item>
-    </style>
 </resources>

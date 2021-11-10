@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="your_id_document">Wählen Sie Ihr Ausweisdokument</string>
     <string name="document_scanner_retake">Wiederholen</string>
     <string name="document_scanner_confirm">Bestätigen</string>
     <string name="document_scanner_take_picture">Foto machen</string>
@@ -15,9 +14,6 @@
     <string name="document_scanner_main_text_scan">Bitte machen Sie einen Scan oder ein Foto von der %1$s Ihres Ausweisdokuments.</string>
     <string name="document_scanner_main_text_picture">Bitte machen Sie ein %1$sFoto von der %2$s Ihres Ausweisdokuments.</string>
     <string name="document_scanner_scan_success">Foto erstellt</string>
-    <string name="document_scanner_auto_scan_list_title">Automatischer Scan</string>
-    <string name="document_scanner_auto_scan_list_item1">Wenn das Dokument gut lesbar ist wird ein automatischer Scan vorgenommen</string>
-    <string name="document_scanner_auto_scan_list_item2">Ein manueller Scan ist auch möglich</string>
     <string name="document_scanner_clear_picture_list_title">Sieht alles gut aus?</string>
     <string name="document_scanner_clear_picture_list_item1">Ist der Text lesbar?</string>
     <string name="document_scanner_clear_picture_list_item2">Wird das Bild durch nichts verdeckt?</string>

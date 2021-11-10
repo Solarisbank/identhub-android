@@ -2,5 +2,4 @@
 <resources>
     <string name="app_name">IdentHub</string>
     <string name="copyright">Fourni par</string>
-    <string name="session_expire">Votre session est sur le point d’expirer :</string>
 </resources>

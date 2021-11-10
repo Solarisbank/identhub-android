@@ -3,7 +3,6 @@
     <string name="location_not_active_title">Errore di posizione</string>
     <string name="location_not_active_message">Abilita posizione</string>
     <string name="enable_location_button">Abilitare</string>
-    <string name="retry_location_button">Ripetere</string>
     <string name="quit_location_button">Uscire</string>
     <string name="location_fetching_error_title">Errore di posizione</string>
     <string name="location_fetching_error_message">La posizione non è stata ottenuta</string>

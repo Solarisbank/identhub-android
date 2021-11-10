@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_title">Bienvenue</string>
     <string name="welcome_page_1_guide_title">Sourire pour la caméra</string>
     <string name="welcome_page_1_guide">« Votre selfie va être comparé avec la photo de votre document d’identité. Ne vous inquiétez pas, il ne verra jamais la lumière du jour, c’est promis ! »</string>
     <string name="welcome_page_2_guide_title">Scanner votre document d’identité</string>

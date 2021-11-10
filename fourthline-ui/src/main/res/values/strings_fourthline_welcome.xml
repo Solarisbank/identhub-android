@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_title">Welcome</string>
     <string name="welcome_page_1_guide_title">Smile for the camera</string>
     <string name="welcome_page_1_guide">"Your selfie will be compared to the one in your ID\ndocument. Don't worry, it's never going to see the\nlight of day, we promise!"</string>
     <string name="welcome_page_2_guide_title">Scan your ID document</string>

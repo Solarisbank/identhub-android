@@ -8,6 +8,5 @@
     <string name="fourthline_doc_scan_issue_future_error">Erreur, la date de délivrance est dans le futur.</string>
     <string name="fourthline_doc_scan_date_past_error">Erreur, la date de délivrance dépasse la date d’expiration</string>
     <string name="fourthline_doc_scan_expiry_past_error">Erreur, la date d’expiration expire dans le passé</string>
-    <string name="fourthline_doc_scan_deriving_error">Il y a eu une erreur dans le calcul des données</string>
     <string name="fourthline_doc_scan_continue_button">Continuer</string>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kyc_upload_button_submit">Continuare</string>
     <string name="failure_fraud_headline">Identificazione fallita</string>
     <string name="failure_fraud_message">Sfortunatamente, non siamo stati in grado di identificarti correttamente.</string>
     <string name="failure_fraud_button">OK</string>
@@ -8,13 +7,8 @@
     <string name="failure_no_fraud_message">Purtroppo qualcosa è andato storto durante la tua identificazione. Per favore riprova. Assicurati che le foto siano state scattate di buona qualità e che i documenti siano leggibili.</string>
     <string name="failure_no_fraud_positive">Riprovare</string>
     <string name="failure_no_fraud_negative">Annulla l\'identificazione</string>
-    <string name="kyc_upload_verification_title">Verifica</string>
     <string name="kyc_upload_verification_subtitle_1">Attendi fino al completamento della verifica dei tuoi dati.</string>
     <string name="kyc_upload_verification_subtitle_2">Il caricamento può richiedere alcuni minuti.</string>
-    <string name="kyc_upload_verification_button">Continuare</string>
-    <string name="kyc_upload_provider_error_title">Qualcosa è andato storto...</string>
-    <string name="kyc_upload_provider_error_subtitle">Purtroppo non abbiamo potuto confermare i tuoi dati. Per favore riprova.</string>
-    <string name="kyc_upload_provider_error_button">Ripetere</string>
     <string name="kyc_upload_generic_error_title">Qualcosa è andato storto...</string>
     <string name="kyc_upload_generic_error_subtitle">Purtroppo non abbiamo potuto confermare i tuoi dati. Per favore riprova.</string>
     <string name="kyc_upload_generic_error_button">Ripetere</string>

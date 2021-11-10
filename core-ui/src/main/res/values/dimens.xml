@@ -12,8 +12,6 @@
     <dimen name="step_round_size">20dp</dimen>
     <dimen name="step_line_margin">6dp</dimen>
 
-    <dimen name="tab_layout_circle_indicator_size">7dp</dimen>
-
     <dimen name="step_indicator_side_margin">50dp</dimen>
     <dimen name="default_button_height">40dp</dimen>
     <dimen name="default_corner_radius">6dp</dimen>

@@ -8,6 +8,5 @@
     <string name="fourthline_doc_scan_issue_future_error">Errore, la data di emissione è nel futuro.</string>
     <string name="fourthline_doc_scan_date_past_error">Errore, la data di emissione è successiva alla data di scadenza</string>
     <string name="fourthline_doc_scan_expiry_past_error">Errore, la data di scadenza è nel passato</string>
-    <string name="fourthline_doc_scan_deriving_error">Errore, i dati non possono essere accettati</string>
     <string name="fourthline_doc_scan_continue_button">Continuare</string>
 </resources>

@@ -8,7 +8,6 @@
     <string name="identity_activity_first_step_label">Verificación telefónica</string>
     <string name="identity_activity_second_step_label">Verificar identidad</string>
     <string name="identity_activity_third_step_label">Firma tu solicitud</string>
-    <string name="identity_activity_fourth_step_label">Procesando</string>
     <string name="identity_activity_next_step">Siguiente: %1$s</string>
     <string name="identity_dialog_fallback_process_negative_button">Verificar con ID</string>
     <string name="identity_dialog_fallback_process_title">¿Estás seguro de que deseas abandonar el proceso de registro?</string>
