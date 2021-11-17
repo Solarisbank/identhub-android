@@ -11,11 +11,19 @@
     <string name="document_scanner_file_side_inside_left">Innenseite links</string>
     <string name="document_scanner_file_side_inside_right">Innenseite rechts</string>
     <string name="document_scanner_file_tilted">angewinkeltes</string>
-    <string name="document_scanner_main_text_scan">Bitte machen Sie einen Scan oder ein Foto von der %1$s Ihres Ausweisdokuments.</string>
-    <string name="document_scanner_main_text_picture">Bitte machen Sie ein %1$sFoto von der %2$s Ihres Ausweisdokuments.</string>
     <string name="document_scanner_scan_success">Foto erstellt</string>
     <string name="document_scanner_clear_picture_list_title">Sieht alles gut aus?</string>
     <string name="document_scanner_clear_picture_list_item1">Ist der Text lesbar?</string>
     <string name="document_scanner_clear_picture_list_item2">Wird das Bild durch nichts verdeckt?</string>
     <string name="document_scanner_clear_picture_list_item3">Sind alle Ecken im Bild sichtbar?</string>
+
+    <string name="document_scanner_side_front_title">Bitte scannen Sie die Vorderseite von Ihrem Ausweisdokument</string>
+    <string name="document_scanner_side_front_angled_title">Bitte scannen Sie die Vorderseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="document_scanner_side_back_title">Bitte scannen Sie die Hinterseite von Ihrem Ausweisdokument</string>
+    <string name="document_scanner_side_back_angled_title">Bitte scannen Sie die Hinterseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="document_scanner_side_inside_left_title">Bitte scannen Sie die linke Innenseite von Ihrem Ausweisdokument</string>
+    <string name="document_scanner_side_inside_left_angled_title">Bitte scannen Sie die linke Innenseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="document_scanner_side_inside_right_title">Bitte scannen Sie die rechte Innenseite von Ihrem Ausweisdokument</string>
+    <string name="document_scanner_side_inside_right_angled_title">Bitte scannen Sie die rechte Innenseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="document_scanner_side_undefined_title">Bitte fotografieren Sie das Dokument</string>
 </resources>

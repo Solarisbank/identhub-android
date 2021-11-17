@@ -11,11 +11,19 @@
     <string name="document_scanner_file_side_inside_left">interior izquierda</string>
     <string name="document_scanner_file_side_inside_right">interior derecha</string>
     <string name="document_scanner_file_tilted">inclinado</string>
-    <string name="document_scanner_main_text_scan">Escanea o haz o una foto del %1$s de tu documento de identificación.</string>
-    <string name="document_scanner_main_text_picture">Haz una %1$foto del %2$s de su documento de identificación.</string>
     <string name="document_scanner_scan_success">Imagen correcta</string>
     <string name="document_scanner_clear_picture_list_title">¿Se ve todo bien?</string>
     <string name="document_scanner_clear_picture_list_item1">¿Se puede leer el texto?</string>
     <string name="document_scanner_clear_picture_list_item2">¿No hay nada que cubra la imagen?</string>
     <string name="document_scanner_clear_picture_list_item3">¿Están todas las esquinas en la imagen?</string>
+
+    <string name="document_scanner_side_front_title">Escanee la parte frontal del documento</string>
+    <string name="document_scanner_side_front_angled_title">Escanee de manera angular la parte frontal del documento</string>
+    <string name="document_scanner_side_back_title">Escanee la parte trasera del documento</string>
+    <string name="document_scanner_side_back_angled_title">Escanee de manera angular la parte trasera del documento</string>
+    <string name="document_scanner_side_inside_left_title">Escanee el interior izquierdo del documento</string>
+    <string name="document_scanner_side_inside_left_angled_title">Escanee de manera angular el interior izquierdo del documento</string>
+    <string name="document_scanner_side_inside_right_title">Escanee el interior derecho del documento</string>
+    <string name="document_scanner_side_inside_right_angled_title">Escanee de manera angular el interior derecho del documento</string>
+    <string name="document_scanner_side_undefined_title">Por favor, tome una foto de su identificación oficial</string>
 </resources>

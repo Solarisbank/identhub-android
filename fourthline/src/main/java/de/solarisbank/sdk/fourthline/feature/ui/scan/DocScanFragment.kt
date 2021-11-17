@@ -198,7 +198,7 @@ class DocScanFragment : DocumentScannerFragment() {
                 isScan = step.isScan(currentDocumentType),
                 tilted = step.isAngled,
                 maskDrawable = step.findMaskDrawable(requireContext()),
-                stepText = step.asString(currentDocumentType, requireContext()),
+                stepText = step.asString(requireContext()),
                 imageResource = step.getImageResource(currentDocumentType)
             )
             punchhole?.punchholeRect = getDocumentDetectionArea()
