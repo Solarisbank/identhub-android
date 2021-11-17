@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
+import com.fourthline.vision.RecordingType
 import com.fourthline.vision.document.*
 import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.feature.customization.*
@@ -128,7 +129,7 @@ class DocScanFragment : DocumentScannerFragment() {
             type = currentDocumentType,
             includeAngledSteps = true,
             debugModeEnabled = false,
-            shouldRecordVideo = true,
+            recordingType = RecordingType.VIDEO_ONLY,
             mrzValidationPolicy = MrzValidationPolicy.STRONG
         )
     }

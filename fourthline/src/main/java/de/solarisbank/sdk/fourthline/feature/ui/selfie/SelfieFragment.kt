@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.fourthline.vision.RecordingType
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.feature.customization.Customization
@@ -90,7 +91,7 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun getConfig(): SelfieScannerConfig {
         return SelfieScannerConfig(
             debugModeEnabled = false,
-            shouldRecordVideo = true,
+            recordingType = RecordingType.VIDEO_ONLY,
             includeManualSelfiePolicy = false,
             livenessCheckType = LivenessCheckType.HEAD_TURN
         )
