@@ -6,6 +6,7 @@ import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.repository.IdentificationRepository
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.model.PollingParametersDto
 import io.reactivex.Observable
 import io.reactivex.Single
 import timber.log.Timber
@@ -14,17 +15,17 @@ import java.util.concurrent.TimeUnit
 class IdentificationPollingStatusUseCase(
     private val identificationRepository: IdentificationRepository,
     override val identityInitializationRepository: IdentityInitializationRepository
-) : SingleUseCase<Unit, IdentificationDto>(), NextStepSelector {
+) : SingleUseCase<PollingParametersDto, IdentificationDto>(), NextStepSelector {
 
-    override fun invoke(param: Unit): Single<NavigationalResult<IdentificationDto>> {
-        return pollIdentificationStatus().map { convertToNavigationalResult(it) }
+    override fun invoke(param: PollingParametersDto): Single<NavigationalResult<IdentificationDto>> {
+        return pollIdentificationStatus(param).map { convertToNavigationalResult(it) }
     }
 
     fun convertToNavigationalResult(identification: IdentificationDto): NavigationalResult<IdentificationDto> {
         return NavigationalResult(identification)
     }
 
-    fun pollIdentificationStatus(): Single<IdentificationDto> {
+    fun pollIdentificationStatus(pollingParametersDto: PollingParametersDto): Single<IdentificationDto> {
         Timber.d("pollIdentificationStatus() 0")
         var count = 0L
         var isResultObtainer = false
@@ -49,7 +50,7 @@ class IdentificationPollingStatusUseCase(
                                 t
                             }
                             .takeWhile { !isResultObtainer }
-                            .doOnNext{ isResultObtainer = checkPollingResultCondition(it) }
+                            .doOnNext{ isResultObtainer = checkPollingResultCondition(it, pollingParametersDto.isConfirmedAcceptable) }
                             .toList()
                             .map {
                                 Timber.d("pollIdentificationStatus(), it.last() ${ it.last().status }")
@@ -63,13 +64,15 @@ class IdentificationPollingStatusUseCase(
                 }
     }
 
-    private fun checkPollingResultCondition(dto: IdentificationDto): Boolean {
+    private fun checkPollingResultCondition(dto: IdentificationDto, isConfirmedAcceptable: Boolean): Boolean {
         Timber.d("checkPollingResultCondition: ${Status.getEnum(dto.status) == Status.IDENTIFICATION_DATA_REQUIRED} ")
+        val currentStatus = Status.getEnum(dto.status)
         return (
-                Status.getEnum(dto.status) == Status.IDENTIFICATION_DATA_REQUIRED)
-                        || (Status.getEnum(dto.status) == Status.AUTHORIZATION_REQUIRED)
-                        || (Status.getEnum(dto.status) == Status.SUCCESSFUL)
-                        || (Status.getEnum(dto.status) == Status.FAILED)
+                 currentStatus == Status.IDENTIFICATION_DATA_REQUIRED)
+                        || (currentStatus == Status.AUTHORIZATION_REQUIRED)
+                        || (currentStatus == Status.SUCCESSFUL)
+                        || (currentStatus == Status.FAILED)
                         || (dto.nextStep != null)
+                || (isConfirmedAcceptable && currentStatus == Status.CONFIRMED)
     }
 }

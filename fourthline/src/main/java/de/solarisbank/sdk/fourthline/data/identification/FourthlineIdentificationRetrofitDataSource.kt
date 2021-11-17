@@ -11,4 +11,8 @@ class FourthlineIdentificationRetrofitDataSource(
         return fourthlineIdentificationApi.postFourthlineIdentication()
     }
 
+    fun postFourthlineSigningIdentication(): Single<IdentificationDto> {
+        return fourthlineIdentificationApi.postFourthlineSigningIdentication()
+    }
+
 }

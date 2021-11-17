@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
@@ -11,7 +12,12 @@ import com.fourthline.vision.document.DocumentScannerStepWarning
 import com.fourthline.vision.selfie.SelfieScannerError
 import com.fourthline.vision.selfie.SelfieScannerStep
 import com.fourthline.vision.selfie.SelfieScannerWarning
+import de.solarisbank.identhub.session.feature.navigation.router.CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY
+import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
+import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
+import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.sdk.feature.extension.boldOccurrenceOf
+import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.text.ParseException
@@ -177,4 +183,14 @@ fun String.streetSuffix(): String? {
         Timber.e(e, "String.streetSuffix()")
     }
     return answer
+}
+
+fun Intent.toFourthlineStepParametersDto(): FourthlineStepParametersDto {
+    return FourthlineStepParametersDto(
+        isFourthlineSigning = getBooleanExtra(IS_FOURTHLINE_SIGNING, false),
+        createIdentificationOnRetry =
+            this.getBooleanExtra(CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY, true),
+        showUploadingScreen = this.getBooleanExtra(SHOW_UPLOADING_SCREEN, true),
+        showStepIndicator = this.getBooleanExtra(SHOW_STEP_INDICATOR, true)
+    )
 }

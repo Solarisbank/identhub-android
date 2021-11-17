@@ -3,6 +3,7 @@ package de.solarisbank.identhub.verfication.bank
 import androidx.lifecycle.SavedStateHandle
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
 import de.solarisbank.identhub.domain.contract.*
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
@@ -50,13 +51,15 @@ class VerificationBankModule {
         authorizeContractSignUseCase: AuthorizeContractSignUseCase,
         confirmContractSignUseCase: ConfirmContractSignUseCase,
         getIdentificationUseCase: IdentificationPollingStatusUseCase,
-        getMobileNumberUseCase: GetMobileNumberUseCase
+        getMobileNumberUseCase: GetMobileNumberUseCase,
+        qesStepParametersRepository: QesStepParametersRepository
     ): ContractSigningViewModel {
         return ContractSigningViewModel(
                 authorizeContractSignUseCase,
                 confirmContractSignUseCase,
                 getIdentificationUseCase,
-                getMobileNumberUseCase
+                getMobileNumberUseCase,
+            qesStepParametersRepository
         )
     }
 

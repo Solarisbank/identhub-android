@@ -11,6 +11,7 @@ import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModelFactory
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -30,12 +31,15 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
     private val locationUseCaseProvider: Provider<LocationUseCase>,
     private val ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
     private val kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
-    private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
+    private val deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
+    private val fourthlineStepParametersUseCaseProvider: Provider<FourthlineStepParametersUseCase>
 ) : Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
 
     override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
         return linkedMapOf(
-                FourthlineViewModel::class.java to FourthlineViewModelFactory.create(fourthlineModule),
+                FourthlineViewModel::class.java to FourthlineViewModelFactory.create(
+                    fourthlineModule, fourthlineStepParametersUseCaseProvider.get()
+                ),
                 TermsAndConditionsViewModel::class.java to TermsAndConditionsViewModelFactory.create(fourthlineModule),
                 WelcomeSharedViewModel::class.java to WelcomeViewModelFactory.create(fourthlineModule),
                 KycSharedViewModel::class.java to KycSharedViewModelFactory.create(
@@ -59,7 +63,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
             locationUseCaseProvider: Provider<LocationUseCase>,
             ipObtainingUseCaseProvider: Provider<IpObtainingUseCase>,
             kycUploadUseCaseProvider: Provider<KycUploadUseCase>,
-            deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
+            deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>,
+            fourthlineStepParametersUseCaseProvider: Provider<FourthlineStepParametersUseCase>
         ): FourthlineSaveStateViewModelMapProvider {
             return FourthlineSaveStateViewModelMapProvider(
                 fourthlineModule,
@@ -68,7 +73,8 @@ internal class FourthlineSaveStateViewModelMapProvider private constructor(
                 locationUseCaseProvider,
                 ipObtainingUseCaseProvider,
                 kycUploadUseCaseProvider,
-                deleteKycInfoUseCaseProvider
+                deleteKycInfoUseCaseProvider,
+                fourthlineStepParametersUseCaseProvider
             )
         }
     }

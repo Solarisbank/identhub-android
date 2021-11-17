@@ -2,6 +2,7 @@ package de.solarisbank.identhub.contract.sign
 
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.contract.ContractUiModule
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
@@ -14,7 +15,8 @@ class ContractSigningViewModelFactory(
     private val authorizeContractSignUseCaseProvider: Provider<AuthorizeContractSignUseCase>,
     private val confirmContractSignUseCaseProvider: Provider<ConfirmContractSignUseCase>,
     private val identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>,
-    private val getMobileNumberUseCaseProvider: Provider<GetMobileNumberUseCase>
+    private val getMobileNumberUseCaseProvider: Provider<GetMobileNumberUseCase>,
+    private val qesStepParametersRepositoryProvider: Provider<QesStepParametersRepository>
 ) : Factory<ViewModel> {
 
     override fun get(): ViewModel {
@@ -22,7 +24,8 @@ class ContractSigningViewModelFactory(
             authorizeContractSignUseCaseProvider.get(),
             confirmContractSignUseCaseProvider.get(),
             identificationPollingStatusUseCaseProvider.get(),
-            getMobileNumberUseCaseProvider.get()
+            getMobileNumberUseCaseProvider.get(),
+            qesStepParametersRepositoryProvider.get()
         )
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
@@ -12,6 +13,7 @@ import de.solarisbank.identhub.progress.DefaultCountDownTimer
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.data.entity.CountDownTime
+import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.succeeded
@@ -27,7 +29,8 @@ class ContractSigningViewModel(
     private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
     private val confirmContractSignUseCase: ConfirmContractSignUseCase,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-    private val getMobileNumberUseCase: GetMobileNumberUseCase
+    private val getMobileNumberUseCase: GetMobileNumberUseCase,
+    private val qesStepParametersRepository: QesStepParametersRepository
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val countDownTimeEventLiveData: MutableLiveData<Event<CountDownTime>> = MutableLiveData()
@@ -136,7 +139,15 @@ class ContractSigningViewModel(
         stopTimer()
         compositeDisposable.add(
                 confirmContractSignUseCase.execute(confirmToken)
-                    .andThen(identificationPollingStatusUseCase.execute(Unit))
+                    .andThen(
+                        identificationPollingStatusUseCase.execute(
+                            PollingParametersDto(
+                                qesStepParametersRepository
+                                    .getQesStepParameters()!!
+                                    .isFourthlineSigning
+                            )
+                        )
+                    )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

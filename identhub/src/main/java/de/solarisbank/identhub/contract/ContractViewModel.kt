@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
+import de.solarisbank.identhub.data.dto.QesStepParametersDto
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
@@ -23,7 +25,8 @@ class ContractViewModel(
     savedStateHandle: SavedStateHandle,
     private val identificationStepPreferences: IdentificationStepPreferences,
     sessionUrlRepository: SessionUrlRepository,
-    private val getIdentificationUseCase: GetIdentificationUseCase
+    private val getIdentificationUseCase: GetIdentificationUseCase,
+    private val qesStepParametersUseCase: QesStepParametersUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val navigationActionId = MutableLiveData<Event<NaviDirection>>()
@@ -32,6 +35,10 @@ class ContractViewModel(
         if (savedStateHandle.contains(IdentHub.SESSION_URL_KEY)) {
             sessionUrlRepository.save(savedStateHandle.get<String>(IdentHub.SESSION_URL_KEY))
         }
+    }
+
+    fun saveQesStepParameters(qesStepParametersDto: QesStepParametersDto) {
+        qesStepParametersUseCase.saveParameters(qesStepParametersDto)
     }
 
     fun getNaviDirectionEvent(): LiveData<Event<NaviDirection>> {

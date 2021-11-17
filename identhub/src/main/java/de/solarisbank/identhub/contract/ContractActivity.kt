@@ -1,16 +1,21 @@
 package de.solarisbank.identhub.contract
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubActivity
+import de.solarisbank.identhub.data.dto.QesStepParametersDto
 import de.solarisbank.identhub.di.IdentHubActivitySubcomponent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
+import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
+import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import timber.log.Timber
@@ -26,6 +31,14 @@ class ContractActivity : IdentHubActivity() {
         initGraph()
         initView()
         observeViewModel()
+        viewModel.saveQesStepParameters(intent.toQesStepParameters())
+    }
+
+    private fun Intent.toQesStepParameters(): QesStepParametersDto {
+        return QesStepParametersDto(
+            isFourthlineSigning = getBooleanExtra(IS_FOURTHLINE_SIGNING, false),
+            showStepIndicator = this.getBooleanExtra(SHOW_STEP_INDICATOR, true)
+        )
     }
 
     fun initGraph() {
@@ -37,6 +50,11 @@ class ContractActivity : IdentHubActivity() {
 
     private fun initView() {
         solarisIndicator = findViewById(R.id.stepIndicator)
+        if (intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)) {
+            solarisIndicator.visibility = View.VISIBLE
+        } else {
+            solarisIndicator.visibility = View.GONE
+        }
         solarisIndicator.setCurrentStepLabel("Sign documents") //todo create ticket for translation
         solarisIndicator.setPassedStep(3)
         setTitle(R.string.identity_activity_third_step_label)

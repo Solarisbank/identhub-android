@@ -13,6 +13,7 @@ import de.solarisbank.identhub.contract.ContractViewModelFactory;
 import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
@@ -39,6 +40,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
     private final Provider<SessionUrlRepository> sessionUrlRepositoryProvider;
     private final Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
+    private final Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
 
     public SaveStateViewModelMapProvider(
             Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider,
@@ -50,7 +52,9 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
             VerificationBankModule verificationBankModule,
-            ContractUiModule contractUiModule
+            ContractUiModule contractUiModule,
+            Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider
+
     ) {
         this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
         this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
@@ -62,6 +66,7 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.verificationBankModule = verificationBankModule;
         this.contractUiModule = contractUiModule;
         this.initializationInfoRepositoryProvider = initializationInfoRepositoryProvider;
+        this.qesStepParametersUseCaseProvider = qesStepParametersUseCaseProvider;
     }
 
     @Override
@@ -84,7 +89,8 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
                 contractUiModule,
                 identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
-                getIdentificationUseCaseProvider
+                getIdentificationUseCaseProvider,
+                qesStepParametersUseCaseProvider
         ));
 
         return map;

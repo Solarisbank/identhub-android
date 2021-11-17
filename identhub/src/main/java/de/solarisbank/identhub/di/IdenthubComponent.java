@@ -21,6 +21,10 @@ import de.solarisbank.identhub.contract.sign.ContractSigningFragmentInjector;
 import de.solarisbank.identhub.data.contract.ContractSignApi;
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource;
 import de.solarisbank.identhub.data.contract.ContractSignRepository;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersDataSource;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersDataSourceFactory;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepositoryFactory;
 import de.solarisbank.identhub.data.di.contract.ContractSignModule;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
@@ -29,6 +33,8 @@ import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase;
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase;
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCaseFactory;
 import de.solarisbank.identhub.domain.di.contract.AuthorizeContractSignUseCaseFactory;
 import de.solarisbank.identhub.domain.di.contract.ConfirmContractSignUseCaseFactory;
 import de.solarisbank.identhub.domain.di.contract.FetchPdfUseCaseFactory;
@@ -152,6 +158,10 @@ public class IdenthubComponent {
 
     private Provider<CustomizationRepository> customizationRepositoryProvider;
     private Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
+
+    private Provider<QesStepParametersDataSource> qesStepParametersDataSourceProvider;
+    private Provider<QesStepParametersRepository> qesStepParametersRepositoryProvider;
+    private Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
 
     private Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptorProvider;
     private Provider<CallAdapter.Factory> rxJavaCallAdapterFactoryProvider;
@@ -419,6 +429,12 @@ public class IdenthubComponent {
             this.fileControllerProvider = DoubleCheck.provider(FileControllerFactory.create(contextProvider));
             this.fetchPdfUseCaseProvider = FetchPdfUseCaseFactory.create(contractSignRepositoryProvider, fileControllerProvider);
 
+            qesStepParametersDataSourceProvider =
+                    DoubleCheck.provider(QesStepParametersDataSourceFactory.Companion.create());
+            qesStepParametersRepositoryProvider =
+                    DoubleCheck.provider(QesStepParametersRepositoryFactory.Companion.create(qesStepParametersDataSourceProvider.get()));
+            qesStepParametersUseCaseProvider = DoubleCheck.provider(QesStepParametersUseCaseFactory.Companion.create(qesStepParametersRepositoryProvider.get()));
+
             identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()));
             identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
             mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get());
@@ -452,7 +468,8 @@ public class IdenthubComponent {
                     initializationInfoRepositoryProvider,
                     authorizeContractSignUseCaseProvider,
                     confirmContractSignUseCaseProvider,
-                    getMobileNumberUseCaseProvider
+                    getMobileNumberUseCaseProvider,
+                    qesStepParametersRepositoryProvider
             );
             this.saveStateViewModelMapProvider = new SaveStateViewModelMapProvider(
                     deleteAllLocalStorageUseCaseProvider,
@@ -464,7 +481,8 @@ public class IdenthubComponent {
                     identificationStepPreferencesProvider,
                     IdenthubComponent.this.sessionUrlRepositoryProvider,
                     IdenthubComponent.this.verficationBankModule,
-                    IdenthubComponent.this.contractUiModule
+                    IdenthubComponent.this.contractUiModule,
+                    IdenthubComponent.this.qesStepParametersUseCaseProvider
             );
             this.assistedViewModelFactoryProvider = DoubleCheck.provider(ActivitySubModuleAssistedViewModelFactory.create(IdenthubComponent.this.activitySubModule, mapOfClassOfAndProviderOfViewModelProvider, saveStateViewModelMapProvider));
         }
