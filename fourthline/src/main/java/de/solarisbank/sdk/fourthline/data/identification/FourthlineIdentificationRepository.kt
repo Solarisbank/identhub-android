@@ -13,8 +13,12 @@ class FourthlineIdentificationRepository(
     private val personDataDataSource: PersonDataDataSource
         ) {
 
-    fun postFourthlineIdentication(): Single<IdentificationDto> {
+    fun postFourthlineSimplifiedIdentication(): Single<IdentificationDto> {
         return fourthlineIdentificationRetrofitDataSource.postFourthlineIdentication()
+    }
+
+    fun postFourthlineSigningIdentication(): Single<IdentificationDto> {
+        return fourthlineIdentificationRetrofitDataSource.postFourthlineSigningIdentication()
     }
 
     fun save(identificationDto: IdentificationDto): Completable {

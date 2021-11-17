@@ -6,6 +6,7 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
@@ -22,7 +23,7 @@ class ProcessingVerificationUseCase(
     override fun invoke(iban: String): Single<NavigationalResult<ProcessingVerificationDto>> {
         Timber.d("invoke")
         return identificationPollingStatusUseCase
-                .execute(Unit)
+                .execute(PollingParametersDto())
                 .map {
                     Timber.d("processing identification: $it")
                     var processingVerificationDto: ProcessingVerificationDto? = null

@@ -10,15 +10,24 @@ import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
+import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_IDENTIFICATION_SUCCESSFULL
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
 import timber.log.Timber
 import java.util.*
 
-class FourthlineViewModel (private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class FourthlineViewModel (
+    private val savedStateHandle: SavedStateHandle,
+    private val fourthlineStepParametersUseCase: FourthlineStepParametersUseCase
+    ) : ViewModel() {
 
     private val _navigationActionId = MutableLiveData<Event<NaviDirection>>()
     val navigationActionId = _navigationActionId as LiveData<Event<NaviDirection>>
+
+    fun saveFourthlineStepParameters(fourthlineStepParametersDto: FourthlineStepParametersDto) {
+        fourthlineStepParametersUseCase.saveParameters(fourthlineStepParametersDto)
+    }
 
     fun navigateFromPassingPossibilityToTcFragment() {
         navigateTo(R.id.action_passingPossibilityFragment_to_termsAndConditionsFragment)

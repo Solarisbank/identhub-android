@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
+import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
@@ -28,6 +29,7 @@ import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
 import de.solarisbank.sdk.fourthline.hide
 import de.solarisbank.sdk.fourthline.show
+import de.solarisbank.sdk.fourthline.toFourthlineStepParametersDto
 import timber.log.Timber
 
 class FourthlineActivity : FourthlineBaseActivity() {
@@ -43,20 +45,29 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun inject(activitySubcomponent: FourthlineActivitySubcomponent) {
         activitySubcomponent.inject(this)
     }
+    private var showStepIndicator: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fourthline)
         Timber.d("intent: $intent")
-        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
+        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY):" +
+                " ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
         observeViewModel()
         initGraph()
+        viewModel.saveFourthlineStepParameters(intent.toFourthlineStepParametersDto())
     }
 
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
         stepIndicator = findViewById(R.id.stepIndicator)
+        showStepIndicator = intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)
+        if (showStepIndicator) {
+            stepIndicator.visibility = View.VISIBLE
+        } else {
+            stepIndicator.visibility = View.GONE
+        }
         stepIndicator.setCurrentStepLabel("ID verification")
         stepIndicator.setPassedStep(3)
     }
@@ -79,7 +90,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     R.id.selfieResultFragment -> {
                         toggleTopBars(show = false)
                     }
-                    else -> toggleTopBars(show = true)
+                    else -> toggleTopBars(show = (showStepIndicator))
                 }
         }
     }
@@ -92,8 +103,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
+        Timber.d("onNewIntent, intent : $intent")
         super.onNewIntent(intent)
-
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {

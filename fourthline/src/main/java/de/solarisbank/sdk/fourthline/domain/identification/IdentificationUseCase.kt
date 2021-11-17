@@ -8,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 class IdentificationUseCase(val fourthlineIdentificationRepository: FourthlineIdentificationRepository) : CompletableUseCase<Unit> {
 
     override fun execute(param: Unit): Completable {
-        return fourthlineIdentificationRepository.postFourthlineIdentication()
+        return fourthlineIdentificationRepository.postFourthlineSimplifiedIdentication()
                 .flatMapCompletable { identificationDto -> fourthlineIdentificationRepository.save(identificationDto)}
                 .observeOn(AndroidSchedulers.mainThread())
     }

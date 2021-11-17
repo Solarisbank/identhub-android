@@ -66,6 +66,10 @@ import de.solarisbank.sdk.fourthline.data.location.LocationDataSourceFactory
 import de.solarisbank.sdk.fourthline.data.location.LocationRepository
 import de.solarisbank.sdk.fourthline.data.location.LocationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.network.IdentificationIdInterceptor
+import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersDataSource
+import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersDataSourceFactory
+import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersRepository
+import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersRepositoryFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
@@ -75,6 +79,8 @@ import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCaseFactory
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
+import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
+import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCaseFactory
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivityInjector
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultFragment
@@ -120,6 +126,10 @@ class FourthlineComponent private constructor(
     private lateinit var moshiConverterFactoryProvider: Provider<MoshiConverterFactory>
     private lateinit var okHttpClientProvider: Provider<OkHttpClient>
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
+
+    private lateinit var fourthlineStepParametersDataSourceProvider: Provider<FourthlineStepParametersDataSource>
+    private lateinit var fourthlineStepParametersRepositoryProvider: Provider<FourthlineStepParametersRepository>
+    private lateinit var fourthlineStepParametersUseCaseProvider: Provider<FourthlineStepParametersUseCase>
 
     private lateinit var fourthlineIdentificationApiProvider: Provider<FourthlineIdentificationApi>
     private lateinit var fourthlineIdentificationRetrofitDataSourceProvider: Provider<FourthlineIdentificationRetrofitDataSource>
@@ -174,7 +184,9 @@ class FourthlineComponent private constructor(
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
-        sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
+        sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(
+            sessionModule, sessionUrlLocalDataSourceProvider
+        ))
 
         sharedPreferencesProvider = DoubleCheck.provider(object :
             Factory<SharedPreferences> {
@@ -182,6 +194,18 @@ class FourthlineComponent private constructor(
                 return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
             }
         })
+
+        fourthlineStepParametersDataSourceProvider = DoubleCheck.provider(
+            FourthlineStepParametersDataSourceFactory.create())
+        fourthlineStepParametersRepositoryProvider = DoubleCheck.provider(
+            FourthlineStepParametersRepositoryFactory.create(
+                fourthlineStepParametersDataSourceProvider.get()
+            )
+        )
+        fourthlineStepParametersUseCaseProvider =
+            DoubleCheck.provider(FourthlineStepParametersUseCaseFactory.create(
+                fourthlineStepParametersRepositoryProvider.get()
+            ))
         identitySharedPrefsDataSourceProvider = DoubleCheck.provider(
             IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
         identityInitializationRepositoryProvider = DoubleCheck.provider(
@@ -281,8 +305,9 @@ class FourthlineComponent private constructor(
             Factory<PersonDataUseCase> {
             override fun get(): PersonDataUseCase {
                 return PersonDataUseCase(
-                        fourthlineIdentificationRepositoryProvider.get(),
-                        sessionUrlLocalDataSourceProvider.get()
+                    fourthlineIdentificationRepositoryProvider.get(),
+                    sessionUrlLocalDataSourceProvider.get(),
+                    fourthlineStepParametersRepositoryProvider.get()
                 )
             }
         })
@@ -336,7 +361,8 @@ class FourthlineComponent private constructor(
                     locationUseCaseProvider,
                     ipObtainingUseCaseProvider,
                     kycUploadUseCaseProvider,
-                    deleteKycInfoUseCaseProvider
+                    deleteKycInfoUseCaseProvider,
+                    fourthlineStepParametersUseCaseProvider
                 )
         private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
                 DoubleCheck.provider(FourthlineViewModelMapProvider(coreModule, customizationRepositoryProvider))

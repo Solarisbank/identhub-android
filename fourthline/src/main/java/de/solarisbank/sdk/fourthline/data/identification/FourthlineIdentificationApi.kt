@@ -8,5 +8,8 @@ interface FourthlineIdentificationApi {
 
     @POST("/fourthline_identification")
     fun postFourthlineIdentication(): Single<IdentificationDto>
-    
+
+    @POST("/fourthline_signing")
+    fun postFourthlineSigningIdentication(): Single<IdentificationDto>
+
 }

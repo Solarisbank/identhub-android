@@ -4,6 +4,7 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.domain.NextStepSelector
+import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.Type
 import de.solarisbank.sdk.domain.model.result.data
@@ -35,7 +36,7 @@ class KycUploadUseCase  (
     }
 
     private fun pollKycProcessingResult(): Single<KycUploadStatusDto> {
-        return identificationPollingStatusUseCase.pollIdentificationStatus()
+        return identificationPollingStatusUseCase.pollIdentificationStatus(PollingParametersDto())
             .map {
                 deleteKycInfoUseCase.clearPersonDataCaches()
                 NavigationalResult(it)

@@ -11,6 +11,7 @@ import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModel;
 import de.solarisbank.identhub.contract.preview.ContractSigningPreviewViewModelFactory;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModel;
 import de.solarisbank.identhub.contract.sign.ContractSigningViewModelFactory;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
@@ -70,6 +71,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
     private final Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
     private final Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
     private final Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider;
+    private final Provider<QesStepParametersRepository> qesStepParametersRepositoryProvider;
 
     public ViewModelMapProvider(
             CoreModule coreModule,
@@ -91,7 +93,8 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
             Provider<InitializationInfoRepository> initializationInfoRepositoryProvider,
             Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider,
             Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider,
-            Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider
+            Provider<GetMobileNumberUseCase> getMobileNumberUseCaseProvider,
+            Provider<QesStepParametersRepository> qesStepParametersRepositoryProvider
     ) {
         this.coreModule = coreModule;
         this.identityModule = identityModule;
@@ -113,6 +116,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         this.authorizeContractSignUseCaseProvider = authorizeContractSignUseCaseProvider;
         this.confirmContractSignUseCaseProvider = confirmContractSignUseCaseProvider;
         this.getMobileNumberUseCaseProvider = getMobileNumberUseCaseProvider;
+        this.qesStepParametersRepositoryProvider = qesStepParametersRepositoryProvider;
     }
 
     @Override
@@ -123,16 +127,38 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
         Provider<PhoneVerificationUseCase> phoneVerificationUseCaseProvider = new Provider<PhoneVerificationUseCase>() {
             @Override
             public PhoneVerificationUseCase get() {
-                return new PhoneVerificationUseCaseImpl(authorizeVerificationPhoneUseCaseProvider.get(), confirmVerificationPhoneUseCaseProvider.get(), getMobileNumberUseCaseProvider.get());
+                return new PhoneVerificationUseCaseImpl(
+                        authorizeVerificationPhoneUseCaseProvider.get(),
+                        confirmVerificationPhoneUseCaseProvider.get(),
+                        getMobileNumberUseCaseProvider.get()
+                );
             }
         };
 
-        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(contractUiModule, getDocumentsFromVerificationBankUseCaseProvider, fetchPdfUseCaseProvider, getIdentificationUseCaseProvider, fetchingAuthorizedIBanStatusUseCaseProvider));
-        map.put(ContractSigningViewModel.class, new ContractSigningViewModelFactory(contractUiModule, authorizeContractSignUseCaseProvider, confirmContractSignUseCaseProvider, identificationPollingStatusUseCaseProvider, getMobileNumberUseCaseProvider));
+        map.put(ContractSigningPreviewViewModel.class, ContractSigningPreviewViewModelFactory.create(
+                contractUiModule,
+                getDocumentsFromVerificationBankUseCaseProvider,
+                fetchPdfUseCaseProvider,
+                getIdentificationUseCaseProvider,
+                fetchingAuthorizedIBanStatusUseCaseProvider
+        ));
+        map.put(ContractSigningViewModel.class, new ContractSigningViewModelFactory(
+                contractUiModule,
+                authorizeContractSignUseCaseProvider,
+                confirmContractSignUseCaseProvider,
+                identificationPollingStatusUseCaseProvider,
+                getMobileNumberUseCaseProvider,
+                qesStepParametersRepositoryProvider
+        ));
         map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(PhoneVerificationViewModel.class, new PhoneVerificationViewModelFactory(identityModule, phoneVerificationUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
-        map.put(VerificationBankIbanViewModel.class, new VerificationBankIbanViewModelFactory(verificationBankModule, verifyIBanUseCaseProvider, bankIdPostUseCaseProvider, initializationInfoRepositoryProvider));
+        map.put(VerificationBankIbanViewModel.class, new VerificationBankIbanViewModelFactory(
+                verificationBankModule,
+                verifyIBanUseCaseProvider,
+                bankIdPostUseCaseProvider,
+                initializationInfoRepositoryProvider
+        ));
         map.put(ProcessingVerificationViewModel.class, ProcessingVerificationViewModelFactory.create(verificationBankModule, processingVerificationUseCaseProvider));
         map.put(AlertViewModel.class, new AlertViewModelFactory(coreModule, customizationRepositoryProvider));
 

@@ -6,12 +6,14 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
+import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersRepository
 import io.reactivex.Single
 import timber.log.Timber
 
 class PersonDataUseCase(
         private val fourthlineIdentificationRepository: FourthlineIdentificationRepository,
-        private val sessionUrlLocalDataSource: SessionUrlLocalDataSource
+        private val sessionUrlLocalDataSource: SessionUrlLocalDataSource,
+        private val fourthlineStepParametersRepository: FourthlineStepParametersRepository
 ) : SingleUseCase<String, PersonDataDto>() {
 
 
@@ -23,10 +25,14 @@ class PersonDataUseCase(
 
         return fourthlineIdentificationRepository.getLastSavedLocalIdentification()
             .map { entity ->
-                if (isIdentificationIdCreationRequired(entity)) {
-                    return@map passFourthlineIdentificationCreation().blockingGet()
+                if (!fourthlineStepParametersRepository.getFourthlineStepParameters()!!.isFourthlineSigning) {
+                    if (isIdentificationIdCreationRequired(entity)) {
+                        return@map passFourthlineIdentificationCreation().blockingGet()
+                    } else {
+                        return@map entity.id
+                    }
                 } else {
-                    return@map entity.id
+                    return@map passFourthlineIdentificationCreation().blockingGet()
                 }
             }
             .onErrorResumeNext { passFourthlineIdentificationCreation() }
@@ -40,8 +46,12 @@ class PersonDataUseCase(
 
     private fun passFourthlineIdentificationCreation(): Single<String> {
         Timber.d("passFourthlineIdentificationCreation()")
-        return fourthlineIdentificationRepository.postFourthlineIdentication()
-                .map { identificationDto ->
+        return if (!fourthlineStepParametersRepository.getFourthlineStepParameters()!!.isFourthlineSigning) {
+            fourthlineIdentificationRepository.postFourthlineSimplifiedIdentication()
+        } else {
+            fourthlineIdentificationRepository.postFourthlineSigningIdentication()
+        }
+            .map { identificationDto ->
                     Timber.d("passFourthlineIdentificationCreation(), identificationDto: $identificationDto")
                     fourthlineIdentificationRepository
                             .save(identificationDto).blockingGet()
