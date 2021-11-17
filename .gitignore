@@ -23,6 +23,7 @@ build/
 
 #Application secrets
 secret.properties
+secret_test.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
