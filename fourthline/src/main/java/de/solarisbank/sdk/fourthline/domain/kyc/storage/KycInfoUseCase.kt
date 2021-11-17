@@ -103,7 +103,9 @@ class KycInfoUseCase(
         val providerValidationError = kycInfo.provider.validate()
         val metadataValidationError = kycInfo.metadata?.validate()
         val selfieValidationError = kycInfo.selfie?.validate()
-        val secondaryValidationError = kycInfo.secondaryDocument?.validate()
+        val secondaryValidationError = kycInfo.secondaryDocuments
+            .map { it.validate() }
+            .flatten()
         val contactsValidationError = kycInfo.contacts.validate()
         val addressValidationError = kycInfo.address?.validate()
 

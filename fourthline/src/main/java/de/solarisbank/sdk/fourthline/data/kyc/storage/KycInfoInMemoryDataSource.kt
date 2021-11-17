@@ -11,7 +11,6 @@ import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
-import de.solarisbank.sdk.fourthline.parseDateFromMrtd
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import de.solarisbank.sdk.fourthline.streetNumber
 import de.solarisbank.sdk.fourthline.streetSuffix
@@ -192,7 +191,7 @@ class KycInfoInMemoryDataSource {
                     images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
                     videoUrl = result.videoUrl,
                     number = mrtd?.documentNumber,
-                    expirationDate = mrtd?.expirationDate?.parseDateFromMrtd(),
+                    expirationDate = mrtd?.expirationDate,
                     type = docType
             )
         } finally {
@@ -212,7 +211,7 @@ class KycInfoInMemoryDataSource {
             kycInfo.person.apply {
                 val recognizedFirstNames = mrtd?.firstNames?.joinToString(separator = " ")
                 val recognizedLastNames = mrtd?.lastNames?.joinToString(separator = " ")
-                val recognizedBirthDate = mrtd?.birthDate?.parseDateFromMrtd()
+                val recognizedBirthDate = mrtd?.birthDate
                 Timber.d("updateKycPerson : " +
                         "\nrecognizedFirstNames: $recognizedFirstNames}" +
                         "\nrecognizedLastNames: $recognizedLastNames" +
