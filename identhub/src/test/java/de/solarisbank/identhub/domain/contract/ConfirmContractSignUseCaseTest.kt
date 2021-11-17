@@ -25,7 +25,7 @@ class ConfirmContractSignUseCaseTest : StringSpec({
     val confrim200reponse = "{" +
             "\"id\":\"6ad408f69edcbdea630d30950d354287cidt\"," +
             "\"reference\":null," +
-            "\"url\":\"https://solarisbank.de/index.html?wizard_session_key=89wzh5W8qrAgD7ItRMpewEEwUnJTu2FWpZQE2NqY\\u0026interface_id=31de\"," +
+            "\"url\":\"https://solarisbank.com/index.html?wizard_session_key=89wzh5W8qrAgD7ItRMpewEEwUnJTu2FWpZQE2NqY\\u0026interface_id=31de\"," +
             "\"status\":\"confirmed\"," +
             "\"completed_at\":null," +
             "\"method\":\"bank\"," +

@@ -24,7 +24,7 @@ class VerifyIBanUseCaseTest : StringSpec({
         "{" +
             "\"id\":\"42c5fb2dd03b3c1e74e876e3e3eb0feacidt\"," +
             "\"reference\":null," +
-            "\"url\":\"https://solarisbank.de" +
+            "\"url\":\"https://solarisbank.com" +
                 "/index.html?wizard_session_key=a4cEiyJ0Z4nitZW90LtEqV8eNGIvNQaS4yAKBBtE\\u0026interface_id=31de\"," +
             "\"status\":\"pending\"," +
             "\"completed_at\":null,\"method\":\"bank\"," +
@@ -39,7 +39,7 @@ class VerifyIBanUseCaseTest : StringSpec({
         "{" +
             "\"id\":\"05c82a36cb2718e19fecb7b590d4ae0ecidt\"," +
             "\"reference\":null," +
-            "\"url\":\"https://solarisbank.de" +
+            "\"url\":\"https://solarisbank.com" +
                 "/index.html?wizard_session_key=CVPZGMeVhQNPBLvEy5W5CHLzKe9q0oWnivede0y5\u0026interface_id=31de\","+
             "\"status\":\"pending\"," +
             "\"completed_at\":null," +
@@ -146,7 +146,7 @@ class VerifyIBanUseCaseTest : StringSpec({
                 as IbanVerificationModel.IbanVerificationSuccessful)
         ibanVerificationSuccessful.bankIdentificationUrl should
                 startWith(
-                    "https://solarisbank.de/index.html?wizard_session_key=a4cEiyJ0Z4ni"
+                    "https://solarisbank.com/index.html?wizard_session_key=a4cEiyJ0Z4ni"
                 )
         ibanVerificationSuccessful.nextStep shouldBe null
 
