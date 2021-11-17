@@ -16,7 +16,6 @@ import de.solarisbank.identhub.session.feature.navigation.router.CREATE_FOURTHLI
 import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
 import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
-import de.solarisbank.sdk.feature.extension.boldOccurrenceOf
 import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -100,26 +99,28 @@ fun DocumentScannerError.asString(context: Context) = when (this) {
     DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
 }
 
-fun DocumentScannerStep.asString(docType: DocumentType, context: Context): CharSequence {
-    val side = when (fileSide) {
-        DocumentFileSide.FRONT -> context.resources.getString(R.string.document_scanner_file_side_front)
-        DocumentFileSide.BACK -> context.resources.getString(R.string.document_scanner_file_side_back)
-        DocumentFileSide.INSIDE_LEFT -> context.resources.getString(R.string.document_scanner_file_side_inside_left)
-        DocumentFileSide.INSIDE_RIGHT -> context.resources.getString(R.string.document_scanner_file_side_inside_right)
+fun DocumentScannerStep.asString(context: Context): CharSequence {
+    val resource = when(fileSide) {
+        DocumentFileSide.FRONT -> {
+            if (isAngled) R.string.document_scanner_side_front_angled_title
+            else R.string.document_scanner_side_front_title
+        }
+        DocumentFileSide.BACK -> {
+            if (isAngled) R.string.document_scanner_side_back_angled_title
+            else R.string.document_scanner_side_back_title
+        }
+        DocumentFileSide.INSIDE_LEFT -> {
+            if (isAngled) R.string.document_scanner_side_inside_left_angled_title
+            else R.string.document_scanner_side_inside_left_title
+        }
+        DocumentFileSide.INSIDE_RIGHT -> {
+            if (isAngled) R.string.document_scanner_side_inside_right_angled_title
+            else R.string.document_scanner_side_inside_right_title
+        }
+        else -> R.string.document_scanner_side_undefined_title
     }
 
-    val tilted = if (isAngled) context.resources.getString(R.string.document_scanner_file_tilted) else ""
-    val isScan = isScan(docType)
-    return if (isScan) {
-        val string = context.resources.getString(R.string.document_scanner_main_text_scan, side)
-        string.boldOccurrenceOf(side)
-
-    } else {
-        var string: CharSequence = context.resources
-            .getString(R.string.document_scanner_main_text_picture, " $tilted", side)
-        string = string.boldOccurrenceOf(tilted)
-        string.boldOccurrenceOf(side)
-    }
+    return context.getString(resource)
 }
 
 fun DocumentScannerStep.isScan(docType: DocumentType): Boolean {

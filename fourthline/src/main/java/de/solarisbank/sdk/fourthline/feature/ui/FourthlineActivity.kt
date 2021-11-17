@@ -62,14 +62,10 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
         stepIndicator = findViewById(R.id.stepIndicator)
-        showStepIndicator = intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)
-        if (showStepIndicator) {
-            stepIndicator.visibility = View.VISIBLE
-        } else {
-            stepIndicator.visibility = View.GONE
-        }
         stepIndicator.setCurrentStepLabel("ID verification")
         stepIndicator.setPassedStep(3)
+        if (!shouldShowStepIndicator)
+            stepIndicator.hide()
     }
 
     private fun initGraph() {
@@ -184,7 +180,8 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun toggleTopBars(show: Boolean) {
         if (show) {
             supportActionBar?.show()
-            stepIndicator.show()
+            if (shouldShowStepIndicator)
+                stepIndicator.show()
         } else {
             supportActionBar?.hide()
             stepIndicator.hide()
@@ -272,10 +269,10 @@ class FourthlineActivity : FourthlineBaseActivity() {
         }
     }
 
-    companion object {
-        const val FOURTHLINE_IDENTIFICATION_SUCCESSFULL = -10
-        const val FOURTHLINE_IDENTIFICATION_ERROR = -20
+    private val shouldShowStepIndicator: Boolean
+        get() = intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)
 
+    companion object {
         private const val PERMISSION_CAMERA_CODE = 32
         private const val PERMISSION_LOCATION_CODE = 52
         private const val PERMISSION_FOREGROUND_CODE = 72
