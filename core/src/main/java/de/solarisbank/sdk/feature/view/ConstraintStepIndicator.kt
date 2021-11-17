@@ -139,6 +139,10 @@ class ConstraintStepIndicator @JvmOverloads constructor(
 
         super.onMeasure(widthMeasureSpec, heightSpec)
         makeConstraints(MeasureSpec.getSize(widthMeasureSpec))
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
         set.applyTo(this)
     }
 
