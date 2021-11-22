@@ -10,7 +10,6 @@ import java.util.Map;
 import de.solarisbank.identhub.contract.ContractUiModule;
 import de.solarisbank.identhub.contract.ContractViewModel;
 import de.solarisbank.identhub.contract.ContractViewModelFactory;
-import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase;
@@ -33,7 +32,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
     private final ContractUiModule contractUiModule;
-    private final Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
     private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
     private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
@@ -43,7 +41,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
 
     public SaveStateViewModelMapProvider(
-            Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider,
             Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
             Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
             Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
@@ -56,7 +53,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider
 
     ) {
-        this.deleteAllLocalStorageUseCaseProvider = deleteAllLocalStorageUseCaseProvider;
         this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
         this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;

@@ -146,9 +146,7 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 contractUiModule,
                 authorizeContractSignUseCaseProvider,
                 confirmContractSignUseCaseProvider,
-                identificationPollingStatusUseCaseProvider,
-                getMobileNumberUseCaseProvider,
-                qesStepParametersRepositoryProvider
+                getMobileNumberUseCaseProvider
         ));
         map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(PhoneVerificationViewModel.class, new PhoneVerificationViewModelFactory(identityModule, phoneVerificationUseCaseProvider));

@@ -4,20 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
-import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase
 import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
+import de.solarisbank.identhub.domain.data.dto.ContractSigningState
 import de.solarisbank.identhub.event.ClickEvent
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
-import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.data.entity.CountDownTime
-import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
-import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -28,16 +26,23 @@ import java.util.concurrent.TimeUnit
 class ContractSigningViewModel(
     private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
     private val confirmContractSignUseCase: ConfirmContractSignUseCase,
-    private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-    private val getMobileNumberUseCase: GetMobileNumberUseCase,
-    private val qesStepParametersRepository: QesStepParametersRepository
+    private val getMobileNumberUseCase: GetMobileNumberUseCase
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val countDownTimeEventLiveData: MutableLiveData<Event<CountDownTime>> = MutableLiveData()
-    private var countDownTimer = DefaultCountDownTimer(TimeUnit.SECONDS.toMillis(COUNTER_TIME), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SEC))
+    private val countDownTimeEventLiveData: MutableLiveData<Event<CountDownTime>> =
+        MutableLiveData()
+    private var countDownTimer =
+        DefaultCountDownTimer(
+            TimeUnit.SECONDS.toMillis(COUNTER_TIME),
+            TimeUnit.SECONDS.toMillis(INTERVAL_IN_SEC)
+        )
     private val clickEventRelay = BehaviorRelay.createDefault(ClickEvent())
-    private val authorizeResultLiveData: MutableLiveData<Result<Any>> = MutableLiveData<Result<Any>>()
-    private val identificationResultLiveData: MutableLiveData<Result<IdentificationDto>> = MutableLiveData<Result<IdentificationDto>>()
+
+    //todo refactor with MVI to keep only ui state livedata
+    private val authorizeResultLiveData: MutableLiveData<Result<Any>> =
+        MutableLiveData<Result<Any>>()
+    private val identificationResultLiveData: MutableLiveData<ContractSigningState> =
+        MutableLiveData<ContractSigningState>()
     private val phoneNumberLiveData = MutableLiveData<Result<MobileNumberDto>>()
 
     private val tickListener = object : DefaultCountDownTimer.OnTickListener {
@@ -46,7 +51,9 @@ class ContractSigningViewModel(
         }
 
         override fun onFinish(millisUntilFinished: Long) {
-            countDownTimeEventLiveData.postValue(Event(CountDownTime(millisUntilFinished, true)))
+            countDownTimeEventLiveData.postValue(
+                Event(CountDownTime(millisUntilFinished, true))
+            )
             counterFinished = true
         }
     }
@@ -85,20 +92,19 @@ class ContractSigningViewModel(
 
     fun getPhoneNumberResultLiveData(): LiveData<Result<MobileNumberDto>> {
         compositeDisposable.add(
-                getMobileNumberUseCase
-                        .execute(Unit).
-                        subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                {
-                                    Timber.d("getMobileNumberUseCase.execute: result.successed: ${ it.succeeded }")
-                                    phoneNumberLiveData.value = it
-                                },
-                                {
-                                    Timber.e(it, "Error fetching phone number")
-                                }
-
-                        )
+            getMobileNumberUseCase
+                .execute(Unit).
+                subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        Timber.d("getMobileNumberUseCase.execute: result.successed: ${ it.succeeded }")
+                        phoneNumberLiveData.value = it
+                    },
+                    {
+                        Timber.e(it, "Error fetching phone number")
+                    }
+                )
         )
 
         return phoneNumberLiveData
@@ -108,7 +114,7 @@ class ContractSigningViewModel(
         return authorizeResultLiveData
     }
 
-    fun getIdentificationResultLiveData(): MutableLiveData<Result<IdentificationDto>> {
+    fun getIdentificationStateLiveData(): MutableLiveData<ContractSigningState> {
         return identificationResultLiveData
     }
 
@@ -138,26 +144,25 @@ class ContractSigningViewModel(
         Timber.d("onSubmitButtonClicked, confrimToken: $confirmToken")
         stopTimer()
         compositeDisposable.add(
-                confirmContractSignUseCase.execute(confirmToken)
-                    .andThen(
-                        identificationPollingStatusUseCase.execute(
-                            PollingParametersDto(
-                                qesStepParametersRepository
-                                    .getQesStepParameters()!!
-                                    .isFourthlineSigning
-                            )
-                        )
-                    )
+                confirmContractSignUseCase
+                    .execute(confirmToken)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                        {
-                            Timber.d("onSubmitButtonClicked, success")
-                            identificationResultLiveData.postValue(it)
+                        { result ->
+                            if (result.succeeded) {
+                                Timber.d("onSubmitButtonClicked 1, success")
+                                identificationResultLiveData.value = result.data
+                            } else {
+                                Timber.d("onSubmitButtonClicked 2, else")
+                                //todo pass message
+                                identificationResultLiveData.value =
+                                    ContractSigningState.GENERIC_ERROR
+                            }
                         },
                         {
-                            Timber.d("onSubmitButtonClicked, fail")
-                            identificationResultLiveData.postValue(Result.createUnknown(it))
+                            Timber.d("onSubmitButtonClicked 3, fail")
+                            identificationResultLiveData.value = ContractSigningState.GENERIC_ERROR
                         }
                 )
         )

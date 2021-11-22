@@ -15,7 +15,7 @@ import de.solarisbank.sdk.feature.di.internal.Provider
 import timber.log.Timber
 
 class IdentHubSessionObserver(
-    private val successCallback: (IdentHubSessionResult) -> Unit,
+    private val successCallback: (SessionStepResult) -> Unit,
     private val errorCallback: (IdentHubSessionFailure) -> Unit
 ) : DefaultLifecycleObserver {
 
@@ -59,25 +59,17 @@ class IdentHubSessionObserver(
                     )
                 }
             }
-            is NaviDirection.PaymentSuccessfulStepResult -> {
+            is NaviDirection.PaymentSuccessfulStepResult,
+            is NaviDirection.VerificationSuccessfulStepResult,
+            is NaviDirection.ConfirmationSuccessfulStepResult -> {
                 Timber.d("setSessionResult 2")
-                successCallback.invoke(
-                    sessionStepResult.result
-                )
+                successCallback.invoke(sessionStepResult)
             }
-            is NaviDirection.VerificationSuccessfulStepResult -> {
-                Timber.d("setSessionResult 3")
-                successCallback.invoke(
-                    IdentHubSessionResult(
-                        sessionStepResult.identificationId,
-                        COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
-                    )
-                )
-            }
+
             is NaviDirection.VerificationFailureStepResult -> {
-                Timber.d("setSessionResult 4")
+                Timber.d("setSessionResult 3")
                 errorCallback.invoke(IdentHubSessionFailure(
-                    step = sessionStepResult.completedStep?.let{
+                    step = sessionStepResult.completedStep?.let {
                         COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
                     }
                 ))

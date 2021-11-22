@@ -50,7 +50,8 @@ class IdentHubInteractionActivity : AppCompatActivity() {
                     onCompletionCallback(
                         fragmentActivity = this@IdentHubInteractionActivity,
                         successCallback = this@IdentHubInteractionActivity::onSuccess,
-                        errorCallback = this@IdentHubInteractionActivity::onFailure
+                        errorCallback = this@IdentHubInteractionActivity::onFailure,
+                        confirmationSuccessCallback = this@IdentHubInteractionActivity::onConfirmationSuccess,
                     )
                     /*
                     onPaymentCallback is not set here
@@ -72,6 +73,11 @@ class IdentHubInteractionActivity : AppCompatActivity() {
         Timber.d("onPayment; IdentHubSessionResult identification id: $identificationId")
         binding.callbackResult.setText("onPayment called")
         // Do something else.
+    }
+
+    private fun onConfirmationSuccess(result: IdentHubSessionResult) {
+        Timber.d("onConfirmationSuccess")
+        binding.callbackResult.setText("onConfirmationSuccess called,  identification id: ${result.identificationId}")
     }
 
     private fun onFailure(failure: IdentHubSessionFailure) {

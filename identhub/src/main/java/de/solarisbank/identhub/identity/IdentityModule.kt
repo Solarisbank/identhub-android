@@ -52,9 +52,7 @@ class IdentityModule {
         return ContractSigningViewModel(
             authorizeContractSignUseCase,
             confirmContractSignUseCase,
-            identificationPollingStatusUseCase,
-            getMobileNumberUseCase,
-            qesStepParametersRepository
+            getMobileNumberUseCase
         )
     }
 

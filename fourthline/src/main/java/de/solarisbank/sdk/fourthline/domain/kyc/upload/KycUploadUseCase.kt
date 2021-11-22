@@ -51,6 +51,10 @@ class KycUploadUseCase  (
                         Timber.d("pollKycProcessingResult(), 2")
                         return@map KycUploadStatusDto.FinishIdentSuccess(data.id)
                     } else if (data.status == Status.AUTHORIZATION_REQUIRED.label && nextStep != null) {
+                        /**
+                         * This condition is used for fourthline/simplified and fourthline_signing
+                         * to come to bank_id/qes and fourthline_signing/qes
+                         */
                         Timber.d("pollKycProcessingResult(), 3")
                         return@map KycUploadStatusDto.ToNextStepSuccess(nextStep)
                     } else {

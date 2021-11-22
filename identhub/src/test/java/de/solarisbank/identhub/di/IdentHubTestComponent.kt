@@ -10,10 +10,20 @@ import de.solarisbank.identhub.contract.ContractUiModule
 import de.solarisbank.identhub.data.contract.ContractSignApi
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
 import de.solarisbank.identhub.data.contract.ContractSignRepository
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersDataSource
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersDataSourceFactory.Companion.create
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepositoryFactory.Companion.create
 import de.solarisbank.identhub.data.di.contract.ContractSignModule
 import de.solarisbank.identhub.domain.contract.*
-import de.solarisbank.identhub.domain.di.contract.*
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase
+import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCaseFactory.Companion.create
+import de.solarisbank.identhub.domain.di.contract.AuthorizeContractSignUseCaseFactory
+import de.solarisbank.identhub.domain.di.contract.ConfirmContractSignUseCaseFactory.Companion.create
+import de.solarisbank.identhub.domain.di.contract.FetchPdfUseCaseFactory
+import de.solarisbank.identhub.domain.di.contract.GetDocumentsUseCaseFactory
 import de.solarisbank.identhub.domain.di.contract.GetIdentificationUseCaseFactory.Companion.create
+import de.solarisbank.identhub.domain.di.contract.GetPersonDataUseCaseFactory
 import de.solarisbank.identhub.domain.verification.bank.*
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCaseFactory.Companion.create
 import de.solarisbank.identhub.domain.verification.phone.*
@@ -28,7 +38,6 @@ import de.solarisbank.identhub.session.data.di.SessionModule
 import de.solarisbank.identhub.session.data.di.SessionUrlLocalDataSourceFactory.Companion.create
 import de.solarisbank.identhub.session.data.network.UserAgentInterceptor
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
-import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferencesFactory.Companion.create
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankApi
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankDataModule
 import de.solarisbank.identhub.session.data.verification.bank.VerificationBankNetworkDataSource
@@ -86,12 +95,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class IdentHubTestComponent {
-
+//    val identHubActivitySubcomponentImp = ActivitySubcomponentFactory().create(mockk<CoreActivityComponent>())
     private lateinit var coreModule: CoreModule
     private lateinit var verficationBankModule: VerificationBankModule
     private lateinit var contractUiModule: ContractUiModule
     private lateinit var identityModule: IdentityModule
-//    private lateinit var activitySubModule: ActivitySubModule
+    private lateinit var activitySubModule: ActivitySubModule
     private lateinit var networkModule: NetworkModule
     private lateinit var identificationModule: IdentificationModule
 
@@ -99,6 +108,10 @@ class IdentHubTestComponent {
 
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
+
+    private lateinit var qesStepParametersDataSourceProvider: Provider<QesStepParametersDataSource>
+    private lateinit var qesStepParametersRepositoryProvider: Provider<QesStepParametersRepository>
+    private lateinit var qesStepParametersUseCaseProvider: Provider<QesStepParametersUseCase>
     private lateinit var initializationInfoRetrofitDataSourceProvider: Provider<InitializationInfoRetrofitDataSource>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
@@ -112,7 +125,6 @@ class IdentHubTestComponent {
     lateinit var contractSignRepositoryProvider: Provider<ContractSignRepository>
     lateinit var authorizeContractSignUseCaseProvider: Provider<AuthorizeContractSignUseCase>
     lateinit var confirmContractSignUseCaseProvider: Provider<ConfirmContractSignUseCase>
-    private lateinit var deleteAllLocalStorageUseCaseProvider: Provider<DeleteAllLocalStorageUseCase>
     private lateinit var verificationPhoneApiProvider: Provider<VerificationPhoneApi>
     private lateinit var verificationPhoneNetworkDataSourceProvider: Provider<VerificationPhoneNetworkDataSource>
     private lateinit var verificationPhoneRepositoryProvider: Provider<VerificationPhoneRepository>
@@ -142,10 +154,10 @@ class IdentHubTestComponent {
 
     private constructor (
         //todo provide all required mocked dependencies
-        coreModule: CoreModule = CoreModule(),
-        libraryComponent: LibraryComponent = mockk<LibraryComponent>(),
-        identityModule: IdentityModule = IdentityModule(),
-//        activitySubModule: ActivitySubModule,
+        coreModule: CoreModule,
+        libraryComponent: LibraryComponent,
+        identityModule: IdentityModule,
+        activitySubModule: ActivitySubModule,
         networkModule: NetworkModule,
         contractSignModule: ContractSignModule,
         verificationPhoneModule: VerificationPhoneModule,
@@ -157,7 +169,7 @@ class IdentHubTestComponent {
     ) {
         this.coreModule = coreModule
         this.identityModule = identityModule
-//        this.activitySubModule = activitySubModule
+        this.activitySubModule = activitySubModule
         this.networkModule = networkModule
         this.verficationBankModule = verficationBankModule
         this.contractUiModule = contractUiModule
@@ -178,7 +190,15 @@ class IdentHubTestComponent {
         verificationBankDataModule: VerificationBankDataModule,
         verificationPhoneModule: VerificationPhoneModule
     ) {
+        activitySubModule = ActivitySubModule()
 //        applicationContextProvider = ApplicationContextProvider(libraryComponent)
+        qesStepParametersDataSourceProvider = DoubleCheck.provider(create())
+        qesStepParametersRepositoryProvider =
+            DoubleCheck.provider(create(qesStepParametersDataSourceProvider.get()))
+        qesStepParametersUseCaseProvider =
+            DoubleCheck.provider(create(qesStepParametersRepositoryProvider.get()))
+
+
         identificationLocalDataSourceProvider =
             identificationModule.provideIdentificationLocalDataSource()
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(
@@ -187,17 +207,7 @@ class IdentHubTestComponent {
         sessionUrlRepositoryProvider = DoubleCheck.provider(
             create(sessionModule, sessionUrlLocalDataSourceProvider!!)
         )
-//        sharedPreferencesProvider = DoubleCheck.provider(
-//            Factory {
-//                applicationContextProvider.get()
-//                    .getSharedPreferences("identhub", Context.MODE_PRIVATE)
-//            } as Factory<SharedPreferences>)
-//        identityInitializationSharedPrefsDataSourceProvider = DoubleCheck.provider(
-//            Factory {
-//                IdentityInitializationSharedPrefsDataSource(
-//                    sharedPreferencesProvider.get()
-//                )
-//            } as Factory<IdentityInitializationSharedPrefsDataSource>)
+
         //todo move to identityInitializationRepositoryTestFactory
         identityInitializationRepositoryProvider = DoubleCheck.provider(
             object : Factory<IdentityInitializationRepository> {
@@ -284,10 +294,45 @@ class IdentHubTestComponent {
                 identificationLocalDataSourceProvider
             )
         )
+        identificationApiProvider = DoubleCheck.provider(
+            IdentificationApiFactory.create(
+                identificationModule,
+                retrofitProvider.get()
+            )
+        )
+        identificationRetrofitDataSourceProvider = DoubleCheck.provider(
+            IdentificationRetrofitDataSourceFactory.create(
+                identificationModule,
+                identificationApiProvider.get()
+            )
+        )
+
+        mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get())
+        mobileNumberDataSourceProvider =
+            MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get())
+        identificationRepositoryProvider = DoubleCheck.provider(
+            IdentificationRepositoryFactory.create(
+                identificationLocalDataSourceProvider.get(),
+                identificationRetrofitDataSourceProvider.get(),
+                mobileNumberDataSourceProvider.get()
+            )
+        )
+        getMobileNumberUseCaseProvider =
+            GetPersonDataUseCaseFactory.create(identificationRepositoryProvider)
+        identificationPollingStatusUseCaseProvider = DoubleCheck.provider(
+            IdentificationPollingStatusUseCaseFactory.create(
+                identificationRepositoryProvider.get(),
+                identityInitializationRepositoryProvider.get()
+            )
+        )
+
         authorizeContractSignUseCaseProvider =
             AuthorizeContractSignUseCaseFactory.create(contractSignRepositoryProvider)
-        confirmContractSignUseCaseProvider =
-            ConfirmContractSignUseCaseFactory.create(contractSignRepositoryProvider)
+        confirmContractSignUseCaseProvider = DoubleCheck.provider(create(
+            contractSignRepositoryProvider,
+            identificationPollingStatusUseCaseProvider,
+            qesStepParametersRepositoryProvider
+        ))
         authorizeVerificationPhoneUseCaseProvider =
             AuthorizeVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider)
         confirmVerificationPhoneUseCaseProvider =
@@ -304,7 +349,7 @@ class IdentHubTestComponent {
         )
         initializationInfoApiProvider = DoubleCheck.provider(
             InitializationInfoApiFactory(
-                coreModule!!, retrofitProvider
+                coreModule, retrofitProvider
             )
         )
         initializationInfoRetrofitDataSourceProvider = DoubleCheck.provider(
@@ -325,14 +370,15 @@ class IdentHubTestComponent {
 
             }
         )
+
     }
 
 
-//    fun activitySubcomponent(): IdentHubActivitySubcomponent.Factory? {
-//        return ActivitySubcomponentFactory()
-//    }
+    fun activitySubcomponent(): IdentHubActivitySubcomponent.Factory {
+        return ActivitySubcomponentFactory()
+    }
 
-    private class Builder constructor() {
+    private class Builder {
         private lateinit var coreModule: CoreModule
         private lateinit var identityModule: IdentityModule
         private lateinit var libraryComponent: LibraryComponent
@@ -380,7 +426,7 @@ class IdentHubTestComponent {
                 coreModule,
                 libraryComponent,
                 identityModule,
-//                activitySubModule,
+                activitySubModule,
                 networkModule,
                 contractSignModule,
                 VerificationPhoneModule(),
@@ -400,11 +446,11 @@ class IdentHubTestComponent {
 //        }
 //    }
 
-//    inner class ActivitySubcomponentFactory : IdentHubActivitySubcomponent.Factory {
-//        override fun create(activityComponent: CoreActivityComponent): IdentHubActivitySubcomponent {
-//            return IdentHubActivitySubcomponentImp(activityComponent, this@IdentHubTestComponent.activitySubModule)
-//        }
-//    }
+    inner class ActivitySubcomponentFactory : IdentHubActivitySubcomponent.Factory {
+        override fun create(activityComponent: CoreActivityComponent): IdentHubActivitySubcomponent {
+            return IdentHubActivitySubcomponentImp(activityComponent, activitySubModule)
+        }
+    }
 
     private inner class IdentHubActivitySubcomponentImp(
         activityComponent: CoreActivityComponent,
@@ -422,17 +468,26 @@ class IdentHubTestComponent {
         private lateinit var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>>
         private lateinit var saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>
 
+        init {
+            initialize(activityComponent, activitySubModule)
+        }
+
         private fun initialize(
             activityComponent: CoreActivityComponent,
             identHubModule: ActivitySubModule
         ) {
-            contextProvider = ContextProvider(activityComponent)
-            sharedPreferencesProvider = SharedPreferencesProvider(activityComponent)
+            contextProvider = mockk<ContextProvider>() {
+                every { get() } returns mockk<Context>()
+            }
+            sharedPreferencesProvider = mockk<SharedPreferencesProvider>() {
+                every { get() } returns mockk<SharedPreferences>()
+            }
             identificationStepPreferencesProvider = DoubleCheck.provider(
-                create(
-                    identHubModule,
-                    sharedPreferencesProvider!!
-                )
+                object : Factory<IdentificationStepPreferences> {
+                    override fun get(): IdentificationStepPreferences {
+                        return mockk<IdentificationStepPreferences>()
+                    }
+                }
             )
             fileControllerProvider =
                 DoubleCheck.provider(FileControllerFactory.create(contextProvider))
@@ -440,36 +495,8 @@ class IdentHubTestComponent {
                 contractSignRepositoryProvider,
                 fileControllerProvider
             )
-            identificationApiProvider = DoubleCheck.provider(
-                IdentificationApiFactory.create(
-                    identificationModule,
-                    retrofitProvider.get()
-                )
-            )
-            identificationRetrofitDataSourceProvider = DoubleCheck.provider(
-                IdentificationRetrofitDataSourceFactory.create(
-                    identificationModule,
-                    identificationApiProvider.get()
-                )
-            )
-            mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get())
-            mobileNumberDataSourceProvider =
-                MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get())
-            identificationRepositoryProvider = DoubleCheck.provider(
-                IdentificationRepositoryFactory.create(
-                    identificationLocalDataSourceProvider.get(),
-                    identificationRetrofitDataSourceProvider.get(),
-                    mobileNumberDataSourceProvider.get()
-                )
-            )
-            getMobileNumberUseCaseProvider =
-                GetPersonDataUseCaseFactory.create(identificationRepositoryProvider)
-            identificationPollingStatusUseCaseProvider = DoubleCheck.provider(
-                IdentificationPollingStatusUseCaseFactory.create(
-                    identificationRepositoryProvider.get(),
-                    identityInitializationRepositoryProvider.get()
-                )
-            )
+
+
             bankIdPostUseCaseProvider = BankIdPostUseCaseFactory.create(
                 verificationBankRepositoryProvider,
                 identityInitializationRepositoryProvider
@@ -479,47 +506,6 @@ class IdentHubTestComponent {
                 bankIdPostUseCaseProvider,
                 identityInitializationRepositoryProvider
             )
-//            mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider.create(
-//                coreModule,
-//                identityModule,
-//                verficationBankModule,
-//                contractModule,
-//                this@IdentHubTestComponent.authorizeVerificationPhoneUseCaseProvider,
-//                this@IdentHubTestComponent.confirmVerificationPhoneUseCaseProvider,
-//                this@IdentHubTestComponent.getDocumentsUseCaseProvider,
-//                this@IdentHubTestComponent.getIdentificationUseCaseProvider,
-//                this@IdentHubTestComponent.fetchingAuthorizedIBanStatusUseCaseProvider,
-//                fetchPdfUseCaseProvider,
-//                identificationStepPreferencesProvider,
-//                this@IdentHubTestComponent.verifyIBanUseCaseProvider,
-//                identificationPollingStatusUseCaseProvider,
-//                bankIdPostUseCaseProvider,
-//                processingVerificationUseCaseProvider,
-//                customizationRepositoryProvider
-//            )
-//            saveStateViewModelMapProvider = SaveStateViewModelMapProvider.create(
-//                this@IdentHubTestComponent.authorizeContractSignUseCaseProvider,
-//                this@IdentHubTestComponent.confirmContractSignUseCaseProvider,
-//                deleteAllLocalStorageUseCaseProvider,
-//                fetchPdfUseCaseProvider,
-//                this@IdentHubTestComponent.getDocumentsUseCaseProvider,
-//                this@IdentHubTestComponent.getIdentificationUseCaseProvider,
-//                this@IdentHubTestComponent.identificationPollingStatusUseCaseProvider,
-//                this@IdentHubTestComponent.fetchingAuthorizedIBanStatusUseCaseProvider,
-//                this@IdentHubTestComponent.identityModule,
-//                identificationStepPreferencesProvider,
-//                this@IdentHubTestComponent.sessionUrlRepositoryProvider,
-//                this@IdentHubTestComponent.verficationBankModule,
-//                this@IdentHubTestComponent.contractModule,
-//                getMobileNumberUseCaseProvider
-//            )
-//            assistedViewModelFactoryProvider = DoubleCheck.provider(
-//                create(
-//                    this@IdentHubTestComponent.activitySubModule,
-//                    mapOfClassOfAndProviderOfViewModelProvider,
-//                    saveStateViewModelMapProvider
-//                )
-//            )
         }
 
         override fun inject(verificationBankActivity: VerificationBankActivity) {
@@ -560,95 +546,13 @@ class IdentHubTestComponent {
                 return activityComponent.sharedPreferences()
             }
         }
-
-//        internal inner class FragmentComponentFactory : FragmentComponent.Factory {
-//            override fun create(): FragmentComponent {
-//                return FragmentComponentImp()
-//            }
-//        }
-
-//        private inner class FragmentComponentImp constructor() : FragmentComponent {
-//            private val fragmentAssistedViewModelFactoryProvider: Provider<AssistedViewModelFactory>
-//            private val baseFragmentDependencies: BaseFragmentDependencies
-//            override fun inject(verificationPhoneFragment: VerificationPhoneFragment) {
-//                VerificationPhoneFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    verificationPhoneFragment
-//                )
-//            }
-//
-//            override fun inject(successMessageFragment: VerificationPhoneSuccessMessageFragment) {
-//                VerificationPhoneSuccessMessageFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    successMessageFragment
-//                )
-//            }
-//
-//            override fun inject(errorMessageFragment: VerificationPhoneErrorMessageFragment) {
-//                VerificationPhoneErrorMessageFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    errorMessageFragment
-//                )
-//            }
-//
-//            override fun inject(verificationBankIbanFragment: VerificationBankIbanFragment) {
-//                VerificationBankFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    verificationBankIbanFragment
-//                )
-//            }
-//
-//            override fun inject(verificationBankExternalGatewayFragment: VerificationBankExternalGatewayFragment) {
-//                VerificationBankExternalGatewayFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    verificationBankExternalGatewayFragment
-//                )
-//            }
-//
-//            override fun inject(contractSigningFragment: ContractSigningFragment) {
-//                ContractSigningFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    contractSigningFragment
-//                )
-//            }
-//
-//            override fun inject(contractSigningPreviewFragment: ContractSigningPreviewFragment) {
-//                ContractSigningPreviewFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    contractSigningPreviewFragment
-//                )
-//            }
-//
-//            override fun inject(progressIndicatorFragment: ProgressIndicatorFragment) {
-//                ProgressIndicatorFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    progressIndicatorFragment
-//                )
-//            }
-//
-//            override fun inject(verificationBankIntroFragment: VerificationBankIntroFragment) {
-//                VerificationBankIntroFragmentInjector(baseFragmentDependencies).injectMembers(
-//                    verificationBankIntroFragment
-//                )
-//            }
-
-//            init {
-//                fragmentAssistedViewModelFactoryProvider = DoubleCheck.provider(
-//                    create(
-//                        this@IdentHubTestComponent.activitySubModule,
-//                        mapOfClassOfAndProviderOfViewModelProvider!!,
-//                        saveStateViewModelMapProvider!!
-//                    )
-//                )
-//                baseFragmentDependencies = BaseFragmentDependencies(
-//                    fragmentAssistedViewModelFactoryProvider,
-//                    customizationRepositoryProvider
-//                )
-            }
-//        }
-
-//        init {
-//            initialize(activityComponent, activitySubModule)
-//        }
-//    }
+    }
 
     companion object {
 
         //todo modify real IdentHubComponent to allow the passing of mocked Modules
         fun getTestInstance(
-            coreModule: CoreModule = CoreModule(),
+            coreModule: CoreModule = mockk<CoreModule>(relaxed = true),
             identityModule: IdentityModule = IdentityModule(),
             activitySubModule: ActivitySubModule = ActivitySubModule(),
             networkModule: NetworkModule = NetworkModule(),
@@ -664,6 +568,7 @@ class IdentHubTestComponent {
                 .setIdentificationModule(identificationModule)
                 .setContractSignModule(contractSignModule)
                 .build()
+                .apply { activitySubcomponent().create(mockk<CoreActivityComponent>()) }
         }
     }
 }

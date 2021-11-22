@@ -28,7 +28,6 @@ import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRe
 import de.solarisbank.identhub.data.di.contract.ContractSignModule;
 import de.solarisbank.identhub.domain.contract.AuthorizeContractSignUseCase;
 import de.solarisbank.identhub.domain.contract.ConfirmContractSignUseCase;
-import de.solarisbank.identhub.domain.contract.DeleteAllLocalStorageUseCase;
 import de.solarisbank.identhub.domain.contract.FetchPdfUseCase;
 import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
@@ -176,7 +175,6 @@ public class IdenthubComponent {
     private Provider<ContractSignRepository> contractSignRepositoryProvider;
     private Provider<AuthorizeContractSignUseCase> authorizeContractSignUseCaseProvider;
     private Provider<ConfirmContractSignUseCase> confirmContractSignUseCaseProvider;
-    private Provider<DeleteAllLocalStorageUseCase> deleteAllLocalStorageUseCaseProvider;
 
     private Provider<VerificationPhoneApi> verificationPhoneApiProvider;
     private Provider<VerificationPhoneNetworkDataSource> verificationPhoneNetworkDataSourceProvider;
@@ -303,8 +301,30 @@ public class IdenthubComponent {
         verificationBankRepositoryProvider =
                 DoubleCheck.provider(ProvideVerificationBankRepositoryFactory.create(verificationBankDataModule, verificationBankNetworkDataSourceProvider, identificationLocalDataSourceProvider));
 
+        qesStepParametersDataSourceProvider =
+                DoubleCheck.provider(QesStepParametersDataSourceFactory.Companion.create());
+        qesStepParametersRepositoryProvider =
+                DoubleCheck.provider(QesStepParametersRepositoryFactory.Companion.create(qesStepParametersDataSourceProvider.get()));
+        qesStepParametersUseCaseProvider = DoubleCheck.provider(QesStepParametersUseCaseFactory.Companion.create(qesStepParametersRepositoryProvider.get()));
+
+        identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()));
+        identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
+        mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get());
+        mobileNumberDataSourceProvider = MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get());
+        identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(
+                identificationLocalDataSourceProvider.get(),
+                identificationRetrofitDataSourceProvider.get(),
+                mobileNumberDataSourceProvider.get()
+        ));
+        getMobileNumberUseCaseProvider = GetPersonDataUseCaseFactory.create(identificationRepositoryProvider);
+        identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()));
+
         authorizeContractSignUseCaseProvider = AuthorizeContractSignUseCaseFactory.create(contractSignRepositoryProvider);
-        confirmContractSignUseCaseProvider = ConfirmContractSignUseCaseFactory.create(contractSignRepositoryProvider);
+        confirmContractSignUseCaseProvider = ConfirmContractSignUseCaseFactory.create(
+                contractSignRepositoryProvider,
+                identificationPollingStatusUseCaseProvider,
+                qesStepParametersRepositoryProvider
+        );
         authorizeVerificationPhoneUseCaseProvider = AuthorizeVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider);
         confirmVerificationPhoneUseCaseProvider = ConfirmVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider);
         fetchingAuthorizedIBanStatusUseCaseProvider = FetchingAuthorizedIBanStatusUseCaseFactory.create(verificationBankRepositoryProvider);
@@ -429,23 +449,6 @@ public class IdenthubComponent {
             this.fileControllerProvider = DoubleCheck.provider(FileControllerFactory.create(contextProvider));
             this.fetchPdfUseCaseProvider = FetchPdfUseCaseFactory.create(contractSignRepositoryProvider, fileControllerProvider);
 
-            qesStepParametersDataSourceProvider =
-                    DoubleCheck.provider(QesStepParametersDataSourceFactory.Companion.create());
-            qesStepParametersRepositoryProvider =
-                    DoubleCheck.provider(QesStepParametersRepositoryFactory.Companion.create(qesStepParametersDataSourceProvider.get()));
-            qesStepParametersUseCaseProvider = DoubleCheck.provider(QesStepParametersUseCaseFactory.Companion.create(qesStepParametersRepositoryProvider.get()));
-
-            identificationApiProvider = DoubleCheck.provider(IdentificationApiFactory.create(identificationModule, retrofitProvider.get()));
-            identificationRetrofitDataSourceProvider = DoubleCheck.provider(IdentificationRetrofitDataSourceFactory.create(identificationModule, identificationApiProvider.get()));
-            mobileNumberApiProvider = MobileNumberApiFactory.create(retrofitProvider.get());
-            mobileNumberDataSourceProvider = MobileNumberDataSourceFactory.create(mobileNumberApiProvider.get());
-            identificationRepositoryProvider = DoubleCheck.provider(IdentificationRepositoryFactory.create(
-                    identificationLocalDataSourceProvider.get(),
-                    identificationRetrofitDataSourceProvider.get(),
-                    mobileNumberDataSourceProvider.get()
-            ));
-            getMobileNumberUseCaseProvider = GetPersonDataUseCaseFactory.create(identificationRepositoryProvider);
-            identificationPollingStatusUseCaseProvider = DoubleCheck.provider(IdentificationPollingStatusUseCaseFactory.create(identificationRepositoryProvider.get(), identityInitializationRepositoryProvider.get()));
             bankIdPostUseCaseProvider = BankIdPostUseCaseFactory.Companion.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
             processingVerificationUseCaseProvider = ProcessingVerificationUseCaseFactory.Companion.create(identificationPollingStatusUseCaseProvider, bankIdPostUseCaseProvider, identityInitializationRepositoryProvider);
             this.mapOfClassOfAndProviderOfViewModelProvider = new ViewModelMapProvider(
@@ -472,7 +475,6 @@ public class IdenthubComponent {
                     qesStepParametersRepositoryProvider
             );
             this.saveStateViewModelMapProvider = new SaveStateViewModelMapProvider(
-                    deleteAllLocalStorageUseCaseProvider,
                     IdenthubComponent.this.getDocumentsUseCaseProvider,
                     IdenthubComponent.this.getIdentificationUseCaseProvider,
                     IdenthubComponent.this.fetchingAuthorizedIBanStatusUseCaseProvider,

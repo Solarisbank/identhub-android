@@ -2,7 +2,9 @@ package de.solarisbank.identhub.domain.contract
 
 import de.solarisbank.identhub.data.contract.ContractSignApi
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepository
 import de.solarisbank.identhub.data.di.contract.ContractSignModule
+import de.solarisbank.identhub.data.dto.QesStepParametersDto
 import de.solarisbank.identhub.di.IdentHubTestComponent
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
 import de.solarisbank.sdk.data.di.IdentificationModule
@@ -13,7 +15,6 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.*
 import io.reactivex.Single
-
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -152,18 +153,30 @@ class ConfirmContractSignUseCaseTest : StringSpec({
         this.dispatcher = dispatcher
     }
 
-    val confirmContractSignUseCase = IdentHubTestComponent
-        .getTestInstance(
-            networkModule = NetworkModuleTestFactory(mockWebServer).provideNetworkModule(),
-            contractSignModule = contractSignModule,
-            identificationModule = identificationModule
-        )
-        .confirmContractSignUseCaseProvider
-        .get()
+
+    var identHubTestComponent: IdentHubTestComponent? = null
+
+    beforeSpec {
+        mockkConstructor(QesStepParametersRepository::class)
+
+        every { anyConstructed<QesStepParametersRepository>().getQesStepParameters() } returns
+                QesStepParametersDto(
+                    false, true
+                )
+
+        identHubTestComponent = IdentHubTestComponent
+            .getTestInstance(
+                networkModule = NetworkModuleTestFactory(mockWebServer).provideNetworkModule(),
+                contractSignModule = contractSignModule,
+                identificationModule = identificationModule
+            )
+    }
+
 
     //todo extend test cases
     "CheckObtainedConfirmedIdentificationId" {
-        confirmContractSignUseCase.execute("123456")
+        identHubTestComponent!!.confirmContractSignUseCaseProvider
+            .get().execute("123456")
 //        verify {  }
         verify { identificationInMemoryDataSource.obtainIdentificationDto() }
     }

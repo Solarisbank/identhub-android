@@ -10,23 +10,24 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.domain.data.dto.ContractSigningState
 import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModel
 import de.solarisbank.sdk.core.activityViewModels
-import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.core.viewModels
-import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.data.entity.CountDownTime
-import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.entity.format
-import de.solarisbank.sdk.domain.model.result.*
+import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.feature.customization.customize
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
@@ -157,20 +158,36 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun observeIdentificationResult() {
-        viewModel.getIdentificationResultLiveData().observe(viewLifecycleOwner, Observer { onIdentificationResultChanged(it) })
+        viewModel.getIdentificationStateLiveData().observe(
+            viewLifecycleOwner,
+            { onIdentificationResultChanged(it) }
+        )
     }
 
-    private fun onIdentificationResultChanged(result: Result<IdentificationDto>) {
+    private fun onIdentificationResultChanged(state: ContractSigningState) {
         //todo move to use case and replace with states
-        Timber.d("onIdentificationResultChanged, result: ${result.data}")
-        if (result.succeeded && Status.getEnum(result.data?.status) == Status.SUCCESSFUL) {
-            transactionDescription!!.text = String.format(getString(R.string.contract_signing_preview_transaction_info), result.data?.id)
-            onStateOfDigitInputChanged(SUCCESS_STATE)
-            sharedViewModel.callOnSuccessResult()
-        } else if (Status.getEnum(result.data?.status) == Status.FAILED || Status.getEnum(result.data?.status) == Status.CONFIRMED) {
-            onStateOfDigitInputChanged(ERROR_STATE)
-        } else if (result.throwable?.message?.contains("422") == true || result.throwable?.message?.contains("409") == true) {
-            onStateOfDigitInputChanged(ERROR_STATE)
+        Timber.d("onIdentificationResultChanged, result: ${state}")
+        when (state) {
+            is ContractSigningState.SUCCESSFUL -> {
+                transactionDescription!!.text = String.format(
+                    getString(R.string.contract_signing_preview_transaction_info),
+                    state.identificationId
+                )
+                onStateOfDigitInputChanged(SUCCESS_STATE)
+                sharedViewModel.callOnSuccessResult()
+            }
+            is ContractSigningState.CONFIRMED -> {
+                transactionDescription!!.text = String.format(
+                    getString(R.string.contract_signing_preview_transaction_info),
+                    state.identificationId
+                )
+                onStateOfDigitInputChanged(SUCCESS_STATE)
+                sharedViewModel.callOnConfirmedResult()
+            }
+            is ContractSigningState.FAILED,
+            is ContractSigningState.GENERIC_ERROR -> {
+                onStateOfDigitInputChanged(ERROR_STATE)
+            }
         }
     }
 
@@ -187,7 +204,6 @@ class ContractSigningFragment : IdentHubFragment() {
             submitButton!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.GONE
             newCodeCounter!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.INVISIBLE
             newCodeCounter!!.text = String.format(getString(R.string.contract_signing_code_expires), countDownTime.format())
-
         }
     }
 
@@ -266,9 +282,5 @@ class ContractSigningFragment : IdentHubFragment() {
         const val SUCCESS_STATE = 1
         const val ERROR_STATE = 2
         const val LOADING_STATE = 3
-
-        fun newInstance(): Fragment {
-            return ContractSigningFragment()
-        }
     }
 }

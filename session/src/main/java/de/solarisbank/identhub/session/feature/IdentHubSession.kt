@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
+import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
@@ -16,6 +17,8 @@ class IdentHubSession {
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null
+
+    private var confirmationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
 
     private var paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
@@ -34,13 +37,13 @@ class IdentHubSession {
     fun onCompletionCallback(
         fragmentActivity: FragmentActivity,
         successCallback: ((IdentHubSessionResult) -> Unit),
-        errorCallback: ((IdentHubSessionFailure) -> Unit)
+        errorCallback: ((IdentHubSessionFailure) -> Unit),
+        confirmationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null,
     ) {
         loadAppName(fragmentActivity)
-
         this.identificationErrorCallback = errorCallback
         this.identificationSuccessCallback = successCallback
-
+        this.confirmationSuccessCallback = confirmationSuccessCallback
         initMainProcess(fragmentActivity)
     }
 
@@ -75,6 +78,51 @@ class IdentHubSession {
         this.paymentSuccessCallback = paymentSuccessCallback
     }
 
+    private fun onResultSuccess(sessionStepResult: SessionStepResult) {
+        Timber.d("onResultSuccess, sessionStepResult : $sessionStepResult")
+
+        when (sessionStepResult) {
+            is NaviDirection.PaymentSuccessfulStepResult -> {
+                paymentSuccessCallback?.let {
+                    Timber.d("onResultSuccess 1")
+                    it.invoke(
+                        IdentHubSessionResult(
+                            sessionStepResult.identificationId,
+                            COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
+                        )
+                ) } ?:run {
+                    Timber.e("Payment callback is not set")
+                }
+            }
+            is NaviDirection.VerificationSuccessfulStepResult -> {
+                identificationSuccessCallback?.let {
+                    Timber.d("onResultSuccess 2")
+                    reset()
+                    it.invoke(
+                        IdentHubSessionResult(
+                            sessionStepResult.identificationId,
+                            COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
+                        )
+                    )
+                }
+            }
+
+            is NaviDirection.ConfirmationSuccessfulStepResult -> {
+                confirmationSuccessCallback?.let {
+                    Timber.d("onResultSuccess 3")
+                    reset()
+                    it.invoke(
+                        IdentHubSessionResult(
+                            sessionStepResult.identificationId,
+                            COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
+                        )
+                    )
+                }
+            }
+
+        }
+    }
+
     private fun onResultSuccess(identHubSessionResult: IdentHubSessionResult) {
         Timber.d("onResultSuccess")
         lastCompetedStep = identHubSessionResult.step
@@ -85,6 +133,7 @@ class IdentHubSession {
             paymentSuccessCallback(identHubSessionResult)
         }else if(paymentSuccessCallback == null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
             Timber.d("onResultSuccess 2")
+            //todo check if this case is required in onResultSuccess(sessionStepResult: SessionStepResult)
             MAIN_PROCESS?.obtainNextStep()
         } else if (identificationSuccessCallback != null) {
             Timber.d("onResultSuccess 3")

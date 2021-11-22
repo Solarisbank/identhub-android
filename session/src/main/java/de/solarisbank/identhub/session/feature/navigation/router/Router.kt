@@ -36,10 +36,6 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
                     putExtra(SHOW_STEP_INDICATOR, false)
                 } //todo remove action
 
-        //todo check if it is needed
-        FIRST_STEP_DIRECTION.FOURTHLINE_UPLOADING.destination ->
-            provideActivityIntent(context, FOURTHLINE_ACTIVITY_REFERENCE_CLASS)
-                .also { it.putExtra(SHOW_UPLOADING_SCREEN, true) }
         else -> throw IllegalStateException()
     }.apply {
         if (sessionUrl != null) { putExtra(IdentHub.SESSION_URL_KEY, sessionUrl) }
@@ -125,7 +121,6 @@ enum class FIRST_STEP_DIRECTION(val destination: String) {
     BANK_ID_IBAN("bank_id/iban"),
     QES("qes"),
     FOURTHLINE_SIMPLIFIED("fourthline/simplified"),
-    FOURTHLINE_UPLOADING("fourthline/uploading"), //todo check if it is needed
     FOURTHLINE_SIGNING("fourthline_signing")
 }
 enum class NEXT_STEP_DIRECTION(val destination: String) {
@@ -141,7 +136,7 @@ enum class NEXT_STEP_DIRECTION(val destination: String) {
     ABORT("abort")
 }
 
-
+//todo should be refactored or removed
 enum class COMPLETED_STEP(val index: Int) {
     VERIFICATION_PHONE(1), VERIFICATION_BANK(2), CONTRACT_SIGNING(3);
 

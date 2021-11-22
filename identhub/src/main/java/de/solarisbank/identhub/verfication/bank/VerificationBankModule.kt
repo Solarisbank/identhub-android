@@ -57,9 +57,7 @@ class VerificationBankModule {
         return ContractSigningViewModel(
                 authorizeContractSignUseCase,
                 confirmContractSignUseCase,
-                getIdentificationUseCase,
-                getMobileNumberUseCase,
-            qesStepParametersRepository
+                getMobileNumberUseCase
         )
     }
 

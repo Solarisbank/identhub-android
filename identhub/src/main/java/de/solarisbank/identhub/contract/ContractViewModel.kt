@@ -79,4 +79,12 @@ class ContractViewModel(
         )
     }
 
+    fun callOnConfirmedResult() {
+        val identificationId = (getIdentificationUseCase
+            .execute(Unit).blockingGet() as Result.Success<IdentificationDto>).data.id
+        navigationActionId.value = Event(NaviDirection.ConfirmationSuccessfulStepResult(
+            identificationId
+        ))
+    }
+
 }
