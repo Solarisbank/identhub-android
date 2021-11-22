@@ -150,7 +150,9 @@ fun String.parseDateFromString(): Date? {
 
     for (format in formats) {
         try {
-            date = SimpleDateFormat(format).parse(this)
+            date = SimpleDateFormat(format, Locale.US)
+                .apply { timeZone = TimeZone.getTimeZone("UTC") }
+                .parse(this)
             break
         } catch (pE: ParseException){
             Timber.d("getDateFromMRZ() string value: $this, format: $format")

@@ -25,15 +25,19 @@ class DateInputTextView : AppCompatTextView {
     private var calendar: Calendar? = null
 
     private val dateListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-        calendar?.set(Calendar.YEAR, year)
-        calendar?.set(Calendar.MONTH, month)
-        calendar?.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        calendar?.apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+            set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        }
         updateLabel()
-        clearFocus()
     }
 
     fun setDate(date: Date) {
-        calendar = Calendar.getInstance().apply { time = date }
+        calendar = createCalendar().apply {
+            time = date
+            resetToMidnight()
+        }
         updateLabel()
     }
 
@@ -42,39 +46,17 @@ class DateInputTextView : AppCompatTextView {
     }
 
     fun countIssueDate(expireDate: Date, subtractYears: Int = -10) {
-        calendar = Calendar.getInstance().apply {
+        calendar = createCalendar().apply {
             time = expireDate
+            resetToMidnight()
             add(Calendar.YEAR, subtractYears)
             add(Calendar.DAY_OF_MONTH, 1)
         }
     }
 
     private fun showDialog() {
-        if (text.toString().isNotBlank()) {
-            Timber.d("showDialog(): ${DateFormat.getDateFormat(context)}")
-
-            try {
-                Timber.d("showDialog() 1")
-                calendar = Calendar.getInstance()
-                        .apply { time = DateFormat.getDateFormat(context).parse(text.toString()) }
-                calendar?:let{
-                    Timber.d("showDialog() 2")
-                }
-
-
-            } catch (e: Exception) {
-                Timber.d("showDialog() 3")
-                text.toString().parseDateFromString()?.let {
-                    calendar = Calendar.getInstance().apply { time = it }
-                    Timber.d("showDialog() 4")
-                } ?: let {
-                    Timber.d("showDialog() 5")
-                    calendar = null
-                }
-            }
-
-        } else if (text.toString().isBlank() && calendar == null) {
-            calendar = Calendar.getInstance()
+        if (calendar == null) {
+            calendar = createCalendar().apply { resetToMidnight() }
         }
 
         calendar?.let {
@@ -82,9 +64,9 @@ class DateInputTextView : AppCompatTextView {
                 context,
                 R.style.IdentHubDatePickerStyle,
                 dateListener,
-                calendar!!.get(Calendar.YEAR),
-                calendar!!.get(Calendar.MONTH),
-                calendar!!.get(Calendar.DAY_OF_MONTH)
+                it.get(Calendar.YEAR),
+                it.get(Calendar.MONTH),
+                it.get(Calendar.DAY_OF_MONTH)
             )
             datePickerDialog.setOnCancelListener {
                 clearFocus()
@@ -99,9 +81,18 @@ class DateInputTextView : AppCompatTextView {
     }
 
     private fun updateLabel() {
-        Timber.d("updateLabel(): ${DateFormat.getDateFormat(context).toString()}")
+        Timber.d("updateLabel(): ${DateFormat.getDateFormat(context)}")
         calendar?.let { text = DateFormat.getDateFormat(context).format(it.time) }
                 ?:run { text = "" }
     }
 
+    private fun createCalendar(): Calendar {
+        return Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+    }
+}
+
+fun Calendar.resetToMidnight() {
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 0)
+    set(Calendar.SECOND, 0)
 }
