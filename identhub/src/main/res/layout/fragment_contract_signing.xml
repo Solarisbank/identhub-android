@@ -138,52 +138,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_8"
-                android:text="@string/contract_signing_preview_notice"
                 app:layout_constraintTop_toTopOf="@+id/imageView"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintStart_toEndOf="@+id/imageView" />
 
-            <TextView
-                android:id="@+id/point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\u2022"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/transactionDescription"
-                />
-
-            <TextView
-                android:id="@+id/noticeTitle"
-                style="@style/IdentHubTextView.Small_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contract_signing_notice_title"
-                app:layout_constraintStart_toStartOf="@+id/transactionDescription"
-                app:layout_constraintTop_toTopOf="@+id/point"
-                />
-            <TextView
-                android:id="@+id/noticeDescription"
-                style="@style/IdentHubTextView.Small_12"
+            <de.solarisbank.sdk.feature.view.BulletListLayout
+                android:id="@+id/noticeBulletList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_4"
-                android:text="@string/contract_signing_notice1"
-                app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/noticeTitle"
-                />
-
-            <TextView
-                android:id="@+id/noticeDescription2"
-                style="@style/IdentHubTextView.Small_12"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_4"
-                app:layout_constraintStart_toStartOf="@+id/noticeDescription"
-                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/noticeDescription"
-                android:text="@string/contract_signing_notice2" />
+                app:layout_constraintTop_toBottomOf="@id/transactionDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

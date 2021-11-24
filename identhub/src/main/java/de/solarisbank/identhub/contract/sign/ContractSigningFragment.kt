@@ -28,6 +28,7 @@ import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.view.BulletListLayout
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
@@ -51,6 +52,7 @@ class ContractSigningFragment : IdentHubFragment() {
     private var progress: ProgressBar? = null
     private var codeProgress: ProgressBar? = null
     private var imageView: ImageView? = null
+    private var bulletList: BulletListLayout? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -69,6 +71,8 @@ class ContractSigningFragment : IdentHubFragment() {
                     progress = it.findViewById(R.id.progress)
                     codeProgress = it.findViewById(R.id.codeProgress)
                     imageView = it.findViewById(R.id.scratch)
+                    bulletList = it.findViewById(R.id.noticeBulletList)
+                    setUpBulletList()
                     customizeUI()
                 }
     }
@@ -79,6 +83,21 @@ class ContractSigningFragment : IdentHubFragment() {
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         progress?.customize(customization)
         codeProgress?.customize(customization)
+    }
+
+    private fun setUpBulletList() {
+        val title = getString(R.string.contract_signing_notice_title)
+        if (title.isNotBlank()) {
+            bulletList?.updateItems(
+                title = title,
+                items = listOf(
+                    getString(R.string.contract_signing_notice1),
+                    getString(R.string.contract_signing_notice2)
+                ),
+                titleStyle = BulletListLayout.TitleStyle.Notice,
+                customization = customization
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -226,7 +245,7 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun onStateOfDigitInputChanged(state: Int) {
         val error = state == ERROR_STATE || viewModel.getCounterFinished()
-        submitButton!!.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.contract_signing_preview_sign_action)
+        submitButton!!.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.contract_signing_sign_action)
         submitButton!!.isEnabled = state != LOADING_STATE && isSubmitButtonEnabled()
 
         errorMessage!!.visibility = if (error) View.VISIBLE else View.GONE
@@ -271,6 +290,7 @@ class ContractSigningFragment : IdentHubFragment() {
         progress = null
         codeProgress = null
         imageView = null
+        bulletList = null
         super.onDestroyView()
     }
 

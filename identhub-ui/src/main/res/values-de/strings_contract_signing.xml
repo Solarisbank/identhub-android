@@ -5,10 +5,7 @@
     <string name="contract_signing_preview_notice">Hinweis</string>
     <string name="contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
     <string name="contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
-    <string name="contract_signing_notice1" />
-    <string name="contract_signing_notice2" />
     <string name="contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
-    <string name="contract_signing_notice_title">Sie konnten den Prozess nicht abschließen?</string>
     <string name="contract_signing_sign_action">Unterzeichnen und Abschicken</string>
     <string name="contract_signing_code_expires">Läuft ab in %1$s</string>
     <string name="contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
@@ -16,8 +13,6 @@
     <string name="contract_signing_terms_label">Es gelten die AGBs</string>
     <string name="contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
     <string name="contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
-    <string name="contract_signing_additional_terms_label" />
-    <string name="contract_signing_additional_terms_link" />
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>
     <plurals name="contract_signing_preview_downloaded_message">

@@ -6,20 +6,19 @@
     <string name="contract_signing_preview_notice_label">View your documents</string>
     <string name="contract_signing_preview_send_code_action">Send code to sign</string>
     <string name="contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
-    <string name="contract_signing_notice_title">You couldn\'t complete the process?</string>
-    <string name="contract_signing_notice1"></string>
-    <string name="contract_signing_notice2"></string>
+    <string name="contract_signing_notice_title" translatable="false"/>
+    <string name="contract_signing_notice1" translatable="false"/>
+    <string name="contract_signing_notice2" translatable="false"/>
     <string name="contract_signing_sign_action">Sign and Submit</string>
     <string name="contract_signing_code_expires">Expires in %1$s</string>
     <string name="contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
     <string name="contract_signing_code_request_new_button">Request new code</string>
-    <string name="contract_signing_preview_sign_action">Submit and sign</string>
     <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
     <string name="contract_signing_terms_label">The T&amp;Cs apply</string>
     <string name="contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
     <string name="contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
-    <string name="contract_signing_additional_terms_label"></string>
-    <string name="contract_signing_additional_terms_link"></string>
+    <string name="contract_signing_additional_terms_label" translatable="false"/>
+    <string name="contract_signing_additional_terms_link" translatable="false"/>
     <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="contract_signing_preview_download_error">Could not download all files.</string>
     <plurals name="contract_signing_preview_downloaded_message">

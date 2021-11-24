@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.feature.base.BaseActivity
-import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
@@ -118,6 +118,7 @@ class DocScanResultFragment : FourthlineFragment() {
                 val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
                 if (kycCreationState is ZipCreationStateDto.SUCCESS && kycCreationState.uri != null) {
                     kycSharedViewModel.kycURI = kycCreationState.uri
+                    hideKeyboard()
                     activityViewModel.navigateToKycUploadFragemnt()
                 } else {
                     showGenericAlertFragment {  }
