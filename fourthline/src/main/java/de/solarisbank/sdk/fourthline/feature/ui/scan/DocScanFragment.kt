@@ -148,6 +148,7 @@ class DocScanFragment : DocumentScannerFragment() {
             when (currentDocumentType) {
                 DocumentType.PASSPORT -> documentMask?.setImageResource(R.drawable.ic_passport_front_success_frame)
                 DocumentType.ID_CARD -> documentMask?.setImageResource(R.drawable.ic_idcard_front_success_frame)
+                DocumentType.PAPER_ID -> documentMask?.setImageResource(R.drawable.ic_paperid_inside_left_frame)
             }
             takeSnapshot = findViewById(R.id.takeSnapshot)
             takeSnapshot?.setOnClickListener { takeSnapshot() }
@@ -185,8 +186,8 @@ class DocScanFragment : DocumentScannerFragment() {
         return Rect(
                 documentMask!!.left,
                 documentMask!!.top,
-                documentMask!!.right - 1,
-                documentMask!!.bottom - 1
+                documentMask!!.right,
+                documentMask!!.bottom
         )
     }
 
@@ -208,30 +209,39 @@ class DocScanFragment : DocumentScannerFragment() {
 
     private fun DocumentScannerStep.findMaskDrawable(context: Context): Drawable? {
         Timber.d("findMaskDrawable, fileSide: $fileSide")
-        val frameResource: Int
-
-        when (fileSide) {
+        val frameResource: Int = when (fileSide) {
             DocumentFileSide.FRONT ->
-                frameResource = when (currentDocumentType) {
+                when (currentDocumentType) {
                     DocumentType.ID_CARD ->
                         if (isAngled) R.drawable.ic_idcard_front_tilted_success_frame
                         else R.drawable.ic_idcard_front_success_frame
                     DocumentType.PASSPORT ->
                         if (isAngled) R.drawable.ic_passport_angled_success_frame
                         else R.drawable.ic_passport_front_success_frame
+                    DocumentType.PAPER_ID ->
+                        if (isAngled) R.drawable.ic_paperid_back_tilted_frame
+                        else R.drawable.ic_paperid_back_frame
                     else -> R.drawable.ic_idcard_front_success_frame
                 }
 
             DocumentFileSide.BACK ->
-                frameResource = when (currentDocumentType) {
+                when (currentDocumentType) {
                     DocumentType.ID_CARD ->
                         if (isAngled) R.drawable.ic_idcard_back_tilted_success_frame
                         else R.drawable.ic_idcard_back_success_frame
+                    DocumentType.PAPER_ID ->
+                        if (isAngled) R.drawable.ic_paperid_back_tilted_frame
+                        else R.drawable.ic_paperid_back_frame
                     else -> R.drawable.ic_idcard_back_success_frame
                 }
+            DocumentFileSide.INSIDE_LEFT ->
+                if (isAngled) R.drawable.ic_paperid_inside_left_tilted_frame
+                else R.drawable.ic_paperid_inside_left_frame
+            DocumentFileSide.INSIDE_RIGHT ->
+                if (isAngled) R.drawable.ic_paperid_inside_right_tilted_frame
+                else R.drawable.ic_paperid_inside_right_frame
             else -> throw RuntimeException("ID cards do not have document side: $fileSide")
         }
-
 
         return ContextCompat.getDrawable(context, frameResource)
     }
@@ -342,7 +352,8 @@ class DocScanFragment : DocumentScannerFragment() {
         } else {
             toggleTiltingCard(false)
             docImageView?.setImageResource(imageResource)
-            docImageView?.show()
+            if (currentDocumentType != DocumentType.PAPER_ID)
+                docImageView?.show()
         }
     }
 
@@ -371,7 +382,7 @@ class DocScanFragment : DocumentScannerFragment() {
         animator = null
         tiltingCard?.rotationX = 0f
 
-        if (show) {
+        if (show && currentDocumentType != DocumentType.PAPER_ID) {
             tiltingCard?.show()
             animator = AnimatorInflater.loadAnimator(
                 requireContext(),

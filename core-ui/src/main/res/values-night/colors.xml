@@ -8,7 +8,7 @@
     <color name="ident_hub_color_success">#09AA67</color>
     <color name="ident_hub_color_error">#E23636</color>
     <color name="ident_hub_color_errorSurface">#fff5f5</color>
-    <color name="ident_hub_color_surface">#303030</color>
+    <color name="ident_hub_color_surface">#242A32</color>
     <color name="ident_hub_color_background">#414D5D</color>
     <color name="ident_hub_color_light_button_text_enabled">#C9CFD6</color>
     <color name="ident_hub_color_edit_text">#BCBCBC</color>

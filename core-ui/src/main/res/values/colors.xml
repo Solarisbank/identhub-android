@@ -10,7 +10,7 @@
     <color name="ident_hub_color_success">#09AA67</color>
     <color name="ident_hub_color_error">#E23636</color>
     <color name="ident_hub_color_errorSurface">#fff5f5</color>
-    <color name="ident_hub_color_surface">#FFFFFFFF</color>
+    <color name="ident_hub_color_surface">#FFFFFF</color>
     <color name="ident_hub_color_background">#F7F8FA</color>
     <color name="ident_hub_color_edit_text">#414D5D</color>
     <color name="ident_hub_color_light_button_text_enabled">#FFFFFF</color>
