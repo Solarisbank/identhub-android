@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
-import androidx.constraintlayout.widget.Barrier
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
@@ -35,10 +34,12 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     private var nextStepLabelTextSize: Float = 0f
     private var startEndSegmentParentMargin: Int = 0
 
-    private val barrier = Barrier(context).apply {
-        tag = "barrier"
-        id = ViewCompat.generateViewId()
-    }
+    private val labelsConstraintWrapper = ConstraintLayout(context)
+        .apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            tag = "labelsWrapper"
+            id = ViewCompat.generateViewId()
+        }
 
     var currentStep = 0
         get() = field
@@ -107,8 +108,6 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                 style1.recycle()
             }
         addInnerViews()
-
-
     }
 
 
@@ -139,17 +138,18 @@ class ConstraintStepIndicator @JvmOverloads constructor(
 
         super.onMeasure(widthMeasureSpec, heightSpec)
         makeConstraints(MeasureSpec.getSize(widthMeasureSpec))
+
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        set.applyTo(this)
+        segmentsSet.applyTo(this)
     }
 
     private fun addInnerViews() {
-        addView(currentStepLabel)
-        addView(nextStepLabel)
-        addView(barrier)
+        labelsConstraintWrapper.addView(currentStepLabel)
+        labelsConstraintWrapper.addView(nextStepLabel)
+        addView(labelsConstraintWrapper)
         if (!areLabelsVisible) {
             currentStepLabel.visibility = View.GONE
             nextStepLabel.visibility = View.GONE
@@ -173,46 +173,50 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         ).toInt()
     }
 
-    var set = ConstraintSet()
+    val labelsConstraintSet = ConstraintSet()
+    var segmentsSet = ConstraintSet()
+
+
+    private fun makeLabelConstraints(parentWidth: Int) {
+        labelsConstraintSet.clone(labelsConstraintWrapper)
+        labelsConstraintSet.connect(currentStepLabel.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        labelsConstraintSet.connect(currentStepLabel.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        labelsConstraintSet.constrainHeight(currentStepLabel.id, ConstraintSet.WRAP_CONTENT)
+        labelsConstraintSet.constrainWidth(currentStepLabel.id, ConstraintSet.WRAP_CONTENT)
+        labelsConstraintSet.connect(nextStepLabel.id, ConstraintSet.START, currentStepLabel.id, ConstraintSet.END)
+        labelsConstraintSet.connect(nextStepLabel.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        labelsConstraintSet.connect(nextStepLabel.id, ConstraintSet.BASELINE, ConstraintSet.PARENT_ID, ConstraintSet.BASELINE)
+        labelsConstraintSet.setHorizontalBias(nextStepLabel.id, 1f)
+        labelsConstraintSet.constrainHeight(nextStepLabel.id, ConstraintSet.WRAP_CONTENT)
+        labelsConstraintSet.constrainWidth(nextStepLabel.id, ConstraintSet.WRAP_CONTENT)
+        labelsConstraintSet.applyTo(labelsConstraintWrapper)
+    }
 
     private fun makeConstraints(parentWidth: Int) {
 
-        val halfInnerSegmentMarginDp = outerBetweenSegmentMarginDp / 2
-        set = ConstraintSet()
-        set.clone(this)
 
-        //todo think about layout
-        set.connect(currentStepLabel.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-        set.connect(currentStepLabel.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-        set.constrainHeight(currentStepLabel.id, ConstraintSet.WRAP_CONTENT)
-        set.constrainWidth(currentStepLabel.id, ConstraintSet.WRAP_CONTENT)
-        set.connect(nextStepLabel.id, ConstraintSet.START, currentStepLabel.id, ConstraintSet.END)
-        set.connect(nextStepLabel.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-        set.connect(nextStepLabel.id, ConstraintSet.BASELINE, ConstraintSet.PARENT_ID, ConstraintSet.BASELINE)
-        set.setHorizontalBias(nextStepLabel.id, 1f)
-        set.constrainHeight(nextStepLabel.id, ConstraintSet.WRAP_CONTENT)
-        set.constrainWidth(nextStepLabel.id, ConstraintSet.WRAP_CONTENT)
-        set.createBarrier(barrier.id, Barrier.BOTTOM, nextStepLabel.id, nextStepLabel.id)
+        val halfInnerSegmentMarginDp = outerBetweenSegmentMarginDp / 2
+        segmentsSet = ConstraintSet()
+        segmentsSet.clone(this)
+        segmentsSet.connect(labelsConstraintWrapper.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        makeLabelConstraints(parentWidth)
 
         for (i in 0 until stepsAmount) {
             val segment = segmentList[i]
             segment.setStepNumber(i+1)
             when (i) {
                 0 -> {
-                    Timber.d("makeConstraints 1")
-                    set.setMargin(segment.id, ConstraintSet.END, halfInnerSegmentMarginDp)
-                    set.connect(segment.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, startEndSegmentParentMargin)
-                    set.connect(segment.id, ConstraintSet.END, segmentList[i+1].id, ConstraintSet.START)
-                    set.connect(segment.id, ConstraintSet.TOP, barrier.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
-                    set.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                    segmentsSet.setMargin(segment.id, ConstraintSet.END, halfInnerSegmentMarginDp)
+                    segmentsSet.connect(segment.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, startEndSegmentParentMargin)
+                    segmentsSet.connect(segment.id, ConstraintSet.END, segmentList[i+1].id, ConstraintSet.START)
+                    segmentsSet.connect(segment.id, ConstraintSet.TOP, labelsConstraintWrapper.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
+                    segmentsSet.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
 
                     segment.isFirstStep(true)
-                    set.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
+                    segmentsSet.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
                     if (segment.isFirstStepWrappable()) {
-                        Timber.d("makeConstraints 2")
-                        set.constrainWidth(segment.id, ConstraintSet.WRAP_CONTENT)
+                        segmentsSet.constrainWidth(segment.id, ConstraintSet.WRAP_CONTENT)
                     } else {
-                        Timber.d("makeConstraints 3")
                         val wishedInnerSegmentMargin = TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP,
                             outerBetweenSegmentMarginDp.toFloat(),
@@ -220,34 +224,31 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                         )
                         val wishedSegmentWidth =
                             (parentWidth - ((stepsAmount - 1) * wishedInnerSegmentMargin)) / stepsAmount
-                        set.constrainWidth(segment.id, wishedSegmentWidth.toInt())
+                        segmentsSet.constrainWidth(segment.id, wishedSegmentWidth.toInt())
                     }
                 }
 
                 /* Defines last step */
                 stepsAmount - 1 -> {
-                    Timber.d("makeConstraints 4")
-                    set.setMargin(segment.id, ConstraintSet.START, halfInnerSegmentMarginDp)
-                    set.connect(segment.id, ConstraintSet.START, segmentList[i - 1].id, ConstraintSet.END)
-                    set.connect(segment.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, startEndSegmentParentMargin)
-                    set.connect(segment.id, ConstraintSet.TOP, barrier.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
-                    set.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-                    set.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
-                    set.constrainWidth(segment.id, ConstraintSet.MATCH_CONSTRAINT)
+                    segmentsSet.setMargin(segment.id, ConstraintSet.START, halfInnerSegmentMarginDp)
+                    segmentsSet.connect(segment.id, ConstraintSet.START, segmentList[i - 1].id, ConstraintSet.END)
+                    segmentsSet.connect(segment.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, startEndSegmentParentMargin)
+                    segmentsSet.connect(segment.id, ConstraintSet.TOP, labelsConstraintWrapper.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
+                    segmentsSet.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                    segmentsSet.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
+                    segmentsSet.constrainWidth(segment.id, ConstraintSet.MATCH_CONSTRAINT)
                 }
                 else -> {
-                    Timber.d("makeConstraints 5")
-                    set.setMargin(segment.id, ConstraintSet.START, halfInnerSegmentMarginDp)
-                    set.setMargin(segment.id, ConstraintSet.END, halfInnerSegmentMarginDp)
-                    set.connect(segment.id, ConstraintSet.START, segmentList[i-1].id, ConstraintSet.END)
-                    set.connect(segment.id, ConstraintSet.END, segmentList[i+1].id, ConstraintSet.START)
-                    set.connect(segment.id, ConstraintSet.TOP, barrier.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
-                    set.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-                    set.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
-                    set.constrainWidth(segment.id, ConstraintSet.MATCH_CONSTRAINT)
+                    segmentsSet.setMargin(segment.id, ConstraintSet.START, halfInnerSegmentMarginDp)
+                    segmentsSet.setMargin(segment.id, ConstraintSet.END, halfInnerSegmentMarginDp)
+                    segmentsSet.connect(segment.id, ConstraintSet.START, segmentList[i-1].id, ConstraintSet.END)
+                    segmentsSet.connect(segment.id, ConstraintSet.END, segmentList[i+1].id, ConstraintSet.START)
+                    segmentsSet.connect(segment.id, ConstraintSet.TOP, labelsConstraintWrapper.id, ConstraintSet.BOTTOM, labelBottomMarginDp.dpToPx())
+                    segmentsSet.connect(segment.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+                    segmentsSet.constrainHeight(segment.id, ConstraintSet.MATCH_CONSTRAINT)
+                    segmentsSet.constrainWidth(segment.id, ConstraintSet.MATCH_CONSTRAINT)
                 }
             }
         }
-
     }
 }
