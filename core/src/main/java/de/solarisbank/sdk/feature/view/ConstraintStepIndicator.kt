@@ -130,20 +130,21 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        Timber.d("onMeasure")
         val heightSpec = MeasureSpec.makeMeasureSpec(
             (segmentList[0].getConstaintInnerHeight()
                 .dpToPixels(context) + labelBottomMarginDp + currentStepLabelTextSize.spToPx(context)),
             MeasureSpec.EXACTLY
         )
 
+        makeConstraints(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
+        segmentsSet.applyTo(this)
         super.onMeasure(widthMeasureSpec, heightSpec)
-        makeConstraints(MeasureSpec.getSize(widthMeasureSpec))
-
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        Timber.d("onLayout")
         super.onLayout(changed, left, top, right, bottom)
-        segmentsSet.applyTo(this)
     }
 
     private fun addInnerViews() {
@@ -177,7 +178,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     var segmentsSet = ConstraintSet()
 
 
-    private fun makeLabelConstraints(parentWidth: Int) {
+    private fun makeLabelConstraints() {
         labelsConstraintSet.clone(labelsConstraintWrapper)
         labelsConstraintSet.connect(currentStepLabel.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
         labelsConstraintSet.connect(currentStepLabel.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
@@ -192,14 +193,12 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         labelsConstraintSet.applyTo(labelsConstraintWrapper)
     }
 
-    private fun makeConstraints(parentWidth: Int) {
-
-
+    private fun makeConstraints(parentWidth: Int, parentHeight: Int) {
         val halfInnerSegmentMarginDp = outerBetweenSegmentMarginDp / 2
         segmentsSet = ConstraintSet()
         segmentsSet.clone(this)
         segmentsSet.connect(labelsConstraintWrapper.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-        makeLabelConstraints(parentWidth)
+        makeLabelConstraints()
 
         for (i in 0 until stepsAmount) {
             val segment = segmentList[i]
