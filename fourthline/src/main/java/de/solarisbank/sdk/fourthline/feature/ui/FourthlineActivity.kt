@@ -133,21 +133,20 @@ class FourthlineActivity : FourthlineBaseActivity() {
                                 .navigate(it.actionId, it.args)
                             setTitle(R.string.fourthline_activity_confirm_information_step_label)
                         }
-                        R.id.action_welcomeContainerFragment_to_selfieFragment -> {
-                            toggleTopBars(show = false)
+                        R.id.action_welcomeContainerFragment_to_documentTypeSelectionFragment -> {
                             awaitedDirection = it
                             proceedWithPermissions()
                             stepIndicator.setPassedStep(3)
                             setTitle(R.string.fourthline_activity_selfie_step_label)
                         }
-                        R.id.action_selfieResultFragment_to_documentTypeSelectionFragment,
+                        R.id.action_selfieResultFragment_to_kycUploadFragment,
                         R.id.action_documentScanFragment_to_documentTypeSelectionFragment -> {
                             stepIndicator.setPassedStep(3)
                             Navigation.findNavController(navHostFragment)
                                 .navigate(it.actionId, it.args)
                             setTitle(R.string.fourthline_activity_select_id_step_label)
                         }
-                        R.id.action_documentResultFragment_to_kycUploadFragment -> {
+                        R.id.action_documentResultFragment_to_selfieFragment -> {
                             stepIndicator.setPassedStep(3)
                             Navigation.findNavController(navHostFragment)
                                 .navigate(it.actionId, it.args)

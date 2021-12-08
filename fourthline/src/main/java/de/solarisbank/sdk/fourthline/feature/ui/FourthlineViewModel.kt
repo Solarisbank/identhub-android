@@ -35,7 +35,7 @@ class FourthlineViewModel (
     }
 
     fun navigateToSelfieFragment() {
-        navigateTo(R.id.action_welcomeContainerFragment_to_selfieFragment)
+        navigateTo(R.id.action_welcomeContainerFragment_to_documentTypeSelectionFragment)
     }
 
     fun navigateToSelfieResultFragment() {
@@ -43,7 +43,7 @@ class FourthlineViewModel (
     }
 
     fun navigateToDocTypeSelectionFragment() {
-        navigateTo(R.id.action_selfieResultFragment_to_documentTypeSelectionFragment)
+        navigateTo(R.id.action_selfieResultFragment_to_kycUploadFragment)
     }
 
     fun navigateBackToDocTypeSelectionFragment(args: Bundle) {
@@ -59,7 +59,7 @@ class FourthlineViewModel (
     }
 
     fun navigateToKycUploadFragemnt() {
-        navigateTo(R.id.action_documentResultFragment_to_kycUploadFragment)
+        navigateTo(R.id.action_documentResultFragment_to_selfieFragment)
     }
 
     fun navigateToUploadResultFragment(nextStep: String? = null, identificationId: String? = null) {
