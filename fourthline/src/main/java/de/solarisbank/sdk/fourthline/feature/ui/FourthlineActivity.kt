@@ -10,7 +10,6 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
@@ -45,14 +44,12 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun inject(activitySubcomponent: FourthlineActivitySubcomponent) {
         activitySubcomponent.inject(this)
     }
-    private var showStepIndicator: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fourthline)
         Timber.d("intent: $intent")
-        Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY):" +
-                " ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
+        Timber.d("Intent: SESSION_URL_KEY: ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
         observeViewModel()
         initGraph()
@@ -64,6 +61,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
         stepIndicator = findViewById(R.id.stepIndicator)
         stepIndicator.setCurrentStepLabel("ID verification")
         stepIndicator.setPassedStep(3)
+        supportActionBar?.setShowHideAnimationEnabled(false)
         if (!shouldShowStepIndicator)
             stepIndicator.hide()
     }
@@ -79,23 +77,14 @@ class FourthlineActivity : FourthlineBaseActivity() {
             navGraph.startDestination = R.id.kycUploadFragment
         }
         navController.graph = navGraph
-        navController.addOnDestinationChangedListener{ controller, destination, arguments ->
-                when (destination.id) {
-                    R.id.selfieFragment,
-                    R.id.documentScanFragment,
-                    R.id.selfieResultFragment -> {
-                        toggleTopBars(show = false)
-                    }
-                    else -> toggleTopBars(show = (showStepIndicator))
-                }
-        }
+        setUpDestinationListener()
     }
 
     private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(FourthlineViewModel::class.java)
 
-        viewModel.navigationActionId.observe(this, Observer { event -> onNavigationChanged(event) })
+        viewModel.navigationActionId.observe(this, ::onNavigationEvent)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -103,75 +92,75 @@ class FourthlineActivity : FourthlineBaseActivity() {
         super.onNewIntent(intent)
     }
 
-    private fun onNavigationChanged(event: Event<NaviDirection>) {
-        Timber.d("onNavigationChanged 0; event: ${event}")
-        supportActionBar?.setShowHideAnimationEnabled(false)
+    private fun onNavigationEvent(event: Event<NaviDirection>) {
+        Timber.d("onNavigationEvent 0; event: $event")
 
         event.content?.let {
             when (it) {
                 is NaviDirection.FragmentDirection -> {
-                    Timber.d("onNavigationChanged 1; it: ${it}")
-                    when (it.actionId) {
-                        R.id.action_selfieFragment_to_selfieResultFragment -> {
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_selfie_step_label)
-                        }
-                        R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment -> {
-                            toggleTopBars(show = true)
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_selfie_step_label)
-                        }
-                        R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                        }
-                        R.id.action_documentScanFragment_to_documentResultFragment -> {
-                            //toggleTopBars(show = true)
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_confirm_information_step_label)
-                        }
-                        R.id.action_welcomeContainerFragment_to_documentTypeSelectionFragment -> {
-                            awaitedDirection = it
-                            proceedWithPermissions()
-                            stepIndicator.setPassedStep(3)
-                            setTitle(R.string.fourthline_activity_selfie_step_label)
-                        }
-                        R.id.action_selfieResultFragment_to_kycUploadFragment,
-                        R.id.action_documentScanFragment_to_documentTypeSelectionFragment -> {
-                            stepIndicator.setPassedStep(3)
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_select_id_step_label)
-                        }
-                        R.id.action_documentResultFragment_to_selfieFragment -> {
-                            stepIndicator.setPassedStep(3)
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_verifying_step_label)
-                        }
-                        R.id.action_reset_to_welcome_screen -> {
-                            stepIndicator.setPassedStep(3)
-                            navGraph.startDestination = R.id.welcomeContainerFragment
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_intro_step_label)
-                        }
-                        else -> {
-                            Navigation.findNavController(navHostFragment)
-                                .navigate(it.actionId, it.args)
-                            setTitle(R.string.fourthline_activity_intro_step_label)
-                        }
-                    }
+                    Timber.d("onNavigationEvent 1; it: $it")
+                    navigate(it)
                 }
-
                 is SessionStepResult -> {
-                    Timber.d("onNavigationChanged 2; it: ${it}")
+                    Timber.d("onNavigationEvent 2; it: $it")
                     quit(it)
                 }
+                else -> {
+                    Timber.d("onNavigationEvent 3; it: $it")
+                }
+            }
+        }
+    }
 
+    private fun navigate(direction: NaviDirection.FragmentDirection) {
+        when (direction.actionId) {
+            R.id.action_selfieInstructionsFragment_to_selfieFragment,
+            R.id.action_documentTypeSelectionFragment_to_documentScanFragment -> {
+                awaitedDirection = direction
+                proceedWithPermissions()
+            }
+            else -> {
+                Navigation.findNavController(navHostFragment)
+                    .navigate(direction.actionId, direction.args)
+            }
+        }
+    }
+
+    private fun setUpDestinationListener() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.termsAndConditionsFragment -> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_intro_step_label)
+                }
+                R.id.documentTypeSelectionFragment -> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_select_id_step_label)
+                }
+                R.id.documentScanFragment -> {
+                    toggleTopBars(show = false)
+                }
+                R.id.documentResultFragment -> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_confirm_information_step_label)
+                }
+                R.id.selfieInstructionsFragment -> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_selfie_step_label)
+                }
+                R.id.selfieFragment,
+                R.id.selfieResultFragment-> {
+                    toggleTopBars(show = false)
+                }
+                R.id.kycUploadFragment,
+                R.id.uploadResultFragment-> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_verifying_step_label)
+                }
+                else -> {
+                    toggleTopBars(show = true)
+                    setTitle(R.string.fourthline_activity_intro_step_label)
+                }
             }
         }
     }
@@ -188,13 +177,15 @@ class FourthlineActivity : FourthlineBaseActivity() {
     }
 
     private fun navigateToAwaitedDirection() {
-        Navigation.findNavController(navHostFragment).navigate(awaitedDirection!!.actionId, awaitedDirection!!.args)
+        awaitedDirection?.let {
+            Navigation.findNavController(navHostFragment).navigate(it.actionId, it.args)
+        }
         awaitedDirection = null
     }
 
     private fun requestPermission(permissionCode: Int, rationalizeCode: Int?): Boolean {
         val permission = getPermissionFromCode(permissionCode) ?: return true
-        if (ContextCompat.checkSelfPermission(this, permission) != PermissionChecker.PERMISSION_GRANTED) {
+        return if (ContextCompat.checkSelfPermission(this, permission) != PermissionChecker.PERMISSION_GRANTED) {
             if (permissionCode == rationalizeCode) {
                 showRationale(permission)
             } else {
@@ -204,9 +195,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     permissionCode
                 )
             }
-            return false
+            false
         } else {
-            return true
+            true
         }
     }
 

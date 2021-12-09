@@ -129,11 +129,7 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun onFail(error: SelfieScannerError) {
         Timber.d("onFail: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
-            val bundle = Bundle().apply {
-                putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
-                putString(KEY_MESSAGE, error.asString(requireContext()))
-            }
-            activityViewModel.resetFlowToWelcomeScreen(bundle)
+            activityViewModel.navigateFromSelfieToSelfieInstructions(error.asString(requireContext()))
         }
     }
 
@@ -167,7 +163,7 @@ class SelfieFragment : SelfieScannerFragment() {
             stepName?.setText(R.string.selfie_scanner_scan_successful)
             stepName?.show()
             kycSharedViewModel.updateKycWithSelfieScannerResult(result)
-            activityViewModel.navigateToSelfieResultFragment()
+            activityViewModel.navigateFromSelfieToSelfieResult()
         }
     }
 

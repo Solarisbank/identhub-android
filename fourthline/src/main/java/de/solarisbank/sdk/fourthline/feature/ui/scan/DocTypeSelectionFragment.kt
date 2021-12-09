@@ -168,7 +168,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     }
 
     private fun moveToDocScanFragment() {
-        activityViewModel.navigateToDocScanFragment(Bundle()
+        activityViewModel.navigateFromDocTypeSelectionToDocScan(Bundle()
                 .apply { putSerializable(
                             DocScanFragment.DOC_TYPE_KEY,
                             docTypeAdapter!!.getSelectedDocType()

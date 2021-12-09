@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.feature.base.BaseActivity
@@ -64,15 +63,9 @@ class SelfieResultFragment : FourthlineFragment() {
         }
 
         retryButton!!.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString(
-                    FourthlineActivity.KEY_CODE,
-                    FourthlineActivity.FOURTHLINE_SELFIE_RETAKE
-                )
-            }
-            activityViewModel.resetFlowToWelcomeScreen(bundle)
+            activityViewModel.navigateFromSelfieResultToSelfieInstructions()
         }
-        submitButton!!.setOnClickListener { activityViewModel.navigateToDocTypeSelectionFragment() }
+        submitButton!!.setOnClickListener { activityViewModel.navigateFromSelfieResultToKycUploadFragment() }
     }
 
     override fun inject(component: FourthlineFragmentComponent) {

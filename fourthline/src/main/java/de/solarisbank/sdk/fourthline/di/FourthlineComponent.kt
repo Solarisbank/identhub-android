@@ -96,8 +96,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsInjector
-import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment
-import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragmentInjector
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragment
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector
 import okhttp3.Interceptor
@@ -397,8 +397,8 @@ class FourthlineComponent private constructor(
                 TermsAndConditionsInjector(baseFragmentDependencies).injectMembers(termsAndConditionsFragment)
             }
 
-            override fun inject(welcomeContainerFragment: WelcomeContainerFragment) {
-                WelcomeContainerFragmentInjector(baseFragmentDependencies).injectMembers(welcomeContainerFragment)
+            override fun inject(selfieInstructionsFragment: SelfieInstructionsFragment) {
+                SelfieInstructionsFragmentInjector(baseFragmentDependencies).injectMembers(selfieInstructionsFragment)
             }
 
             override fun inject(welcomePageFragment: WelcomePageFragment) {

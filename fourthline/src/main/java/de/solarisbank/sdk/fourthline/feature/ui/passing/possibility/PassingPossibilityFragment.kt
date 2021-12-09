@@ -60,7 +60,7 @@ class PassingPossibilityFragment : FourthlineFragment() {
             }
             is PersonDataStateDto.SUCCEEDED -> {
                 progressBar!!.visibility = View.INVISIBLE
-                activityViewModel.navigateFromPassingPossibilityToTcFragment()
+                activityViewModel.navigateFromPassingPossibilityToTc()
             }
             is PersonDataStateDto.EMPTY_DOCS_LIST_ERROR -> {
                 progressBar!!.visibility = View.INVISIBLE

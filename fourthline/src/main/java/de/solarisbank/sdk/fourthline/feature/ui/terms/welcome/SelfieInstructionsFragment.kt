@@ -15,7 +15,7 @@ import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 
-class WelcomeContainerFragment : FourthlineFragment() {
+class SelfieInstructionsFragment : FourthlineFragment() {
 
     private var startbutton: Button? = null
     private var imageView: ImageView? = null
@@ -27,7 +27,7 @@ class WelcomeContainerFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_welcome_container, container, false)
+        return inflater.inflate(R.layout.fragment_selfie_instructions, container, false)
                 .also {
                     startbutton = it.findViewById(R.id.startButton)
                     imageView = it.findViewById(R.id.image)
@@ -57,7 +57,7 @@ class WelcomeContainerFragment : FourthlineFragment() {
     }
 
     private fun showSelfieScanner() {
-        sharedViewModel.navigateToSelfieFragment()
+        sharedViewModel.navigateFromSelfieInstructionsToSelfie()
     }
 
     private fun handleErrors(saved: Bundle?) {

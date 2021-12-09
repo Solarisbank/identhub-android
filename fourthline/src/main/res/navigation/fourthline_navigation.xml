@@ -5,9 +5,9 @@
     app:startDestination="@id/passingPossibilityFragment">
 
     <action
-        android:id="@+id/action_reset_to_welcome_screen"
-        app:destination="@id/welcomeContainerFragment"
-        app:popUpTo="@+id/termsAndConditionsFragment"
+        android:id="@+id/action_reset_to_selfie_instructions"
+        app:destination="@id/selfieInstructionsFragment"
+        app:popUpTo="@+id/selfieInstructionsFragment"
         app:popUpToInclusive="true">
         <argument
             android:name="KEY_CODE"
@@ -32,8 +32,8 @@
         android:label="TermsAndConditionsFragment"
         >
         <action
-            android:id="@+id/action_termsAndConditionsFragment_to_welcomeContainerFragment"
-            app:destination="@id/welcomeContainerFragment" />
+            android:id="@+id/action_termsAndConditionsFragment_to_documentTypeSelectionFragment"
+            app:destination="@id/documentTypeSelectionFragment" />
         <action
             android:id="@+id/action_termsAndConditionsFragment_to_webViewFragment"
             app:destination="@id/webViewFragment">
@@ -55,13 +55,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/welcomeContainerFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment"
-        android:label="WelcomeContainerFragment"
+        android:id="@+id/selfieInstructionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragment"
+        android:label="SelfieInstructionsFragment"
         >
         <action
-            android:id="@+id/action_welcomeContainerFragment_to_documentTypeSelectionFragment"
-            app:destination="@id/documentTypeSelectionFragment" />
+            android:id="@+id/action_selfieInstructionsFragment_to_selfieFragment"
+            app:destination="@id/selfieFragment" />
     </fragment>
 
     <fragment
@@ -128,8 +128,8 @@
         android:label="DocumentResultFragment"
         >
         <action
-            android:id="@+id/action_documentResultFragment_to_selfieFragment"
-            app:destination="@id/selfieFragment" />
+            android:id="@+id/action_documentResultFragment_to_selfieInstructionsFragment"
+            app:destination="@id/selfieInstructionsFragment" />
     </fragment>
 
     <fragment

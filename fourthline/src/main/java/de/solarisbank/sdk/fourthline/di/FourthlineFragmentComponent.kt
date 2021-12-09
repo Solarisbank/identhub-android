@@ -9,14 +9,14 @@ import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieFragment
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultFragment
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment
-import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragment
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragment
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
 
 interface FourthlineFragmentComponent {
 
     fun inject(termsAndConditionsFragment: TermsAndConditionsFragment)
 
-    fun inject(welcomeContainerFragment: WelcomeContainerFragment)
+    fun inject(selfieInstructionsFragment: SelfieInstructionsFragment)
 
     fun inject(welcomePageFragment: WelcomePageFragment)
 

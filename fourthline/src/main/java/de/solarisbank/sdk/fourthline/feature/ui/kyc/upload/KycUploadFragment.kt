@@ -70,11 +70,11 @@ class KycUploadFragment : FourthlineFragment() {
         Timber.d("setUiState: $state, $statusDto")
         when (statusDto) {
             is KycUploadStatusDto.ToNextStepSuccess -> {
-                activityViewModel.navigateToUploadResultFragment(nextStep = statusDto.nextStep)
+                activityViewModel.navigateFromKycUploadToUploadResult(nextStep = statusDto.nextStep)
             }
-             is KycUploadStatusDto.FinishIdentSuccess -> {
-                 activityViewModel.navigateToUploadResultFragment(identificationId = statusDto.id)
-             }
+            is KycUploadStatusDto.FinishIdentSuccess -> {
+                 activityViewModel.navigateFromKycUploadToUploadResult(identificationId = statusDto.id)
+            }
             is KycUploadStatusDto.ProviderErrorNotFraud,
             is KycUploadStatusDto.ProviderErrorFraud,
             is KycUploadStatusDto.PreconditionsFailedError,
@@ -133,7 +133,7 @@ class KycUploadFragment : FourthlineFragment() {
                 alertMessage = getString(R.string.failure_no_fraud_message),
                 positiveButtonLabel = getString(R.string.failure_no_fraud_positive),
                 negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
-                positiveAlertButtonAction =  { activityViewModel.resetFlowToPassingPossibility() },
+                positiveAlertButtonAction =  { activityViewModel.navigateFromKycUploadToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
             is KycUploadStatusDto.ProviderErrorFraud -> UploadViewState(
@@ -147,7 +147,7 @@ class KycUploadFragment : FourthlineFragment() {
                 alertMessage = getString(R.string.kyc_upload_generic_error_subtitle),
                 positiveButtonLabel = getString(R.string.kyc_upload_generic_error_button),
                 negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
-                positiveAlertButtonAction =  { activityViewModel.resetFlowToPassingPossibility() },
+                positiveAlertButtonAction =  { activityViewModel.navigateFromKycUploadToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
         }

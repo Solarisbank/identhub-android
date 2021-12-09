@@ -26,43 +26,43 @@ class FourthlineViewModel (
         fourthlineStepParametersUseCase.saveParameters(fourthlineStepParametersDto)
     }
 
-    fun navigateFromPassingPossibilityToTcFragment() {
+    fun navigateFromPassingPossibilityToTc() {
         navigateTo(R.id.action_passingPossibilityFragment_to_termsAndConditionsFragment)
     }
 
-    fun navigateFromTcToWelcomeContainerFragment() {
-        navigateTo(R.id.action_termsAndConditionsFragment_to_welcomeContainerFragment)
+    fun navigateFromTcToDocTypeSelection() {
+        navigateTo(R.id.action_termsAndConditionsFragment_to_documentTypeSelectionFragment)
     }
 
-    fun navigateToSelfieFragment() {
-        navigateTo(R.id.action_welcomeContainerFragment_to_documentTypeSelectionFragment)
+    fun navigateFromSelfieInstructionsToSelfie() {
+        navigateTo(R.id.action_selfieInstructionsFragment_to_selfieFragment)
     }
 
-    fun navigateToSelfieResultFragment() {
+    fun navigateFromSelfieToSelfieResult() {
         navigateTo(R.id.action_selfieFragment_to_selfieResultFragment)
     }
 
-    fun navigateToDocTypeSelectionFragment() {
+    fun navigateFromSelfieResultToKycUploadFragment() {
         navigateTo(R.id.action_selfieResultFragment_to_kycUploadFragment)
     }
 
-    fun navigateBackToDocTypeSelectionFragment(args: Bundle) {
+    fun navigateFromDocScanToDocTypeSelection(args: Bundle) {
         navigateTo(R.id.action_documentScanFragment_to_documentTypeSelectionFragment, args)
     }
 
-    fun navigateToDocScanFragment(bundle: Bundle) {
+    fun navigateFromDocTypeSelectionToDocScan(bundle: Bundle) {
         navigateTo(R.id.action_documentTypeSelectionFragment_to_documentScanFragment, bundle)
     }
 
-    fun navigateToDocScanResultFragment() {
+    fun navigateFromDocScanToDocResult() {
         navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
     }
 
-    fun navigateToKycUploadFragemnt() {
-        navigateTo(R.id.action_documentResultFragment_to_selfieFragment)
+    fun navigateFromDocResultToSelfieInstructions() {
+        navigateTo(R.id.action_documentResultFragment_to_selfieInstructionsFragment)
     }
 
-    fun navigateToUploadResultFragment(nextStep: String? = null, identificationId: String? = null) {
+    fun navigateFromKycUploadToUploadResult(nextStep: String? = null, identificationId: String? = null) {
         navigateTo(
             R.id.action_kycUploadFragment_to_uploadResultFragment,
             Bundle().apply {
@@ -72,23 +72,40 @@ class FourthlineViewModel (
         )
     }
 
+    fun navigateFromSelfieResultToSelfieInstructions() {
+        val args = Bundle().apply {
+            putString(
+                FourthlineActivity.KEY_CODE,
+                FourthlineActivity.FOURTHLINE_SELFIE_RETAKE
+            )
+        }
+        resetFlowToSelfieInstructions(args)
+    }
+
+    fun navigateFromSelfieToSelfieInstructions(scanErrorMessage: String) {
+        val args = Bundle().apply {
+            putString(FourthlineActivity.KEY_CODE, FourthlineActivity.FOURTHLINE_SCAN_FAILED)
+            putString(FourthlineActivity.KEY_MESSAGE, scanErrorMessage)
+        }
+        resetFlowToSelfieInstructions(args)
+    }
+
+    fun navigateFromKycUploadToPassingPossibility() {
+        navigateTo(R.id.action_reset_to_passingPossibilityFragment)
+    }
+
     fun navigateToWebViewFragment(url: String) {
         val bundle = Bundle().apply { putString(WEB_VIEW_URL_KEY, url) }
         navigateTo(R.id.action_termsAndConditionsFragment_to_webViewFragment, bundle)
     }
 
-    fun resetFlowToPassingPossibility(args: Bundle? = null) {
-        navigateTo(R.id.action_reset_to_passingPossibilityFragment, args)
-    }
-
-    fun resetFlowToWelcomeScreen(args: Bundle? = null) {
-        navigateTo(R.id.action_reset_to_welcome_screen, args)
+    private fun resetFlowToSelfieInstructions(args: Bundle? = null) {
+        navigateTo(R.id.action_reset_to_selfie_instructions, args)
     }
 
     fun setFourthlineIdentificationSuccessful(identificationId: String) {
         Timber.d("setFourthlineIdentificationSuccessful, identificationId : $identificationId")
         _navigationActionId.value = Event(NaviDirection.VerificationSuccessfulStepResult(identificationId, COMPLETED_STEP.VERIFICATION_BANK.index))
-
     }
 
     fun setFourthlineIdentificationFailure() {

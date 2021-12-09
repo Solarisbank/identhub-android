@@ -145,11 +145,13 @@ class DocScanFragment : DocumentScannerFragment() {
     private fun initView(view: View) {
         with(view) {
             documentMask = findViewById(R.id.documentMask)
-            when (currentDocumentType) {
-                DocumentType.PASSPORT -> documentMask?.setImageResource(R.drawable.ic_passport_front_success_frame)
-                DocumentType.ID_CARD -> documentMask?.setImageResource(R.drawable.ic_idcard_front_success_frame)
-                DocumentType.PAPER_ID -> documentMask?.setImageResource(R.drawable.ic_paperid_inside_left_frame)
+            val maskResource = when (currentDocumentType) {
+                DocumentType.PASSPORT -> R.drawable.ic_passport_front_success_frame
+                DocumentType.ID_CARD -> R.drawable.ic_idcard_front_success_frame
+                DocumentType.PAPER_ID -> R.drawable.ic_paperid_inside_left_frame
+                else -> R.drawable.ic_idcard_front_success_frame
             }
+            documentMask?.setImageResource(maskResource)
             takeSnapshot = findViewById(R.id.takeSnapshot)
             takeSnapshot?.setOnClickListener { takeSnapshot() }
             scanPreview = findViewById(R.id.scanPreview)
@@ -303,7 +305,7 @@ class DocScanFragment : DocumentScannerFragment() {
                 putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
                 putString(KEY_MESSAGE, error.asString(requireContext()))
             }
-            activityViewModel.navigateBackToDocTypeSelectionFragment(args)
+            activityViewModel.navigateFromDocScanToDocTypeSelection(args)
         }
     }
 
@@ -311,7 +313,7 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("onSuccess")
         lifecycleScope.launch(Dispatchers.Main) {
             kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, result)
-            activityViewModel.navigateToDocScanResultFragment()
+            activityViewModel.navigateFromDocScanToDocResult()
         }
     }
 

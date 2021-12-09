@@ -63,7 +63,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
             titleStyle = BulletListLayout.TitleStyle.Notice,
             customization = customization
         )
-        submitButton?.setOnClickListener { activityViewModel.navigateFromTcToWelcomeContainerFragment() }
+        submitButton?.setOnClickListener { activityViewModel.navigateFromTcToDocTypeSelection() }
     }
 
     override fun inject(component: FourthlineFragmentComponent) {

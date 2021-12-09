@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -121,7 +120,7 @@ class DocScanResultFragment : FourthlineFragment() {
                 if (kycCreationState is ZipCreationStateDto.SUCCESS && kycCreationState.uri != null) {
                     kycSharedViewModel.kycURI = kycCreationState.uri
                     hideKeyboard()
-                    activityViewModel.navigateToKycUploadFragemnt()
+                    activityViewModel.navigateFromDocResultToSelfieInstructions()
                 } else {
                     showGenericAlertFragment {  }
                 }
