@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.feature.base.BaseActivity
@@ -43,21 +44,9 @@ class DocScanResultFragment : FourthlineFragment() {
     private var expireDateTextInput: DateInputTextView? = null
     private var expiryDateError: TextView? = null
     private var continueButton: Button? = null
-
-    private val textValidationWatcher = object : TextWatcher{
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            continueButton!!.isEnabled = validateDateInputs()
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-    }
+    private var issueDateWatcher: TextWatcher? = null
+    private var expireDateWatcher: TextWatcher? = null
+    private var docNumberWatcher: TextWatcher? = null
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
@@ -87,9 +76,22 @@ class DocScanResultFragment : FourthlineFragment() {
     }
 
     private fun initView() {
-        issueDateTextInput!!.addTextChangedListener(textValidationWatcher)
-        expireDateTextInput!!.addTextChangedListener(textValidationWatcher)
-        docNumberTextInput!!.addTextChangedListener(textValidationWatcher)
+        issueDateWatcher = issueDateTextInput?.addTextChangedListener(onTextChanged = { _, _, _, _ ->
+            issueDateTextInput?.getDate()?.let {
+                expireDateTextInput?.setSuggestedDateWithOffset(it, DATE_OFFSET_YEARS)
+            }
+            updateContinueButtonState()
+        })
+        expireDateWatcher = expireDateTextInput?.addTextChangedListener(onTextChanged = { _, _, _, _ ->
+            expireDateTextInput?.getDate()?.let {
+                issueDateTextInput?.setSuggestedDateWithOffset(it, -DATE_OFFSET_YEARS)
+            }
+            updateContinueButtonState()
+        })
+        docNumberWatcher = docNumberTextInput?.addTextChangedListener(onTextChanged = { _, _, _, _ ->
+            updateContinueButtonState()
+        })
+
 
         kycSharedViewModel.getKycDocument().let { doc ->
             docNumberTextInput!!.setText(doc.number)
@@ -130,9 +132,9 @@ class DocScanResultFragment : FourthlineFragment() {
     }
 
     override fun onDestroyView() {
-        issueDateTextInput?.removeTextChangedListener(textValidationWatcher)
-        expireDateTextInput?.removeTextChangedListener(textValidationWatcher)
-        docNumberTextInput?.removeTextChangedListener(textValidationWatcher)
+        issueDateTextInput?.removeTextChangedListener(issueDateWatcher)
+        expireDateTextInput?.removeTextChangedListener(expireDateWatcher)
+        docNumberTextInput?.removeTextChangedListener(docNumberWatcher)
         title = null
         docNumberTextInput = null
         issueDateTextInput = null
@@ -141,16 +143,20 @@ class DocScanResultFragment : FourthlineFragment() {
         super.onDestroyView()
     }
 
+    private fun updateContinueButtonState() {
+        continueButton?.isEnabled = validateDateInputs()
+    }
+
     private fun validateDateInputs(): Boolean {
         val issueDate = issueDateTextInput?.getDate() ?: return false
         val expiryDate = expireDateTextInput?.getDate() ?: return false
         var valid = true
         if (issueDate > expiryDate) {
-            issueDateError!!.setText(getString(R.string.fourthline_doc_scan_date_past_error))
+            issueDateError!!.text = getString(R.string.fourthline_doc_scan_date_past_error)
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else if (issueDate > Date()) {
-            issueDateError!!.setText(getString(R.string.fourthline_doc_scan_issue_future_error))
+            issueDateError!!.text = getString(R.string.fourthline_doc_scan_issue_future_error)
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else {
@@ -166,6 +172,10 @@ class DocScanResultFragment : FourthlineFragment() {
                 && !expireDateTextInput!!.text.isNullOrEmpty()
                 && !docNumberTextInput!!.text.isNullOrEmpty()
                 && valid
+    }
+
+    companion object {
+        const val DATE_OFFSET_YEARS = 10
     }
 }
 

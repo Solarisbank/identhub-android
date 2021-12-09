@@ -54,6 +54,20 @@ class DateInputTextView : AppCompatTextView {
         }
     }
 
+    fun setSuggestedDateWithOffset(date: Date, offsetYears: Int) {
+        // If text is not blank, user already selected a date and updated the calendar
+        if (text.isNotBlank()) {
+            return
+        }
+
+        calendar = createCalendar().apply {
+            time = date
+            resetToMidnight()
+            add(Calendar.YEAR, offsetYears)
+            add(Calendar.DAY_OF_MONTH, 1)
+        }
+    }
+
     private fun showDialog() {
         if (calendar == null) {
             calendar = createCalendar().apply { resetToMidnight() }
