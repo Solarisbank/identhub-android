@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.domain
 
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.dto.LocationDto
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.NATIONAL_ID_CARD
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.valueOf

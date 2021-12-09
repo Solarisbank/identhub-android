@@ -8,59 +8,59 @@ import com.fourthline.kyc.KycInfo
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import java.util.*
 
 class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDataSource) {
 
-    fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
+    suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
         kycInfoInMemoryDataSource.updateWithPersonDataDto(personDataDto, providerName)
     }
-    fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         kycInfoInMemoryDataSource.updateKycWithSelfieScannerResult(result)
     }
 
-    fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
         kycInfoInMemoryDataSource.updateKycInfoWithDocumentScannerStepResult(docType, result)
     }
 
-    fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
+    suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
         kycInfoInMemoryDataSource.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    fun updateKycLocation(resultLocation: Location) {
+    suspend fun updateKycLocation(resultLocation: Location) {
         kycInfoInMemoryDataSource.updateKycLocation(resultLocation)
     }
 
-    fun updateIssueDate(issueDate: Date) {
+    suspend fun updateIssueDate(issueDate: Date) {
         kycInfoInMemoryDataSource.updateIssueDate(issueDate)
     }
 
-    fun updateExpireDate(expireDate: Date) {
+    suspend fun updateExpireDate(expireDate: Date) {
         kycInfoInMemoryDataSource.updateExpireDate(expireDate)
     }
 
-    fun updateDocumentNumber(number: String) {
+    suspend fun updateDocumentNumber(number: String) {
         kycInfoInMemoryDataSource.updateDocumentNumber(number)
     }
 
-    fun updateIpAddress(ipAddress: String) {
+    suspend fun updateIpAddress(ipAddress: String) {
         kycInfoInMemoryDataSource.updateIpAddress(ipAddress)
     }
 
-    fun getPersonData(): PersonDataDto? {
+    suspend fun getPersonData(): PersonDataDto? {
         return kycInfoInMemoryDataSource.getPersonData()
     }
 
-    fun getSelfieFullImage(): Bitmap? {
+    suspend fun getSelfieFullImage(): Bitmap? {
         return kycInfoInMemoryDataSource.getSelfieFullImage()
     }
 
-    fun getKycDocument(): Document {
+    suspend fun getKycDocument(): Document {
         return kycInfoInMemoryDataSource.getKycDocument()
     }
 
-    fun getKycInfo(): KycInfo {
+    suspend fun getKycInfo(): KycInfo {
         return kycInfoInMemoryDataSource.getKycInfo()
     }
 

@@ -17,7 +17,7 @@ import de.solarisbank.identhub.session.data.repository.IdentityInitializationRep
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.feature.IdentHubSessionObserver
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
-import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
@@ -25,7 +25,6 @@ import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.feature.config.*
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
@@ -60,7 +59,7 @@ class IdentHubSessionTestComponent private constructor(
     lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
-    private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationInMemoryDataSource>
+    private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationLocalDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
     lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
@@ -75,7 +74,7 @@ class IdentHubSessionTestComponent private constructor(
         initialize()
     }
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationInMemoryDataSource> {
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return identificationInMemoryDataSourceProvider
     }
 
@@ -238,8 +237,6 @@ class IdentHubSessionTestComponent private constructor(
     }
 
     companion object {
-        private val lock = Any()
-        private var identHubSessionTestComponent: IdentHubSessionTestComponent? = null
 
         fun getTestInstance(networkModule: NetworkModule): IdentHubSessionTestComponent {
             return IdentHubSessionTestComponent(

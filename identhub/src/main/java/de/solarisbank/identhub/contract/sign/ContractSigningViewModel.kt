@@ -93,8 +93,8 @@ class ContractSigningViewModel(
     fun getPhoneNumberResultLiveData(): LiveData<Result<MobileNumberDto>> {
         compositeDisposable.add(
             getMobileNumberUseCase
-                .execute(Unit).
-                subscribeOn(Schedulers.io())
+                .execute(Unit)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {

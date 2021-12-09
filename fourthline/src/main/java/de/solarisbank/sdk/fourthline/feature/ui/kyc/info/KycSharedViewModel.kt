@@ -28,6 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.net.URI
 import java.util.*
@@ -57,7 +58,7 @@ class KycSharedViewModel(
     }
 
     fun getKycDocument(): Document {
-        return kycInfoUseCase.getKycDocument()
+        return runBlocking { kycInfoUseCase.getKycDocument() }
     }
 
     fun clearPersonDataCaches() {
@@ -85,8 +86,8 @@ class KycSharedViewModel(
                                     val supportedDocs = pair.first.data!!.appliedDocuments()
                                     if (!supportedDocs.isNullOrEmpty()) {
                                         Timber.d("fetchPersonDataAndIp() 2")
-                                        kycInfoUseCase.updateWithPersonDataDto(pair.first.data!!)
-                                        kycInfoUseCase.updateIpAddress(pair.second.data!!)
+                                        runBlocking { kycInfoUseCase.updateWithPersonDataDto(pair.first.data!!) }
+                                        runBlocking { kycInfoUseCase.updateIpAddress(pair.second.data!!) }
                                         _personDataStateLiveData.postValue(
                                                 PersonDataStateDto.SUCCEEDED(supportedDocs)
                                         )
@@ -122,7 +123,7 @@ class KycSharedViewModel(
                         when (it) {
                             is LocationDto.SUCCESS -> {
                                 Timber.d("fetchPersonDataAndLocation() 1")
-                                kycInfoUseCase.updateKycLocation(it.location)
+                                runBlocking { kycInfoUseCase.updateKycLocation(it.location) }
                                 _supportedDocLiveData.postValue(_personDataStateLiveData.value)
                             }
                             else -> {
@@ -148,7 +149,7 @@ class KycSharedViewModel(
         locationBehaviorSubject.onNext(Unit)
     }
 
-    fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         kycInfoUseCase.updateKycWithSelfieScannerResult(result)
     }
 
@@ -156,28 +157,28 @@ class KycSharedViewModel(
         return kycInfoUseCase.selfieResultCroppedBitmapLiveData
     }
 
-    fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
         kycInfoUseCase.updateKycInfoWithDocumentScannerStepResult(docType, result)
     }
 
-    fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
+    suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
         kycInfoUseCase.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
     fun createKycZip(applicationContext: Context): ZipCreationStateDto {
-        return kycInfoUseCase.createKycZip(applicationContext)
+        return runBlocking { kycInfoUseCase.createKycZip(applicationContext) }
     }
 
     fun updateIssueDate(issueDate: Date) {
-        kycInfoUseCase.updateIssueDate(issueDate)
+        runBlocking { kycInfoUseCase.updateIssueDate(issueDate) }
     }
 
     fun updateExpireDate(expireDate: Date) {
-        kycInfoUseCase.updateExpireDate(expireDate)
+        runBlocking { kycInfoUseCase.updateExpireDate(expireDate) }
     }
 
     fun updateDocumentNumber(number: String) {
-        kycInfoUseCase.updateDocumentNumber(number)
+        runBlocking { kycInfoUseCase.updateDocumentNumber(number) }
     }
 
     override fun onCleared() {

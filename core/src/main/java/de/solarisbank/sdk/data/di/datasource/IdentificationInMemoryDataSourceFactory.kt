@@ -1,12 +1,13 @@
 package de.solarisbank.sdk.data.di.datasource
 
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Factory
 
 class IdentificationInMemoryDataSourceFactory private constructor()
-    : Factory<IdentificationInMemoryDataSource> {
+    : Factory<IdentificationLocalDataSource> {
 
-    override fun get(): IdentificationInMemoryDataSource {
+    override fun get(): IdentificationLocalDataSource {
         return IdentificationInMemoryDataSource()
     }
 

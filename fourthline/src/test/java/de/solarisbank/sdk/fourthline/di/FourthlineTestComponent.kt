@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
@@ -100,6 +99,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFr
 import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.WelcomeContainerFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector
+import io.mockk.every
+import io.mockk.mockk
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -107,7 +108,7 @@ import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class FourthlineComponent private constructor(
+class FourthlineTestComponent private constructor(
     private val coreModule: CoreModule,
     val fourthlineModule: FourthlineModule,
     val sessionModule: SessionModule,
@@ -119,7 +120,7 @@ class FourthlineComponent private constructor(
 ) {
 
     private lateinit var applicationContextProvider: Provider<Context>
-    private lateinit var deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
+    lateinit var deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
 
     private lateinit var retrofitProvider: Provider<Retrofit>
     private lateinit var moshiConverterFactoryProvider: Provider<MoshiConverterFactory>
@@ -138,13 +139,13 @@ class FourthlineComponent private constructor(
     private lateinit var fourthlineIdentificationRepositoryProvider: Provider<FourthlineIdentificationRepository>
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
-    private lateinit var personDataUseCaseProvider: Provider<PersonDataUseCase>
+    lateinit var personDataUseCaseProvider: Provider<PersonDataUseCase>
     private lateinit var kycInfoInMemoryDataSourceProvider: Provider<KycInfoInMemoryDataSource>
     private lateinit var kycInfoRepositoryProvider: Provider<KycInfoRepository>
-    private lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
+    lateinit var kycInfoUseCaseProvider: Provider<KycInfoUseCase>
     private lateinit var locationDataSourceProvider: Provider<LocationDataSource>
     private lateinit var locationRepositoryProvider: Provider<LocationRepository>
-    private lateinit var locationUseCaseProvider: Provider<LocationUseCase>
+    lateinit var locationUseCaseProvider: Provider<LocationUseCase>
     private lateinit var ipApiProvider: Provider<IpApi>
     private lateinit var ipDataSourceProvider: Provider<IpDataSource>
     private lateinit var ipRepositoryProvider: Provider<IpRepository>
@@ -168,7 +169,7 @@ class FourthlineComponent private constructor(
     private lateinit var kycUploadApiProvider: Provider<KycUploadApi>
     private lateinit var kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
-    private lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
+    lateinit var kycUploadUseCaseProvider: Provider<KycUploadUseCase>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
@@ -179,7 +180,14 @@ class FourthlineComponent private constructor(
 
     private fun initialize() {
         applicationContextProvider = ApplicationContextProvider(libraryComponent)
-        identificationLocalDataSourceProvider = IdentHub.getIdentificationLocalDataSourceProvider()
+        identificationLocalDataSourceProvider = DoubleCheck.provider(
+            object : Factory<IdentificationLocalDataSource> {
+                override fun get(): IdentificationLocalDataSource {
+                    //mocked by mockkConstructor
+                    return IdentificationInMemoryDataSource()
+                }
+            }
+        )
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
@@ -450,26 +458,30 @@ class FourthlineComponent private constructor(
     }
 
     companion object {
-        private val lock = Any()
-        private var fourthlineComponent: FourthlineComponent? = null
+        private val mockkContext = mockk<Context>()
 
-        fun getInstance(libraryComponent: LibraryComponent): FourthlineComponent {
-            synchronized(lock) {
-                if (fourthlineComponent == null) {
-                    fourthlineComponent = FourthlineComponent(
-                        coreModule = CoreModule(),
-                        fourthlineModule = FourthlineModule(),
-                        sessionModule = SessionModule(),
-                        fourthlineIdentificationModule = FourthlineIdentificationModule(),
-                        networkModule = NetworkModule(),
-                        libraryComponent = libraryComponent,
-                        kycUploadModule = KycUploadModule(),
-                        identificationModule = IdentificationModule()
-                    )
-                }
-
-                return fourthlineComponent!!
-            }
+        fun getInstance(
+            libraryComponent: LibraryComponent = mockk<LibraryComponent>() {
+                every { applicationContext() } returns mockkContext
+            },
+            coreModule: CoreModule = CoreModule(),
+            fourthlineModule: FourthlineModule = FourthlineModule(),
+            sessionModule: SessionModule = SessionModule(),
+            fourthlineIdentificationModule: FourthlineIdentificationModule = FourthlineIdentificationModule(),
+            networkModule: NetworkModule,
+            kycUploadModule: KycUploadModule = KycUploadModule(),
+            identificationModule: IdentificationModule = IdentificationModule()
+        ): FourthlineTestComponent {
+            return FourthlineTestComponent(
+                    coreModule = coreModule,
+                    fourthlineModule = fourthlineModule,
+                    sessionModule = sessionModule,
+                    fourthlineIdentificationModule = fourthlineIdentificationModule,
+                    networkModule = networkModule,
+                    libraryComponent = libraryComponent,
+                    kycUploadModule = kycUploadModule,
+                    identificationModule = identificationModule
+                )
         }
     }
 }

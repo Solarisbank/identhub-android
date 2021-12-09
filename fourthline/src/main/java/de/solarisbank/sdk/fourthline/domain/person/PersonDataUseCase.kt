@@ -1,10 +1,11 @@
 package de.solarisbank.sdk.fourthline.domain.person
 
+import android.annotation.SuppressLint
 import de.solarisbank.identhub.session.feature.navigation.router.isIdentificationIdCreationRequired
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersRepository
 import io.reactivex.Single
@@ -40,10 +41,11 @@ class PersonDataUseCase(
             .map { NavigationalResult<PersonDataDto>(it) }
     }
 
-    fun String.formatSessionUrl(): String {
+    private fun String.formatSessionUrl(): String {
         return if (!this.endsWith("/", true)) "$this/" else this
     }
 
+    @SuppressLint("CheckResult")
     private fun passFourthlineIdentificationCreation(): Single<String> {
         Timber.d("passFourthlineIdentificationCreation()")
         return if (!fourthlineStepParametersRepository.getFourthlineStepParameters()!!.isFourthlineSigning) {
@@ -59,7 +61,5 @@ class PersonDataUseCase(
                 }
     }
 
-    fun getIdentificationId(): Single<String> {
-        return fourthlineIdentificationRepository.getLastSavedLocalIdentification().map { it.id }
-    }
+
 }

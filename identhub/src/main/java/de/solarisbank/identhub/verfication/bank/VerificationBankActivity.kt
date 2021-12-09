@@ -34,14 +34,13 @@ class VerificationBankActivity : IdentHubActivity() {
     }
 
     private fun initGraph(savedInstanceState: Bundle?) {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
         val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
-        if (viewModel.isPhoneVerified()) {
-            navGraph.startDestination = R.id.verificationBankIbanFragment
-        } else {
-            navGraph.startDestination = R.id.phoneVerificationFragment
-        }
+        navGraph.startDestination =
+            if (viewModel.isPhoneVerified()) R.id.verificationBankIbanFragment
+            else R.id.phoneVerificationFragment
         navHostFragment.navController
             .setGraph(navGraph, intent.extras)
         initView(savedInstanceState)

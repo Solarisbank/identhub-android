@@ -34,7 +34,7 @@ class IdentHubSessionObserver(
             viewModel?.saveSessionId(value)
         }
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return IdentHubSessionComponent
             .getInstance(fragmentActivity!!.applicationContext)
             .getIdentificationLocalDataSourceProvider()

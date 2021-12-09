@@ -47,7 +47,7 @@ class IdentHubSession {
         initMainProcess(fragmentActivity)
     }
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return MAIN_PROCESS!!.getIdentificationLocalDataSourceProvider()
     }
 

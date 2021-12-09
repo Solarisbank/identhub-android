@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.storage
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.location.Location
@@ -13,8 +14,8 @@ import com.fourthline.kyc.zipper.ZipperError
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import timber.log.Timber
@@ -24,18 +25,19 @@ class KycInfoUseCase(
         private val kycInfoRepository: KycInfoRepository,
         private val identityInitializationRepository: IdentityInitializationRepository
 ) {
-
+    //todo remove livaedata from usecase
     private var _selfieResultCroppedBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData<Bitmap>()
     var selfieResultCroppedBitmapLiveData = _selfieResultCroppedBitmapLiveData as LiveData<Bitmap>
 
 
-    fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
+    suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto) {
         val initializationDto = identityInitializationRepository.getInitializationDto()
         Timber.d("updateWithPersonDataDto : ${personDataDto}, initialization data: $initializationDto")
         kycInfoRepository.updateWithPersonDataDto(personDataDto, initializationDto!!.fourthlineProvider!!)
     }
 
-    fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+    @SuppressLint("BinaryOperationInTimber")
+    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         Timber.d("updateKycWithSelfieScannerResult : " +
                 "\ntimestamp:${result.metadata.timestamp}" +
                 "\nlocation?.first: ${result.metadata.location?.first}" +
@@ -45,7 +47,7 @@ class KycInfoUseCase(
         _selfieResultCroppedBitmapLiveData.value = result.image.cropped
     }
 
-    fun getSelfieFullImage(): Bitmap? {
+    suspend fun getSelfieFullImage(): Bitmap? {
         return kycInfoRepository.getSelfieFullImage()
     }
 
@@ -53,7 +55,11 @@ class KycInfoUseCase(
      * Retains document pages' photos and stores them to map
      * Called from DocScanFragment.onStepSuccess()
      */
-    fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
+    @SuppressLint("BinaryOperationInTimber")
+    suspend fun updateKycInfoWithDocumentScannerStepResult(
+        docType: DocumentType,
+        result: DocumentScannerStepResult
+    ) {
         Timber.d("updateKycInfoWithDocumentScannerStepResult : " +
                 "\ntimestamp:${result.metadata.timestamp}" +
                 "\nlocation?.first: ${result.metadata.location?.first}" +
@@ -66,37 +72,41 @@ class KycInfoUseCase(
     /**
      * Retains recognized String data of the documents
      */
-    fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
+    suspend fun updateKycInfoWithDocumentScannerResult(
+        docType: DocumentType,
+        result: DocumentScannerResult
+    ) {
         kycInfoRepository.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    fun updateIssueDate(issueDate: Date) {
+    suspend fun updateIssueDate(issueDate: Date) {
         kycInfoRepository.updateIssueDate(issueDate)
     }
 
-    fun updateExpireDate(expireDate: Date) {
+    suspend fun updateExpireDate(expireDate: Date) {
         kycInfoRepository.updateExpireDate(expireDate)
     }
 
-    fun updateDocumentNumber(number: String) {
+    suspend fun updateDocumentNumber(number: String) {
         kycInfoRepository.updateDocumentNumber(number)
     }
 
-    fun updateIpAddress(ipAddress: String) {
+    suspend fun updateIpAddress(ipAddress: String) {
         kycInfoRepository.updateIpAddress(ipAddress)
     }
 
     /**
      * Provides @Document for display
      */
-    fun getKycDocument(): Document {
+    suspend fun getKycDocument(): Document {
         return kycInfoRepository.getKycDocument()
     }
 
-    fun updateKycLocation(resultLocation: Location) {
+    suspend fun updateKycLocation(resultLocation: Location) {
         kycInfoRepository.updateKycLocation(resultLocation)
     }
 
+    @SuppressLint("BinaryOperationInTimber")
     private fun validateFycInfo(kycInfo: KycInfo): Boolean {
         val documentValidationError = kycInfo.document?.validate()
         val personValidationError = kycInfo.person.validate()
@@ -130,7 +140,7 @@ class KycInfoUseCase(
                 && addressValidationError.isNullOrEmpty()
     }
 
-    fun createKycZip(applicationContext: Context): ZipCreationStateDto {
+    suspend fun createKycZip(applicationContext: Context): ZipCreationStateDto {
         val kycInfo = kycInfoRepository.getKycInfo()
         Timber.d("getKycUriZip : $kycInfo")
         var zipCreationStateDto: ZipCreationStateDto = ZipCreationStateDto.ERROR

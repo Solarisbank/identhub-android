@@ -10,6 +10,7 @@ class IdentityInitializationSharedPrefsDataSource(
     private val sharedPreferences: SharedPreferences
     ) : IdentityInitializationDataSource {
 
+    //todo replace with inmemory
     override fun saveInitializationDto(initializationDto: InitializationDto) {
         with(sharedPreferences.edit()) {
             putString(FIRST_STEP_KEY, initializationDto.firstStep)

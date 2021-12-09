@@ -18,15 +18,16 @@ import de.solarisbank.identhub.session.data.repository.IdentityInitializationRep
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.feature.IdentHubSessionObserver
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
-import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
-import de.solarisbank.sdk.feature.config.*
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
+import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
+import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryFactory
+import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
@@ -59,7 +60,7 @@ class IdentHubSessionComponent private constructor(
     private lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
-    private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationInMemoryDataSource>
+    private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationLocalDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
     private lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
@@ -72,7 +73,7 @@ class IdentHubSessionComponent private constructor(
         initialize()
     }
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationInMemoryDataSource> {
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return identificationInMemoryDataSourceProvider
     }
 

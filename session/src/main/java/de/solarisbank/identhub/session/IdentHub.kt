@@ -15,7 +15,7 @@ object IdentHub : IdentHubSessionReceiver {
 
     private var SESSION: IdentHubSession? = null
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<out IdentificationLocalDataSource> {
+    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return SESSION!!.getIdentificationLocalDataSourceProvider()
     }
 

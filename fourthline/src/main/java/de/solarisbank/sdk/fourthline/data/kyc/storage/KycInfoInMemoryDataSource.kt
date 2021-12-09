@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.location.Location
 import com.fourthline.core.DocumentFileSide
@@ -10,18 +11,18 @@ import com.fourthline.kyc.*
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import de.solarisbank.sdk.fourthline.streetNumber
 import de.solarisbank.sdk.fourthline.streetSuffix
+import kotlinx.coroutines.sync.Mutex
 import timber.log.Timber
 import java.util.*
-import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.collections.LinkedHashMap
 
 class KycInfoInMemoryDataSource {
 
-    private val lock: ReentrantReadWriteLock = ReentrantReadWriteLock()
+    private val mutex: Mutex = Mutex()
     private val kycInfo = KycInfo().also {
         it.person = Person()
         it.metadata = DeviceMetadata()
@@ -29,47 +30,47 @@ class KycInfoInMemoryDataSource {
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _personDataDto: PersonDataDto? = null
 
-    fun getKycInfo(): KycInfo {
-        lock.readLock().lock()
+    suspend fun getKycInfo(): KycInfo {
+        mutex.lock()
         try {
             return kycInfo
         } finally {
-            lock.readLock().unlock()
+            mutex.unlock()
         }
     }
 
     /**
      * Provides @Document for display
      */
-    fun getKycDocument(): Document {
-        lock.readLock().lock()
+    suspend fun getKycDocument(): Document {
+        mutex.lock()
         try {
             return kycInfo.document!!
         } finally {
-            lock.readLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun getSelfieFullImage(): Bitmap? {
-        lock.readLock().lock()
+    suspend fun getSelfieFullImage(): Bitmap? {
+        mutex.lock()
         try {
             return kycInfo.selfie?.image
         } finally {
-            lock.readLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun getPersonData(): PersonDataDto? {
-        lock.readLock().lock()
+    suspend fun getPersonData(): PersonDataDto? {
+        mutex.lock()
         try {
             return _personDataDto
         } finally {
-            lock.readLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
-        lock.writeLock().lock()
+    suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
+        mutex.lock()
         Timber.d("updateWithPersonDataDto : ${personDataDto}")
         try {
             _personDataDto = personDataDto
@@ -107,12 +108,13 @@ class KycInfoInMemoryDataSource {
                 it.birthPlace = personDataDto.birthPlace
             }
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
-        lock.writeLock().lock()
+    @SuppressLint("BinaryOperationInTimber")
+    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+        mutex.lock()
         try {
             Timber.d("updateKycWithSelfieScannerResult : " +
                     "\ntimestamp:${result.metadata.timestamp}" +
@@ -126,20 +128,26 @@ class KycInfoInMemoryDataSource {
                     videoUrl = result.videoUrl
             )
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateIpAddress(ipAddress: String) {
-        kycInfo.metadata!!.ipAddress = ipAddress
+    suspend fun updateIpAddress(ipAddress: String) {
+        mutex.lock()
+        try {
+            kycInfo.metadata!!.ipAddress = ipAddress
+        } finally {
+            mutex.unlock()
+        }
     }
 
     /**
      * Retains document pages' photos and stores them to map
      * Called from DocScanFragment.onStepSuccess()
      */
-    fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
-        lock.writeLock().lock()
+    @SuppressLint("BinaryOperationInTimber")
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
+        mutex.lock()
         try {
             Timber.d("updateKycInfoWithDocumentScannerStepResult : " +
                     "\ntimestamp:${result.metadata.timestamp}" +
@@ -165,7 +173,7 @@ class KycInfoInMemoryDataSource {
                             location = result.metadata.location
                     )
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
@@ -173,106 +181,105 @@ class KycInfoInMemoryDataSource {
     /**
      * Retains recognized String data of the documents
      */
-    fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
-        lock.writeLock().lock()
+    suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
+        mutex.lock()
         try {
             obtainDocument(docType, result)
             updateKycPerson(result)
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
     private fun obtainDocument(docType: DocumentType, result: DocumentScannerResult) {
-        lock.writeLock().lock()
-        try {
-            val mrtd = (result.mrzInfo as? MrtdMrzInfo)
-            kycInfo.document = Document(
-                    images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
-                    videoUrl = result.videoUrl,
-                    number = mrtd?.documentNumber,
-                    expirationDate = mrtd?.expirationDate,
-                    type = docType
-            )
-        } finally {
-            lock.writeLock().unlock()
-        }
+        val mrtd = (result.mrzInfo as? MrtdMrzInfo)
+        kycInfo.document = Document(
+                images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
+                videoUrl = result.videoUrl,
+                number = mrtd?.documentNumber,
+                expirationDate = mrtd?.expirationDate,
+                type = docType
+        )
     }
 
     /**
      * A part of kycInfo.person is obtained in updateWithPersonDataDto.
      * Here provides person data that has been recognized from document scanning
      */
+    @SuppressLint("BinaryOperationInTimber")
     private fun updateKycPerson(result: DocumentScannerResult) {
-        lock.writeLock().lock()
-        try {
-            val mrtd = result.mrzInfo as? MrtdMrzInfo
+        val mrtd = result.mrzInfo as? MrtdMrzInfo
+        kycInfo.person.apply {
+            val recognizedFirstNames = mrtd?.firstNames?.joinToString(separator = " ")
+            val recognizedLastNames = mrtd?.lastNames?.joinToString(separator = " ")
+            val recognizedBirthDate = mrtd?.birthDate
+            Timber.d(
+                "updateKycPerson : " +
+                    "\nrecognizedFirstNames: $recognizedFirstNames}" +
+                    "\nrecognizedLastNames: $recognizedLastNames" +
+                    "\nlrecognizedBirthDate: $recognizedBirthDate" +
+                    "\nlmrtd.gender: ${mrtd?.gender}"
+            )
 
-            kycInfo.person.apply {
-                val recognizedFirstNames = mrtd?.firstNames?.joinToString(separator = " ")
-                val recognizedLastNames = mrtd?.lastNames?.joinToString(separator = " ")
-                val recognizedBirthDate = mrtd?.birthDate
-                Timber.d("updateKycPerson : " +
-                        "\nrecognizedFirstNames: $recognizedFirstNames}" +
-                        "\nrecognizedLastNames: $recognizedLastNames" +
-                        "\nlrecognizedBirthDate: $recognizedBirthDate" +
-                        "\nlmrtd.gender: ${mrtd?.gender}"
-                )
-
-                if (!recognizedFirstNames.isNullOrBlank()) {
-                    firstName = recognizedFirstNames
-                }
-                if (!recognizedLastNames.isNullOrBlank()) {
-                    lastName = recognizedLastNames
-                }
-                if ((gender == null || gender == Gender.UNKNOWN) && mrtd?.gender != null && mrtd.gender != Gender.UNKNOWN) {
-                    gender = mrtd.gender
-                }
-                if (birthDate == null && recognizedBirthDate != null) {
-                    birthDate = recognizedBirthDate
-                }
+            if (!recognizedFirstNames.isNullOrBlank()) {
+                firstName = recognizedFirstNames
             }
-        } finally {
-            lock.writeLock().unlock()
+            if (!recognizedLastNames.isNullOrBlank()) {
+                lastName = recognizedLastNames
+            }
+            if (
+                (gender == null || gender == Gender.UNKNOWN) &&
+                mrtd?.gender != null &&
+                mrtd.gender != Gender.UNKNOWN
+            ) {
+                gender = mrtd.gender
+            }
+            if (birthDate == null && recognizedBirthDate != null) {
+                birthDate = recognizedBirthDate
+            }
         }
     }
 
-    fun updateKycLocation(resultLocation: Location) {
-        lock.writeLock().lock()
+    suspend fun updateKycLocation(resultLocation: Location) {
+        mutex.lock()
         try {
-            kycInfo.metadata!!.location = Pair(resultLocation.latitude, resultLocation.longitude)
+            kycInfo.metadata!!.location =
+                Pair(resultLocation.latitude, resultLocation.longitude)
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateIssueDate(issueDate: Date) {
-        lock.writeLock().lock()
+    suspend fun updateIssueDate(issueDate: Date) {
+        mutex.lock()
         try {
             kycInfo.document!!.issueDate = issueDate
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateExpireDate(expireDate: Date) {
-        lock.writeLock().lock()
+    suspend fun updateExpireDate(expireDate: Date) {
+        mutex.lock()
         try {
             kycInfo.document!!.expirationDate = expireDate
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    fun updateDocumentNumber(number: String) {
-        lock.writeLock().lock()
+    suspend fun updateDocumentNumber(number: String) {
+        mutex.lock()
         try {
             kycInfo.document!!.number = number
         } finally {
-            lock.writeLock().unlock()
+            mutex.unlock()
         }
     }
 
-    private data class DocPageKey(val docType: DocumentType, val docSide: DocumentFileSide, val isAngled: Boolean)
-
+    private data class DocPageKey(
+        val docType: DocumentType,
+        val docSide: DocumentFileSide,
+        val isAngled: Boolean
+        )
 }

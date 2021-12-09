@@ -3,13 +3,13 @@ package de.solarisbank.sdk.fourthline.data.identification
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.dto.IdentificationDto
-import de.solarisbank.sdk.fourthline.data.dto.PersonDataDto
+import de.solarisbank.sdk.data.dto.PersonDataDto
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class FourthlineIdentificationRepository(
     private val fourthlineIdentificationRetrofitDataSource: FourthlineIdentificationRetrofitDataSource,
-    private val identificationRoomDataSource: IdentificationLocalDataSource,
+    private val identificationLocalDataSource: IdentificationLocalDataSource,
     private val personDataDataSource: PersonDataDataSource
         ) {
 
@@ -22,11 +22,11 @@ class FourthlineIdentificationRepository(
     }
 
     fun save(identificationDto: IdentificationDto): Completable {
-        return identificationRoomDataSource.saveIdentification(identificationDto)
+        return identificationLocalDataSource.saveIdentification(identificationDto)
     }
 
     fun getLastSavedLocalIdentification(): Single<IdentificationDto> {
-        return identificationRoomDataSource.obtainIdentificationDto()
+        return identificationLocalDataSource.obtainIdentificationDto()
     }
 
     fun getPersonData(identificationId: String): Single<PersonDataDto> {

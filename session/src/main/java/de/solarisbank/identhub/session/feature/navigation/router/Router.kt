@@ -96,7 +96,10 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
 }
 
 fun isIdentificationIdCreationRequired(identificationDto: IdentificationDto): Boolean {
-    return isIdentificationIdCreationRequired(method = identificationDto.method, nextStep = identificationDto.nextStep)
+    return isIdentificationIdCreationRequired(
+        method = identificationDto.method,
+        nextStep = identificationDto.nextStep
+    )
 }
 
 fun isIdentificationIdCreationRequired(method: String?, nextStep: String?): Boolean {
