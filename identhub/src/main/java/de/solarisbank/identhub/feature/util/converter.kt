@@ -25,7 +25,7 @@ fun IbanVerificationModel.toVerificationState(): VerificationState {
 fun ProcessingVerificationDto.toProcessingVerificationState(): ProcessingVerificationFragment.ProcessingVerificationResult {
     return when (this) {
         is ProcessingVerificationDto.VerificationSuccessful ->
-            ProcessingVerificationFragment.ProcessingVerificationResult.VerificationSuccessful(this.id)
+            ProcessingVerificationFragment.ProcessingVerificationResult.VerificationSuccessful(this.id, this.nextStep)
         is ProcessingVerificationDto.PaymentInitAuthPersonError ->
             ProcessingVerificationFragment.ProcessingVerificationResult.PaymentInitExpiredError(this.nextStep)
         is ProcessingVerificationDto.PaymentInitFailed ->

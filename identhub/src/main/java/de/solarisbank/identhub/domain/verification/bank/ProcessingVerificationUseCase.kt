@@ -52,7 +52,7 @@ class ProcessingVerificationUseCase(
                                     val jointResult = bankIdPostUseCase.execute(Pair(iban, data!!)).blockingGet()
                                     if (jointResult.succeeded) {
                                         Timber.d("processing identification 6")
-                                        ProcessingVerificationDto.VerificationSuccessful(jointResult.data!!.id)
+                                        ProcessingVerificationDto.VerificationSuccessful(jointResult.data!!.id, nextStep)
                                     } else {
                                         Timber.d("processing identification 7")
                                         ProcessingVerificationDto.GenericError
@@ -68,7 +68,7 @@ class ProcessingVerificationUseCase(
                                 && data != null
                         ) {
                             Timber.d("processing identification 9")
-                            processingVerificationDto = ProcessingVerificationDto.VerificationSuccessful(data.id)
+                            processingVerificationDto = ProcessingVerificationDto.VerificationSuccessful(data.id, nextStep)
                         } else {
                             Timber.d("processing identification 10")
                             processingVerificationDto = ProcessingVerificationDto.GenericError

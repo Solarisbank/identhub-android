@@ -24,6 +24,7 @@ import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
 import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
+import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
@@ -194,6 +195,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         { iBan: String ->
                             Timber.d("submitButton success")
                             sharedViewModel.iban = iBan
+                            hideKeyboard()
                             ibanViewModel.onSubmitButtonClicked(iBan, defaultToBankId)
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })

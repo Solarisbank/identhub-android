@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
@@ -45,21 +46,15 @@ class IdentHubSessionObserver(
         when (sessionStepResult) {
             is NaviDirection.NextStepStepResult -> {
                 Timber.d("setSessionResult 1")
-                sessionStepResult.nextStep?.let {
-                    toNextStep(fragmentActivity!!, it, sessionUrl)?.let { nextStepIntent ->
-                        fragmentActivity?.startActivity(nextStepIntent)
-                    }
-                }?:run {
-                    //todo better to check in sender
-                    errorCallback.invoke(
-                        IdentHubSessionFailure(
-                            message = "Session aborted",
-                            step = COMPLETED_STEP.getEnum(sessionStepResult.completedStep!!)
-                        )
-                    )
+                executeNextStepResult(sessionStepResult.nextStep, sessionStepResult.completedStep)
+            }
+            is NaviDirection.PaymentSuccessfulStepResult -> {
+                if (IdentHub.isPaymentResultAvailable()) {
+                    successCallback.invoke(sessionStepResult)
+                } else {
+                    executeNextStepResult(sessionStepResult.nextStep, null)
                 }
             }
-            is NaviDirection.PaymentSuccessfulStepResult,
             is NaviDirection.VerificationSuccessfulStepResult,
             is NaviDirection.ConfirmationSuccessfulStepResult -> {
                 Timber.d("setSessionResult 2")
@@ -74,6 +69,22 @@ class IdentHubSessionObserver(
                     }
                 ))
             }
+        }
+    }
+
+    private fun executeNextStepResult(nextStep: String?, completedStep: Int?) {
+        nextStep?.let {
+            toNextStep(fragmentActivity!!, it, sessionUrl)?.let { nextStepIntent ->
+                fragmentActivity?.startActivity(nextStepIntent)
+            }
+        }?:run {
+            //todo better to check in sender
+            errorCallback.invoke(
+                IdentHubSessionFailure(
+                    message = "Session aborted",
+                    step = COMPLETED_STEP.getEnum(completedStep!!)
+                )
+            )
         }
     }
 

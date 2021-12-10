@@ -51,9 +51,9 @@ class VerificationBankViewModel(
         return initializationInfoRepository.isPhoneVerified()
     }
 
-    fun callOnPaymentResult(identificationId: String) {
+    fun callOnPaymentResult(identificationId: String, nextStep: String) {
         Timber.d("callOnPaymentResult")
-        navigationActionId.value = Event(NaviDirection.PaymentSuccessfulStepResult(identificationId))
+        navigationActionId.value = Event(NaviDirection.PaymentSuccessfulStepResult(identificationId, nextStep))
     }
 
     fun postDynamicNavigationNextStep(nextStep: String?) {

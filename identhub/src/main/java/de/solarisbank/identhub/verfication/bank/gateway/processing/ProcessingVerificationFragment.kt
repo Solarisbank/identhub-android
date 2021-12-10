@@ -26,7 +26,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
         when (result) {
             is ProcessingVerificationResult.VerificationSuccessful -> {
-                sharedViewModel.callOnPaymentResult(result.id)
+                sharedViewModel.callOnPaymentResult(result.id, result.nextStep)
             }
             is ErrorState -> {
                 showAlert(result)
@@ -78,7 +78,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
 
     sealed class ProcessingVerificationResult {
-        class VerificationSuccessful(val id: String) : ProcessingVerificationResult()
+        class VerificationSuccessful(val id: String, val nextStep: String) : ProcessingVerificationResult()
 
         class PaymentInitAuthPersonError(val nextStep: String, val retryAvailable: Boolean = false)
             : ProcessingVerificationResult(), ErrorState {// 8. payment init auth person

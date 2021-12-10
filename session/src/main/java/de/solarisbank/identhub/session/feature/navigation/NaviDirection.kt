@@ -12,6 +12,7 @@ sealed class NaviDirection {
 
     class PaymentSuccessfulStepResult(
         val identificationId: String,
+        val nextStep: String,
         val completedStep: Int = COMPLETED_STEP.VERIFICATION_BANK.index
     ): NaviDirection(), SessionStepResult
 
