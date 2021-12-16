@@ -36,7 +36,7 @@ class KycUploadUseCaseTest : StringSpec({
 
     val uploadFailedInvalidDataResponse =
         "{" +
-            "\"id\":\"1addc4d1f836a84893c91100be254c16cidt\"," +
+            "\"id\":\"test_id\"," +
             "\"url\":null," +
             "\"status\":\"failed\"," +
             "\"failure_reason\":\"invalid_data\"," +
@@ -48,13 +48,13 @@ class KycUploadUseCaseTest : StringSpec({
             "\"fallback_step\":null," +
             "\"documents\":[]," +
             "\"current_reference_token\":null," +
-            "\"reference\":\"9fae9173-0ec7-4a14-9be2-84570283e29c\"" +
+            "\"reference\":\"test_reference\"" +
         "}"
 
     val pollingResponseStatusFailed =
         "{" +
-                "\"id\":\"abff9109284dcb137b1742f8b6a4ee28cidt\"," +
-                "\"url\":\"https://solarisbank.com/index.html?session_key=GorX6tTlliWGk0JBxfy1ro2if4YHa6uU36Vv1uKs\\u0026interface_id=31de\"," +
+                "\"id\":\"test_id\"," +
+                "\"url\":\"https://solarisbank.com\"," +
                 "\"status\":\"failed\"," +
                 "\"failure_reason\":null," +
                 "\"method\":\"fourthline_signing\"," + //todo check
@@ -65,8 +65,8 @@ class KycUploadUseCaseTest : StringSpec({
                 "\"fallback_step\":null," +
                 "\"documents\":[" +
                 "{" +
-                "\"id\":\"161cac050e56108790d54cd873801fb1cdoc\"," +
-                "\"name\":\"abff9109284dcb137b1742f8b6a4ee28cidt_prepared_for_signing_kyc_report.pdf\"," +
+                "\"id\":\"test_id\"," +
+                "\"name\":\"test_file.pdf\"," +
                 "\"content_type\":\"application/pdf\"," +
                 "\"document_type\":\"QES_DOCUMENT\"," +
                 "\"size\":88473," +
@@ -80,7 +80,7 @@ class KycUploadUseCaseTest : StringSpec({
 
     val uploadAuthRequiredResponse =
         "{" +
-            "\"id\":\"response222222\"," +
+            "\"id\":\"test_id\"," +
             "\"url\":null," +
             "\"status\":\"authorization_required\"," +
             "\"failure_reason\":null," +
@@ -92,8 +92,8 @@ class KycUploadUseCaseTest : StringSpec({
             "\"fallback_step\":null," +
             "\"documents\":[" +
                 "{" +
-                "\"id\":\"adc71fb0572c57bf8b318786cfa0193acdoc\"," +
-                "\"name\":\"78aae8893944b8c505bb96b3f31a0b22cidt_prepared_for_signing_terms_and_conditions.pdf\"," +
+                "\"id\":\"test_id\"," +
+                "\"name\":\"test_file.pdf\"," +
                 "\"content_type\":\"application/pdf\"," +
                 "\"document_type\":\"QES_DOCUMENT\"," +
                 "\"size\":87049," +
@@ -102,13 +102,13 @@ class KycUploadUseCaseTest : StringSpec({
                 "}" +
             "]," +
             "\"current_reference_token\":null," +
-            "\"reference\":\"2ace67f0-9828-4e38-bc05-d848c1095687\"" +
+            "\"reference\":\"test_reference\"" +
         "}"
 
     val pollingResponseToNextStepFourthlineSigningQes =
         "{" +
-                "\"id\":\"abff9109284dcb137b1742f8b6a4ee28cidt\"," +
-                "\"url\":\"https://solarisbank.com/index.html?session_key=GorX6tTlliWGk0JBxfy1ro2if4YHa6uU36Vv1uKs\\u0026interface_id=31de\"," +
+                "\"id\":\"test_id\"," +
+                "\"url\":\"https://solarisbank.com\"," +
                 "\"status\":\"authorization_required\"," +
                 "\"failure_reason\":null," +
                 "\"method\":\"fourthline_signing\"," + //todo check
@@ -119,8 +119,8 @@ class KycUploadUseCaseTest : StringSpec({
                 "\"fallback_step\":null," +
                 "\"documents\":[" +
                     "{" +
-                       "\"id\":\"161cac050e56108790d54cd873801fb1cdoc\"," +
-                        "\"name\":\"abff9109284dcb137b1742f8b6a4ee28cidt_prepared_for_signing_kyc_report.pdf\"," +
+                       "\"id\":\"test_id\"," +
+                        "\"name\":\"test_file.pdf\"," +
                         "\"content_type\":\"application/pdf\"," +
                         "\"document_type\":\"QES_DOCUMENT\"," +
                         "\"size\":88473," +
@@ -134,7 +134,7 @@ class KycUploadUseCaseTest : StringSpec({
 
     val upload_Fourthline_Simplified_AuthRequiredResponse =
         "{" +
-                "\"id\":\"response222222\"," +
+                "\"id\":\"test_id\"," +
                 "\"url\":null," +
                 "\"status\":\"authorization_required\"," +
                 "\"failure_reason\":null," +
@@ -146,8 +146,8 @@ class KycUploadUseCaseTest : StringSpec({
                 "\"fallback_step\":null," +
                 "\"documents\":[" +
                 "{" +
-                "\"id\":\"adc71fb0572c57bf8b318786cfa0193acdoc\"," +
-                "\"name\":\"78aae8893944b8c505bb96b3f31a0b22cidt_prepared_for_signing_terms_and_conditions.pdf\"," +
+                "\"id\":\"test_id\"," +
+                "\"name\":\"test_file.pdf\"," +
                 "\"content_type\":\"application/pdf\"," +
                 "\"document_type\":\"QES_DOCUMENT\"," +
                 "\"size\":87049," +
@@ -156,13 +156,13 @@ class KycUploadUseCaseTest : StringSpec({
                 "}" +
                 "]," +
                 "\"current_reference_token\":null," +
-                "\"reference\":\"2ace67f0-9828-4e38-bc05-d848c1095687\"" +
+                "\"reference\":\"test_reference\"" +
                 "}"
 
     val pollingResponseToNextStepFourthlineSimplifiedQes =
         "{" +
-                "\"id\":\"abff9109284dcb137b1742f8b6a4ee28cidt\"," +
-                "\"url\":\"https://solarisbank.com/index.html?session_key=GorX6tTlliWGk0JBxfy1ro2if4YHa6uU36Vv1uKs\\u0026interface_id=31de\"," +
+                "\"id\":\"test_id\"," +
+                "\"url\":\"https://solarisbank.com\"," +
                 "\"status\":\"authorization_required\"," +
                 "\"failure_reason\":null," +
                 "\"method\":\"fourthline_signing\"," + //todo check
@@ -173,8 +173,8 @@ class KycUploadUseCaseTest : StringSpec({
                 "\"fallback_step\":null," +
                 "\"documents\":[" +
                 "{" +
-                "\"id\":\"161cac050e56108790d54cd873801fb1cdoc\"," +
-                "\"name\":\"abff9109284dcb137b1742f8b6a4ee28cidt_prepared_for_signing_kyc_report.pdf\"," +
+                "\"id\":\"test_id\"," +
+                "\"name\":\"test_file.pdf\"," +
                 "\"content_type\":\"application/pdf\"," +
                 "\"document_type\":\"QES_DOCUMENT\"," +
                 "\"size\":88473," +

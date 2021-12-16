@@ -22,10 +22,9 @@ class VerifyIBanUseCaseTest : StringSpec({
     val IbanJointAccount200Request = "{\"iban\":\"$IbanJointAccountNumber\"}"
     val IbanJointAccount200Response =
         "{" +
-            "\"id\":\"42c5fb2dd03b3c1e74e876e3e3eb0feacidt\"," +
+            "\"id\":\"test_id\"," +
             "\"reference\":null," +
-            "\"url\":\"https://solarisbank.com" +
-                "/index.html?wizard_session_key=a4cEiyJ0Z4nitZW90LtEqV8eNGIvNQaS4yAKBBtE\\u0026interface_id=31de\"," +
+            "\"url\":\"https://solarisbank.com/someImportantKeyHere\"," +
             "\"status\":\"pending\"," +
             "\"completed_at\":null,\"method\":\"bank\"," +
             "\"proof_of_address_type\":null," +
@@ -37,7 +36,7 @@ class VerifyIBanUseCaseTest : StringSpec({
 
     val Iban200Response =
         "{" +
-            "\"id\":\"05c82a36cb2718e19fecb7b590d4ae0ecidt\"," +
+            "\"id\":\"test_id\"," +
             "\"reference\":null," +
             "\"url\":\"https://solarisbank.com" +
                 "/index.html?wizard_session_key=CVPZGMeVhQNPBLvEy5W5CHLzKe9q0oWnivede0y5\u0026interface_id=31de\","+
@@ -146,7 +145,7 @@ class VerifyIBanUseCaseTest : StringSpec({
                 as IbanVerificationModel.IbanVerificationSuccessful)
         ibanVerificationSuccessful.bankIdentificationUrl should
                 startWith(
-                    "https://solarisbank.com/index.html?wizard_session_key=a4cEiyJ0Z4ni"
+                    "https://solarisbank.com/someImportantKeyHere"
                 )
         ibanVerificationSuccessful.nextStep shouldBe null
 

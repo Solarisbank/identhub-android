@@ -26,8 +26,8 @@ class ConfirmContractSignUseCaseTest : StringSpec({
 
     val  confirmed200_method_fourthline_signing_response =
         "{" +
-                "\"id\":\"78aae8893944b8c505bb96b3f31a0b22cidt\"," +
-                "\"reference\":\"2ace67f0-9828-4e38-bc05-d848c1095687\"," +
+                "\"id\":\"test_id\"," +
+                "\"reference\":\"test_reference\"," +
                 "\"url\":null," +
                 "\"status\":\"confirmed\"," +
                 "\"completed_at\":null," +
@@ -43,7 +43,7 @@ class ConfirmContractSignUseCaseTest : StringSpec({
 
     val polling_status_confirmed_response =
         "{" +
-                "\"id\":\"78aae8893944b8c505bb96b3f31a0b22cidt\"," +
+                "\"id\":\"test_id\"," +
                 "\"url\":null," +
                 "\"status\":\"confirmed\"," +
                 "\"failure_reason\":null," +
@@ -56,8 +56,8 @@ class ConfirmContractSignUseCaseTest : StringSpec({
                 "\"documents\":" +
                 "[" +
                 "{" +
-                "\"id\":\"adc71fb0572c57bf8b318786cfa0193acdoc\"," +
-                "\"name\":\"78aae8893944b8c505bb96b3f31a0b22cidt_prepared_for_signing_terms_and_conditions.pdf\"," +
+                "\"id\":\"test_id\"," +
+                "\"name\":\"test_file.pdf\"," +
                 "\"content_type\":\"application/pdf\"," +
                 "\"document_type\":\"QES_DOCUMENT\"," +
                 "\"size\":87049," +
@@ -66,10 +66,10 @@ class ConfirmContractSignUseCaseTest : StringSpec({
                 "}" +
                 "]," +
                 "\"current_reference_token\":null," +
-                "\"reference\":\"2ace67f0-9828-4e38-bc05-d848c1095687\"" +
+                "\"reference\":\"test_reference\"" +
                 "}"
 
-    val polling_status_confirmed_response2 = "{\"id\":\"e154eaaf8639fb35ed1965acb9b18e1dcidt\",\"url\":\"https://solarisbank.payment.com/index.html?wizard_session_key=YUJg08KZHg4JI92n57vAjQRf6VAiLUwA8oojjxdP\\u0026interface_id=31de\",\"status\":\"confirmed\",\"failure_reason\":null,\"method\":\"bank\",\"authorization_expires_at\":\"2021-11-30T07:09:53.000Z\",\"confirmation_expires_at\":\"2021-11-30T07:08:22.000Z\",\"provider_status_code\":null,\"next_step\":null,\"fallback_step\":null,\"documents\":[{\"id\":\"4fe0aacda93938a902e1b7c5d6f6c92acdoc\",\"name\":\"e154eaaf8639fb35ed1965acb9b18e1dcidt_prepared_for_signing_kyc_report.pdf\",\"content_type\":\"application/pdf\",\"document_type\":\"QES_DOCUMENT\",\"size\":88471,\"customer_accessible\":false,\"created_at\":\"2021-11-30T06:59:24.000Z\"}],\"current_reference_token\":\"Transaktions-ID: 3195-8398\",\"reference\":null}"
+    val polling_status_confirmed_response2 = "{\"id\":\"test_id_fl\",\"url\":\"https://solarisbank.com\",\"status\":\"confirmed\",\"failure_reason\":null,\"method\":\"bank\",\"authorization_expires_at\":\"2021-11-30T07:09:53.000Z\",\"confirmation_expires_at\":\"2021-11-30T07:08:22.000Z\",\"provider_status_code\":null,\"next_step\":null,\"fallback_step\":null,\"documents\":[{\"id\":\"test_id\",\"name\":\"test_file.pdf\",\"content_type\":\"application/pdf\",\"document_type\":\"QES_DOCUMENT\",\"size\":88471,\"customer_accessible\":false,\"created_at\":\"2021-11-30T06:59:24.000Z\"}],\"current_reference_token\":\"Transaktions-ID: 3195-8398\",\"reference\":null}"
 
     val dispatcher: Dispatcher = object : Dispatcher() {
         @Throws(InterruptedException::class)
@@ -133,7 +133,7 @@ class ConfirmContractSignUseCaseTest : StringSpec({
 
     "checkFourthlineSigningConfirmed" {
         val expectedContractSigningState =
-            ContractSigningState.CONFIRMED("e154eaaf8639fb35ed1965acb9b18e1dcidt")
+            ContractSigningState.CONFIRMED("test_id_fl")
         var actualContractSigningStateResult : Result<ContractSigningState>? = null
 
         actualContractSigningStateResult =

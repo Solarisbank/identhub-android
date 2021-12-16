@@ -81,7 +81,7 @@ class PersonDataUseCaseTest : StringSpec({
     val fourthlineSigningResponse =
         "{" +
             "\"id\":\"identificationId1234\"," +
-            "\"reference\":\"494cef26-ad7c-45d7-a15e-37d3a6503721\"," +
+            "\"reference\":\"test_reference\"," +
             "\"url\":null,\"status\":\"pending\"," +
             "\"completed_at\":null," +
             "\"method\":\"fourthline_signing\"," +
