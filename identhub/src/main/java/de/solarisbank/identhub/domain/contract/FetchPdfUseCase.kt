@@ -8,6 +8,7 @@ import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
+import timber.log.Timber
 import java.io.File
 
 class FetchPdfUseCase(
@@ -21,17 +22,17 @@ class FetchPdfUseCase(
                 contractSignRepository
                     .fetchDocumentFile(document.id)
                     .map { responseBody: Response<ResponseBody> ->
-                        println("FetchPdfUseCase map $responseBody, ${responseBody.body()!!.source()}")
+                        Timber.d("invoke 1, $responseBody, ${responseBody.body()!!.source()}")
                         return@map NavigationalResult(
                             fileController.save(document.name, responseBody.body()!!.source())
                         )
                     }
             )
-            .map { it ->
-                println("FetchPdfUseCase2 $it")
+            .filter { result: NavigationalResult<File?> -> result.data != null }
+            .map { it: NavigationalResult<File?> ->
+                Timber.d("invoke 2, it.data!!.path: ${it.data!!.path}")
                 return@map it
             }
-            .filter { result -> result.data != null }
             .first(NavigationalResult(null))
     }
 }

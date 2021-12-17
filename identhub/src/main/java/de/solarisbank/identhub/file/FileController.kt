@@ -6,7 +6,6 @@ import okio.BufferedSource
 import java.io.File
 import java.io.IOException
 
-//todo refactor with kotlin
 class FileController(context: Context) {
     private val pdfDirectoryPath: String = context.filesDir.toString() + "/pdf"
 

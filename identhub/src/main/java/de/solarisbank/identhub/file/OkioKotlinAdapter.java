@@ -6,6 +6,7 @@ import java.io.IOException;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
+import timber.log.Timber;
 
 public class OkioKotlinAdapter {
 
@@ -17,13 +18,12 @@ public class OkioKotlinAdapter {
      * @return
      */
     public static File fillFileIn(BufferedSource bufferedSource, File destinationFile) {
-        try {
-            BufferedSink sink = Okio.buffer(Okio.sink(destinationFile));
+        try (BufferedSink sink = Okio.buffer(Okio.sink(destinationFile))) {
             sink.writeAll(bufferedSource);
             return destinationFile;
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e, "fillFileIn");
+            return null;
         }
-        return null;
     }
 }
