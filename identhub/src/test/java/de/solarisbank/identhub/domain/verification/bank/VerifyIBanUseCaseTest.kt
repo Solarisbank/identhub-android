@@ -38,8 +38,7 @@ class VerifyIBanUseCaseTest : StringSpec({
         "{" +
             "\"id\":\"test_id\"," +
             "\"reference\":null," +
-            "\"url\":\"https://solarisbank.com" +
-                "/index.html?wizard_session_key=CVPZGMeVhQNPBLvEy5W5CHLzKe9q0oWnivede0y5\u0026interface_id=31de\","+
+            "\"url\":\"https://solarisbank.com\","+
             "\"status\":\"pending\"," +
             "\"completed_at\":null," +
             "\"method\":\"bank\"," +
