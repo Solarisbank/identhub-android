@@ -31,12 +31,21 @@ fun getErrorType(throwable: Throwable): Type {
         errorType = when (throwable.code()) {
             HttpURLConnection.HTTP_BAD_REQUEST -> Type.BadRequest
             HttpURLConnection.HTTP_NOT_FOUND -> Type.ResourceNotFound
-            HttpURLConnection.HTTP_INTERNAL_ERROR -> Type.ServerError
-            HttpURLConnection.HTTP_UNAVAILABLE -> Type.ServerError
             HttpURLConnection.HTTP_UNAUTHORIZED -> Type.Unauthorized
             HttpURLConnection.HTTP_PRECON_FAILED -> Type.PreconditionFailed
             HttpURLConnection.HTTP_CONFLICT -> Type.Conflict
             UNPROCESSABLE_ENTITY -> Type.UnprocessableEntity
+
+            //server errors
+            HttpURLConnection.HTTP_INTERNAL_ERROR,
+            HttpURLConnection.HTTP_NOT_IMPLEMENTED,
+            HttpURLConnection.HTTP_BAD_GATEWAY,
+            HttpURLConnection.HTTP_UNAVAILABLE,
+            HttpURLConnection.HTTP_GATEWAY_TIMEOUT,
+            HttpURLConnection.HTTP_VERSION,
+            506, 507, 508, 509
+            -> Type.ServerError
+
             else -> Type.Unknown
         }
     }
