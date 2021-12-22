@@ -16,7 +16,6 @@ import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
@@ -29,7 +28,7 @@ class DocScanResultFragment : FourthlineFragment() {
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
+            .get(FourthlineViewModel::class.java)
     }
 
     private val kycSharedViewModel: KycSharedViewModel by lazy {
@@ -53,16 +52,16 @@ class DocScanResultFragment : FourthlineFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_doc_scan_result, container, false)
-                .also {
-                    title = it.findViewById(R.id.title)
-                    docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
-                    issueDateTextInput = it.findViewById(R.id.issueDateTextInput)
-                    issueDateError = it.findViewById(R.id.issueDateError)
-                    expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
-                    expiryDateError = it.findViewById(R.id.expireDateError)
-                    continueButton = it.findViewById(R.id.continueButton)
-                    customizeUI()
-                }
+            .also {
+                title = it.findViewById(R.id.title)
+                docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
+                issueDateTextInput = it.findViewById(R.id.issueDateTextInput)
+                issueDateError = it.findViewById(R.id.issueDateError)
+                expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
+                expiryDateError = it.findViewById(R.id.expireDateError)
+                continueButton = it.findViewById(R.id.continueButton)
+                customizeUI()
+            }
     }
 
     private fun customizeUI() {
@@ -116,14 +115,8 @@ class DocScanResultFragment : FourthlineFragment() {
                 kycSharedViewModel.updateIssueDate(issueDate)
                 kycSharedViewModel.updateExpireDate(expirationDate)
                 kycSharedViewModel.updateDocumentNumber(number)
-                val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
-                if (kycCreationState is ZipCreationStateDto.SUCCESS && kycCreationState.uri != null) {
-                    kycSharedViewModel.kycURI = kycCreationState.uri
-                    hideKeyboard()
-                    activityViewModel.navigateFromDocResultToSelfieInstructions()
-                } else {
-                    showGenericAlertFragment {  }
-                }
+                hideKeyboard()
+                activityViewModel.navigateFromDocResultToSelfieInstructions()
             } else {
                 showGenericAlertFragment {  }
             }

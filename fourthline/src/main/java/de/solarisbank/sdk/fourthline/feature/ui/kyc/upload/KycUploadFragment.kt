@@ -14,6 +14,7 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
+import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -24,7 +25,7 @@ class KycUploadFragment : FourthlineFragment() {
 
     private val activityViewModel: FourthlineViewModel by lazy {
         ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
+            .get(FourthlineViewModel::class.java)
     }
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
@@ -46,19 +47,27 @@ class KycUploadFragment : FourthlineFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_kyc_upload, container, false)
-                .also {
-                    title = it.findViewById(R.id.title)
-                    subtitle = it.findViewById(R.id.subtitle)
-                    progressBar = it.findViewById(R.id.progressBar)
-                    errorImage = it.findViewById(R.id.errorImage)
-                    customizeUI()
-                }
+            .also {
+                title = it.findViewById(R.id.title)
+                subtitle = it.findViewById(R.id.subtitle)
+                progressBar = it.findViewById(R.id.progressBar)
+                errorImage = it.findViewById(R.id.errorImage)
+                customizeUI()
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner) { it.content?.let { statusDto -> setUiState(statusDto) }}
-        kycUploadViewModel.uploadKyc(File(kycSharedViewModel.kycURI!!))
+        //todo move to usecase
+        val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
+        if (kycCreationState is ZipCreationStateDto.SUCCESS && kycCreationState.uri != null) {
+            kycSharedViewModel.kycURI = kycCreationState.uri
+            kycUploadViewModel.uploadKyc(File(kycSharedViewModel.kycURI!!))
+        } else {
+            showGenericAlertFragment {  }
+        }
+
     }
 
     private fun customizeUI() {
@@ -73,7 +82,7 @@ class KycUploadFragment : FourthlineFragment() {
                 activityViewModel.navigateFromKycUploadToUploadResult(nextStep = statusDto.nextStep)
             }
             is KycUploadStatusDto.FinishIdentSuccess -> {
-                 activityViewModel.navigateFromKycUploadToUploadResult(identificationId = statusDto.id)
+                activityViewModel.navigateFromKycUploadToUploadResult(identificationId = statusDto.id)
             }
             is KycUploadStatusDto.ProviderErrorNotFraud,
             is KycUploadStatusDto.ProviderErrorFraud,
