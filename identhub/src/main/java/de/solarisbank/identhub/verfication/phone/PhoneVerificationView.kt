@@ -12,9 +12,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.progress.DefaultCountDownTimer
+import de.solarisbank.sdk.core_ui.data.dto.Customization
 import de.solarisbank.sdk.data.entity.formatMinutesAndSeconds
 import de.solarisbank.sdk.feature.customization.ButtonStyle
-import de.solarisbank.sdk.feature.customization.Customization
 import de.solarisbank.sdk.feature.customization.customize
 import java.util.concurrent.TimeUnit
 

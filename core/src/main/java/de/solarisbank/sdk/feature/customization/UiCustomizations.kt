@@ -1,12 +1,12 @@
 package de.solarisbank.sdk.feature.customization
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.widget.*
 import de.solarisbank.sdk.core.R
+import de.solarisbank.sdk.core_ui.data.dto.Customization
 
 sealed class ButtonStyle {
     object Primary : ButtonStyle()

@@ -99,6 +99,8 @@ import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSucces
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector;
 import de.solarisbank.sdk.data.api.IdentificationApi;
 import de.solarisbank.sdk.data.api.MobileNumberApi;
+import de.solarisbank.sdk.data.customization.CustomizationRepository;
+import de.solarisbank.sdk.data.customization.CustomizationRepositoryFactory;
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource;
 import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource;
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource;
@@ -123,8 +125,6 @@ import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
-import de.solarisbank.sdk.feature.customization.CustomizationRepository;
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory;
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies;
 import de.solarisbank.sdk.feature.di.CoreActivityComponent;
 import de.solarisbank.sdk.feature.di.CoreModule;
@@ -492,11 +492,13 @@ public class IdenthubComponent {
         @Override
         public void inject(@NotNull VerificationBankActivity verificationBankActivity) {
             VerificationBankActivityInjector.injectAssistedViewModelFactory(verificationBankActivity, assistedViewModelFactoryProvider.get());
+            VerificationBankActivityInjector.injectCustomizationRepository(verificationBankActivity, customizationRepositoryProvider.get());
         }
 
         @Override
         public void inject(@NotNull ContractActivity contractActivity) {
             ContractActivityInjector.injectAssistedViewModelFactory(contractActivity, assistedViewModelFactoryProvider.get());
+            ContractActivityInjector.injectCustomizationRepository(contractActivity, customizationRepositoryProvider.get());
         }
 
         @Override

@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.alert.showAlertFragment
-import de.solarisbank.sdk.feature.customization.Customization
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 
 abstract class BaseFragment : Fragment() {

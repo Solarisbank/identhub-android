@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
@@ -25,6 +27,9 @@ abstract class BaseActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var activityComponent: CoreActivityComponent
+
+    lateinit var customizationRepository: CustomizationRepository
+    val customization: Customization by lazy { customizationRepository.get() }
 
     private val alertViewModel: AlertViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(AlertViewModel::class.java)

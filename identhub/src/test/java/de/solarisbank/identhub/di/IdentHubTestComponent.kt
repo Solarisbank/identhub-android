@@ -55,6 +55,7 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
@@ -77,7 +78,6 @@ import de.solarisbank.sdk.feature.config.InitializationInfoApi
 import de.solarisbank.sdk.feature.config.InitializationInfoApiFactory
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFactory
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.LibraryComponent

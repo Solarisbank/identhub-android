@@ -22,6 +22,8 @@ import de.solarisbank.identhub.session.data.repository.IdentityInitializationRep
 import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
+import de.solarisbank.sdk.data.customization.CustomizationRepository
+import de.solarisbank.sdk.data.customization.CustomizationRepositoryFactory
 import de.solarisbank.sdk.data.datasource.*
 import de.solarisbank.sdk.data.di.*
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
@@ -34,8 +36,6 @@ import de.solarisbank.sdk.data.repository.*
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.feature.config.*
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryFactory
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.CoreModule
@@ -323,11 +323,13 @@ class FourthlineTestComponent private constructor(
             .getInstance(applicationContextProvider.get())
             .getInitializationInfoRepositoryProvider()
 
-        customizationRepositoryProvider = DoubleCheck.provider(CustomizationRepositoryFactory(
+        customizationRepositoryProvider = DoubleCheck.provider(
+            CustomizationRepositoryFactory(
             coreModule,
             applicationContextProvider,
             initializationInfoRepositoryProvider
-        ))
+        )
+        )
     }
 
     internal class ContextProvider(private val activityComponent: CoreActivityComponent) :
@@ -383,6 +385,7 @@ class FourthlineTestComponent private constructor(
 
         override fun inject(fourthlineActivity: FourthlineActivity) {
             FourthlineActivityInjector.injectAssistedViewModelFactory(fourthlineActivity, assistedViewModelFactoryProvider.get())
+            FourthlineActivityInjector.injectCustomizationRepository(fourthlineActivity, customizationRepositoryProvider.get())
         }
 
         override fun fragmentComponent(): FourthlineFragmentComponent.Factory {

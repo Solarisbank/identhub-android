@@ -85,6 +85,7 @@ afterEvaluate {
 }
 
 dependencies {
+    implementation timber
     implementation kotlinCore
     implementation support
     implementation activity

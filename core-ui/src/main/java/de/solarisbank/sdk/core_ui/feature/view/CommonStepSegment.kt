@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintSet
 import de.solarisbank.sdk.core_ui.R
+import timber.log.Timber
 
 
 class CommonStepSegment @JvmOverloads constructor(
@@ -23,6 +24,10 @@ class CommonStepSegment @JvmOverloads constructor(
         step1Image!!.isEnabled = isPassed
     }
 
+    override fun isPasssed(): Boolean {
+        return step1Image!!.isEnabled
+    }
+
     override fun isFirstStep(isLastStep: Boolean) {
         /* for common style number is not required*/
     }
@@ -37,6 +42,11 @@ class CommonStepSegment @JvmOverloads constructor(
 
     override fun getConstaintInnerHeight(): Int {
         return 4
+    }
+
+    override fun setBackgroundColor(color: Int) {
+        Timber.d("aChub setBackgroundColor")
+        step1Image!!.setBackgroundColor(color)
     }
 
     private fun initView() {

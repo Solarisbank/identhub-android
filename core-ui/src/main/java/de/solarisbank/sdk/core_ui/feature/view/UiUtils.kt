@@ -1,6 +1,8 @@
 package de.solarisbank.sdk.core_ui.feature.view
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup

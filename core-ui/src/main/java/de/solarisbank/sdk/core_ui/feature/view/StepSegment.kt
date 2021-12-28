@@ -10,6 +10,7 @@ abstract class StepSegment @JvmOverloads constructor(
 
     abstract fun setStepNumber(number: Int)
 
+    abstract fun isPasssed(): Boolean
 
     abstract fun setPassed(isPassed: Boolean)
 

@@ -10,12 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.core_ui.feature.view.CommonStepSegment
-import de.solarisbank.sdk.core_ui.feature.view.StepSegment
-import de.solarisbank.sdk.core_ui.feature.view.dpToPixels
-import de.solarisbank.sdk.core_ui.feature.view.spToPx
+import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.core_ui.feature.view.*
+import de.solarisbank.sdk.core_ui.feature.view.customization.isDarkMode
 import timber.log.Timber
-import kotlin.reflect.KClass
 
 class ConstraintStepIndicator @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -24,7 +22,6 @@ class ConstraintStepIndicator @JvmOverloads constructor(
 
     private var stepsAmount: Int = 0
     private lateinit var segmentList: MutableList<StepSegment>
-    private lateinit var propClass: KClass<out StepSegment>
     private var outerBetweenSegmentMarginDp: Int = 0
     private var labelBottomMarginDp: Int = 0
     private var areLabelsVisible = false
@@ -33,6 +30,10 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     private var currentStepLabelTextSize: Float = 0f
     private var nextStepLabelTextSize: Float = 0f
     private var startEndSegmentParentMargin: Int = 0
+    private var customStepPassedColor: Int? = null
+    private var stepUnpassedColor: Int =
+        if (!context.isDarkMode()) resources.getColor(R.color.ident_hub_color_black10)
+        else resources.getColor(R.color.ident_hub_color_base75)
 
     private val labelsConstraintWrapper = ConstraintLayout(context)
         .apply {
@@ -48,6 +49,20 @@ class ConstraintStepIndicator @JvmOverloads constructor(
 
     init {
         initInnerViews(attrs!!, defStyleAttr)
+    }
+
+    fun customize(customization: Customization?) {
+        customStepPassedColor = customization?.colors?.themeSecondary(context)
+        customStepPassedColor?.let { customStepPassedColor ->
+            segmentList[0].setBackgroundColor(customStepPassedColor)
+            segmentList.forEach() {
+                if (it.isPasssed()) {
+                    it.setBackgroundColor(customStepPassedColor)
+                } else {
+                    it.setBackgroundColor(stepUnpassedColor)
+                }
+            }
+        }
     }
 
     //todo check if separate context required
@@ -110,12 +125,24 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         addInnerViews()
     }
 
-
     fun setPassedStep(step: Int) {
         if (step <= segmentList.size && step > 0) {
             currentStep = step
-            IntRange(0, step - 1).forEach { segmentList[it].setPassed(true) }
-            IntRange(step, segmentList.size - 1).forEach { segmentList[it].setPassed(false) }
+            IntRange(0, step - 1).forEach { number ->
+                segmentList[number].also { segment ->
+                    segment.setPassed(true)
+                    customStepPassedColor?.let { color -> segment.setBackgroundColor(color) }
+                }
+
+            }
+            IntRange(step, segmentList.size - 1).forEach {
+                segmentList[it].also { segment ->
+                    segment.setPassed(false)
+                    //todo check
+                    customStepPassedColor?.let { segment.setBackgroundColor(stepUnpassedColor) }
+                }
+
+            }
         } else {
             Timber.w("step is not valid, step : $step, stepAmount: $stepsAmount")
         }

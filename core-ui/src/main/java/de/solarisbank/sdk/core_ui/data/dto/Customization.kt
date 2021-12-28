@@ -1,7 +1,7 @@
-package de.solarisbank.sdk.feature.customization
+package de.solarisbank.sdk.core_ui.data.dto
 
 import android.content.Context
-import de.solarisbank.sdk.feature.customization.getThemeColor
+import de.solarisbank.sdk.core_ui.feature.view.customization.getThemeColor
 
 data class Customization(
     val enabled: Boolean,

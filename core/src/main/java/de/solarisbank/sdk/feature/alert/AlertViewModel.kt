@@ -3,8 +3,8 @@ package de.solarisbank.sdk.feature.alert
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.sdk.feature.customization.Customization
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.domain.model.result.Event
 
 class AlertViewModel(

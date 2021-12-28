@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.core_ui.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument

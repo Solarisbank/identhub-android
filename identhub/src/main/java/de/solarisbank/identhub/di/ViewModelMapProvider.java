@@ -39,11 +39,11 @@ import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModel;
 import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModelFactory;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModel;
 import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessViewModelFactory;
+import de.solarisbank.sdk.data.customization.CustomizationRepository;
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase;
 import de.solarisbank.sdk.feature.alert.AlertViewModel;
 import de.solarisbank.sdk.feature.alert.AlertViewModelFactory;
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
-import de.solarisbank.sdk.feature.customization.CustomizationRepository;
 import de.solarisbank.sdk.feature.di.CoreModule;
 import de.solarisbank.sdk.feature.di.internal.Provider;
 

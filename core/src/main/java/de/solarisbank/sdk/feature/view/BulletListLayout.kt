@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.core_ui.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.customizeLinks
 
 class BulletListLayout @JvmOverloads constructor(

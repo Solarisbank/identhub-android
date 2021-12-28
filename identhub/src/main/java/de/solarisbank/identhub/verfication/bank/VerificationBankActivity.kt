@@ -48,7 +48,7 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun initView(savedInstanceState: Bundle?) {
         stepIndicator = findViewById(R.id.stepIndicator)
-
+        stepIndicator.customize(customizationRepository.get())
         if (savedInstanceState == null) {
             val lastCompletedStep = viewModel.getLastCompletedStep()
             var startStep = COMPLETED_STEP.VERIFICATION_PHONE.index

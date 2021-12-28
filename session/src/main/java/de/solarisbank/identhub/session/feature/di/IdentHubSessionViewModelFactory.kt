@@ -3,7 +3,6 @@ package de.solarisbank.identhub.session.feature.di
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Provider
 

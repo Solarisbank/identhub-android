@@ -2,10 +2,10 @@ package de.solarisbank.sdk.fourthline.di
 
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.ViewModel
-import de.solarisbank.sdk.feature.di.CoreModule
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.alert.AlertViewModelFactory
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
+import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.Provider
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)

@@ -1,14 +1,14 @@
 package de.solarisbank.sdk.feature.di
 
 import android.content.Context
+import de.solarisbank.sdk.data.customization.CustomizationRepository
+import de.solarisbank.sdk.data.customization.CustomizationRepositoryImpl
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.config.InitializationInfoApi
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryImpl
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
-import de.solarisbank.sdk.feature.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.customization.CustomizationRepositoryImpl
 import de.solarisbank.sdk.feature.di.internal.Provider
 import retrofit2.Retrofit
 

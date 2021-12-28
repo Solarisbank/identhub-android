@@ -58,12 +58,19 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
-        stepIndicator = findViewById(R.id.stepIndicator)
-        stepIndicator.setCurrentStepLabel("ID verification")
-        stepIndicator.setPassedStep(3)
+        initStepIndicator()
         supportActionBar?.setShowHideAnimationEnabled(false)
-        if (!shouldShowStepIndicator)
+    }
+
+    private fun initStepIndicator() {
+        stepIndicator = findViewById(R.id.stepIndicator)
+        if (!shouldShowStepIndicator) {
             stepIndicator.hide()
+        } else {
+            stepIndicator.customize(customizationRepository.get())
+            stepIndicator.setCurrentStepLabel("ID verification")
+            stepIndicator.setPassedStep(3)
+        }
     }
 
     private fun initGraph() {

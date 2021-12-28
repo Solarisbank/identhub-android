@@ -22,9 +22,12 @@ import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.document.*
+import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.base.BaseActivity
-import de.solarisbank.sdk.feature.customization.*
-import de.solarisbank.sdk.feature.customization.Customization
+import de.solarisbank.sdk.feature.customization.ButtonStyle
+import de.solarisbank.sdk.feature.customization.ImageViewTint
+import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*

@@ -51,12 +51,13 @@ class ContractActivity : IdentHubActivity() {
     private fun initView() {
         solarisIndicator = findViewById(R.id.stepIndicator)
         if (intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)) {
+            solarisIndicator.customize(customizationRepository.get())
+            solarisIndicator.setCurrentStepLabel("Sign documents") //todo create ticket for translation
+            solarisIndicator.setPassedStep(3)
             solarisIndicator.visibility = View.VISIBLE
         } else {
             solarisIndicator.visibility = View.GONE
         }
-        solarisIndicator.setCurrentStepLabel("Sign documents") //todo create ticket for translation
-        solarisIndicator.setPassedStep(3)
         setTitle(R.string.identity_activity_third_step_label)
     }
 
