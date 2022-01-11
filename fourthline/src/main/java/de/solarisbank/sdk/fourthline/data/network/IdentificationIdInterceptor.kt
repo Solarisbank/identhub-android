@@ -10,17 +10,13 @@ class IdentificationIdInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         var original = chain.request()
 
-        if (original.url().toString().contains(IDENTIFICATION_ID_STUB)) {
-            var updated = ""
+        if (original.url.toString().contains(IDENTIFICATION_ID_STUB)) {
+            var updated: String
             identificationLocalDataSource.obtainIdentificationDto().blockingGet()
-                    .let {
-                updated = original.url()
-                        .toString()
-                        .replace(IDENTIFICATION_ID_STUB, it.id)
-            }
-            original = original.newBuilder()
-                    .url(updated)
-                    .build()
+                .let {
+                    updated = original.url.toString().replace(IDENTIFICATION_ID_STUB, it.id)
+                }
+            original = original.newBuilder().url(updated).build()
         }
         return chain.proceed(original)
     }

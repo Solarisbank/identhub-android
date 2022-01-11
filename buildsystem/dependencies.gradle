@@ -72,7 +72,7 @@ ext {
             "androidx.navigation:navigation-ui:$navigationVersion",
     ]
 
-    okHttpVersion = '3.14.1'
+    okHttpVersion = '4.9.3'
     retrofitVersion = '2.5.0'
     moshi = '1.9.3'
     networking = [

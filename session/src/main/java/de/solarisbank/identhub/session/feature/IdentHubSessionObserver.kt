@@ -82,7 +82,7 @@ class IdentHubSessionObserver(
             errorCallback.invoke(
                 IdentHubSessionFailure(
                     message = "Session aborted",
-                    step = COMPLETED_STEP.getEnum(completedStep!!)
+                    step = COMPLETED_STEP.getEnum(completedStep ?: -1)
                 )
             )
         }

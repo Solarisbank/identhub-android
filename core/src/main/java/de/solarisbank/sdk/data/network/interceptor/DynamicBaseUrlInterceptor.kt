@@ -2,8 +2,10 @@ package de.solarisbank.sdk.data.network.interceptor
 
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
+import timber.log.Timber
 import java.io.IOException
 
 class DynamicBaseUrlInterceptor(
@@ -11,33 +13,18 @@ class DynamicBaseUrlInterceptor(
 ) : Interceptor {
 
 
-    @Throws(IOException::class)
+    @Throws(Exception::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        var original = chain.request()
-        val httpBaseUrl = toHttpUrlOrNull(sessionUrlRepository.get())
-        if (httpBaseUrl != null) {
-            val updated = original.url()
-                    .toString()
-                    .replace(DUMMY_BASE_URL, httpBaseUrl.toString())
-            original = original.newBuilder()
-                    .url(updated)
-                    .build()
-        } else {
-            throw IllegalArgumentException(
-                    String.format(
-                            "Base url is invalid: %s",
-                            httpBaseUrl
-                    )
-            )
+        var originalRequest = chain.request()
+        Timber.d("intercept, originalRequest : $originalRequest")
+        sessionUrlRepository.get()?.toHttpUrl().toString().let {
+            val updated =
+                originalRequest.url.toString().replace(DUMMY_BASE_URL, it)
+            Timber.d("intercept, updated : $updated")
+            originalRequest =
+                originalRequest.newBuilder().url(updated).build()
         }
-        return chain.proceed(original)
-    }
-
-    private fun toHttpUrlOrNull(url: String?): HttpUrl? {
-        if (url == null) {
-            return null
-        }
-        return HttpUrl.parse(url)
+        return chain.proceed(originalRequest)
     }
 
     companion object {
