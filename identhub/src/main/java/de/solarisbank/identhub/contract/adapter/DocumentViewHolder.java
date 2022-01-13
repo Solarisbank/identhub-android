@@ -35,13 +35,13 @@ public class DocumentViewHolder extends RecyclerView.ViewHolder {
         Context context = title.getContext();
         switch (documentTypeEnum) {
             case "QES_DOCUMENT":
-                return context.getString(R.string.qes_document);
+                return context.getString(R.string.identhub_qes_document);
             case "LOAN_MANDATE_CONTRACT":
-                return context.getString(R.string.loan_mandate_contract);
+                return context.getString(R.string.identhub_loan_mandate_contract);
             case "SIGNED_QES_DOCUMENT":
-                return context.getString(R.string.signed_qes_document);
+                return context.getString(R.string.identhub_signed_qes_document);
             case "SIGNED_LOAN_MANDATE_CONTRACT":
-                return context.getString(R.string.signed_loan_mandate_contract);
+                return context.getString(R.string.identhub_signed_loan_mandate_contract);
             default:
                 return documentTypeEnum;
         }

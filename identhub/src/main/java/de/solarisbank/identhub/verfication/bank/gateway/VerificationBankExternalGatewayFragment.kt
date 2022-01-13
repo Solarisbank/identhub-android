@@ -40,7 +40,7 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root =
-            inflater.inflate(R.layout.fragment_verification_bank_external_gateway, container, false)
+            inflater.inflate(R.layout.identhub_fragment_verification_bank_external_gateway, container, false)
         webView = root.findViewById(R.id.webView)
         return root
     }
@@ -85,10 +85,10 @@ class VerificationBankExternalGatewayFragment : IdentHubFragment() {
                         Timber.d("Message from JavaScript received: %s", message?.data)
                         if (message?.data == "abort") {
                             showAlertFragment(
-                                title = getString(R.string.identity_dialog_fallback_process_title),
-                                message = getString(R.string.identity_dialog_fallback_process_message),
-                                positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
-                                negativeLabel = getString(R.string.identity_dialog_fallback_process_negative_button),
+                                title = getString(R.string.identhub_identity_dialog_fallback_process_title),
+                                message = getString(R.string.identhub_identity_dialog_fallback_process_message),
+                                positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
+                                negativeLabel = getString(R.string.identhub_identity_dialog_fallback_process_negative_button),
                                 positiveAction = {
                                     Timber.d("Quit IdentHub SDK after abort button pressed")
                                     sharedViewModel?.cancelIdentification()

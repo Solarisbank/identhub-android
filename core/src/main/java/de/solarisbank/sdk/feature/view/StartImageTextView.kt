@@ -28,7 +28,7 @@ class StartImageTextView @JvmOverloads constructor(
         addView(textView)
         imageView.layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
         textView.layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-            marginStart = resources.getDimensionPixelSize(R.dimen.margin_8)
+            marginStart = resources.getDimensionPixelSize(R.dimen.identhub_margin_8)
         }
 
         gravity = Gravity.TOP
@@ -41,18 +41,18 @@ class StartImageTextView @JvmOverloads constructor(
 
         val style = context.obtainStyledAttributes(
             attrs,
-            R.styleable.StartImageTextView,
-            R.attr.startImageTextViewStyle,
-            R.style.defaultStartImageTextViewStyle
+            R.styleable.IdentHubStartImageTextView,
+            R.attr.IdentHubStartImageTextViewStyle,
+            R.style.IdentHubDefaultStartImageTextViewStyle
         )
 
-        val text = style.getString(R.styleable.StartImageTextView_android_text) ?: ""
+        val text = style.getString(R.styleable.IdentHubStartImageTextView_android_text) ?: ""
         textView.text = text
-        imageView.setImageDrawable(style.getDrawable(R.styleable.StartImageTextView_android_drawable))
+        imageView.setImageDrawable(style.getDrawable(R.styleable.IdentHubStartImageTextView_android_drawable))
         textView.updateLayoutParams<LayoutParams> {
-            topMargin = style.getDimensionPixelSize(R.styleable.StartImageTextView_textTopMargin, 0)
+            topMargin = style.getDimensionPixelSize(R.styleable.IdentHubStartImageTextView_textTopMargin, 0)
         }
-        if (style.getBoolean(R.styleable.StartImageTextView_hideIfTextIsEmpty, false) && text.isEmpty()) {
+        if (style.getBoolean(R.styleable.IdentHubStartImageTextView_hideIfTextIsEmpty, false) && text.isEmpty()) {
             visibility = GONE
         }
         style.recycle()

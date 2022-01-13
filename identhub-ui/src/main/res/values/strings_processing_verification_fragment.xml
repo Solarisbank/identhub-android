@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="payment_init_auth_person_title">Account not supported</string>
-    <string name="payment_init_auth_person_message">Unfortunately the account you have selected is not supported for Bankident.</string>
-    <string name="payment_init_failed_title">Identification failed</string>
-    <string name="payment_init_failed_message">Unfortunately the payment was not successful. Please try again OR You can identify with an ID scan instead.</string>
-    <string name="payment_init_expired_title">Identification failed</string>
-    <string name="payment_init_expired_message">Unfortunately the payment initiation was not successful</string>
+    <string name="identhub_payment_init_auth_person_title">Account not supported</string>
+    <string name="identhub_payment_init_auth_person_message">Unfortunately the account you have selected is not supported for Bankident.</string>
+    <string name="identhub_payment_init_failed_title">Identification failed</string>
+    <string name="identhub_payment_init_failed_message">Unfortunately the payment was not successful. Please try again OR You can identify with an ID scan instead.</string>
+    <string name="identhub_payment_init_expired_title">Identification failed</string>
+    <string name="identhub_payment_init_expired_message">Unfortunately the payment initiation was not successful</string>
 </resources>

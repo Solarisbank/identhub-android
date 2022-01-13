@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="StepIndicatorStyleCommon">
+    <style name="IdentHubStepIndicatorStyleCommon">
         <item name="stepsAmount">amount4</item>
         <item name="innerSegmentMargin">4dp</item>
-        <item name="currentStepLabelStyle">@style/CurrentStepLabelCommon</item>
-        <item name="nextStepLabelStyle">@style/NextStepLabelCommon</item>
+        <item name="currentStepLabelStyle">@style/IdentHubCurrentStepLabelCommon</item>
+        <item name="nextStepLabelStyle">@style/IdentHubNextStepLabelCommon</item>
         <item name="areLabelsVisible">true</item>
         <item name="startEndSegmentParentMargin">0dp</item>
         <item name="labelMargin">8dp</item>

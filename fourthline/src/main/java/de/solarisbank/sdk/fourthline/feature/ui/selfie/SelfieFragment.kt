@@ -105,7 +105,7 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun getOverlayView(): View? {
         return LayoutInflater
                 .from(requireContext())
-                .inflate(R.layout.fragment_selfie, requireActivity().findViewById(R.id.content))
+                .inflate(R.layout.identhub_fragment_selfie, requireActivity().findViewById(R.id.content))
                 .also {
                     punchhole = it.findViewById(R.id.punchhole)
                     selfieMask = it.findViewById(R.id.selfieMask)
@@ -135,15 +135,15 @@ class SelfieFragment : SelfieScannerFragment() {
         lifecycleScope.launch(Dispatchers.Main) {
             when (step) {
                 SelfieScannerStep.SELFIE -> {
-                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_scanning)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_scanning)
                 }
                 SelfieScannerStep.TURN_HEAD_LEFT -> {
-                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_checking_liveness)
-                    livenessMask!!.setImageResource(R.drawable.ic_liveness_left_direction)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
+                    livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_left_direction)
                 }
                 SelfieScannerStep.TURN_HEAD_RIGHT -> {
-                    stepName!!.text = context?.resources?.getString(R.string.selfie_step_checking_liveness)
-                    livenessMask!!.setImageResource(R.drawable.ic_liveness_right_direction)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
+                    livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_right_direction)
                 }
             }
             hintTextView!!.text = step.asString(requireContext())
@@ -157,7 +157,7 @@ class SelfieFragment : SelfieScannerFragment() {
             icon?.visibility = View.VISIBLE
             icon?.setImageLevel(1)
             warningsLabel?.hide()
-            stepName?.setText(R.string.selfie_scanner_scan_successful)
+            stepName?.setText(R.string.identhub_selfie_scanner_scan_successful)
             stepName?.show()
             kycSharedViewModel.updateKycWithSelfieScannerResult(result)
             activityViewModel.navigateFromSelfieToSelfieResult()

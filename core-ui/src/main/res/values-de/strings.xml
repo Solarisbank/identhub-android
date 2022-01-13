@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identity_dialog_quit_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
-    <string name="identity_dialog_quit_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.</string>
-    <string name="identity_dialog_quit_process_positive_button">Verlassen</string>
-    <string name="identity_dialog_quit_process_negative_button">Bleiben</string>
-    <string name="ok_button">OK</string>
-    <string name="generic_error_title">Unbekannter Fehler</string>
-    <string name="generic_error_message">Ihre Verifikation konnte nicht abgeschlossen werden</string>
+    <string name="identhub_identity_dialog_quit_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
+    <string name="identhub_identity_dialog_quit_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.</string>
+    <string name="identhub_identity_dialog_quit_process_positive_button">Verlassen</string>
+    <string name="identhub_identity_dialog_quit_process_negative_button">Bleiben</string>
+    <string name="identhub_ok_button">OK</string>
+    <string name="identhub_generic_error_title">Unbekannter Fehler</string>
+    <string name="identhub_generic_error_message">Ihre Verifikation konnte nicht abgeschlossen werden</string>
 </resources>

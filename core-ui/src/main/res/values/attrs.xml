@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="stepIndicatorStyle" format="reference"/>
+    <attr name="IdentHubStepIndicatorStyle" format="reference"/>
     <declare-styleable name="StepIndicator">
         <attr name="stepsAmount" format="enum">
             <enum name="amount2" value="2"/>

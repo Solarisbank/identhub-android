@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="document_scanner_retake">Répéter</string>
-    <string name="document_scanner_confirm">Confirmer</string>
-    <string name="document_scanner_take_picture">Prendre une photo</string>
-    <string name="document_scanner_warning_too_dark">Document trop sombre</string>
-    <string name="document_scanner_warning_device_not_steady">Appareil instable</string>
-    <string name="document_scanner_warning_recognition_models_not_downloaded">Vérifier la connexion internet et/ou l’espace libre disponible</string>
-    <string name="document_scanner_file_side_front">recto</string>
-    <string name="document_scanner_file_side_back">verso</string>
-    <string name="document_scanner_file_side_inside_left">intérieur gauche</string>
-    <string name="document_scanner_file_side_inside_right">intérieur droite</string>
-    <string name="document_scanner_file_tilted">incliné</string>
-    <string name="document_scanner_scan_success">Photo réussie</string>
-    <string name="document_scanner_clear_picture_list_title">Est-ce que tout a l’air bien?</string>
-    <string name="document_scanner_clear_picture_list_item1">Le texte est-il lisible?</string>
-    <string name="document_scanner_clear_picture_list_item2">Rien ne couvre la photo?</string>
-    <string name="document_scanner_clear_picture_list_item3">Tous les coins sont-ils sur la photo?</string>
+    <string name="identhub_document_scanner_retake">Répéter</string>
+    <string name="identhub_document_scanner_confirm">Confirmer</string>
+    <string name="identhub_document_scanner_take_picture">Prendre une photo</string>
+    <string name="identhub_document_scanner_warning_too_dark">Document trop sombre</string>
+    <string name="identhub_document_scanner_warning_device_not_steady">Appareil instable</string>
+    <string name="identhub_document_scanner_warning_recognition_models_not_downloaded">Vérifier la connexion internet et/ou l’espace libre disponible</string>
+    <string name="identhub_document_scanner_file_side_front">recto</string>
+    <string name="identhub_document_scanner_file_side_back">verso</string>
+    <string name="identhub_document_scanner_file_side_inside_left">intérieur gauche</string>
+    <string name="identhub_document_scanner_file_side_inside_right">intérieur droite</string>
+    <string name="identhub_document_scanner_file_tilted">incliné</string>
+    <string name="identhub_document_scanner_scan_success">Photo réussie</string>
+    <string name="identhub_document_scanner_clear_picture_list_title">Est-ce que tout a l’air bien?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item1">Le texte est-il lisible?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item2">Rien ne couvre la photo?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item3">Tous les coins sont-ils sur la photo?</string>
 
-    <string name="document_scanner_side_front_title">Veuillez scanner la première page du document</string>
-    <string name="document_scanner_side_front_angled_title">Veuillez scanner la première page du document sous un autre angle</string>
-    <string name="document_scanner_side_back_title">Veuillez scanner la dernière page du document</string>
-    <string name="document_scanner_side_back_angled_title">Veuillez scanner la dernière page du document sous un autre angle</string>
-    <string name="document_scanner_side_inside_left_title">Veuillez scanner l’intérieur gauche du document</string>
-    <string name="document_scanner_side_inside_left_angled_title">Veuillez scanner l’intérieur gauche du document sous un autre angle</string>
-    <string name="document_scanner_side_inside_right_title">Veuillez scanner l’intérieur droit du document</string>
-    <string name="document_scanner_side_inside_right_angled_title">Veuillez scanner l’intérieur droit du document sous un autre angle</string>
-    <string name="document_scanner_side_undefined_title">Prenez une photo du document, s’il-vous-plaît</string>
+    <string name="identhub_document_scanner_side_front_title">Veuillez scanner la première page du document</string>
+    <string name="identhub_document_scanner_side_front_angled_title">Veuillez scanner la première page du document sous un autre angle</string>
+    <string name="identhub_document_scanner_side_back_title">Veuillez scanner la dernière page du document</string>
+    <string name="identhub_document_scanner_side_back_angled_title">Veuillez scanner la dernière page du document sous un autre angle</string>
+    <string name="identhub_document_scanner_side_inside_left_title">Veuillez scanner l’intérieur gauche du document</string>
+    <string name="identhub_document_scanner_side_inside_left_angled_title">Veuillez scanner l’intérieur gauche du document sous un autre angle</string>
+    <string name="identhub_document_scanner_side_inside_right_title">Veuillez scanner l’intérieur droit du document</string>
+    <string name="identhub_document_scanner_side_inside_right_angled_title">Veuillez scanner l’intérieur droit du document sous un autre angle</string>
+    <string name="identhub_document_scanner_side_undefined_title">Prenez une photo du document, s’il-vous-plaît</string>
 </resources>

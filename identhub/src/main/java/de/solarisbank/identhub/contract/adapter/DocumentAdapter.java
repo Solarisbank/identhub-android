@@ -28,7 +28,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentViewHolder> {
     @NonNull
     @Override
     public DocumentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View holderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
+        View holderView = LayoutInflater.from(parent.getContext()).inflate(R.layout.identhub_item_document, parent, false);
         return new DocumentViewHolder(holderView);
     }
 

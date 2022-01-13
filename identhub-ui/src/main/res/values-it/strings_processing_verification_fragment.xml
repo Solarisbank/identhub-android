@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="payment_init_auth_person_title">L\'account non è supportato</string>
-    <string name="payment_init_auth_person_message">Sfortunatamente, il tuo conto bancario non è supportato.</string>
-    <string name="payment_init_failed_title">Identificazione fallita</string>
-    <string name="payment_init_failed_message">Purtroppo il pagamento non è andato a buon fine. Riprova OPPURE  identificati con una scansione dell\'ID.</string>
-    <string name="payment_init_expired_title">Identificazione fallita</string>
-    <string name="payment_init_expired_message">Sfortunatamente, il trasferimento del referral non è andato a buon fine</string>
+    <string name="identhub_payment_init_auth_person_title">L\'account non è supportato</string>
+    <string name="identhub_payment_init_auth_person_message">Sfortunatamente, il tuo conto bancario non è supportato.</string>
+    <string name="identhub_payment_init_failed_title">Identificazione fallita</string>
+    <string name="identhub_payment_init_failed_message">Purtroppo il pagamento non è andato a buon fine. Riprova OPPURE  identificati con una scansione dell\'ID.</string>
+    <string name="identhub_payment_init_expired_title">Identificazione fallita</string>
+    <string name="identhub_payment_init_expired_message">Sfortunatamente, il trasferimento del referral non è andato a buon fine</string>
 </resources>

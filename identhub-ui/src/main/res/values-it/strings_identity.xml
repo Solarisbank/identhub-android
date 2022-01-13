@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identity_activity_label_progress">Progresso dell\'identificazione</string>
-    <string name="identity_dialog_quit_process_title">Sei sicuro di voler uscire dal processo di registrazione?</string>
-    <string name="identity_dialog_quit_process_message">I tuoi progressi non verranno salvati. La prossima volta che proverai, ricomincerai dall\'inizio.</string>
-    <string name="identity_dialog_quit_process_positive_button">Uscire</string>
-    <string name="identity_dialog_quit_process_negative_button">Rimanare</string>
-    <string name="identity_activity_first_step_label">Verifica del numero di telefono</string>
-    <string name="identity_activity_second_step_label">Verifica dell\'identità</string>
-    <string name="identity_activity_third_step_label">Firma la tua richiesta</string>
-    <string name="identity_activity_next_step">Successivo: %1$s</string>
-    <string name="identity_dialog_fallback_process_negative_button">Verifica con ID</string>
-    <string name="identity_dialog_fallback_process_title">Sei sicuro di voler uscire dal processo di registrazione?</string>
-    <string name="identity_dialog_fallback_process_message">I tuoi progressi non verranno salvati. La prossima volta che proverai, ricomincerai dall\'inizio.\n\nIn alternativa, puoi verificare la tua identità con un documento di identità. In questo caso, selezionare \"Verifica con ID\".</string>
+    <string name="identhub_identity_activity_label_progress">Progresso dell\'identificazione</string>
+    <string name="identhub_identity_dialog_quit_process_title">Sei sicuro di voler uscire dal processo di registrazione?</string>
+    <string name="identhub_identity_dialog_quit_process_message">I tuoi progressi non verranno salvati. La prossima volta che proverai, ricomincerai dall\'inizio.</string>
+    <string name="identhub_identity_dialog_quit_process_positive_button">Uscire</string>
+    <string name="identhub_identity_dialog_quit_process_negative_button">Rimanare</string>
+    <string name="identhub_identity_activity_first_step_label">Verifica del numero di telefono</string>
+    <string name="identhub_identity_activity_second_step_label">Verifica dell\'identità</string>
+    <string name="identhub_identity_activity_third_step_label">Firma la tua richiesta</string>
+    <string name="identhub_identity_activity_next_step">Successivo: %1$s</string>
+    <string name="identhub_identity_dialog_fallback_process_negative_button">Verifica con ID</string>
+    <string name="identhub_identity_dialog_fallback_process_title">Sei sicuro di voler uscire dal processo di registrazione?</string>
+    <string name="identhub_identity_dialog_fallback_process_message">I tuoi progressi non verranno salvati. La prossima volta che proverai, ricomincerai dall\'inizio.\n\nIn alternativa, puoi verificare la tua identità con un documento di identità. In questo caso, selezionare \"Verifica con ID\".</string>
 </resources>

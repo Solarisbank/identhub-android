@@ -19,7 +19,7 @@ class IdentityActivity : IdentHubActivity() {
     private lateinit var stepIndicator: ConstraintStepIndicator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_identity)
+        setContentView(R.layout.identhub_activity_identity)
         initGraph()
         initView()
         observeViewModel()
@@ -29,7 +29,7 @@ class IdentityActivity : IdentHubActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
-        val navGraph = navInflater.inflate(R.navigation.identity_nav_graph)
+        val navGraph = navInflater.inflate(R.navigation.identhub_identity_nav_graph)
         if (!IdentHubSession.hasPhoneVerification) {
             navGraph.startDestination = R.id.verificationBankFragment
         }

@@ -59,7 +59,7 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_contract_signing, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_contract_signing, container, false)
                 .also {
                     codeInput = it.findViewById(R.id.codeInput)
                     description = it.findViewById(R.id.description)
@@ -86,13 +86,13 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun setUpBulletList() {
-        val title = getString(R.string.contract_signing_notice_title)
+        val title = getString(R.string.identhub_contract_signing_notice_title)
         if (title.isNotBlank()) {
             bulletList?.updateItems(
                 title = title,
                 items = listOf(
-                    getString(R.string.contract_signing_notice1),
-                    getString(R.string.contract_signing_notice2)
+                    getString(R.string.identhub_contract_signing_notice1),
+                    getString(R.string.identhub_contract_signing_notice2)
                 ),
                 titleStyle = BulletListLayout.TitleStyle.Notice,
                 customization = customization
@@ -150,7 +150,7 @@ class ContractSigningFragment : IdentHubFragment() {
             if (number != null) {
                 number = number.replace("\\d(?=\\d{4})".toRegex(), "*")
             }
-            description!!.text = String.format(requireContext().resources.getString(R.string.contract_signing_description), number)
+            description!!.text = String.format(requireContext().resources.getString(R.string.identhub_contract_signing_description), number)
             description!!.visibility = View.VISIBLE
             progress!!.visibility = View.INVISIBLE
         }
@@ -189,7 +189,7 @@ class ContractSigningFragment : IdentHubFragment() {
         when (state) {
             is ContractSigningState.SUCCESSFUL -> {
                 transactionDescription!!.text = String.format(
-                    getString(R.string.contract_signing_preview_transaction_info),
+                    getString(R.string.identhub_contract_signing_preview_transaction_info),
                     state.identificationId
                 )
                 onStateOfDigitInputChanged(SUCCESS_STATE)
@@ -197,7 +197,7 @@ class ContractSigningFragment : IdentHubFragment() {
             }
             is ContractSigningState.CONFIRMED -> {
                 transactionDescription!!.text = String.format(
-                    getString(R.string.contract_signing_preview_transaction_info),
+                    getString(R.string.identhub_contract_signing_preview_transaction_info),
                     state.identificationId
                 )
                 onStateOfDigitInputChanged(SUCCESS_STATE)
@@ -222,7 +222,7 @@ class ContractSigningFragment : IdentHubFragment() {
             codeInput!!.isEnabled = !countDownTime.isFinish
             submitButton!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.GONE
             newCodeCounter!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.INVISIBLE
-            newCodeCounter!!.text = String.format(getString(R.string.contract_signing_code_expires), countDownTime.format())
+            newCodeCounter!!.text = String.format(getString(R.string.identhub_contract_signing_code_expires), countDownTime.format())
         }
     }
 
@@ -245,7 +245,7 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun onStateOfDigitInputChanged(state: Int) {
         val error = state == ERROR_STATE || viewModel.getCounterFinished()
-        submitButton!!.setText(if (state == LOADING_STATE) R.string.verification_phone_status_verifying else R.string.contract_signing_sign_action)
+        submitButton!!.setText(if (state == LOADING_STATE) R.string.identhub_verification_phone_status_verifying else R.string.identhub_contract_signing_sign_action)
         submitButton!!.isEnabled = state != LOADING_STATE && isSubmitButtonEnabled()
 
         errorMessage!!.visibility = if (error) View.VISIBLE else View.GONE

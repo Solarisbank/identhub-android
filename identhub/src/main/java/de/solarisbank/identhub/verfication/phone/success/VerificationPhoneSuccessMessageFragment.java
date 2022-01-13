@@ -23,17 +23,17 @@ public class VerificationPhoneSuccessMessageFragment extends SuccessMessageFragm
 
     @Override
     protected int getMessage() {
-        return R.string.verification_phone_success_message;
+        return R.string.identhub_verification_phone_success_message;
     }
 
     @Override
     protected int getTitle() {
-        return R.string.verification_phone_success_title;
+        return R.string.identhub_verification_phone_success_title;
     }
 
     @Override
     protected int getSubmitButtonLabel() {
-        return R.string.verification_phone_action_next_step;
+        return R.string.identhub_verification_phone_action_next_step;
     }
 
     @Override

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="selfie_scanner_scan_successful">Scan erfolgreich</string>
-    <string name="selfie_scanner_retake">Wiederholen</string>
-    <string name="selfie_scanner_confirm">Bestätigen</string>
-    <string name="selfie_intro">Ist Ihr Gesicht deutlich sichtbar und im angezeigten Rahmen?</string>
-    <string name="selfie_manual">Bitte machen Sie ein Selfie-Foto</string>
-    <string name="selfie_turn_left">Bitte drehen Sie Ihren Kopf nach links</string>
-    <string name="selfie_turn_right">Bitte drehen Sie Ihren Kopf nach rechts</string>
-    <string name="selfie_step_scanning">Erkennen…</string>
-    <string name="selfie_step_checking_liveness">Lebendigkeitsprüfung…</string>
-    <string name="selfie_result_successful">Scan erfolgreich</string>
-    <string name="selfie_warning_not_detected">Gesicht nicht erkannt</string>
-    <string name="selfie_warning_not_in_frame">Gesicht an den Fotorahmen anpassen</string>
-    <string name="selfie_warning_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>
-    <string name="selfie_warning_too_far">Halten Sie das Handy näher an Ihr Gesicht</string>
-    <string name="selfie_warning_yaw_too_big">Schauen Sie direkt in die Kamera</string>
-    <string name="selfie_warning_eyes_closed">Öffnen Sie beide Augen</string>
-    <string name="selfie_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
+    <string name="identhub_selfie_scanner_scan_successful">Scan erfolgreich</string>
+    <string name="identhub_selfie_scanner_retake">Wiederholen</string>
+    <string name="identhub_selfie_scanner_confirm">Bestätigen</string>
+    <string name="identhub_selfie_intro">Ist Ihr Gesicht deutlich sichtbar und im angezeigten Rahmen?</string>
+    <string name="identhub_selfie_manual">Bitte machen Sie ein Selfie-Foto</string>
+    <string name="identhub_selfie_turn_left">Bitte drehen Sie Ihren Kopf nach links</string>
+    <string name="identhub_selfie_turn_right">Bitte drehen Sie Ihren Kopf nach rechts</string>
+    <string name="identhub_selfie_step_scanning">Erkennen…</string>
+    <string name="identhub_selfie_step_checking_liveness">Lebendigkeitsprüfung…</string>
+    <string name="identhub_selfie_result_successful">Scan erfolgreich</string>
+    <string name="identhub_selfie_warning_not_detected">Gesicht nicht erkannt</string>
+    <string name="identhub_selfie_warning_not_in_frame">Gesicht an den Fotorahmen anpassen</string>
+    <string name="identhub_selfie_warning_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>
+    <string name="identhub_selfie_warning_too_far">Halten Sie das Handy näher an Ihr Gesicht</string>
+    <string name="identhub_selfie_warning_yaw_too_big">Schauen Sie direkt in die Kamera</string>
+    <string name="identhub_selfie_warning_eyes_closed">Öffnen Sie beide Augen</string>
+    <string name="identhub_selfie_warning_device_not_steady">Handy ist nicht in einer stabilen Position</string>
 </resources>

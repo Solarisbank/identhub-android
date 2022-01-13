@@ -34,7 +34,7 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.layout_dialog, container, false)
+        val view = inflater.inflate(R.layout.identhub_layout_dialog, container, false)
         initView(view)
         return view
     }

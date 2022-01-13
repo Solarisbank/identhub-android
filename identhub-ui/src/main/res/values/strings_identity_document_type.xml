@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="qes_document">QES Document</string>
-    <string name="loan_mandate_contract">Contract document</string>
-    <string name="signed_qes_document">Signed QES Document</string>
-    <string name="signed_loan_mandate_contract">Signed contract document</string>
+    <string name="identhub_qes_document">QES Document</string>
+    <string name="identhub_loan_mandate_contract">Contract document</string>
+    <string name="identhub_signed_qes_document">Signed QES Document</string>
+    <string name="identhub_signed_loan_mandate_contract">Signed contract document</string>
 </resources>

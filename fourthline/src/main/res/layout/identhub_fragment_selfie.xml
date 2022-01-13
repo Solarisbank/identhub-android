@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ident_hub_color_surface">
+
+    <de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
+        android:id="@+id/punchhole"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/selfieMask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@drawable/identhub_ic_selfie_frame_filled"
+        android:padding="50dp"
+        android:src="@drawable/identhub_ic_selfie_frame_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/livenessMask"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:adjustViewBounds="true"
+        android:paddingStart="60dp"
+        android:paddingEnd="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/selfieMask"
+        app:layout_constraintEnd_toEndOf="@id/selfieMask"
+        app:layout_constraintStart_toStartOf="@id/selfieMask" />
+
+    <TextView
+        android:id="@+id/hintTextView"
+        style="@style/IdentHubActionBarTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/selfieMask"
+        tools:text="@string/identhub_selfie_intro" />
+
+    <ProgressBar
+        style="@style/IdentHubProgressBarStyle"
+        android:id="@+id/progressBar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/punchhole"
+        app:layout_constraintStart_toStartOf="@+id/punchhole"
+        app:layout_constraintTop_toBottomOf="@+id/selfieMask" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+    <TextView
+        android:id="@+id/stepName"
+        style="@style/IdentHubTextView.Small_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        tools:text="Step Label" />
+
+    <TextView
+        android:id="@+id/warningsLabel"
+        style="@style/IdentHubTextView.Small_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        android:layout_marginTop="8dp"
+        tools:text="Warnings Label" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

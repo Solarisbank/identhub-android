@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="document_scanner_retake">Volver a hacer la foto</string>
-    <string name="document_scanner_confirm">Confirmar</string>
-    <string name="document_scanner_take_picture">Hacer foto</string>
-    <string name="document_scanner_warning_too_dark">Documento demasiado oscuro</string>
-    <string name="document_scanner_warning_device_not_steady">El dispositivo no está estable</string>
-    <string name="document_scanner_warning_recognition_models_not_downloaded">Comprueba la conexión a Internet y/o el espacio libre disponible</string>
-    <string name="document_scanner_file_side_front">anverso</string>
-    <string name="document_scanner_file_side_back">reverso</string>
-    <string name="document_scanner_file_side_inside_left">interior izquierda</string>
-    <string name="document_scanner_file_side_inside_right">interior derecha</string>
-    <string name="document_scanner_file_tilted">inclinado</string>
-    <string name="document_scanner_scan_success">Imagen correcta</string>
-    <string name="document_scanner_clear_picture_list_title">¿Se ve todo bien?</string>
-    <string name="document_scanner_clear_picture_list_item1">¿Se puede leer el texto?</string>
-    <string name="document_scanner_clear_picture_list_item2">¿No hay nada que cubra la imagen?</string>
-    <string name="document_scanner_clear_picture_list_item3">¿Están todas las esquinas en la imagen?</string>
+    <string name="identhub_document_scanner_retake">Volver a hacer la foto</string>
+    <string name="identhub_document_scanner_confirm">Confirmar</string>
+    <string name="identhub_document_scanner_take_picture">Hacer foto</string>
+    <string name="identhub_document_scanner_warning_too_dark">Documento demasiado oscuro</string>
+    <string name="identhub_document_scanner_warning_device_not_steady">El dispositivo no está estable</string>
+    <string name="identhub_document_scanner_warning_recognition_models_not_downloaded">Comprueba la conexión a Internet y/o el espacio libre disponible</string>
+    <string name="identhub_document_scanner_file_side_front">anverso</string>
+    <string name="identhub_document_scanner_file_side_back">reverso</string>
+    <string name="identhub_document_scanner_file_side_inside_left">interior izquierda</string>
+    <string name="identhub_document_scanner_file_side_inside_right">interior derecha</string>
+    <string name="identhub_document_scanner_file_tilted">inclinado</string>
+    <string name="identhub_document_scanner_scan_success">Imagen correcta</string>
+    <string name="identhub_document_scanner_clear_picture_list_title">¿Se ve todo bien?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item1">¿Se puede leer el texto?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item2">¿No hay nada que cubra la imagen?</string>
+    <string name="identhub_document_scanner_clear_picture_list_item3">¿Están todas las esquinas en la imagen?</string>
 
-    <string name="document_scanner_side_front_title">Escanee la parte frontal del documento</string>
-    <string name="document_scanner_side_front_angled_title">Escanee de manera angular la parte frontal del documento</string>
-    <string name="document_scanner_side_back_title">Escanee la parte trasera del documento</string>
-    <string name="document_scanner_side_back_angled_title">Escanee de manera angular la parte trasera del documento</string>
-    <string name="document_scanner_side_inside_left_title">Escanee el interior izquierdo del documento</string>
-    <string name="document_scanner_side_inside_left_angled_title">Escanee de manera angular el interior izquierdo del documento</string>
-    <string name="document_scanner_side_inside_right_title">Escanee el interior derecho del documento</string>
-    <string name="document_scanner_side_inside_right_angled_title">Escanee de manera angular el interior derecho del documento</string>
-    <string name="document_scanner_side_undefined_title">Por favor, tome una foto de su identificación oficial</string>
+    <string name="identhub_document_scanner_side_front_title">Escanee la parte frontal del documento</string>
+    <string name="identhub_document_scanner_side_front_angled_title">Escanee de manera angular la parte frontal del documento</string>
+    <string name="identhub_document_scanner_side_back_title">Escanee la parte trasera del documento</string>
+    <string name="identhub_document_scanner_side_back_angled_title">Escanee de manera angular la parte trasera del documento</string>
+    <string name="identhub_document_scanner_side_inside_left_title">Escanee el interior izquierdo del documento</string>
+    <string name="identhub_document_scanner_side_inside_left_angled_title">Escanee de manera angular el interior izquierdo del documento</string>
+    <string name="identhub_document_scanner_side_inside_right_title">Escanee el interior derecho del documento</string>
+    <string name="identhub_document_scanner_side_inside_right_angled_title">Escanee de manera angular el interior derecho del documento</string>
+    <string name="identhub_document_scanner_side_undefined_title">Por favor, tome una foto de su identificación oficial</string>
 </resources>

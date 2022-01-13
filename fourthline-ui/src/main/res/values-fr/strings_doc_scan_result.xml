@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fourthline_doc_scan_result_title">Veuillez confirmer que les informations sur votre document sont correctes</string>
-    <string name="fourthline_doc_scan_document_number">N° de document</string>
-    <string name="fourthline_doc_scan_date_of_issue">Date de délivrance</string>
-    <string name="fourthline_doc_scan_expiry_date">Date d’expiration du document</string>
-    <string name="fourthline_doc_scan_date_placeholder">Sélectionner</string>
-    <string name="fourthline_doc_scan_issue_future_error">Erreur, la date de délivrance est dans le futur.</string>
-    <string name="fourthline_doc_scan_date_past_error">Erreur, la date de délivrance dépasse la date d’expiration</string>
-    <string name="fourthline_doc_scan_expiry_past_error">Erreur, la date d’expiration expire dans le passé</string>
-    <string name="fourthline_doc_scan_continue_button">Continuer</string>
+    <string name="identhub_fourthline_doc_scan_result_title">Veuillez confirmer que les informations sur votre document sont correctes</string>
+    <string name="identhub_fourthline_doc_scan_document_number">N° de document</string>
+    <string name="identhub_fourthline_doc_scan_date_of_issue">Date de délivrance</string>
+    <string name="identhub_fourthline_doc_scan_expiry_date">Date d’expiration du document</string>
+    <string name="identhub_fourthline_doc_scan_date_placeholder">Sélectionner</string>
+    <string name="identhub_fourthline_doc_scan_issue_future_error">Erreur, la date de délivrance est dans le futur.</string>
+    <string name="identhub_fourthline_doc_scan_date_past_error">Erreur, la date de délivrance dépasse la date d’expiration</string>
+    <string name="identhub_fourthline_doc_scan_expiry_past_error">Erreur, la date d’expiration expire dans le passé</string>
+    <string name="identhub_fourthline_doc_scan_continue_button">Continuer</string>
 </resources>

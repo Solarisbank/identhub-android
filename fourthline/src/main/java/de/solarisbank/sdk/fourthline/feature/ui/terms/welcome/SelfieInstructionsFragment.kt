@@ -27,7 +27,7 @@ class SelfieInstructionsFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_selfie_instructions, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_selfie_instructions, container, false)
                 .also {
                     startbutton = it.findViewById(R.id.startButton)
                     imageView = it.findViewById(R.id.image)
@@ -68,10 +68,10 @@ class SelfieInstructionsFragment : FourthlineFragment() {
         }
         if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
             showAlertFragment(
-                getString(R.string.scanner_error_title),
-                message ?: getString(R.string.scanner_error_unknown),
-                getString(R.string.scanner_error_scan_button_retry),
-                getString(R.string.scanner_error_scan_button_quit),
+                getString(R.string.identhub_scanner_error_title),
+                message ?: getString(R.string.identhub_scanner_error_unknown),
+                getString(R.string.identhub_scanner_error_scan_button_retry),
+                getString(R.string.identhub_scanner_error_scan_button_quit),
                 { showSelfieScanner() },
                 { sharedViewModel.setFourthlineIdentificationFailure() }
             )

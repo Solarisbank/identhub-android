@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="contract_signing_preview_title">Nearly there!</string>
-    <string name="contract_signing_preview_subtitle">In the following please sign your application by entering the code that will be send to your phone.</string>
-    <string name="contract_signing_preview_notice">Notice</string>
-    <string name="contract_signing_preview_notice_label">View your documents</string>
-    <string name="contract_signing_preview_send_code_action">Send code to sign</string>
-    <string name="contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
-    <string name="contract_signing_notice_title" translatable="false"/>
-    <string name="contract_signing_notice1" translatable="false"/>
-    <string name="contract_signing_notice2" translatable="false"/>
-    <string name="contract_signing_sign_action">Sign and Submit</string>
-    <string name="contract_signing_code_expires">Expires in %1$s</string>
-    <string name="contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
-    <string name="contract_signing_code_request_new_button">Request new code</string>
-    <string name="contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
-    <string name="contract_signing_terms_label">The T&amp;Cs apply</string>
-    <string name="contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
-    <string name="contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
-    <string name="contract_signing_additional_terms_label" translatable="false"/>
-    <string name="contract_signing_additional_terms_link" translatable="false"/>
-    <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
-    <string name="contract_signing_preview_download_error">Could not download all files.</string>
-    <plurals name="contract_signing_preview_downloaded_message">
+    <string name="identhub_contract_signing_preview_title">Nearly there!</string>
+    <string name="identhub_contract_signing_preview_subtitle">In the following please sign your application by entering the code that will be send to your phone.</string>
+    <string name="identhub_contract_signing_preview_notice">Notice</string>
+    <string name="identhub_contract_signing_preview_notice_label">View your documents</string>
+    <string name="identhub_contract_signing_preview_send_code_action">Send code to sign</string>
+    <string name="identhub_contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
+    <string name="identhub_contract_signing_notice_title" translatable="false"/>
+    <string name="identhub_contract_signing_notice1" translatable="false"/>
+    <string name="identhub_contract_signing_notice2" translatable="false"/>
+    <string name="identhub_contract_signing_sign_action">Sign and Submit</string>
+    <string name="identhub_contract_signing_code_expires">Expires in %1$s</string>
+    <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
+    <string name="identhub_contract_signing_code_request_new_button">Request new code</string>
+    <string name="identhub_contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
+    <string name="identhub_contract_signing_terms_label">The T&amp;Cs apply</string>
+    <string name="identhub_contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
+    <string name="identhub_contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
+    <string name="identhub_contract_signing_additional_terms_label" translatable="false"/>
+    <string name="identhub_contract_signing_additional_terms_link" translatable="false"/>
+    <string name="identhub_contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
+    <string name="identhub_contract_signing_preview_download_error">Could not download all files.</string>
+    <plurals name="identhub_contract_signing_preview_downloaded_message">
         <item quantity="one">1 file has been downloaded.</item>
         <item quantity="other">%d files have been downloaded.</item>
     </plurals>

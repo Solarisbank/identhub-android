@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fourthlineFlowButton"
         app:layout_constraintVertical_bias="0.8"
-        android:layout_margin="@dimen/margin_16"
+        android:layout_margin="@dimen/identhub_margin_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         />
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/identHubFlowButton"
         app:layout_constraintVertical_bias="0.8"
-        android:layout_margin="@dimen/margin_16"
+        android:layout_margin="@dimen/identhub_margin_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         />

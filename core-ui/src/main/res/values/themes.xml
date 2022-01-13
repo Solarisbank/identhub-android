@@ -7,12 +7,12 @@
         <item name="colorControlNormal">@color/ident_hub_color_onPrimary</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/ident_hub_color_secondary</item>
-        <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
-        <item name="actionBarStyle">@style/actionBarStyle</item>
-        <item name="stepIndicatorStyle">@style/StepIndicatorStyleCommon</item>
+        <item name="bottomSheetDialogTheme">@style/IdentHubBottomSheet</item>
+        <item name="actionBarStyle">@style/IdentHubActionBarStyle</item>
+        <item name="IdentHubStepIndicatorStyle">@style/IdentHubStepIndicatorStyleCommon</item>
     </style>
 
     <style name="IdentHubTheme" parent="@style/IdentHubBaseTheme">
-        <item name="startImageTextViewStyle">@style/defaultStartImageTextViewStyle</item>
+        <item name="IdentHubStartImageTextViewStyle">@style/IdentHubDefaultStartImageTextViewStyle</item>
     </style>
 </resources>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="scanner_error_timeout">Scanner scaduto. Per favore riprova.</string>
-    <string name="scanner_error_face_disappeared">La cara ha desaparecido durante la comprobación de viveza. Asegúrese de que su cara es visible durante todo el escaneo del selfie. Vuelva a intentarlo.</string>
-    <string name="scanner_error_camera_permission">Si prega di consentire l\'accesso alla fotocamera.</string>
-    <string name="scanner_error_recording_failed">Acquisizione video non riuscita.</string>
-    <string name="scanner_error_interrupted">Lo scanner è stato interrotto.</string>
-    <string name="scanner_error_models_not_downloaded">Controlla la tua connessione internet e/o lo spazio disponibile.</string>
-    <string name="scanner_error_unknown">Si è verificato un errore imprevisto. Per favore riprova.</string>
-    <string name="scanner_error_multiple_faces_detected">Più volti riconosciuti.</string>
-    <string name="scanner_error_title">Scansione non riuscita</string>
-    <string name="scanner_error_scan_button_retry">Riprovare</string>
-    <string name="scanner_error_scan_button_quit">Uscire</string>
+    <string name="identhub_scanner_error_timeout">Scanner scaduto. Per favore riprova.</string>
+    <string name="identhub_scanner_error_face_disappeared">La cara ha desaparecido durante la comprobación de viveza. Asegúrese de que su cara es visible durante todo el escaneo del selfie. Vuelva a intentarlo.</string>
+    <string name="identhub_scanner_error_camera_permission">Si prega di consentire l\'accesso alla fotocamera.</string>
+    <string name="identhub_scanner_error_recording_failed">Acquisizione video non riuscita.</string>
+    <string name="identhub_scanner_error_interrupted">Lo scanner è stato interrotto.</string>
+    <string name="identhub_scanner_error_models_not_downloaded">Controlla la tua connessione internet e/o lo spazio disponibile.</string>
+    <string name="identhub_scanner_error_unknown">Si è verificato un errore imprevisto. Per favore riprova.</string>
+    <string name="identhub_scanner_error_multiple_faces_detected">Più volti riconosciuti.</string>
+    <string name="identhub_scanner_error_title">Scansione non riuscita</string>
+    <string name="identhub_scanner_error_scan_button_retry">Riprovare</string>
+    <string name="identhub_scanner_error_scan_button_quit">Uscire</string>
 </resources>

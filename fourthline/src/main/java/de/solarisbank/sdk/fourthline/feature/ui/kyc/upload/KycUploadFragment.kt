@@ -46,7 +46,7 @@ class KycUploadFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_kyc_upload, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_kyc_upload, container, false)
             .also {
                 title = it.findViewById(R.id.title)
                 subtitle = it.findViewById(R.id.subtitle)
@@ -124,38 +124,38 @@ class KycUploadFragment : FourthlineFragment() {
     private fun getUploadDataForStatus(uploadStatusDto: KycUploadStatusDto): UploadViewState {
         return when (uploadStatusDto) {
             is KycUploadStatusDto.FinishIdentSuccess -> UploadViewState(
-                alertTitle = getString(R.string.kyc_upload_success_title),
-                alertMessage = getString(R.string.kyc_upload_success_subtitle),
-                positiveButtonLabel = getString(R.string.kyc_upload_success_button),
+                alertTitle = getString(R.string.identhub_kyc_upload_success_title),
+                alertMessage = getString(R.string.identhub_kyc_upload_success_subtitle),
+                positiveButtonLabel = getString(R.string.identhub_kyc_upload_success_button),
                 positiveAlertButtonAction = null,
                 negativeAlertButtonAction = null
             )
             is KycUploadStatusDto.ToNextStepSuccess -> UploadViewState(
-                alertTitle = getString(R.string.kyc_upload_to_next_title),
-                alertMessage = getString(R.string.kyc_upload_to_next_subtitle),
-                positiveButtonLabel = getString(R.string.kyc_upload_to_next_button),
+                alertTitle = getString(R.string.identhub_kyc_upload_to_next_title),
+                alertMessage = getString(R.string.identhub_kyc_upload_to_next_subtitle),
+                positiveButtonLabel = getString(R.string.identhub_kyc_upload_to_next_button),
                 positiveAlertButtonAction = null,
                 negativeAlertButtonAction = null
             )
             is KycUploadStatusDto.ProviderErrorNotFraud -> UploadViewState(
-                alertTitle = getString(R.string.failure_no_fraud_headline),
-                alertMessage = getString(R.string.failure_no_fraud_message),
-                positiveButtonLabel = getString(R.string.failure_no_fraud_positive),
-                negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
+                alertTitle = getString(R.string.identhub_failure_no_fraud_headline),
+                alertMessage = getString(R.string.identhub_failure_no_fraud_message),
+                positiveButtonLabel = getString(R.string.identhub_failure_no_fraud_positive),
+                negativeButtonLabel = getString(R.string.identhub_failure_no_fraud_negative),
                 positiveAlertButtonAction =  { activityViewModel.navigateFromKycUploadToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )
             is KycUploadStatusDto.ProviderErrorFraud -> UploadViewState(
-                alertTitle = getString(R.string.failure_fraud_headline),
-                alertMessage = getString(R.string.failure_fraud_message),
-                positiveButtonLabel = getString(R.string.failure_fraud_button),
+                alertTitle = getString(R.string.identhub_failure_fraud_headline),
+                alertMessage = getString(R.string.identhub_failure_fraud_message),
+                positiveButtonLabel = getString(R.string.identhub_failure_fraud_button),
                 positiveAlertButtonAction =  { activityViewModel.setFourthlineIdentificationFailure() }
             )
             is KycUploadStatusDto.GenericError, is KycUploadStatusDto.PreconditionsFailedError -> UploadViewState(
-                alertTitle = getString(R.string.kyc_upload_generic_error_title),
-                alertMessage = getString(R.string.kyc_upload_generic_error_subtitle),
-                positiveButtonLabel = getString(R.string.kyc_upload_generic_error_button),
-                negativeButtonLabel = getString(R.string.failure_no_fraud_negative),
+                alertTitle = getString(R.string.identhub_kyc_upload_generic_error_title),
+                alertMessage = getString(R.string.identhub_kyc_upload_generic_error_subtitle),
+                positiveButtonLabel = getString(R.string.identhub_kyc_upload_generic_error_button),
+                negativeButtonLabel = getString(R.string.identhub_failure_no_fraud_negative),
                 positiveAlertButtonAction =  { activityViewModel.navigateFromKycUploadToPassingPossibility() },
                 negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
             )

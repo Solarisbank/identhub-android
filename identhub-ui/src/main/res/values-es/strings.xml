@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">IdentHub</string>
-    <string name="copyright">Desarrollado por</string>
+    <string name="identhub_app_name">IdentHub</string>
+    <string name="identhub_copyright">Desarrollado por</string>
 </resources>

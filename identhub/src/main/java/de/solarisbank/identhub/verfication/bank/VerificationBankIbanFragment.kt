@@ -57,7 +57,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initDefaultToBankId()
-        return inflater.inflate(R.layout.fragment_verification_bank_iban, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_verification_bank_iban, container, false)
                 .also {
                     ibanNumber = it.findViewById(R.id.ibanNumber)
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
@@ -83,11 +83,11 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private fun updateBulletList() {
-        val notice = getString(R.string.verification_bank_notice_value)
+        val notice = getString(R.string.identhub_verification_bank_notice_value)
         if (notice.isNotBlank()) {
             noticeBulletList?.isVisible = true
             noticeBulletList?.updateItems(
-                title = getString(R.string.verification_bank_notice_label),
+                title = getString(R.string.identhub_verification_bank_notice_label),
                 titleStyle = BulletListLayout.TitleStyle.Notice,
                 items = listOf(notice)
             )
@@ -149,7 +149,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                 showAlertFragment(
                         title = getString(state.dialogTitleId),
                         message = getString(state.dialogTitleId),
-                        positiveLabel = getString(R.string.invalid_iban_ok_button),
+                        positiveLabel = getString(R.string.identhub_iban_verification_invalid_iban_ok_button),
                         positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
                         negativeLabel = if (state.retryAllowed) getString(state.dialogNegativeLabelId) else null,
                         negativeAction = if (state.retryAllowed) ({ retryInputIBan() }) else null,
@@ -205,16 +205,16 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private fun addInfoToDescription() {
-        val descriptionText = getString(R.string.verification_bank_second_description)
+        val descriptionText = getString(R.string.identhub_verification_bank_second_description)
         val desc = SpannableString("$descriptionText ")
-        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_question)!!
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.identhub_ic_question)!!
         drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
         val imageSpan = ImageSpan(drawable)
         val clickSpan = CustomClickableSpan {
             showAlertFragment(
-                getString(R.string.about_identity_verification_title),
-                getString(R.string.about_identity_verification_message),
-                getString(R.string.ok_button),
+                getString(R.string.identhub_iban_verification_about_identity_verification_title),
+                getString(R.string.identhub_iban_verification_about_identity_verification_message),
+                getString(R.string.identhub_ok_button),
                 positiveAction = {}
             )
         }
@@ -226,9 +226,9 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private fun setTermsText() {
-        val termsPartText = getString(R.string.identhub_terms_agreement_terms)
-        val privacyPartText = getString(R.string.identhub_terms_agreement_privacy)
-        val termsText = getString(R.string.identhub_terms_agreement, termsPartText, privacyPartText)
+        val termsPartText = getString(R.string.identhub_iban_verification_terms_agreement_terms)
+        val privacyPartText = getString(R.string.identhub_iban_verification_terms_agreement_privacy)
+        val termsText = getString(R.string.identhub_iban_verification_terms_agreement, termsPartText, privacyPartText)
         val spanned = termsText.linkOccurrenceOf(termsPartText, termsLink)
         spanned.linkOccurrenceOf(privacyPartText, privacyLink)
         termsDisclaimer?.text = spanned
@@ -345,9 +345,9 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitleId = R.string.generic_error_title
-        override val dialogMessageId = R.string.generic_error_message
-        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogTitleId = R.string.identhub_generic_error_title
+        override val dialogMessageId = R.string.identhub_generic_error_message
+        override val dialogPositiveLabelId = R.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 
@@ -358,10 +358,10 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.VISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitleId = R.string.invalid_iban_title
-        override val dialogMessageId = R.string.invalid_iban_message
-        override val dialogPositiveLabelId = R.string.ok_button
-        override val dialogNegativeLabelId = R.string.retry_button
+        override val dialogTitleId = R.string.identhub_iban_verification_invalid_iban_title
+        override val dialogMessageId = R.string.identhub_iban_verification_invalid_iban_message
+        override val dialogPositiveLabelId = R.string.identhub_ok_button
+        override val dialogNegativeLabelId = R.string.identhub_iban_verification_retry_button
     }
 
     class AlreadyIdentifiedSuccessfullyError: SealedVerificationState(), ErrorState {
@@ -370,9 +370,9 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitleId = R.string.already_identified_title
-        override val dialogMessageId = R.string.already_identified_title
-        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogTitleId = R.string.identhub_iban_verification_already_identified_title
+        override val dialogMessageId = R.string.identhub_iban_verification_already_identified_title
+        override val dialogPositiveLabelId = R.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 
@@ -382,9 +382,9 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitleId = R.string.excess_attempts_title
-        override val dialogMessageId = R.string.excess_attempts_message
-        override val dialogPositiveLabelId = R.string.ok_button
+        override val dialogTitleId = R.string.identhub_iban_verification_excess_attempts_title
+        override val dialogMessageId = R.string.identhub_iban_verification_excess_attempts_message
+        override val dialogPositiveLabelId = R.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 }

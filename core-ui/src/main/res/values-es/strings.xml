@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="copyright">Desarrollado por</string>
-    <string name="identity_dialog_quit_process_title">¿Estás seguro de que deseas abandonar el proceso de registro?</string>
-    <string name="identity_dialog_quit_process_message">Tu progreso se perderá. La próxima vez deberás repetir los pasos ya realizados.</string>
-    <string name="identity_dialog_quit_process_positive_button">Salir</string>
-    <string name="identity_dialog_quit_process_negative_button">Permanecer</string>
-    <string name="ok_button">OK</string>
-    <string name="generic_error_title">Error desconocido</string>
-    <string name="generic_error_message">No se ha podido realizar la verificación</string>
+    <string name="identhub_copyright">Desarrollado por</string>
+    <string name="identhub_identity_dialog_quit_process_title">¿Estás seguro de que deseas abandonar el proceso de registro?</string>
+    <string name="identhub_identity_dialog_quit_process_message">Tu progreso se perderá. La próxima vez deberás repetir los pasos ya realizados.</string>
+    <string name="identhub_identity_dialog_quit_process_positive_button">Salir</string>
+    <string name="identhub_identity_dialog_quit_process_negative_button">Permanecer</string>
+    <string name="identhub_ok_button">OK</string>
+    <string name="identhub_generic_error_title">Error desconocido</string>
+    <string name="identhub_generic_error_message">No se ha podido realizar la verificación</string>
 </resources>

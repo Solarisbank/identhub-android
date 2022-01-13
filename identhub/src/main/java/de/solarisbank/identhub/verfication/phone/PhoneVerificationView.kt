@@ -36,7 +36,7 @@ class PhoneVerificationView @JvmOverloads constructor(
     init {
         orientation = VERTICAL
         gravity = Gravity.CENTER
-        LayoutInflater.from(context).inflate(R.layout.view_phone_verification, this, true)
+        LayoutInflater.from(context).inflate(R.layout.identhub_view_phone_verification, this, true)
 
         descriptionTextView = findViewById(R.id.description)
         descriptionTextView.visibility = INVISIBLE
@@ -55,7 +55,7 @@ class PhoneVerificationView @JvmOverloads constructor(
     private val timerListener = object: DefaultCountDownTimer.OnTickListener {
         override fun onTick(millisUntilFinished: Long) {
             val time = formatMinutesAndSeconds(millisUntilFinished)
-            resendTimerTextView.text = context.getString(R.string.contract_signing_code_expires, time)
+            resendTimerTextView.text = context.getString(R.string.identhub_contract_signing_code_expires, time)
         }
 
         override fun onFinish(millisUntilFinished: Long) {
@@ -71,7 +71,7 @@ class PhoneVerificationView @JvmOverloads constructor(
 
     fun updatePhoneNumber(number: String?) {
         if (number != null) {
-            descriptionTextView.text = context.getString(R.string.contract_signing_description, number)
+            descriptionTextView.text = context.getString(R.string.identhub_contract_signing_description, number)
             descriptionTextView.visibility = VISIBLE
         }
     }

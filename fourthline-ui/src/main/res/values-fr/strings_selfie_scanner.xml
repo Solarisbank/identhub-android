@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="selfie_scanner_scan_successful">Scan réussi</string>
-    <string name="selfie_scanner_retake">Répéter</string>
-    <string name="selfie_scanner_confirm">Confirmer</string>
-    <string name="selfie_intro">Votre visage est-il clairement visible et dans le cadre ?</string>
-    <string name="selfie_manual">« Veuillez prendre un selfie »</string>
-    <string name="selfie_turn_left">Veuillez tourner votre tête vers la gauche</string>
-    <string name="selfie_turn_right">Veuillez tourner votre tête vers la droite</string>
-    <string name="selfie_step_scanning">Détection en cours...</string>
-    <string name="selfie_step_checking_liveness">Vérification de la preuve de vie...</string>
-    <string name="selfie_result_successful">Scan réussi</string>
-    <string name="selfie_warning_not_detected">Visage non détecté</string>
-    <string name="selfie_warning_not_in_frame">Ajuster le visage au cadre</string>
-    <string name="selfie_warning_too_close">Éloigner le téléphone</string>
-    <string name="selfie_warning_too_far">Rapprocher le téléphone</string>
-    <string name="selfie_warning_yaw_too_big">Faire directement face à la caméra</string>
-    <string name="selfie_warning_eyes_closed">Ouvrir les deux yeux</string>
-    <string name="selfie_warning_device_not_steady">Appareil instable</string>
+    <string name="identhub_selfie_scanner_scan_successful">Scan réussi</string>
+    <string name="identhub_selfie_scanner_retake">Répéter</string>
+    <string name="identhub_selfie_scanner_confirm">Confirmer</string>
+    <string name="identhub_selfie_intro">Votre visage est-il clairement visible et dans le cadre ?</string>
+    <string name="identhub_selfie_manual">« Veuillez prendre un selfie »</string>
+    <string name="identhub_selfie_turn_left">Veuillez tourner votre tête vers la gauche</string>
+    <string name="identhub_selfie_turn_right">Veuillez tourner votre tête vers la droite</string>
+    <string name="identhub_selfie_step_scanning">Détection en cours...</string>
+    <string name="identhub_selfie_step_checking_liveness">Vérification de la preuve de vie...</string>
+    <string name="identhub_selfie_result_successful">Scan réussi</string>
+    <string name="identhub_selfie_warning_not_detected">Visage non détecté</string>
+    <string name="identhub_selfie_warning_not_in_frame">Ajuster le visage au cadre</string>
+    <string name="identhub_selfie_warning_too_close">Éloigner le téléphone</string>
+    <string name="identhub_selfie_warning_too_far">Rapprocher le téléphone</string>
+    <string name="identhub_selfie_warning_yaw_too_big">Faire directement face à la caméra</string>
+    <string name="identhub_selfie_warning_eyes_closed">Ouvrir les deux yeux</string>
+    <string name="identhub_selfie_warning_device_not_steady">Appareil instable</string>
 </resources>

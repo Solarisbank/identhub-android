@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="progress_indicator_secure_connection_message">Verifica in corso...</string>
-    <string name="progress_indicator_precessing_verification_message">Verifica della tua identità in corso...\nL\'operazione può richiedere fino a un minuto.</string>
-    <string name="progress_indicator_precessing_application_title">La tua domanda è in fase di elaborazione...</string>
-    <string name="progress_indicator_precessing_application_message">Presto potrai scaricare tutti i documenti firmati.</string>
+    <string name="identhub_progress_indicator_secure_connection_message">Verifica in corso...</string>
+    <string name="identhub_progress_indicator_precessing_verification_message">Verifica della tua identità in corso...\nL\'operazione può richiedere fino a un minuto.</string>
+    <string name="identhub_progress_indicator_precessing_application_title">La tua domanda è in fase di elaborazione...</string>
+    <string name="identhub_progress_indicator_precessing_application_message">Presto potrai scaricare tutti i documenti firmati.</string>
 </resources>

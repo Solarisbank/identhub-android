@@ -36,7 +36,7 @@ class SelfieResultFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_selfie_result, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_selfie_result, container, false)
                 .also {
                     imageResult = it.findViewById(R.id.imageResult)
                     submitButton = it.findViewById(R.id.submitButton)

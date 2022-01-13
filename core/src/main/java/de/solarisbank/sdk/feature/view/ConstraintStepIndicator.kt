@@ -70,7 +70,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         //todo fix obtaining common style
         context
             .obtainStyledAttributes(
-                attrs, R.styleable.StepIndicator, defStyleAttr, R.style.StepIndicatorStyleCommon
+                attrs, R.styleable.StepIndicator, defStyleAttr, R.style.IdentHubStepIndicatorStyleCommon
             )
             .also { style1 ->
                 stepsAmount = style1.getString(R.styleable.StepIndicator_stepsAmount)!!.toInt()

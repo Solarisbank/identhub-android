@@ -55,7 +55,7 @@ class CommonStepSegment @JvmOverloads constructor(
         step1Image = ImageView(context).apply {
             setId(View.generateViewId())
             layoutParams = LayoutParams(0, wishedChildHeight.toInt())
-            background = context.resources.getDrawable(R.drawable.common_step_segment_background_selector)
+            background = context.resources.getDrawable(R.drawable.identhub_common_step_segment_background_selector)
         }
         addView(step1Image, LayoutParams(0, wishedChildHeight.toInt()))
         layoutParams = LayoutParams(LayoutParams.MATCH_CONSTRAINT, LayoutParams.MATCH_PARENT)

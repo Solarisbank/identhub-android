@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="verification_bank_title">Verifica tu identidad.</string>
-    <string name="verification_bank_description">Dependiendo de la funcionalidad de tu cuenta bancaria, la podrás verificar accediendo a tu banca online o haciéndote un selfie y escaneando tu DNI/Pasaporte.</string>
-    <string name="verification_bank_second_description">Indica el IBAN de tu cuenta bancaria y comprobaremos la mejor opción para ti.</string>
-    <string name="verification_bank_encrypted_label">Transmisión encriptada activa</string>
-    <string name="verification_bank_notice_label">Aviso</string>
-    <string name="verification_bank_notice_value" />
-    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
-    <string name="verification_bank_input_not_valid_message">El formato IBAN no es válido.</string>
-    <string name="verification_bank_action_next_step">Continuar</string>
+    <string name="identhub_verification_bank_title">Verifica tu identidad.</string>
+    <string name="identhub_verification_bank_description">Dependiendo de la funcionalidad de tu cuenta bancaria, la podrás verificar accediendo a tu banca online o haciéndote un selfie y escaneando tu DNI/Pasaporte.</string>
+    <string name="identhub_verification_bank_second_description">Indica el IBAN de tu cuenta bancaria y comprobaremos la mejor opción para ti.</string>
+    <string name="identhub_verification_bank_encrypted_label">Transmisión encriptada activa</string>
+    <string name="identhub_verification_bank_notice_label">Aviso</string>
+    <string name="identhub_verification_bank_notice_value" />
+    <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
+    <string name="identhub_verification_bank_input_not_valid_message">El formato IBAN no es válido.</string>
+    <string name="identhub_verification_bank_action_next_step">Continuar</string>
 </resources>

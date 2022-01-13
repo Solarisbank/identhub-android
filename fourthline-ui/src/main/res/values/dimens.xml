@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="kyc_upload_progress_size">47.2dp</dimen>
+    <dimen name="identhub_kyc_upload_progress_size">47.2dp</dimen>
 </resources>

@@ -27,7 +27,7 @@ public abstract class SuccessMessageFragment extends IdentHubFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_success_message, container, false);
+        View root = inflater.inflate(R.layout.identhub_fragment_success_message, container, false);
         title = root.findViewById(R.id.title);
         description = root.findViewById(R.id.description);
         submitButton = root.findViewById(R.id.submitButton);

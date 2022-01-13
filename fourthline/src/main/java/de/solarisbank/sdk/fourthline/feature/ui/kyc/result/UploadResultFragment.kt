@@ -34,7 +34,7 @@ class UploadResultFragment : FourthlineFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_upload_result, container, false).also {
+        return inflater.inflate(R.layout.identhub_fragment_upload_result, container, false).also {
             quitButton = it.findViewById(R.id.quitButton)
             imageView = it.findViewById(R.id.resultImageView)
             indicator = it.findViewById(R.id.indicator)

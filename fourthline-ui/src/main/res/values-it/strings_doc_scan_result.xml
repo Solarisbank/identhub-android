@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fourthline_doc_scan_result_title">Si prega di confermare la correttezza dei dati nel documento.</string>
-    <string name="fourthline_doc_scan_document_number">Documento/Numero ID</string>
-    <string name="fourthline_doc_scan_date_of_issue">Data di emissione</string>
-    <string name="fourthline_doc_scan_expiry_date">Data di scadenza / valido fino al</string>
-    <string name="fourthline_doc_scan_date_placeholder">Scegliere</string>
-    <string name="fourthline_doc_scan_issue_future_error">Errore, la data di emissione è nel futuro.</string>
-    <string name="fourthline_doc_scan_date_past_error">Errore, la data di emissione è successiva alla data di scadenza</string>
-    <string name="fourthline_doc_scan_expiry_past_error">Errore, la data di scadenza è nel passato</string>
-    <string name="fourthline_doc_scan_continue_button">Continuare</string>
+    <string name="identhub_fourthline_doc_scan_result_title">Si prega di confermare la correttezza dei dati nel documento.</string>
+    <string name="identhub_fourthline_doc_scan_document_number">Documento/Numero ID</string>
+    <string name="identhub_fourthline_doc_scan_date_of_issue">Data di emissione</string>
+    <string name="identhub_fourthline_doc_scan_expiry_date">Data di scadenza / valido fino al</string>
+    <string name="identhub_fourthline_doc_scan_date_placeholder">Scegliere</string>
+    <string name="identhub_fourthline_doc_scan_issue_future_error">Errore, la data di emissione è nel futuro.</string>
+    <string name="identhub_fourthline_doc_scan_date_past_error">Errore, la data di emissione è successiva alla data di scadenza</string>
+    <string name="identhub_fourthline_doc_scan_expiry_past_error">Errore, la data di scadenza è nel passato</string>
+    <string name="identhub_fourthline_doc_scan_continue_button">Continuare</string>
 </resources>

@@ -28,10 +28,10 @@ open class SessionNavigationActivity : BaseActivity() {
     private fun initBackButtonBehavior() {
         onBackPressedDispatcher.addCallback(this) {
             showAlertFragment(
-                title = getString(R.string.identity_dialog_quit_process_title),
-                message = getString(R.string.identity_dialog_quit_process_message),
-                positiveLabel = getString(R.string.identity_dialog_quit_process_positive_button),
-                negativeLabel = getString(R.string.identity_dialog_quit_process_negative_button),
+                title = getString(R.string.identhub_identity_dialog_quit_process_title),
+                message = getString(R.string.identhub_identity_dialog_quit_process_message),
+                positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
+                negativeLabel = getString(R.string.identhub_identity_dialog_quit_process_negative_button),
                 positiveAction = {
                     //todo foresee intenttypes and avoid null bundle
                     Timber.d("Quit IdentHub SDK after back button pressed")

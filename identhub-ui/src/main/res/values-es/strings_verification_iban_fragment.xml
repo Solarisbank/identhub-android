@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="already_identified_title">Ya te has identificado correctamente</string>
-    <string name="invalid_iban_title">Lamentablemente, el IBAN que has introducido no es válido o no es compatible.</string>
-    <string name="invalid_iban_message">El IBAN que has proporcionado no puede utilizarse para la identificación. Vuelve a intentarlo.</string>
-    <string name="excess_attempts_title">Se ha superado el número máximo de intentos</string>
-    <string name="excess_attempts_message">Lamentablemente has superado el máximo de intentos de identificación. Lamentablemente no hemos podido identificarte correctamente.</string>
-    <string name="retry_button">Reintentar</string>
-    <string name="invalid_iban_retry_button">Vuelve a intentarlo con otro IBAN</string>
-    <string name="invalid_iban_ok_button">Identifícate con un método alternativo</string>
-    <string name="about_identity_verification_title">Acerca de la verificación de la identidad</string>
-    <string name="about_identity_verification_message">Te pediremos que crees una firma electrónica accediendo a tu cuenta bancaria existente, donde se iniciará una transacción de referencia automática de 5 céntimos para proporcionar una prueba. Los 5 céntimos se devolverán automáticamente a tu cuenta después.</string>
-    <string name="identhub_terms_agreement">Estoy de acuerdo con la %1$s y los %2$s</string>
-    <string name="identhub_terms_agreement_terms">Términos y condiciones</string>
-    <string name="identhub_terms_agreement_privacy">Declaración de privacidad</string>
+    <string name="identhub_iban_verification_already_identified_title">Ya te has identificado correctamente</string>
+    <string name="identhub_iban_verification_invalid_iban_title">Lamentablemente, el IBAN que has introducido no es válido o no es compatible.</string>
+    <string name="identhub_iban_verification_invalid_iban_message">El IBAN que has proporcionado no puede utilizarse para la identificación. Vuelve a intentarlo.</string>
+    <string name="identhub_iban_verification_excess_attempts_title">Se ha superado el número máximo de intentos</string>
+    <string name="identhub_iban_verification_excess_attempts_message">Lamentablemente has superado el máximo de intentos de identificación. Lamentablemente no hemos podido identificarte correctamente.</string>
+    <string name="identhub_iban_verification_retry_button">Reintentar</string>
+    <string name="identhub_iban_verification_invalid_iban_retry_button">Vuelve a intentarlo con otro IBAN</string>
+    <string name="identhub_iban_verification_invalid_iban_ok_button">Identifícate con un método alternativo</string>
+    <string name="identhub_iban_verification_about_identity_verification_title">Acerca de la verificación de la identidad</string>
+    <string name="identhub_iban_verification_about_identity_verification_message">Te pediremos que crees una firma electrónica accediendo a tu cuenta bancaria existente, donde se iniciará una transacción de referencia automática de 5 céntimos para proporcionar una prueba. Los 5 céntimos se devolverán automáticamente a tu cuenta después.</string>
+    <string name="identhub_iban_verification_terms_agreement">Estoy de acuerdo con la %1$s y los %2$s</string>
+    <string name="identhub_iban_verification_terms_agreement_terms">Términos y condiciones</string>
+    <string name="identhub_iban_verification_terms_agreement_privacy">Declaración de privacidad</string>
 </resources>

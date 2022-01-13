@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_page_1_guide_title">Sourire pour la caméra</string>
-    <string name="welcome_page_1_guide">« Votre selfie va être comparé avec la photo de votre document d’identité. Ne vous inquiétez pas, il ne verra jamais la lumière du jour, c’est promis ! »</string>
-    <string name="welcome_page_2_guide_title">Scanner votre document d’identité</string>
-    <string name="welcome_page_2_guide">« Grâce à cela, nous pouvons nous assurer que vous êtes vraiment qui vous prétendez être et éviter l’usurpation d’identité. »</string>
-    <string name="welcome_page_3_guide_title">Soumettez votre dossier</string>
-    <string name="welcome_page_3_guide">La dernière chose que vous devez faire est d’activer votre localisation etn\de soumettre votre dossier!\nC’est facile, n’est-ce pas ?</string>
+    <string name="identhub_welcome_page_1_guide_title">Sourire pour la caméra</string>
+    <string name="identhub_welcome_page_1_guide">« Votre selfie va être comparé avec la photo de votre document d’identité. Ne vous inquiétez pas, il ne verra jamais la lumière du jour, c’est promis ! »</string>
+    <string name="identhub_welcome_page_2_guide_title">Scanner votre document d’identité</string>
+    <string name="identhub_welcome_page_2_guide">« Grâce à cela, nous pouvons nous assurer que vous êtes vraiment qui vous prétendez être et éviter l’usurpation d’identité. »</string>
+    <string name="identhub_welcome_page_3_guide_title">Soumettez votre dossier</string>
+    <string name="identhub_welcome_page_3_guide">La dernière chose que vous devez faire est d’activer votre localisation etn\de soumettre votre dossier!\nC’est facile, n’est-ce pas ?</string>
 </resources>

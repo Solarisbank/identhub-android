@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,7 +31,7 @@ public abstract class ProgressIndicatorFragment extends IdentHubFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_verification_progress_indicator, container, false);
+        View root = inflater.inflate(R.layout.identhub_fragment_verification_progress_indicator, container, false);
         progressBar = root.findViewById(R.id.icon);
         title = root.findViewById(R.id.title);
         description = root.findViewById(R.id.description);

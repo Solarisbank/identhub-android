@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fourthline_welcome_container_title">Next, take a selfie.</string>
-    <string name="fourthline_welcome_container_first_tick">The app will recognise your face.</string>
-    <string name="fourthline_welcome_container_second_tick">Prove your liveness by following the instructions on the screen.</string>
-    <string name="fourthline_welcome_container_description">Make sure there is enough lighting for your selfie. If you wear glasses make sure there is no glare.</string>
-    <string name="fourthline_welcome_container_notice">If the scan fails to recognize your face, a time out error occurs after 10 seconds and you will have to start the selfie scan process again.</string>
-    <string name="fourthline_welcome_container_continue_button">Continue</string>
-    <string name="fourthline_permission_rationale_title">Permissions</string>
-    <string name="fourthline_permission_rationale_message">We cannot complete the identification process without these permissions. Please allow access to complete the identification process.</string>
-    <string name="fourthline_permission_rationale_ok">Allow</string>
-    <string name="fourthline_permission_rationale_quit">Quit</string>
+    <string name="identhub_fourthline_welcome_container_title">Next, take a selfie.</string>
+    <string name="identhub_fourthline_welcome_container_first_tick">The app will recognise your face.</string>
+    <string name="identhub_fourthline_welcome_container_second_tick">Prove your liveness by following the instructions on the screen.</string>
+    <string name="identhub_fourthline_welcome_container_description">Make sure there is enough lighting for your selfie. If you wear glasses make sure there is no glare.</string>
+    <string name="identhub_fourthline_welcome_container_notice">If the scan fails to recognize your face, a time out error occurs after 10 seconds and you will have to start the selfie scan process again.</string>
+    <string name="identhub_fourthline_welcome_container_continue_button">Continue</string>
+    <string name="identhub_fourthline_permission_rationale_title">Permissions</string>
+    <string name="identhub_fourthline_permission_rationale_message">We cannot complete the identification process without these permissions. Please allow access to complete the identification process.</string>
+    <string name="identhub_fourthline_permission_rationale_ok">Allow</string>
+    <string name="identhub_fourthline_permission_rationale_quit">Quit</string>
 </resources>

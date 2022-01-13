@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="verification_phone_request_code">Demander un nouveau code dans  %1$s.</string>
-    <string name="verification_phone_status_verifying">Vérification en cours...</string>
-    <string name="verification_phone_error_title">Erreur de vérification du téléphone</string>
-    <string name="verification_phone_error_default_message">Une erreur s’est produite.</string>
-    <string name="verification_phone_success_title">Vérification du téléphone réussie</string>
-    <string name="verification_phone_success_message">Continuer à vous identifier avec un compte bancaire.</string>
-    <string name="verification_phone_action_next_step">Commencer l’identification bancaire</string>
-    <string name="verification_phone_action_quit">Quitter</string>
-    <string name="verification_phone_action_retry">Réessayer la vérification TAN</string>
+    <string name="identhub_verification_phone_request_code">Demander un nouveau code dans  %1$s.</string>
+    <string name="identhub_verification_phone_status_verifying">Vérification en cours...</string>
+    <string name="identhub_verification_phone_error_title">Erreur de vérification du téléphone</string>
+    <string name="identhub_verification_phone_error_default_message">Une erreur s’est produite.</string>
+    <string name="identhub_verification_phone_success_title">Vérification du téléphone réussie</string>
+    <string name="identhub_verification_phone_success_message">Continuer à vous identifier avec un compte bancaire.</string>
+    <string name="identhub_verification_phone_action_next_step">Commencer l’identification bancaire</string>
+    <string name="identhub_verification_phone_action_quit">Quitter</string>
+    <string name="identhub_verification_phone_action_retry">Réessayer la vérification TAN</string>
 </resources>

@@ -28,7 +28,7 @@ class DocTypeAdapter(private val customization: Customization,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocTypeViewHolder {
-        return DocTypeViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.view_id_doc_type_holder, parent, false))
+        return DocTypeViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.identhub_item_doc_type, parent, false))
     }
 
     override fun onBindViewHolder(holder: DocTypeViewHolder, position: Int) {

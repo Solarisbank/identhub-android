@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="contract_signing_preview_title">Fast fertig!</string>
-    <string name="contract_signing_preview_subtitle">Bitte unterzeichnen Sie Ihren Kartenantrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
-    <string name="contract_signing_preview_notice">Hinweis</string>
-    <string name="contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
-    <string name="contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
-    <string name="contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
-    <string name="contract_signing_sign_action">Unterzeichnen und Abschicken</string>
-    <string name="contract_signing_code_expires">Läuft ab in %1$s</string>
-    <string name="contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
-    <string name="contract_signing_code_request_new_button">Neuen Code erfragen</string>
-    <string name="contract_signing_terms_label">Es gelten die AGBs</string>
-    <string name="contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
-    <string name="contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
-    <string name="contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
-    <string name="contract_signing_preview_download_error">Could not download all files.</string>
-    <plurals name="contract_signing_preview_downloaded_message">
+    <string name="identhub_contract_signing_preview_title">Fast fertig!</string>
+    <string name="identhub_contract_signing_preview_subtitle">Bitte unterzeichnen Sie Ihren Kartenantrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
+    <string name="identhub_contract_signing_preview_notice">Hinweis</string>
+    <string name="identhub_contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
+    <string name="identhub_contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
+    <string name="identhub_contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
+    <string name="identhub_contract_signing_sign_action">Unterzeichnen und Abschicken</string>
+    <string name="identhub_contract_signing_code_expires">Läuft ab in %1$s</string>
+    <string name="identhub_contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Neuen Code erfragen</string>
+    <string name="identhub_contract_signing_terms_label">Es gelten die AGBs</string>
+    <string name="identhub_contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
+    <string name="identhub_contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
+    <string name="identhub_contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
+    <string name="identhub_contract_signing_preview_download_error">Could not download all files.</string>
+    <plurals name="identhub_contract_signing_preview_downloaded_message">
         <item quantity="one">1 file has been downloaded.</item>
         <item quantity="other">%d files have been downloaded.</item>
     </plurals>

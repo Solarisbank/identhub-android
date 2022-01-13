@@ -26,7 +26,7 @@ class WelcomePageFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_welcome_page, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_welcome_page, container, false)
                 .also {
                     welcomeGuideImage = it.findViewById(R.id.welcomeGuideImage)
                     guideTitle = it.findViewById(R.id.guideTitle)
@@ -42,19 +42,19 @@ class WelcomePageFragment : FourthlineFragment() {
     private fun defineViewsValues(position: Int?) {
         when (position) {
             PAGE_ONE_SELFIE -> {
-                welcomeGuideImage!!.setImageResource(R.drawable.ic_welcome_page_selfie)
-                guideTitle!!.setText(R.string.welcome_page_1_guide_title)
-                guide!!.setText(R.string.welcome_page_1_guide)
+                welcomeGuideImage!!.setImageResource(R.drawable.identhub_ic_welcome_page_selfie)
+                guideTitle!!.setText(R.string.identhub_welcome_page_1_guide_title)
+                guide!!.setText(R.string.identhub_welcome_page_1_guide)
             }
             PAGE_TWO_DOC_SCAN -> {
-                welcomeGuideImage!!.setImageResource(R.drawable.ic_welcome_page_doc_scan)
-                guideTitle!!.setText(R.string.welcome_page_2_guide_title)
-                guide!!.setText(R.string.welcome_page_2_guide)
+                welcomeGuideImage!!.setImageResource(R.drawable.identhub_ic_welcome_page_doc_scan)
+                guideTitle!!.setText(R.string.identhub_welcome_page_2_guide_title)
+                guide!!.setText(R.string.identhub_welcome_page_2_guide)
             }
             PAGE_THREE_LOCATION -> {
-                welcomeGuideImage!!.setImageResource(R.drawable.ic_welcome_page_location)
-                guideTitle!!.setText(R.string.welcome_page_3_guide_title)
-                guide!!.setText(R.string.welcome_page_3_guide)
+                welcomeGuideImage!!.setImageResource(R.drawable.identhub_ic_welcome_page_location)
+                guideTitle!!.setText(R.string.identhub_welcome_page_3_guide_title)
+                guide!!.setText(R.string.identhub_welcome_page_3_guide)
             }
         }
     }

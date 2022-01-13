@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="failure_fraud_headline">Identifikation fehlgeschlagen</string>
-    <string name="failure_fraud_message">Leider konnten wir sie nicht erfolgreich identifizieren.</string>
-    <string name="failure_fraud_button">OK</string>
-    <string name="failure_no_fraud_headline">Identifikation fehlgeschlagen</string>
-    <string name="failure_no_fraud_message">Leider ist während Ihrer Identifikation etwas schief gelaufen. Bitte versuchen Sie es erneut. Achten Sie darauf, dass die Fotos in guter Qualität aufgenommen wurden und die Dokumente lesbar sind.</string>
-    <string name="failure_no_fraud_positive">erneut versuchen</string>
-    <string name="failure_no_fraud_negative">Identifikation abbrechen</string>
-    <string name="kyc_upload_verification_subtitle_1">Bitte warten Sie bis die Verifizierung Ihrer Daten abgeschlossen ist.</string>
-    <string name="kyc_upload_verification_subtitle_2">Der Upload kann ein paar Minuten dauern.</string>
-    <string name="kyc_upload_generic_error_title">Etwas ist schiefgelaufen...</string>
-    <string name="kyc_upload_generic_error_subtitle">Wir konnten Ihre Daten leider nicht bestätigen. Bitte versuchen Sie es erneut.</string>
-    <string name="kyc_upload_generic_error_button">Wiederholen</string>
-    <string name="kyc_upload_success_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
-    <string name="kyc_upload_success_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
-    <string name="kyc_upload_success_button">Weiter</string>
-    <string name="kyc_upload_to_next_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
-    <string name="kyc_upload_to_next_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
-    <string name="kyc_upload_to_next_button">Weiter</string>
+    <string name="identhub_failure_fraud_headline">Identifikation fehlgeschlagen</string>
+    <string name="identhub_failure_fraud_message">Leider konnten wir sie nicht erfolgreich identifizieren.</string>
+    <string name="identhub_failure_fraud_button">OK</string>
+    <string name="identhub_failure_no_fraud_headline">Identifikation fehlgeschlagen</string>
+    <string name="identhub_failure_no_fraud_message">Leider ist während Ihrer Identifikation etwas schief gelaufen. Bitte versuchen Sie es erneut. Achten Sie darauf, dass die Fotos in guter Qualität aufgenommen wurden und die Dokumente lesbar sind.</string>
+    <string name="identhub_failure_no_fraud_positive">erneut versuchen</string>
+    <string name="identhub_failure_no_fraud_negative">Identifikation abbrechen</string>
+    <string name="identhub_kyc_upload_verification_subtitle_1">Bitte warten Sie bis die Verifizierung Ihrer Daten abgeschlossen ist.</string>
+    <string name="identhub_kyc_upload_verification_subtitle_2">Der Upload kann ein paar Minuten dauern.</string>
+    <string name="identhub_kyc_upload_generic_error_title">Etwas ist schiefgelaufen...</string>
+    <string name="identhub_kyc_upload_generic_error_subtitle">Wir konnten Ihre Daten leider nicht bestätigen. Bitte versuchen Sie es erneut.</string>
+    <string name="identhub_kyc_upload_generic_error_button">Wiederholen</string>
+    <string name="identhub_kyc_upload_success_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
+    <string name="identhub_kyc_upload_success_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
+    <string name="identhub_kyc_upload_success_button">Weiter</string>
+    <string name="identhub_kyc_upload_to_next_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
+    <string name="identhub_kyc_upload_to_next_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
+    <string name="identhub_kyc_upload_to_next_button">Weiter</string>
 </resources>

@@ -87,11 +87,11 @@
         <item name="android:textColor">@color/ident_hub_color_error</item>
     </style>
 
-    <style name="CurrentStepLabelCommon" parent="IdentHubTextView">
+    <style name="IdentHubCurrentStepLabelCommon" parent="IdentHubTextView">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="NextStepLabelCommon" parent="IdentHubTextView">
+    <style name="IdentHubNextStepLabelCommon" parent="IdentHubTextView">
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">normal</item>
     </style>

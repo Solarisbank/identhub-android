@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="scanner_error_timeout">Délai expiré scanner. Veuillez réessayer.</string>
-    <string name="scanner_error_face_disappeared">Le visage a disparu pendant la preuve de vie. Assurez-vous que votre visage est visible pendant toute la durée du scan du selfie. Veuillez réessayer.</string>
-    <string name="scanner_error_camera_permission">Veuillez autoriser l’accès à la caméra</string>
-    <string name="scanner_error_recording_failed">Échec de l’enregistrement vidéo</string>
-    <string name="scanner_error_interrupted">Le scanner a été interrompu</string>
-    <string name="scanner_error_models_not_downloaded">Vérifier la connexion internet et/ou l’espace libre disponible</string>
-    <string name="scanner_error_unknown">Une erreur inattendue s’est produite Veuillez réessayer.</string>
-    <string name="scanner_error_multiple_faces_detected">Visages multiples détectés</string>
-    <string name="scanner_error_title">Erreur de scan</string>
-    <string name="scanner_error_scan_button_retry">Réessayer</string>
-    <string name="scanner_error_scan_button_quit">Quitter</string>
+    <string name="identhub_scanner_error_timeout">Délai expiré scanner. Veuillez réessayer.</string>
+    <string name="identhub_scanner_error_face_disappeared">Le visage a disparu pendant la preuve de vie. Assurez-vous que votre visage est visible pendant toute la durée du scan du selfie. Veuillez réessayer.</string>
+    <string name="identhub_scanner_error_camera_permission">Veuillez autoriser l’accès à la caméra</string>
+    <string name="identhub_scanner_error_recording_failed">Échec de l’enregistrement vidéo</string>
+    <string name="identhub_scanner_error_interrupted">Le scanner a été interrompu</string>
+    <string name="identhub_scanner_error_models_not_downloaded">Vérifier la connexion internet et/ou l’espace libre disponible</string>
+    <string name="identhub_scanner_error_unknown">Une erreur inattendue s’est produite Veuillez réessayer.</string>
+    <string name="identhub_scanner_error_multiple_faces_detected">Visages multiples détectés</string>
+    <string name="identhub_scanner_error_title">Erreur de scan</string>
+    <string name="identhub_scanner_error_scan_button_retry">Réessayer</string>
+    <string name="identhub_scanner_error_scan_button_quit">Quitter</string>
 </resources>

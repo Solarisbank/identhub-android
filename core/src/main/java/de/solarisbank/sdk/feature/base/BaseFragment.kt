@@ -61,8 +61,8 @@ abstract class BaseFragment : Fragment() {
 
     fun showGenericAlertFragment(action: () -> Unit) {
         showAlertFragment(
-                title = getString(R.string.generic_error_title),
-                message = getString(R.string.generic_error_message),
+                title = getString(R.string.identhub_generic_error_title),
+                message = getString(R.string.identhub_generic_error_message),
                 positiveAction = action
         )
     }

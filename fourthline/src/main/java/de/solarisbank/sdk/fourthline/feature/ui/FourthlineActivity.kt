@@ -47,7 +47,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fourthline)
+        setContentView(R.layout.identhub_activity_fourthline)
         Timber.d("intent: $intent")
         Timber.d("Intent: SESSION_URL_KEY: ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
@@ -78,7 +78,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 supportFragmentManager.findFragmentById(R.id.nav_host_fragment
                 ) as NavHostFragment).navController
         val navInflater: NavInflater = navController.navInflater
-        navGraph = navInflater.inflate(R.navigation.fourthline_navigation)
+        navGraph = navInflater.inflate(R.navigation.identhub_fourthline_navigation)
 
         if (intent.hasExtra(SHOW_UPLOADING_SCREEN)) {
             navGraph.startDestination = R.id.kycUploadFragment
@@ -138,22 +138,22 @@ class FourthlineActivity : FourthlineBaseActivity() {
             when (destination.id) {
                 R.id.termsAndConditionsFragment -> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_intro_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_intro_step_label)
                 }
                 R.id.documentTypeSelectionFragment -> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_select_id_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_select_id_step_label)
                 }
                 R.id.documentScanFragment -> {
                     toggleTopBars(show = false)
                 }
                 R.id.documentResultFragment -> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_confirm_information_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_confirm_information_step_label)
                 }
                 R.id.selfieInstructionsFragment -> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_selfie_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_selfie_step_label)
                 }
                 R.id.selfieFragment,
                 R.id.selfieResultFragment-> {
@@ -162,11 +162,11 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 R.id.kycUploadFragment,
                 R.id.uploadResultFragment-> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_verifying_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_verifying_step_label)
                 }
                 else -> {
                     toggleTopBars(show = true)
-                    setTitle(R.string.fourthline_activity_intro_step_label)
+                    setTitle(R.string.identhub_fourthline_activity_intro_step_label)
                 }
             }
         }
@@ -218,10 +218,10 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun showRationale(permission: String) {
         showAlertFragment(
-            getString(R.string.fourthline_permission_rationale_title),
-            getString(R.string.fourthline_permission_rationale_message),
-            getString(R.string.fourthline_permission_rationale_ok),
-            getString(R.string.fourthline_permission_rationale_quit),
+            getString(R.string.identhub_fourthline_permission_rationale_title),
+            getString(R.string.identhub_fourthline_permission_rationale_message),
+            getString(R.string.identhub_fourthline_permission_rationale_ok),
+            getString(R.string.identhub_fourthline_permission_rationale_quit),
             {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                     Intent().apply {

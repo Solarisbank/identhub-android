@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="selfie_step_scanning">Escaneando</string>
-    <string name="selfie_step_checking_liveness">Comprobando la viveza</string>
-    <string name="selfie_result_successful">Escaneo realizado con éxito</string>
-</resources>

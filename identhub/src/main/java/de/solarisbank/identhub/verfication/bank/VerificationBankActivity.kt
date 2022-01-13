@@ -26,7 +26,7 @@ class VerificationBankActivity : IdentHubActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_verification_bank)
+        setContentView(R.layout.identhub_activity_verification_bank)
         observeViewModel()
         loadState(savedInstanceState)
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
@@ -37,7 +37,7 @@ class VerificationBankActivity : IdentHubActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
-        val navGraph = navInflater.inflate(R.navigation.bank_nav_graph)
+        val navGraph = navInflater.inflate(R.navigation.identhub_bank_nav_graph)
         navGraph.startDestination =
             if (viewModel.isPhoneVerified()) R.id.verificationBankIbanFragment
             else R.id.phoneVerificationFragment
@@ -61,7 +61,7 @@ class VerificationBankActivity : IdentHubActivity() {
             stepIndicatorVisible = true
         }
         updateStepIndicator()
-        setTitle(R.string.identity_activity_second_step_label)
+        setTitle(R.string.identhub_identity_activity_second_step_label)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {

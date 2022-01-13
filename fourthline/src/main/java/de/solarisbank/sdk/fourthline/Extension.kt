@@ -36,36 +36,36 @@ fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGl
 
 
 fun SelfieScannerStep.asString(context: Context) =  when (this) {
-    SelfieScannerStep.SELFIE -> context.resources.getString(R.string.selfie_intro)
-    SelfieScannerStep.MANUAL_SELFIE -> context.resources.getString(R.string.selfie_manual)
-    SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.selfie_turn_left)
-    SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.selfie_turn_right)
+    SelfieScannerStep.SELFIE -> context.resources.getString(R.string.identhub_selfie_intro)
+    SelfieScannerStep.MANUAL_SELFIE -> context.resources.getString(R.string.identhub_selfie_manual)
+    SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.identhub_selfie_turn_left)
+    SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.identhub_selfie_turn_right)
 }
 
 fun SelfieScannerWarning.asString(context: Context) = when (this) {
-    SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.selfie_warning_not_detected)
-    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.scanner_error_multiple_faces_detected)
-    SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.selfie_warning_not_in_frame)
-    SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.selfie_warning_too_close)
-    SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.selfie_warning_too_far)
-    SelfieScannerWarning.FACE_YAW_TOO_BIG -> context.resources.getString(R.string.selfie_warning_yaw_too_big)
-    SelfieScannerWarning.EYES_CLOSED -> context.resources.getString(R.string.selfie_warning_eyes_closed)
-    SelfieScannerWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.selfie_warning_device_not_steady)
+    SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.identhub_selfie_warning_not_detected)
+    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.identhub_scanner_error_multiple_faces_detected)
+    SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.identhub_selfie_warning_not_in_frame)
+    SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.identhub_selfie_warning_too_close)
+    SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.identhub_selfie_warning_too_far)
+    SelfieScannerWarning.FACE_YAW_TOO_BIG -> context.resources.getString(R.string.identhub_selfie_warning_yaw_too_big)
+    SelfieScannerWarning.EYES_CLOSED -> context.resources.getString(R.string.identhub_selfie_warning_eyes_closed)
+    SelfieScannerWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.identhub_selfie_warning_device_not_steady)
 }
 
 fun SelfieScannerError.asString(context: Context) = when (this) {
-    SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.scanner_error_timeout)
-    SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.scanner_error_face_disappeared)
-    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_camera_permission)
-    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.scanner_error_unknown)
-    SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.scanner_error_recording_failed)
-    SelfieScannerError.RECORD_AUDIO_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_unknown)
-    SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.scanner_error_interrupted)
-    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.scanner_error_models_not_downloaded)
-    SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.scanner_error_unknown)
-    SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
-    SelfieScannerError.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
-    SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.scanner_error_multiple_faces_detected)
+    SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.identhub_scanner_error_timeout)
+    SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.identhub_scanner_error_face_disappeared)
+    SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_camera_permission)
+    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.identhub_scanner_error_recording_failed)
+    SelfieScannerError.RECORD_AUDIO_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.identhub_scanner_error_interrupted)
+    SelfieScannerError.RECOGNITION_MODELS_NOT_DOWNLOADED -> context.resources.getString(R.string.identhub_scanner_error_models_not_downloaded)
+    SelfieScannerError.UNKNOWN -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    SelfieScannerError.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.identhub_scanner_error_multiple_faces_detected)
 }
 
 private var cleanupJob: Job? = null
@@ -82,42 +82,42 @@ fun DocumentScannerStep.prettify() =
         "Step: fileSide = $fileSide, isAngled = $isAngled, isAutoDetectAvailable = $isAutoDetectAvailable"
 
 fun List<DocumentScannerStepWarning>.asString(context: Context) = when (first()) {
-    DocumentScannerStepWarning.DOCUMENT_TOO_DARK -> context.resources.getString(R.string.document_scanner_warning_too_dark)
-    DocumentScannerStepWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.document_scanner_warning_device_not_steady)
+    DocumentScannerStepWarning.DOCUMENT_TOO_DARK -> context.resources.getString(R.string.identhub_document_scanner_warning_too_dark)
+    DocumentScannerStepWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.identhub_document_scanner_warning_device_not_steady)
     DocumentScannerStepWarning.RECOGNITION_MODELS_NOT_DOWNLOADED ->
-        context.resources.getString(R.string.document_scanner_warning_recognition_models_not_downloaded)
-    DocumentScannerStepWarning.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
+        context.resources.getString(R.string.identhub_document_scanner_warning_recognition_models_not_downloaded)
+    DocumentScannerStepWarning.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
 }
 
 fun DocumentScannerError.asString(context: Context) = when (this) {
-    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_camera_permission)
-    DocumentScannerError.RECORDING_FAILED -> context.resources.getString(R.string.scanner_error_recording_failed)
-    DocumentScannerError.RECORD_AUDIO_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.scanner_error_unknown)
-    DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.scanner_error_interrupted)
-    DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.scanner_error_unknown)
-    DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.scanner_error_timeout)
-    DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.scanner_error_unknown)
+    DocumentScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_camera_permission)
+    DocumentScannerError.RECORDING_FAILED -> context.resources.getString(R.string.identhub_scanner_error_recording_failed)
+    DocumentScannerError.RECORD_AUDIO_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    DocumentScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.identhub_scanner_error_interrupted)
+    DocumentScannerError.UNKNOWN -> context.resources.getString(R.string.identhub_scanner_error_unknown)
+    DocumentScannerError.TIMEOUT -> context.resources.getString(R.string.identhub_scanner_error_timeout)
+    DocumentScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
 }
 
 fun DocumentScannerStep.asString(context: Context): CharSequence {
     val resource = when(fileSide) {
         DocumentFileSide.FRONT -> {
-            if (isAngled) R.string.document_scanner_side_front_angled_title
-            else R.string.document_scanner_side_front_title
+            if (isAngled) R.string.identhub_document_scanner_side_front_angled_title
+            else R.string.identhub_document_scanner_side_front_title
         }
         DocumentFileSide.BACK -> {
-            if (isAngled) R.string.document_scanner_side_back_angled_title
-            else R.string.document_scanner_side_back_title
+            if (isAngled) R.string.identhub_document_scanner_side_back_angled_title
+            else R.string.identhub_document_scanner_side_back_title
         }
         DocumentFileSide.INSIDE_LEFT -> {
-            if (isAngled) R.string.document_scanner_side_inside_left_angled_title
-            else R.string.document_scanner_side_inside_left_title
+            if (isAngled) R.string.identhub_document_scanner_side_inside_left_angled_title
+            else R.string.identhub_document_scanner_side_inside_left_title
         }
         DocumentFileSide.INSIDE_RIGHT -> {
-            if (isAngled) R.string.document_scanner_side_inside_right_angled_title
-            else R.string.document_scanner_side_inside_right_title
+            if (isAngled) R.string.identhub_document_scanner_side_inside_right_angled_title
+            else R.string.identhub_document_scanner_side_inside_right_title
         }
-        else -> R.string.document_scanner_side_undefined_title
+        else -> R.string.identhub_document_scanner_side_undefined_title
     }
 
     return context.getString(resource)

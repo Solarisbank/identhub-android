@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="verification_bank_title">Vérifiez votre identité.</string>
-    <string name="verification_bank_description">Selon la fonctionnalité de votre compte bancaire, vous vérifierez en vous connectant à votre banque en ligne ou en prenant une selfie et en scannant votre pièce d’identité/passeport.</string>
-    <string name="verification_bank_second_description">Veuillez fournir l’IBAN de votre compte bancaire et nous vérifierons la meilleure option pour vous.</string>
-    <string name="verification_bank_encrypted_label">Transmission codée active</string>
-    <string name="verification_bank_notice_label">Remarque</string>
-    <string name="verification_bank_notice_value" />
-    <string name="verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
-    <string name="verification_bank_input_not_valid_message">Le format de l’IBAN n’est pas valide !</string>
-    <string name="verification_bank_action_next_step">Continuer</string>
+    <string name="identhub_verification_bank_title">Vérifiez votre identité.</string>
+    <string name="identhub_verification_bank_description">Selon la fonctionnalité de votre compte bancaire, vous vérifierez en vous connectant à votre banque en ligne ou en prenant une selfie et en scannant votre pièce d’identité/passeport.</string>
+    <string name="identhub_verification_bank_second_description">Veuillez fournir l’IBAN de votre compte bancaire et nous vérifierons la meilleure option pour vous.</string>
+    <string name="identhub_verification_bank_encrypted_label">Transmission codée active</string>
+    <string name="identhub_verification_bank_notice_label">Remarque</string>
+    <string name="identhub_verification_bank_notice_value" />
+    <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
+    <string name="identhub_verification_bank_input_not_valid_message">Le format de l’IBAN n’est pas valide !</string>
+    <string name="identhub_verification_bank_action_next_step">Continuer</string>
 </resources>

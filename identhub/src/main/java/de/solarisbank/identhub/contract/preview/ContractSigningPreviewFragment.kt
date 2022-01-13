@@ -55,7 +55,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_contract_signing_preview, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_contract_signing_preview, container, false)
                 .also {
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
@@ -100,16 +100,16 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private fun onIdentification(result: Result<IdentificationDto>) {
         if (result.succeeded) {
             if (result.data!!.method == "bank_id") {
-                termsAndConditionsString!!.setText(R.string.contract_signing_terms_bank_id_label)
+                termsAndConditionsString!!.setText(R.string.identhub_contract_signing_terms_bank_id_label)
             } else if (result.data!!.method == "bank") {
-                termsAndConditionsString!!.setText(R.string.contract_signing_terms_bank_ident_label)
+                termsAndConditionsString!!.setText(R.string.identhub_contract_signing_terms_bank_ident_label)
             }
-            val link = getString(R.string.contract_signing_additional_terms_link)
+            val link = getString(R.string.identhub_contract_signing_additional_terms_link)
             if (link.isNotBlank()) {
                 Timber.d("onIdentification(): link %s", link)
                 additionalTermsAndConditionsString!!.visibility = VISIBLE
                 additionalTermsAndConditionsDot!!.visibility = VISIBLE
-                val label = getString(R.string.contract_signing_additional_terms_label)
+                val label = getString(R.string.identhub_contract_signing_additional_terms_label)
                 val additionalTermsSpannable = SpannableString(label)
                 additionalTermsSpannable.setSpan(URLSpan(link), 0, label.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 additionalTermsAndConditionsString!!.text = additionalTermsSpannable
@@ -126,10 +126,10 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         if (result.succeeded) {
             val files = result.data!!
             val count = files.size
-            val downloadedFileMessage = resources.getQuantityString(R.plurals.contract_signing_preview_downloaded_message, count, count)
+            val downloadedFileMessage = resources.getQuantityString(R.plurals.identhub_contract_signing_preview_downloaded_message, count, count)
             Toast.makeText(context, downloadedFileMessage, Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, R.string.contract_signing_preview_download_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.identhub_contract_signing_preview_download_error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -141,7 +141,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         if (result.succeeded) {
             PdfIntent.openFile(context, result.data)
         } else {
-            Toast.makeText(context, R.string.contract_signing_preview_render_pdf_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.identhub_contract_signing_preview_render_pdf_error, Toast.LENGTH_SHORT).show()
         }
     }
 

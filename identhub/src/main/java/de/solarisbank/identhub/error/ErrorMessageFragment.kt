@@ -23,7 +23,7 @@ abstract class ErrorMessageFragment : IdentHubFragment() {
     protected lateinit var submitButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_error_message, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_error_message, container, false)
                 .also {
                     title = it.findViewById(R.id.title)
                     description = it.findViewById(R.id.description)
@@ -44,10 +44,10 @@ abstract class ErrorMessageFragment : IdentHubFragment() {
 
     open fun getDialog(): AlertDialog {
         return AlertDialog.Builder(requireContext())
-                .setTitle(R.string.identity_dialog_quit_process_title)
-                .setMessage(R.string.identity_dialog_quit_process_message)
-                .setPositiveButton(R.string.identity_dialog_quit_process_positive_button) { _, _ -> sharedViewModel.quitIdentity() }
-                .setNegativeButton(R.string.identity_dialog_quit_process_negative_button) { _, _ -> }
+                .setTitle(R.string.identhub_identity_dialog_quit_process_title)
+                .setMessage(R.string.identhub_identity_dialog_quit_process_message)
+                .setPositiveButton(R.string.identhub_identity_dialog_quit_process_positive_button) { _, _ -> sharedViewModel.quitIdentity() }
+                .setNegativeButton(R.string.identhub_identity_dialog_quit_process_negative_button) { _, _ -> }
                 .create()
     }
 

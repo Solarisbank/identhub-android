@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="already_identified_title">Already identified successfully</string>
-    <string name="invalid_iban_title">Unfortunately the IBAN you entered is invalid or not supported.</string>
-    <string name="invalid_iban_message">The IBAN you provided cannot be used for identification. Please try again.</string>
-    <string name="excess_attempts_title">Maximum attempts exceeded</string>
-    <string name="excess_attempts_message">Unfortunately you have exceeded the maximum attempts of identification. Unfortunately we cannot identify you successfully.</string>
-    <string name="retry_button">Retry</string>
-    <string name="invalid_iban_retry_button">Retry with different IBAN</string>
-    <string name="invalid_iban_ok_button">Identify with alternative method</string>
-    <string name="about_identity_verification_title">About identity verification</string>
-    <string name="about_identity_verification_message">You\'ll be asked to create an electronic signature by signing in to your existing bank account where an automatic reference transaction of 5 cents will be initiated to provide proof. Your 5 cents will automatically be sent back to your account afterwards.</string>
-    <string name="identhub_terms_agreement">I agree to the %1$s and %2$s</string>
-    <string name="identhub_terms_agreement_terms">Terms &amp; Conditions</string>
-    <string name="identhub_terms_agreement_privacy">Privacy Statement</string>
+    <string name="identhub_iban_verification_already_identified_title">Already identified successfully</string>
+    <string name="identhub_iban_verification_invalid_iban_title">Unfortunately the IBAN you entered is invalid or not supported.</string>
+    <string name="identhub_iban_verification_invalid_iban_message">The IBAN you provided cannot be used for identification. Please try again.</string>
+    <string name="identhub_iban_verification_excess_attempts_title">Maximum attempts exceeded</string>
+    <string name="identhub_iban_verification_excess_attempts_message">Unfortunately you have exceeded the maximum attempts of identification. Unfortunately we cannot identify you successfully.</string>
+    <string name="identhub_iban_verification_retry_button">Retry</string>
+    <string name="identhub_iban_verification_invalid_iban_retry_button">Retry with different IBAN</string>
+    <string name="identhub_iban_verification_invalid_iban_ok_button">Identify with alternative method</string>
+    <string name="identhub_iban_verification_about_identity_verification_title">About identity verification</string>
+    <string name="identhub_iban_verification_about_identity_verification_message">You\'ll be asked to create an electronic signature by signing in to your existing bank account where an automatic reference transaction of 5 cents will be initiated to provide proof. Your 5 cents will automatically be sent back to your account afterwards.</string>
+    <string name="identhub_iban_verification_terms_agreement">I agree to the %1$s and %2$s</string>
+    <string name="identhub_iban_verification_terms_agreement_terms">Terms &amp; Conditions</string>
+    <string name="identhub_iban_verification_terms_agreement_privacy">Privacy Statement</string>
 </resources>

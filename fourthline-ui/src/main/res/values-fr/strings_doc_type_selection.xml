@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="location_not_active_title">Erreur de localisation</string>
-    <string name="location_not_active_message">Activer la localisation</string>
-    <string name="enable_location_button">Activer</string>
-    <string name="quit_location_button">Quitter</string>
-    <string name="location_fetching_error_title">Erreur de localisation</string>
-    <string name="location_fetching_error_message">La localisation n’a pas été obtenue</string>
+    <string name="identhub_location_not_active_title">Erreur de localisation</string>
+    <string name="identhub_location_not_active_message">Activer la localisation</string>
+    <string name="identhub_enable_location_button">Activer</string>
+    <string name="identhub_quit_location_button">Quitter</string>
+    <string name="identhub_location_fetching_error_title">Erreur de localisation</string>
+    <string name="identhub_location_fetching_error_message">La localisation n’a pas été obtenue</string>
+    <string name="identhub_doc_type_retry_button">Réessayer</string>
 </resources>

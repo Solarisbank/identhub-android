@@ -40,7 +40,7 @@ class BulletListLayout @JvmOverloads constructor(
             is TitleStyle.SimpleBold -> TextView(context, null, 0, R.style.IdentHubTextView_HeadLine3)
             is TitleStyle.Notice -> {
                 TextView(context, null, 0, R.style.IdentHubTextView_Small_13).apply {
-                    val drawable = ContextCompat.getDrawable(context, R.drawable.ic_info)
+                    val drawable = ContextCompat.getDrawable(context, R.drawable.identhub_ic_info)
                     setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                     compoundDrawablePadding = (8f * resources.displayMetrics.density).toInt()
                 }
@@ -51,7 +51,7 @@ class BulletListLayout @JvmOverloads constructor(
 
         addView(titleView)
         titleView.updateLayoutParams<LayoutParams> {
-            bottomMargin = resources.getDimensionPixelSize(R.dimen.margin_12)
+            bottomMargin = resources.getDimensionPixelSize(R.dimen.identhub_margin_12)
         }
     }
 
@@ -64,7 +64,7 @@ class BulletListLayout @JvmOverloads constructor(
         bulletView.textAlignment = TEXT_ALIGNMENT_CENTER
         layout.addView(bulletView)
         bulletView.updateLayoutParams<LayoutParams> {
-            val margin = resources.getDimensionPixelSize(R.dimen.margin_8)
+            val margin = resources.getDimensionPixelSize(R.dimen.identhub_margin_8)
             marginStart = margin
             marginEnd = margin
         }

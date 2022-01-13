@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="scanner_error_timeout">Se agotó el tiempo de espera del escáner. Vuelve a intentarlo.</string>
-    <string name="scanner_error_face_disappeared">La cara ha desaparecido durante la comprobación de viveza. Asegúrate de que tu cara es visible durante todo el escaneo del selfie. Vuelve a intentarlo.</string>
-    <string name="scanner_error_camera_permission">Permite el acceso a la cámara</string>
-    <string name="scanner_error_recording_failed">La grabación de vídeo ha fallado</string>
-    <string name="scanner_error_interrupted">El escáner se ha interrumpido</string>
-    <string name="scanner_error_models_not_downloaded">Comprueba la conexión a Internet y/o el espacio libre disponible</string>
-    <string name="scanner_error_unknown">Se produjo un error inesperado. Vuelve a intentarlo.</string>
-    <string name="scanner_error_multiple_faces_detected">Varias caras detectadas</string>
-    <string name="scanner_error_title">Error de escaneo</string>
-    <string name="scanner_error_scan_button_retry">Reintentar</string>
-    <string name="scanner_error_scan_button_quit">Salir</string>
+    <string name="identhub_scanner_error_timeout">Se agotó el tiempo de espera del escáner. Vuelve a intentarlo.</string>
+    <string name="identhub_scanner_error_face_disappeared">La cara ha desaparecido durante la comprobación de viveza. Asegúrate de que tu cara es visible durante todo el escaneo del selfie. Vuelve a intentarlo.</string>
+    <string name="identhub_scanner_error_camera_permission">Permite el acceso a la cámara</string>
+    <string name="identhub_scanner_error_recording_failed">La grabación de vídeo ha fallado</string>
+    <string name="identhub_scanner_error_interrupted">El escáner se ha interrumpido</string>
+    <string name="identhub_scanner_error_models_not_downloaded">Comprueba la conexión a Internet y/o el espacio libre disponible</string>
+    <string name="identhub_scanner_error_unknown">Se produjo un error inesperado. Vuelve a intentarlo.</string>
+    <string name="identhub_scanner_error_multiple_faces_detected">Varias caras detectadas</string>
+    <string name="identhub_scanner_error_title">Error de escaneo</string>
+    <string name="identhub_scanner_error_scan_button_retry">Reintentar</string>
+    <string name="identhub_scanner_error_scan_button_quit">Salir</string>
 </resources>

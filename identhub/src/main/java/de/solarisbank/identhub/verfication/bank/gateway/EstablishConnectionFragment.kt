@@ -16,11 +16,11 @@ class EstablishConnectionFragment : ProgressIndicatorFragment() {
     }
 
     override fun getIconResource(): Int {
-        return R.drawable.ic_shield_32_secondary
+        return R.drawable.identhub_ic_shield_32_secondary
     }
 
     override fun getTitleResource(): Int {
-        return R.string.progress_indicator_secure_connection_message
+        return R.string.identhub_progress_indicator_secure_connection_message
     }
 
     override fun inject(component: FragmentComponent) {

@@ -29,7 +29,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_terms_and_condition, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
                 .also {
                     bulletList = it.findViewById(R.id.bulletList)
                     submitButton = it.findViewById(R.id.submitButton)
@@ -53,12 +53,12 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     }
 
     private fun initView() {
-        val terms = getString(R.string.fourthline_terms_conditions_apply)
-        val termsLinkSection = getString(R.string.fourthline_terms_conditions_apply_link_section)
-        val link = getString(R.string.fourthline_terms_conditions_link)
+        val terms = getString(R.string.identhub_fourthline_terms_conditions_apply)
+        val termsLinkSection = getString(R.string.identhub_fourthline_terms_conditions_apply_link_section)
+        val link = getString(R.string.identhub_fourthline_terms_conditions_link)
         val termsSpanned = terms.linkOccurrenceOf(termsLinkSection, link, linkAllIfNotFound = true)
         bulletList?.updateItems(
-            title = getString(R.string.contract_signing_preview_notice),
+            title = getString(R.string.identhub_contract_signing_preview_notice),
             items = listOf(termsSpanned),
             titleStyle = BulletListLayout.TitleStyle.Notice,
             customization = customization

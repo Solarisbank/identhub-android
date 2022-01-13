@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="already_identified_title">Già identificato con successo</string>
-    <string name="invalid_iban_title">Purtroppo l\'IBAN che hai inserito non è supportato.</string>
-    <string name="invalid_iban_message">L\'IBAN inserito non può essere utilizzato per l\'identificazione. Prova un altro IBAN o scegli la verifica con ID.</string>
-    <string name="excess_attempts_title">Numero massimo di tentativi di identificazione raggiunto</string>
-    <string name="excess_attempts_message">Purtroppo hai raggiunto il numero massimo di tentativi di identificazione. Sfortunatamente, non possiamo identificarti.</string>
-    <string name="retry_button">Riprova</string>
-    <string name="invalid_iban_retry_button">Prova con un IBAN diverso</string>
-    <string name="invalid_iban_ok_button">Identificazione con metodo alternativo</string>
-    <string name="about_identity_verification_title">Informazioni sulla verifica della tua identità</string>
-    <string name="about_identity_verification_message">Accedendo all\'online banking del tuo conto corrente bancario, viene attivata una transazione di riferimento automatica di 5 centesimi. Questo crea una firma elettronica qualificata che conferma la tua identità. I 5 cent verranno quindi nuovamente trasferiti in automatico sul tuo conto bancario.</string>
-    <string name="identhub_terms_agreement">Accetto %1$s e %2$s</string>
-    <string name="identhub_terms_agreement_terms">Termini e Condizioni</string>
-    <string name="identhub_terms_agreement_privacy">Protezione dati</string>
+    <string name="identhub_iban_verification_already_identified_title">Già identificato con successo</string>
+    <string name="identhub_iban_verification_invalid_iban_title">Purtroppo l\'IBAN che hai inserito non è supportato.</string>
+    <string name="identhub_iban_verification_invalid_iban_message">L\'IBAN inserito non può essere utilizzato per l\'identificazione. Prova un altro IBAN o scegli la verifica con ID.</string>
+    <string name="identhub_iban_verification_excess_attempts_title">Numero massimo di tentativi di identificazione raggiunto</string>
+    <string name="identhub_iban_verification_excess_attempts_message">Purtroppo hai raggiunto il numero massimo di tentativi di identificazione. Sfortunatamente, non possiamo identificarti.</string>
+    <string name="identhub_iban_verification_retry_button">Riprova</string>
+    <string name="identhub_iban_verification_invalid_iban_retry_button">Prova con un IBAN diverso</string>
+    <string name="identhub_iban_verification_invalid_iban_ok_button">Identificazione con metodo alternativo</string>
+    <string name="identhub_iban_verification_about_identity_verification_title">Informazioni sulla verifica della tua identità</string>
+    <string name="identhub_iban_verification_about_identity_verification_message">Accedendo all\'online banking del tuo conto corrente bancario, viene attivata una transazione di riferimento automatica di 5 centesimi. Questo crea una firma elettronica qualificata che conferma la tua identità. I 5 cent verranno quindi nuovamente trasferiti in automatico sul tuo conto bancario.</string>
+    <string name="identhub_iban_verification_terms_agreement">Accetto %1$s e %2$s</string>
+    <string name="identhub_iban_verification_terms_agreement_terms">Termini e Condizioni</string>
+    <string name="identhub_iban_verification_terms_agreement_privacy">Protezione dati</string>
 </resources>

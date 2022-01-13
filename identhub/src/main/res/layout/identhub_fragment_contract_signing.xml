@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_above="@+id/buttonLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="24dp"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="24dp"/>
+
+            <ImageView
+                android:id="@+id/scratch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/identhub_ic_termsofservice"
+                android:adjustViewBounds="true"
+                />
+
+            <ProgressBar
+                style="@style/IdentHubProgressBarStyle"
+                android:id="@+id/progress"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="@dimen/identhub_margin_32"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/scratch"
+                />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/IdentHubTextView.Regular"
+                android:visibility="invisible"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:text="@string/identhub_contract_signing_description"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/scratch"
+                />
+
+            <EditText
+                android:id="@+id/codeInput"
+                style="@style/IdentHubTextBoxSingle"
+                android:background="@drawable/identhub_textbox_drawable_selector"
+                android:layout_width="162dp"
+                android:layout_height="41dp"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/identhub_margin_24"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                />
+
+            <ProgressBar
+                style="@style/IdentHubProgressBarStyle"
+                android:id="@+id/codeProgress"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/codeInput"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+            <TextView
+                android:id="@+id/errorMessage"
+                style="@style/IdentHubTextView.Tiny.Error"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:gravity="center"
+                android:text="@string/identhub_contract_signing_code_request_new"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/codeInput"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/newCodeCounter"
+                style="@style/IdentHubTextView.Small_14"
+                android:text="@string/identhub_contract_signing_code_expires"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/codeInput"
+                tools:text="@string/identhub_verification_phone_request_code" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:layout_marginEnd="@dimen/identhub_margin_8"
+                android:src="@drawable/identhub_ic_info"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/newCodeCounter"
+                />
+
+            <TextView
+                android:id="@+id/transactionDescription"
+                style="@style/IdentHubTextView.Small_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/identhub_margin_8"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView" />
+
+            <de.solarisbank.sdk.feature.view.BulletListLayout
+                android:id="@+id/noticeBulletList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/transactionDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/identhub_default_button_height"
+            android:layout_marginTop="@dimen/identhub_margin_4"
+            android:layout_marginBottom="@dimen/identhub_margin_4"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/identhub_contract_signing_sign_action" />
+
+        <Button
+            android:id="@+id/sendNewCode"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/identhub_default_button_height"
+            android:layout_marginTop="@dimen/identhub_margin_4"
+            android:layout_marginBottom="@dimen/identhub_margin_4"
+            android:layout_weight="1"
+            android:text="@string/identhub_contract_signing_code_request_new_button"
+            android:visibility="gone" />
+    </LinearLayout>
+</RelativeLayout>

@@ -51,7 +51,7 @@ class DocScanResultFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_doc_scan_result, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_doc_scan_result, container, false)
             .also {
                 title = it.findViewById(R.id.title)
                 docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
@@ -144,11 +144,11 @@ class DocScanResultFragment : FourthlineFragment() {
         val expiryDate = expireDateTextInput?.getDate() ?: return false
         var valid = true
         if (issueDate > expiryDate) {
-            issueDateError!!.text = getString(R.string.fourthline_doc_scan_date_past_error)
+            issueDateError!!.text = getString(R.string.identhub_fourthline_doc_scan_date_past_error)
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else if (issueDate > Date()) {
-            issueDateError!!.text = getString(R.string.fourthline_doc_scan_issue_future_error)
+            issueDateError!!.text = getString(R.string.identhub_fourthline_doc_scan_issue_future_error)
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else {

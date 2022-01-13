@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="payment_init_auth_person_title">Konto wird nicht unterstptzt</string>
-    <string name="payment_init_auth_person_message">Leider wird ihr Konto für Bankident nicht unterstützt.</string>
-    <string name="payment_init_failed_title">Identification failed</string>
-    <string name="payment_init_failed_message">Unfortunately the payment was not successful. Please try again OR You can identify with an ID scan instead.</string>
-    <string name="payment_init_expired_title">Identifikation fehlgeschlagen</string>
-    <string name="payment_init_expired_message">Leider war die Referenzüberweisung nicht erfolgreich</string>
+    <string name="identhub_payment_init_auth_person_title">Konto wird nicht unterstptzt</string>
+    <string name="identhub_payment_init_auth_person_message">Leider wird ihr Konto für Bankident nicht unterstützt.</string>
+    <string name="identhub_payment_init_failed_title">Identification failed</string>
+    <string name="identhub_payment_init_failed_message">Unfortunately the payment was not successful. Please try again OR You can identify with an ID scan instead.</string>
+    <string name="identhub_payment_init_expired_title">Identifikation fehlgeschlagen</string>
+    <string name="identhub_payment_init_expired_message">Leider war die Referenzüberweisung nicht erfolgreich</string>
 </resources>

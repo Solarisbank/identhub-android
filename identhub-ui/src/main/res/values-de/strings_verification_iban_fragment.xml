@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="already_identified_title">Bereits erfolgreich identifiziert</string>
-    <string name="invalid_iban_title">Leider wird die von Ihnen eingegebene IBAN nicht unterstützt</string>
-    <string name="invalid_iban_message">Die von Ihnen eingegebene IBAN kann nicht zur Identifizierung genutzt werden. Bitte versuchen Sie es mit einer anderen IBAN oder wählen Sie Verifizierung mit Ausweis.</string>
-    <string name="excess_attempts_title">Maximale Anzahl an Identifikationsversuchen erreicht</string>
-    <string name="excess_attempts_message">ULeider haben Sie die maximale Anzahl an Identifikationsversuchen erreicht. Wir können Sie leider nicht erfolgreich identifizieren.</string>
-    <string name="retry_button">Retry</string>
-    <string name="invalid_iban_retry_button">Mit anderer IBAN probieren</string>
-    <string name="invalid_iban_ok_button">Identifizieren mit Ausweis</string>
-    <string name="about_identity_verification_title">Über die Verifizierung Ihrer Identität</string>
-    <string name="about_identity_verification_message">Durch das Einloggen in das Online Banking ihres existierenden Bankkontos wird eine automatische Referenztransaktion von 5 Cent ausgelöst. Hierdurch wird eine qualifizierte, elektronische Unterschrift erzeugt, die Ihre Identität einwandfrei bestätigt. Im Anschluss werden die 5 Cent automatisch wieder zurück auf Ihr Bankkonto überwiesen.</string>
-    <string name="identhub_terms_agreement">Ich stimme der %1$s und den %2$s zu</string>
-    <string name="identhub_terms_agreement_terms">AGBs</string>
-    <string name="identhub_terms_agreement_privacy">Datenschutzerklärung</string>
+    <string name="identhub_iban_verification_already_identified_title">Bereits erfolgreich identifiziert</string>
+    <string name="identhub_iban_verification_invalid_iban_title">Leider wird die von Ihnen eingegebene IBAN nicht unterstützt</string>
+    <string name="identhub_iban_verification_invalid_iban_message">Die von Ihnen eingegebene IBAN kann nicht zur Identifizierung genutzt werden. Bitte versuchen Sie es mit einer anderen IBAN oder wählen Sie Verifizierung mit Ausweis.</string>
+    <string name="identhub_iban_verification_excess_attempts_title">Maximale Anzahl an Identifikationsversuchen erreicht</string>
+    <string name="identhub_iban_verification_excess_attempts_message">ULeider haben Sie die maximale Anzahl an Identifikationsversuchen erreicht. Wir können Sie leider nicht erfolgreich identifizieren.</string>
+    <string name="identhub_iban_verification_retry_button">Retry</string>
+    <string name="identhub_iban_verification_invalid_iban_retry_button">Mit anderer IBAN probieren</string>
+    <string name="identhub_iban_verification_invalid_iban_ok_button">Identifizieren mit Ausweis</string>
+    <string name="identhub_iban_verification_about_identity_verification_title">Über die Verifizierung Ihrer Identität</string>
+    <string name="identhub_iban_verification_about_identity_verification_message">Durch das Einloggen in das Online Banking ihres existierenden Bankkontos wird eine automatische Referenztransaktion von 5 Cent ausgelöst. Hierdurch wird eine qualifizierte, elektronische Unterschrift erzeugt, die Ihre Identität einwandfrei bestätigt. Im Anschluss werden die 5 Cent automatisch wieder zurück auf Ihr Bankkonto überwiesen.</string>
+    <string name="identhub_iban_verification_terms_agreement">Ich stimme der %1$s und den %2$s zu</string>
+    <string name="identhub_iban_verification_terms_agreement_terms">AGBs</string>
+    <string name="identhub_iban_verification_terms_agreement_privacy">Datenschutzerklärung</string>
 </resources>

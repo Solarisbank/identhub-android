@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identity_activity_label_progress">Identification progress</string>
-    <string name="identity_dialog_quit_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
-    <string name="identity_dialog_quit_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.</string>
-    <string name="identity_dialog_quit_process_positive_button">Verlassen</string>
-    <string name="identity_dialog_quit_process_negative_button">Bleiben</string>
-    <string name="identity_activity_first_step_label">Verifizierung der Telefonnummer</string>
-    <string name="identity_activity_second_step_label">Überprüfen der Identität</string>
-    <string name="identity_activity_third_step_label">Unterzeichnen Sie Ihren Kartenantrag</string>
-    <string name="identity_activity_next_step">Next: %1$s</string>
-    <string name="identity_dialog_fallback_process_negative_button">Verifizieren mit ID</string>
-    <string name="identity_dialog_fallback_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
-    <string name="identity_dialog_fallback_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.\n\nAlternativ können Sie Ihre Identität auch mit einem Ausweisdokument verifizieren. In diesem Fall wählen Sie bitte \"Verifizieren mit ID\".</string>
+    <string name="identhub_identity_activity_label_progress">Identification progress</string>
+    <string name="identhub_identity_dialog_quit_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
+    <string name="identhub_identity_dialog_quit_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.</string>
+    <string name="identhub_identity_dialog_quit_process_positive_button">Verlassen</string>
+    <string name="identhub_identity_dialog_quit_process_negative_button">Bleiben</string>
+    <string name="identhub_identity_activity_first_step_label">Verifizierung der Telefonnummer</string>
+    <string name="identhub_identity_activity_second_step_label">Überprüfen der Identität</string>
+    <string name="identhub_identity_activity_third_step_label">Unterzeichnen Sie Ihren Kartenantrag</string>
+    <string name="identhub_identity_activity_next_step">Next: %1$s</string>
+    <string name="identhub_identity_dialog_fallback_process_negative_button">Verifizieren mit ID</string>
+    <string name="identhub_identity_dialog_fallback_process_title">Sind Sie sich sicher, dass Sie den Anmeldeprozess verlassen wollen?</string>
+    <string name="identhub_identity_dialog_fallback_process_message">Ihr Fortschritt wird nicht gespeichert. Beim nächsten Versuch werden Sie wieder von vorne beginnen.\n\nAlternativ können Sie Ihre Identität auch mit einem Ausweisdokument verifizieren. In diesem Fall wählen Sie bitte \"Verifizieren mit ID\".</string>
 </resources>

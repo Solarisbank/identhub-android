@@ -23,7 +23,7 @@ class PhoneVerificationFragment: IdentHubFragment() {
     private val sharedViewModel: VerificationBankViewModel by lazy { activityViewModels() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_phone_verification, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_phone_verification, container, false)
             .also {
                 phoneVerificationView = it.findViewById(R.id.phoneVerification)
                 phoneVerificationView?.eventListener = { event -> handlePhoneVerificationViewEvent(event) }

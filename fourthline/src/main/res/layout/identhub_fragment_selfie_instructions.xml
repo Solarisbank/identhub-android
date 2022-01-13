@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonLayout"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/identhub_ic_selfie"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toTopOf="@id/topGuideline" />
+
+            <TextView
+                android:id="@+id/welcomeTitle"
+                style="@style/IdentHubTextView.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:text="@string/identhub_fourthline_welcome_container_title"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/image" />
+
+            <de.solarisbank.sdk.feature.view.StartImageTextView
+                android:id="@+id/firstTickInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/identhub_fourthline_welcome_container_first_tick"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle"/>
+
+            <de.solarisbank.sdk.feature.view.StartImageTextView
+                android:id="@+id/secondTickInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/identhub_fourthline_welcome_container_second_tick"
+                android:layout_marginTop="@dimen/identhub_margin_4"
+                app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/firstTickInfo"/>
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:text="@string/identhub_fourthline_welcome_container_description"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/secondTickInfo" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noticeRoot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_24"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
+                <ImageView
+                    android:id="@+id/noticeImage"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@string/identhub_fourthline_terms_notice_title"
+                    android:src="@drawable/identhub_ic_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/noticeTitle"
+                    style="@style/IdentHubTextView.Small_13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/identhub_margin_4"
+                    android:text="@string/identhub_fourthline_terms_notice_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
+                    app:layout_constraintStart_toEndOf="@+id/noticeImage"
+                    app:layout_constraintTop_toTopOf="@+id/noticeImage" />
+
+                <TextView
+                    android:id="@+id/noticeDot"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/identhub_margin_8"
+                    android:text="\u2022"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/noticeImage"
+                    app:layout_constraintStart_toStartOf="@+id/noticeImage"
+                    app:layout_constraintTop_toBottomOf="@+id/noticeImage" />
+
+                <TextView
+                    android:id="@+id/termsText"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/identhub_fourthline_welcome_container_notice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/noticeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/noticeDot" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/startButton"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/identhub_default_button_height"
+            android:layout_marginTop="@dimen/identhub_margin_4"
+            android:layout_marginBottom="@dimen/identhub_margin_16"
+            android:layout_weight="1"
+            android:text="@string/identhub_fourthline_welcome_container_continue_button" />
+
+    </LinearLayout>
+</RelativeLayout>

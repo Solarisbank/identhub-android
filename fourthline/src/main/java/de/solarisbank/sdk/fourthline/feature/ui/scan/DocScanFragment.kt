@@ -141,7 +141,7 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("getOverlayView()")
         return LayoutInflater
                 .from(requireContext())
-                .inflate(R.layout.fragment_doc_scan, requireActivity().findViewById(R.id.content), false)
+                .inflate(R.layout.identhub_fragment_doc_scan, requireActivity().findViewById(R.id.content), false)
                 .also(::initView)
     }
 
@@ -149,10 +149,10 @@ class DocScanFragment : DocumentScannerFragment() {
         with(view) {
             documentMask = findViewById(R.id.documentMask)
             val maskResource = when (currentDocumentType) {
-                DocumentType.PASSPORT -> R.drawable.ic_passport_front_success_frame
-                DocumentType.ID_CARD -> R.drawable.ic_idcard_front_success_frame
-                DocumentType.PAPER_ID -> R.drawable.ic_paperid_inside_left_frame
-                else -> R.drawable.ic_idcard_front_success_frame
+                DocumentType.PASSPORT -> R.drawable.identhub_ic_passport_front_success_frame
+                DocumentType.ID_CARD -> R.drawable.identhub_ic_idcard_front_success_frame
+                DocumentType.PAPER_ID -> R.drawable.identhub_ic_paperid_inside_left_frame
+                else -> R.drawable.identhub_ic_idcard_front_success_frame
             }
             documentMask?.setImageResource(maskResource)
             takeSnapshot = findViewById(R.id.takeSnapshot)
@@ -218,33 +218,33 @@ class DocScanFragment : DocumentScannerFragment() {
             DocumentFileSide.FRONT ->
                 when (currentDocumentType) {
                     DocumentType.ID_CARD ->
-                        if (isAngled) R.drawable.ic_idcard_front_tilted_success_frame
-                        else R.drawable.ic_idcard_front_success_frame
+                        if (isAngled) R.drawable.identhub_ic_idcard_front_tilted_success_frame
+                        else R.drawable.identhub_ic_idcard_front_success_frame
                     DocumentType.PASSPORT ->
-                        if (isAngled) R.drawable.ic_passport_angled_success_frame
-                        else R.drawable.ic_passport_front_success_frame
+                        if (isAngled) R.drawable.identhub_ic_passport_angled_success_frame
+                        else R.drawable.identhub_ic_passport_front_success_frame
                     DocumentType.PAPER_ID ->
-                        if (isAngled) R.drawable.ic_paperid_back_tilted_frame
-                        else R.drawable.ic_paperid_back_frame
-                    else -> R.drawable.ic_idcard_front_success_frame
+                        if (isAngled) R.drawable.identhub_ic_paperid_back_tilted_frame
+                        else R.drawable.identhub_ic_paperid_back_frame
+                    else -> R.drawable.identhub_ic_idcard_front_success_frame
                 }
 
             DocumentFileSide.BACK ->
                 when (currentDocumentType) {
                     DocumentType.ID_CARD ->
-                        if (isAngled) R.drawable.ic_idcard_back_tilted_success_frame
-                        else R.drawable.ic_idcard_back_success_frame
+                        if (isAngled) R.drawable.identhub_ic_idcard_back_tilted_success_frame
+                        else R.drawable.identhub_ic_idcard_back_success_frame
                     DocumentType.PAPER_ID ->
-                        if (isAngled) R.drawable.ic_paperid_back_tilted_frame
-                        else R.drawable.ic_paperid_back_frame
-                    else -> R.drawable.ic_idcard_back_success_frame
+                        if (isAngled) R.drawable.identhub_ic_paperid_back_tilted_frame
+                        else R.drawable.identhub_ic_paperid_back_frame
+                    else -> R.drawable.identhub_ic_idcard_back_success_frame
                 }
             DocumentFileSide.INSIDE_LEFT ->
-                if (isAngled) R.drawable.ic_paperid_inside_left_tilted_frame
-                else R.drawable.ic_paperid_inside_left_frame
+                if (isAngled) R.drawable.identhub_ic_paperid_inside_left_tilted_frame
+                else R.drawable.identhub_ic_paperid_inside_left_frame
             DocumentFileSide.INSIDE_RIGHT ->
-                if (isAngled) R.drawable.ic_paperid_inside_right_tilted_frame
-                else R.drawable.ic_paperid_inside_right_frame
+                if (isAngled) R.drawable.identhub_ic_paperid_inside_right_tilted_frame
+                else R.drawable.identhub_ic_paperid_inside_right_frame
             else -> throw RuntimeException("ID cards do not have document side: $fileSide")
         }
 
@@ -255,28 +255,28 @@ class DocScanFragment : DocumentScannerFragment() {
         return when(docType) {
             DocumentType.PASSPORT -> {
                 if (isAngled) {
-                    R.drawable.ic_passport_scan_angled
+                    R.drawable.identhub_ic_passport_scan_angled
                 } else {
-                    R.drawable.ic_passport_scan
+                    R.drawable.identhub_ic_passport_scan
                 }
             }
             else -> {
                 when (fileSide) {
                     DocumentFileSide.FRONT -> {
                         if (isAngled) {
-                            R.drawable.ic_card_scan_front_angled
+                            R.drawable.identhub_ic_card_scan_front_angled
                         } else {
-                            R.drawable.ic_card_scan_front
+                            R.drawable.identhub_ic_card_scan_front
                         }
                     }
                     DocumentFileSide.BACK -> {
                         if (isAngled) {
-                            R.drawable.ic_card_scan_back_angled
+                            R.drawable.identhub_ic_card_scan_back_angled
                         } else {
-                            R.drawable.ic_card_scan_back
+                            R.drawable.identhub_ic_card_scan_back
                         }
                     }
-                    else -> R.drawable.ic_card_scan_front
+                    else -> R.drawable.identhub_ic_card_scan_front
                 }
             }
         }
@@ -372,11 +372,11 @@ class DocScanFragment : DocumentScannerFragment() {
         toggleTiltingCard(false)
         docImageView?.hide()
         bulletList?.updateItems(
-            title = getString(R.string.document_scanner_clear_picture_list_title),
+            title = getString(R.string.identhub_document_scanner_clear_picture_list_title),
             items = listOf(
-                getString(R.string.document_scanner_clear_picture_list_item1),
-                getString(R.string.document_scanner_clear_picture_list_item2),
-                getString(R.string.document_scanner_clear_picture_list_item3)
+                getString(R.string.identhub_document_scanner_clear_picture_list_item1),
+                getString(R.string.identhub_document_scanner_clear_picture_list_item2),
+                getString(R.string.identhub_document_scanner_clear_picture_list_item3)
             )
         )
         bulletList?.show()
@@ -391,7 +391,7 @@ class DocScanFragment : DocumentScannerFragment() {
             tiltingCard?.show()
             animator = AnimatorInflater.loadAnimator(
                 requireContext(),
-                R.animator.card_tilt
+                R.animator.identhub_card_tilt
             ) as ObjectAnimator
             animator?.apply {
                 target = tiltingCard

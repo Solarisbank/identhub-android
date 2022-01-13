@@ -36,7 +36,7 @@ class PassingPossibilityFragment : FourthlineFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_passing_possibility, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_passing_possibility, container, false)
                 .also {
                     progressBar = it.findViewById(R.id.progressBar)
                     customizeUI()
@@ -65,9 +65,9 @@ class PassingPossibilityFragment : FourthlineFragment() {
             is PersonDataStateDto.EMPTY_DOCS_LIST_ERROR -> {
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
-                        title = getString(R.string.empty_id_doc_list_title),
-                        message = getString(R.string.empty_id_doc_list_message),
-                        positiveLabel = getString(R.string.ok_button),
+                        title = getString(R.string.identhub_empty_id_doc_list_title),
+                        message = getString(R.string.identhub_empty_id_doc_list_message),
+                        positiveLabel = getString(R.string.identhub_ok_button),
                         positiveAction = {
                             activityViewModel.setFourthlineIdentificationFailure()
                         }
@@ -76,9 +76,9 @@ class PassingPossibilityFragment : FourthlineFragment() {
             is PersonDataStateDto.GENERIC_ERROR -> {
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
-                        title = getString(R.string.generic_error_title),
-                        message = getString(R.string.generic_error_message),
-                        positiveLabel = getString(R.string.ok_button),
+                        title = getString(R.string.identhub_generic_error_title),
+                        message = getString(R.string.identhub_generic_error_message),
+                        positiveLabel = getString(R.string.identhub_ok_button),
                         positiveAction = {
                             activityViewModel.setFourthlineIdentificationFailure()
                         }

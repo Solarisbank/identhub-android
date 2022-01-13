@@ -8,12 +8,12 @@ public class ApplicationProcessingFragment extends ProgressIndicatorFragment {
 
     @Override
     protected int getTitleResource() {
-        return R.string.progress_indicator_precessing_application_title;
+        return R.string.identhub_progress_indicator_precessing_application_title;
     }
 
     @Override
     protected int getMessageResource() {
-        return R.string.progress_indicator_precessing_application_message;
+        return R.string.identhub_progress_indicator_precessing_application_message;
     }
 
     @Override

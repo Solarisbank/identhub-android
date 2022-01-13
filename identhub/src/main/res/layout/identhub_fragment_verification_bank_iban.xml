@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        android:fillViewport="true"
+        android:layout_above="@+id/buttonLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="24dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="24dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/topGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="24dp" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/identhub_ic_bank_iban_verification"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/topGuideline" />
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/IdentHubTextView.Headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:text="@string/identhub_verification_bank_title"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/image" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:text="@string/identhub_verification_bank_description"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/secondDescription"
+                style="@style/IdentHubTextView.Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:text="@string/identhub_verification_bank_second_description"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <ImageView
+                android:id="@+id/lock_image"
+                android:layout_width="@dimen/identhub_margin_16"
+                android:layout_height="@dimen/identhub_margin_16"
+                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:src="@drawable/identhub_ic_baseline_lock_24"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/secondDescription" />
+
+            <TextView
+                android:id="@+id/encription_info"
+                style="@style/IdentHubColoredTextView.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/identhub_margin_8"
+                android:textStyle="bold"
+                android:text="@string/identhub_verification_bank_encrypted_label"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/lock_image"
+                app:layout_constraintBottom_toBottomOf="@id/lock_image"
+                app:layout_constraintTop_toTopOf="@id/lock_image" />
+
+            <EditText
+                android:id="@+id/ibanNumber"
+                style="@style/IdentHubTextBox"
+                android:textSize="18dp"
+                android:inputType="textCapCharacters|textNoSuggestions|textVisiblePassword"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:hint="@string/identhub_verification_bank_input_hint"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:padding="@dimen/identhub_margin_12"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@+id/encription_info" />
+
+            <TextView
+                android:id="@+id/errorMessage"
+                style="@style/IdentHubTextView.Tiny.Error"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:text="@string/identhub_verification_bank_input_not_valid_message"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/ibanNumber"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/ibanNumber"
+                app:layout_constraintTop_toBottomOf="@+id/ibanNumber"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/termsLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/errorMessage"
+                app:layout_constraintStart_toStartOf="@+id/errorMessage"
+                app:layout_constraintEnd_toEndOf="@+id/errorMessage"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:clipToPadding="false">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/termsCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/termsDisclaimer"
+                    style="@style/IdentHubTextView.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/identhub_margin_8"
+                    android:text="I’ve read and accept the Terms and Conditions" />
+
+            </LinearLayout>
+
+            <de.solarisbank.sdk.feature.view.BulletListLayout
+                android:id="@+id/noticeBulletList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintTop_toBottomOf="@id/termsLayout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/submitButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/identhub_default_button_height"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/identhub_margin_4"
+        android:layout_marginBottom="@dimen/identhub_margin_4"
+        android:text="@string/identhub_verification_bank_action_next_step"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/submitButton"
+        app:layout_constraintEnd_toEndOf="@id/submitButton"
+        app:layout_constraintTop_toTopOf="@id/submitButton"
+        app:layout_constraintBottom_toBottomOf="@id/submitButton"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="selfie_step_scanning">Scanner</string>
-    <string name="selfie_step_checking_liveness">Vérification de la preuve de vie</string>
-    <string name="selfie_result_successful">Scan réussi</string>
-</resources>

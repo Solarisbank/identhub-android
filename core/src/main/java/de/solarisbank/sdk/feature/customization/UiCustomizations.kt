@@ -31,7 +31,7 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
         is ButtonStyle.Alternative -> return
         is ButtonStyle.Primary -> {
             backgroundColor = customization.colors.themePrimary(context)
-            textColorStateList = context.getColorStateList(R.color.button_textcolor_selector)
+            textColorStateList = context.getColorStateList(R.color.identhub_button_textcolor_selector)
         }
         is ButtonStyle.SecondaryNoBackground -> {
             backgroundColor = context.getColor(R.color.ident_hub_color_surface)

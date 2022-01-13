@@ -68,7 +68,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     }
 
     override fun getTitleResource(): Int {
-        return R.string.progress_indicator_precessing_verification_message
+        return R.string.identhub_progress_indicator_precessing_verification_message
     }
 
     override fun inject(component: FragmentComponent) {
@@ -82,32 +82,32 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
         class PaymentInitAuthPersonError(val nextStep: String, val retryAvailable: Boolean = false)
             : ProcessingVerificationResult(), ErrorState {// 8. payment init auth person
-            override val dialogTitleId = R.string.payment_init_auth_person_title
-            override val dialogMessageId = R.string.payment_init_auth_person_message
-            override val dialogPositiveLabelId = R.string.ok_button
+            override val dialogTitleId = R.string.identhub_payment_init_auth_person_title
+            override val dialogMessageId = R.string.identhub_payment_init_auth_person_message
+            override val dialogPositiveLabelId = R.string.identhub_ok_button
             override val dialogNegativeLabelId = null
         }
 
         class PaymentInitFailedError(val nextStep: String)
             : ProcessingVerificationResult(), ErrorState {//  9. payment init failed
-            override val dialogTitleId = R.string.payment_init_failed_title
-            override val dialogMessageId = R.string.payment_init_failed_message
-            override val dialogPositiveLabelId = R.string.ok_button
+            override val dialogTitleId = R.string.identhub_payment_init_failed_title
+            override val dialogMessageId = R.string.identhub_payment_init_failed_message
+            override val dialogPositiveLabelId = R.string.identhub_ok_button
             override val dialogNegativeLabelId: Nothing? = null
         }
 
         class PaymentInitExpiredError(val nextStep: String)
             : ProcessingVerificationResult(), ErrorState {// 10. payment init expired
-            override val dialogTitleId = R.string.payment_init_expired_title
-            override val dialogMessageId = R.string.payment_init_expired_message
-            override val dialogPositiveLabelId = R.string.ok_button
-            override val dialogNegativeLabelId = R.string.invalid_iban_retry_button
+            override val dialogTitleId = R.string.identhub_payment_init_expired_title
+            override val dialogMessageId = R.string.identhub_payment_init_expired_message
+            override val dialogPositiveLabelId = R.string.identhub_ok_button
+            override val dialogNegativeLabelId = R.string.identhub_iban_verification_invalid_iban_retry_button
         }
 
         object GenericError : ProcessingVerificationResult(), ErrorState {
-            override val dialogTitleId = R.string.generic_error_title
-            override val dialogMessageId = R.string.generic_error_message
-            override val dialogPositiveLabelId = R.string.ok_button
+            override val dialogTitleId = R.string.identhub_generic_error_title
+            override val dialogMessageId = R.string.identhub_generic_error_message
+            override val dialogPositiveLabelId = R.string.identhub_ok_button
             override val dialogNegativeLabelId = null
         }
     }

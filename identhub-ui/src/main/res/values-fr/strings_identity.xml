@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identity_activity_label_progress">Progression de l’identification</string>
-    <string name="identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
-    <string name="identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
-    <string name="identity_dialog_quit_process_positive_button">Quitter</string>
-    <string name="identity_dialog_quit_process_negative_button">Rester</string>
-    <string name="identity_activity_first_step_label">Vérification du téléphone</string>
-    <string name="identity_activity_second_step_label">Vérifier l’identité</string>
-    <string name="identity_activity_third_step_label">Signer votre demande</string>
-    <string name="identity_activity_next_step">Suivant : %1$s</string>
-    <string name="identity_dialog_fallback_process_negative_button">Vérifier avec le document d’identité</string>
-    <string name="identity_dialog_fallback_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
-    <string name="identity_dialog_fallback_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.\n\nVous pouvez également vérifier votre identité à l’aide d’une pièce d’identité. Dans ce cas, veuillez choisir « Vérifier avec le document d’identité ».</string>
+    <string name="identhub_identity_activity_label_progress">Progression de l’identification</string>
+    <string name="identhub_identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
+    <string name="identhub_identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
+    <string name="identhub_identity_dialog_quit_process_positive_button">Quitter</string>
+    <string name="identhub_identity_dialog_quit_process_negative_button">Rester</string>
+    <string name="identhub_identity_activity_first_step_label">Vérification du téléphone</string>
+    <string name="identhub_identity_activity_second_step_label">Vérifier l’identité</string>
+    <string name="identhub_identity_activity_third_step_label">Signer votre demande</string>
+    <string name="identhub_identity_activity_next_step">Suivant : %1$s</string>
+    <string name="identhub_identity_dialog_fallback_process_negative_button">Vérifier avec le document d’identité</string>
+    <string name="identhub_identity_dialog_fallback_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
+    <string name="identhub_identity_dialog_fallback_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.\n\nVous pouvez également vérifier votre identité à l’aide d’une pièce d’identité. Dans ce cas, veuillez choisir « Vérifier avec le document d’identité ».</string>
 </resources>

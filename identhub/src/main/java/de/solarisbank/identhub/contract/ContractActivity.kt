@@ -26,7 +26,7 @@ class ContractActivity : IdentHubActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contract)
+        setContentView(R.layout.identhub_activity_contract)
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph()
         initView()
@@ -44,7 +44,7 @@ class ContractActivity : IdentHubActivity() {
     fun initGraph() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
-        val navGraph = navInflater.inflate(R.navigation.contract_nav_graph)
+        val navGraph = navInflater.inflate(R.navigation.identhub_contract_nav_graph)
         navHostFragment.navController.setGraph(navGraph, intent.extras)
     }
 
@@ -58,7 +58,7 @@ class ContractActivity : IdentHubActivity() {
         } else {
             solarisIndicator.visibility = View.GONE
         }
-        setTitle(R.string.identity_activity_third_step_label)
+        setTitle(R.string.identhub_identity_activity_third_step_label)
     }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {

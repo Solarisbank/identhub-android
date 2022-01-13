@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="scanner_error_timeout">Scanner Zeitlimit erreicht. Bitte versuchen Sie es erneut.</string>
-    <string name="scanner_error_face_disappeared">Gesicht nicht sichtbar während der Lebendigkeitsprüfung. Stellen Sie sicher, dass Ihr Gesicht während des gesamten Scanvorgangs sichtbar ist. Bitte versuchen Sie es erneut.</string>
-    <string name="scanner_error_camera_permission">Bitte der Kamera Zugriff erlauben.</string>
-    <string name="scanner_error_recording_failed">Videoaufnahme fehlgeschlagen.</string>
-    <string name="scanner_error_interrupted">Scanner wurde unterbrochen.</string>
-    <string name="scanner_error_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz.</string>
-    <string name="scanner_error_unknown">Unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.</string>
-    <string name="scanner_error_multiple_faces_detected">Mehrere Gesichter erkannt.</string>
-    <string name="scanner_error_title">Fehler beim Scannen</string>
-    <string name="scanner_error_scan_button_retry">erneut versuchen</string>
-    <string name="scanner_error_scan_button_quit">Verlassen</string>
+    <string name="identhub_scanner_error_timeout">Scanner Zeitlimit erreicht. Bitte versuchen Sie es erneut.</string>
+    <string name="identhub_scanner_error_face_disappeared">Gesicht nicht sichtbar während der Lebendigkeitsprüfung. Stellen Sie sicher, dass Ihr Gesicht während des gesamten Scanvorgangs sichtbar ist. Bitte versuchen Sie es erneut.</string>
+    <string name="identhub_scanner_error_camera_permission">Bitte der Kamera Zugriff erlauben.</string>
+    <string name="identhub_scanner_error_recording_failed">Videoaufnahme fehlgeschlagen.</string>
+    <string name="identhub_scanner_error_interrupted">Scanner wurde unterbrochen.</string>
+    <string name="identhub_scanner_error_models_not_downloaded">Überprüfen Sie Ihre Internetverbindung und/oder verfügbaren Speicherplatz.</string>
+    <string name="identhub_scanner_error_unknown">Unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.</string>
+    <string name="identhub_scanner_error_multiple_faces_detected">Mehrere Gesichter erkannt.</string>
+    <string name="identhub_scanner_error_title">Fehler beim Scannen</string>
+    <string name="identhub_scanner_error_scan_button_retry">Erneut versuchen</string>
+    <string name="identhub_scanner_error_scan_button_quit">Verlassen</string>
 </resources>

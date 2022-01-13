@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="empty_id_doc_list_title">ID document not supported</string>
-    <string name="empty_id_doc_list_message">Unfortunately we cannot support your identification document at the moment. </string>
+    <string name="identhub_empty_id_doc_list_title">ID document not supported</string>
+    <string name="identhub_empty_id_doc_list_message">Unfortunately we cannot support your identification document at the moment. </string>
 </resources>

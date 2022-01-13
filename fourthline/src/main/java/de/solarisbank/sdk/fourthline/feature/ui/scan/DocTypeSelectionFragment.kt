@@ -52,7 +52,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Timber.d("onCreateView")
-        return inflater.inflate(R.layout.fragment_doc_type_selection, container, false).also {
+        return inflater.inflate(R.layout.identhub_fragment_doc_type_selection, container, false).also {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
             progressBar = it.findViewById(R.id.progress)
@@ -108,9 +108,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                 Timber.d("processState 3")
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
-                        getString(R.string.fourthline_doc_type_country_not_supported_headline),
-                        getString(R.string.fourthline_doc_type_country_not_supported_message),
-                        getString(R.string.fourthline_doc_type_country_not_supported_button),
+                        getString(R.string.identhub_fourthline_doc_type_country_not_supported_headline),
+                        getString(R.string.identhub_fourthline_doc_type_country_not_supported_message),
+                        getString(R.string.identhub_fourthline_doc_type_country_not_supported_button),
                         positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
                         tag = "DocScanError"
                 )
@@ -120,10 +120,10 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
                     //todo add trasnlation
-                    title = getString(R.string.location_fetching_error_title),
-                    message = getString(R.string.location_fetching_error_message),
-                    positiveLabel = getString(R.string.retry_button),
-                    negativeLabel = getString(R.string.quit_location_button),
+                    title = getString(R.string.identhub_location_fetching_error_title),
+                    message = getString(R.string.identhub_location_fetching_error_message),
+                    positiveLabel = getString(R.string.identhub_doc_type_retry_button),
+                    negativeLabel = getString(R.string.identhub_quit_location_button),
                     positiveAction = {
                         fetchData()
                     },
@@ -136,10 +136,10 @@ class DocTypeSelectionFragment: FourthlineFragment() {
             is PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR -> {
                 showAlertFragment(
                     //todo add trasnlation
-                    title = getString(R.string.location_not_active_title),
-                    message = getString(R.string.location_not_active_message),
-                    positiveLabel = getString(R.string.enable_location_button),
-                    negativeLabel = getString(R.string.quit_location_button),
+                    title = getString(R.string.identhub_location_not_active_title),
+                    message = getString(R.string.identhub_location_not_active_message),
+                    positiveLabel = getString(R.string.identhub_enable_location_button),
+                    negativeLabel = getString(R.string.identhub_quit_location_button),
                     positiveAction = {
                         requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                         Handler(Looper.getMainLooper()).postDelayed({
@@ -156,9 +156,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                 Timber.d("processState 4")
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
-                        title = getString(R.string.generic_error_title),
-                        message = getString(R.string.generic_error_message),
-                        positiveLabel = getString(R.string.quit_location_button),
+                        title = getString(R.string.identhub_generic_error_title),
+                        message = getString(R.string.identhub_generic_error_message),
+                        positiveLabel = getString(R.string.identhub_quit_location_button),
                         positiveAction = {
                             activityViewModel.setFourthlineIdentificationFailure()
                         }
@@ -224,10 +224,10 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         }
         if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
             showAlertFragment(
-                getString(R.string.scanner_error_title),
-                message ?: getString(R.string.scanner_error_unknown),
-                getString(R.string.scanner_error_scan_button_retry),
-                getString(R.string.scanner_error_scan_button_quit),
+                getString(R.string.identhub_scanner_error_title),
+                message ?: getString(R.string.identhub_scanner_error_unknown),
+                getString(R.string.identhub_scanner_error_scan_button_retry),
+                getString(R.string.identhub_scanner_error_scan_button_quit),
                 positiveAction = {},
                 negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
                 tag = "DocScanError"

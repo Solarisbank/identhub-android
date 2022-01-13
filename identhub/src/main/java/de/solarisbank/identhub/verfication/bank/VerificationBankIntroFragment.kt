@@ -15,7 +15,7 @@ class VerificationBankIntroFragment : IdentHubFragment() {
     private var startVerifyButton: Button? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_verification_bank_intro, container, false)
+        val root = inflater.inflate(R.layout.identhub_fragment_verification_bank_intro, container, false)
         startVerifyButton = root.findViewById(R.id.startVerifyButton)
         return root
     }
