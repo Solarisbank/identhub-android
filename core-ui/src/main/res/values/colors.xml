@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ident_hub_color_primary">#FF6432</color>
-    <color name="ident_hub_color_primary_dark">#FF6432</color>
-    <color name="ident_hub_color_primaryVariant">#CC5129</color>
-    <color name="ident_hub_color_onPrimary">#FFFFFFFF</color>
-    <color name="ident_hub_color_secondary">#3284FF</color>
-    <color name="ident_hub_color_secondary_dark">#3284FF</color>
-    <color name="ident_hub_color_secondaryTint">#F2F7FF</color>
-    <color name="ident_hub_color_success">#09AA67</color>
-    <color name="ident_hub_color_error">#E23636</color>
-    <color name="ident_hub_color_errorSurface">#fff5f5</color>
-    <color name="ident_hub_color_surface">#FFFFFF</color>
-    <color name="ident_hub_color_background">#F7F8FA</color>
-    <color name="ident_hub_color_edit_text">#414D5D</color>
-    <color name="ident_hub_color_light_button_text_enabled">#FFFFFF</color>
-    <color name="ident_hub_color_light_button_text_disabled">#AAFFFFFF</color>
-    <color name="ident_hub_color_separator">#E6E6E6</color>
-    <color name="ident_hub_color_highlight">#33000000</color>
 
-    <color name="ident_hub_color_text_box">#7E8794</color>
-    <color name="ident_hub_color_text_box_background">#F4F4F7</color>
-    <color name="ident_hub_color_text_box_border">#C9CFD6</color>
+    <color name="identhub_color_primary">#FF6432</color>
+    <color name="identhub_color_primary_dark">#FF6432</color>
+    <color name="identhub_color_primaryVariant">#CC5129</color>
+    <color name="identhub_color_onPrimary">#FFFFFFFF</color>
+    <color name="identhub_color_secondary">#3284FF</color>
+    <color name="identhub_color_secondary_dark">#3284FF</color>
+    <color name="identhub_color_secondaryTint">#F2F7FF</color>
+    <color name="identhub_color_success">#09AA67</color>
+    <color name="identhub_color_error">#E23636</color>
+    <color name="identhub_color_errorSurface">#fff5f5</color>
+    <color name="identhub_color_surface">#FFFFFF</color>
+    <color name="identhub_color_background">#F7F8FA</color>
+    <color name="identhub_color_edit_text">#414D5D</color>
+    <color name="identhub_color_light_button_text_enabled">#FFFFFF</color>
+    <color name="identhub_color_light_button_text_disabled">#AAFFFFFF</color>
+    <color name="identhub_color_separator">#E6E6E6</color>
+    <color name="identhub_color_highlight">#33000000</color>
 
-    <color name="ident_hub_color_black">#FF000000</color>
-    <color name="ident_hub_color_black50">#7E8794</color>
-    <color name="ident_hub_color_black25">#BFBFBF</color>
-    <color name="ident_hub_color_black10">#E9EDF2</color>
-    <color name="ident_hub_color_black05">#F7F8FA</color>
-    <color name="ident_hub_color_disable">#f2f2f2</color>
-    <color name="ident_hub_color_white">#FFFFFFFF</color>
-    <color name="ident_hub_color_dark_green">#1C894E</color>
-    <color name="ident_hub_color_dark_grey">#252525</color>
-    <color name="ident_hub_color_light_grey">#747474</color>
+    <color name="identhub_color_text_box">#7E8794</color>
+    <color name="identhub_color_text_box_background">#F4F4F7</color>
+    <color name="identhub_color_text_box_border">#C9CFD6</color>
 
-    <color name="ident_hub_color_base">#0F1926</color>
-    <color name="ident_hub_color_base75">#414D5D</color>
-    <color name="ident_hub_color_base50">#7E8794</color>
-    <color name="ident_hub_color_base25">#C9CFD6</color>
-    <color name="ident_hub_color_base05">#F7F8FA</color>
+    <color name="identhub_color_black">#FF000000</color>
+    <color name="identhub_color_black50">#7E8794</color>
+    <color name="identhub_color_black25">#BFBFBF</color>
+    <color name="identhub_color_black10">#E9EDF2</color>
+    <color name="identhub_color_black05">#F7F8FA</color>
+    <color name="identhub_color_disable">#f2f2f2</color>
+    <color name="identhub_color_white">#FFFFFFFF</color>
+    <color name="identhub_color_dark_green">#1C894E</color>
+    <color name="identhub_color_dark_grey">#252525</color>
+    <color name="identhub_color_light_grey">#747474</color>
+
+    <color name="identhub_color_base">#0F1926</color>
+    <color name="identhub_color_base75">#414D5D</color>
+    <color name="identhub_color_base50">#7E8794</color>
+    <color name="identhub_color_base25">#C9CFD6</color>
+    <color name="identhub_color_base05">#F7F8FA</color>
 
     <!--step_indicator-->
 
-    <color name="ident_hub_step_disabled_text_color">#E3E3E3</color>
-
-    <color name="ident_hub_step_enabled_text_color">#FFFAFAFA</color>
+    <color name="identhub_step_disabled_text_color">#E3E3E3</color>
+    <color name="identhub_step_enabled_text_color">#FFFAFAFA</color>
 
     <!--date picker-->
-    <color name="ident_hub_date_picker_color_background">#F7F8FA</color>
-    <color name="ident_hub_date_picker_text_color_primary">#3284FF</color>
-    <color name="ident_hub_date_picker_text_color_secondary">#3284FF</color>
-    <color name="ident_hub_date_picker_text_color_calendar">#3284FF</color>
+    <color name="identhub_date_picker_color_background">#F7F8FA</color>
+    <color name="identhub_date_picker_text_color_primary">#3284FF</color>
+    <color name="identhub_date_picker_text_color_secondary">#3284FF</color>
+    <color name="identhub_date_picker_text_color_calendar">#3284FF</color>
 
 </resources>

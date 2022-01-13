@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="IdentHubActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">@color/ident_hub_color_surface</item>
+        <item name="background">@color/identhub_color_surface</item>
         <item name="titleTextStyle">@style/IdentHubActionBarTitleStyle</item>
         <item name="elevation">0dp</item>
     </style>
 
     <style name="IdentHubActionBarTitleStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/ident_hub_color_dark_grey</item>
+        <item name="android:textColor">@color/identhub_color_dark_grey</item>
         <item name="android:textSize">19sp</item>
     </style>
 </resources>

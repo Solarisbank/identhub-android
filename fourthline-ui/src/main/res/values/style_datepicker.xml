@@ -2,20 +2,14 @@
 <resources>
     <style name="IdentHubDatePickerStyle" parent="android:Theme.Material.Dialog">
         <item name="android:datePickerStyle">@style/IdentHubDatePicker</item>
-        <item name="android:background">@color/ident_hub_date_picker_color_background</item>
-        <item name="android:colorPrimary">@color/ident_hub_date_picker_color_background</item>
-        <item name="android:textColorPrimary">@color/ident_hub_date_picker_text_color_primary</item>
-        <item name="android:textColorSecondary">@color/ident_hub_date_picker_text_color_secondary</item>
-        <!--        <item name="android:windowBackground">@drawable/dialog_background_material</item>-->
+        <item name="android:background">@color/identhub_date_picker_color_background</item>
+        <item name="android:colorPrimary">@color/identhub_date_picker_color_background</item>
+        <item name="android:textColorPrimary">@color/identhub_date_picker_text_color_primary</item>
+        <item name="android:textColorSecondary">@color/identhub_date_picker_text_color_secondary</item>
     </style>
 
     <style name="IdentHubDatePicker" parent="android:Widget.Material.DatePicker">
         <item name="android:datePickerMode">spinner</item>
-        <item name="android:calendarTextColor">@color/ident_hub_date_picker_text_color_calendar</item>
-        <!--        <item name="android:headerTextColor">@color/ident_hub_color_secondary</item>-->
+        <item name="android:calendarTextColor">@color/identhub_date_picker_text_color_calendar</item>
     </style>
-
-
-
-
 </resources>

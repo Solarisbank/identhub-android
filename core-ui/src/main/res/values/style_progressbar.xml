@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="IdentHubProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:tint">@color/ident_hub_color_primary</item>
+        <item name="android:tint">@color/identhub_color_primary</item>
     </style>
 </resources>

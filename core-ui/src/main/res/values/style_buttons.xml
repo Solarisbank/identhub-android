@@ -4,7 +4,7 @@
         <item name="android:textColor">@color/identhub_button_textcolor_selector</item>
         <item name="android:background">@drawable/identhub_button_primary_background</item>
         <item name="android:gravity">center</item>
-        <item name="iconTint">@color/ident_hub_color_onPrimary</item>
+        <item name="iconTint">@color/identhub_color_onPrimary</item>
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@fontFamily/roboto_medium</item>
@@ -13,10 +13,10 @@
     </style>
 
     <style name="IdentHubAlternativeButton" parent="Widget.AppCompat.Button">
-        <item name="android:textColor">@color/ident_hub_color_black</item>
+        <item name="android:textColor">@color/identhub_color_black</item>
         <item name="android:background">@drawable/identhub_button_alternative_background</item>
         <item name="android:gravity">center</item>
-        <item name="iconTint">@color/ident_hub_color_black</item>
+        <item name="iconTint">@color/identhub_color_black</item>
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@fontFamily/roboto_medium</item>
@@ -25,10 +25,10 @@
     </style>
 
     <style name="IdentHubSecondaryNoBackgroundButton" parent="Widget.AppCompat.Button">
-        <item name="android:textColor">@color/ident_hub_color_secondary</item>
+        <item name="android:textColor">@color/identhub_color_secondary</item>
         <item name="android:background">@drawable/identhub_button_alternative_background</item>
         <item name="android:gravity">center</item>
-        <item name="iconTint">@color/ident_hub_color_secondary</item>
+        <item name="iconTint">@color/identhub_color_secondary</item>
         <item name="textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@fontFamily/roboto_medium</item>

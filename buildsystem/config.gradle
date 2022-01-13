@@ -5,4 +5,7 @@ ext {
             targetSdk: 30,
             buildTools: "30.0.3"
     ]
+    libConfig = [
+            resourcePrefix: 'identhub_'
+    ]
 }

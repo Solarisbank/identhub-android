@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <attr name="IdentHubStepIndicatorStyle" format="reference"/>
-    <declare-styleable name="StepIndicator">
+    <declare-styleable name="IdentHubStepIndicator" tools:ignore="ResourceName">
         <attr name="stepsAmount" format="enum">
             <enum name="amount2" value="2"/>
             <enum name="amount3" value="3"/>

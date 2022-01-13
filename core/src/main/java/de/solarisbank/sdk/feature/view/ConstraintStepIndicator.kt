@@ -32,8 +32,8 @@ class ConstraintStepIndicator @JvmOverloads constructor(
     private var startEndSegmentParentMargin: Int = 0
     private var customStepPassedColor: Int? = null
     private var stepUnpassedColor: Int =
-        if (!context.isDarkMode()) resources.getColor(R.color.ident_hub_color_black10)
-        else resources.getColor(R.color.ident_hub_color_base75)
+        if (!context.isDarkMode()) resources.getColor(R.color.identhub_color_black10)
+        else resources.getColor(R.color.identhub_color_base75)
 
     private val labelsConstraintWrapper = ConstraintLayout(context)
         .apply {
@@ -70,19 +70,19 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         //todo fix obtaining common style
         context
             .obtainStyledAttributes(
-                attrs, R.styleable.StepIndicator, defStyleAttr, R.style.IdentHubStepIndicatorStyleCommon
+                attrs, R.styleable.IdentHubStepIndicator, defStyleAttr, R.style.IdentHubStepIndicatorStyleCommon
             )
             .also { style1 ->
-                stepsAmount = style1.getString(R.styleable.StepIndicator_stepsAmount)!!.toInt()
+                stepsAmount = style1.getString(R.styleable.IdentHubStepIndicator_stepsAmount)!!.toInt()
                 outerBetweenSegmentMarginDp =
-                    style1.getDimensionPixelSize(R.styleable.StepIndicator_innerSegmentMargin, 0)
+                    style1.getDimensionPixelSize(R.styleable.IdentHubStepIndicator_innerSegmentMargin, 0)
 
-                labelBottomMarginDp = style1.getDimensionPixelSize(R.styleable.StepIndicator_labelMargin,0)
-                startEndSegmentParentMargin = style1.getDimensionPixelSize(R.styleable.StepIndicator_startEndSegmentParentMargin,0)
-                areLabelsVisible = style1.getBoolean(R.styleable.StepIndicator_areLabelsVisible, false)
+                labelBottomMarginDp = style1.getDimensionPixelSize(R.styleable.IdentHubStepIndicator_labelMargin,0)
+                startEndSegmentParentMargin = style1.getDimensionPixelSize(R.styleable.IdentHubStepIndicator_startEndSegmentParentMargin,0)
+                areLabelsVisible = style1.getBoolean(R.styleable.IdentHubStepIndicator_areLabelsVisible, false)
 
                 val ta = context.obtainStyledAttributes(
-                    style1.getResourceId(R.styleable.StepIndicator_currentStepLabelStyle, 0),
+                    style1.getResourceId(R.styleable.IdentHubStepIndicator_currentStepLabelStyle, 0),
                     intArrayOf(android.R.attr.textSize)
                 )
                 currentStepLabelTextSize =
@@ -91,7 +91,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                 ta.recycle()
 
                 context.obtainStyledAttributes(
-                    style1.getResourceId(R.styleable.StepIndicator_nextStepLabelStyle, 0),
+                    style1.getResourceId(R.styleable.IdentHubStepIndicator_nextStepLabelStyle, 0),
                     intArrayOf(android.R.attr.textSize)
                 ).apply {
                     nextStepLabelTextSize = getDimension(R.styleable.TextAppearance_android_textSize, 0f)
@@ -102,7 +102,7 @@ class ConstraintStepIndicator @JvmOverloads constructor(
                 currentStepLabel = TextView(
                     context,
                     null,
-                    style1.getResourceId(R.styleable.StepIndicator_currentStepLabelStyle, 0),
+                    style1.getResourceId(R.styleable.IdentHubStepIndicator_currentStepLabelStyle, 0),
                     R.attr.currentStepLabelStyle
                 ).apply {
                     tag = "currentStepLabel"

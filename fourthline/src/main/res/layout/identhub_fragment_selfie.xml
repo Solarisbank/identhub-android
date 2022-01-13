@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ident_hub_color_surface">
+    android:background="@color/identhub_color_surface">
 
     <de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
         android:id="@+id/punchhole"

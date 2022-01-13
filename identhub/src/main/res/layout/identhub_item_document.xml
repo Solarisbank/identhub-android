@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0"
         style="@style/IdentHubTextView.Small_12"
-        android:textColorLink="@color/ident_hub_color_light_grey"
+        android:textColorLink="@color/identhub_color_light_grey"
         android:paddingStart="@dimen/identhub_margin_8"
         android:paddingEnd="@dimen/identhub_margin_8"
         android:layout_marginStart="@dimen/identhub_margin_8"

@@ -2,7 +2,7 @@
 <resources>
     <style name="IdentHubDateField" parent="IdentHubTextView">
         <item name="android:background">@drawable/identhub_date_field_drawable</item>
-        <item name="android:textColor">@color/ident_hub_color_black</item>
+        <item name="android:textColor">@color/identhub_color_black</item>
         <item name="android:gravity">center</item>
     </style>
 </resources>

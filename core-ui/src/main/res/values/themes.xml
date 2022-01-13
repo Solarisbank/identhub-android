@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="IdentHubBaseTheme" parent="Theme.AppCompat.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/ident_hub_color_primary</item>
-        <item name="color">@color/ident_hub_color_primaryVariant</item>
-        <item name="colorControlNormal">@color/ident_hub_color_onPrimary</item>
+        <item name="colorPrimary">@color/identhub_color_primary</item>
+        <item name="color">@color/identhub_color_primaryVariant</item>
+        <item name="colorControlNormal">@color/identhub_color_onPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/ident_hub_color_secondary</item>
+        <item name="colorSecondary">@color/identhub_color_secondary</item>
         <item name="bottomSheetDialogTheme">@style/IdentHubBottomSheet</item>
         <item name="actionBarStyle">@style/IdentHubActionBarStyle</item>
         <item name="IdentHubStepIndicatorStyle">@style/IdentHubStepIndicatorStyleCommon</item>

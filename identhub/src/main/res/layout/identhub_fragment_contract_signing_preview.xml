@@ -205,7 +205,7 @@
                 android:paddingStart="@dimen/identhub_margin_8"
                 android:paddingEnd="@dimen/identhub_margin_8"
                 android:text="@string/identhub_contract_signing_additional_terms_label"
-                android:textColorLink="@color/ident_hub_color_light_grey"
+                android:textColorLink="@color/identhub_color_light_grey"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"

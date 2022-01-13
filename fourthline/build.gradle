@@ -8,6 +8,7 @@ plugins {
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
+    resourcePrefix libConfig.resourcePrefix
 
     sourceSets {
         test.java.srcDirs += ["${project(':core').projectDir}/src/test/java"]

@@ -8,6 +8,7 @@ plugins {
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
+    resourcePrefix libConfig.resourcePrefix
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk

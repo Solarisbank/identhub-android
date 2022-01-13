@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ident_hub_color_surface"
+    android:background="@color/identhub_color_surface"
     tools:ignore="HardcodedText">
 
     <androidx.constraintlayout.widget.Guideline
@@ -139,7 +139,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/identhub_document_scanner_confirm"
-            android:textColor="@color/ident_hub_color_light_button_text_enabled"
+            android:textColor="@color/identhub_color_light_button_text_enabled"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/separator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -174,7 +174,7 @@
         android:background="@drawable/identhub_button_secondary_background"
         android:text="@string/identhub_document_scanner_take_picture"
         android:textAllCaps="false"
-        android:textColor="@color/ident_hub_color_white"
+        android:textColor="@color/identhub_color_white"
         android:textSize="15sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

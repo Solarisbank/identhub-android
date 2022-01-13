@@ -34,7 +34,7 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
             textColorStateList = context.getColorStateList(R.color.identhub_button_textcolor_selector)
         }
         is ButtonStyle.SecondaryNoBackground -> {
-            backgroundColor = context.getColor(R.color.ident_hub_color_surface)
+            backgroundColor = context.getColor(R.color.identhub_color_surface)
             textColorStateList = ColorStateList.valueOf(customization.colors.themeSecondary(context))
         }
     }
@@ -46,7 +46,7 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
 
     mask.paint.color = backgroundColor
 
-    val highlightColor = context.getColor(R.color.ident_hub_color_highlight)
+    val highlightColor = context.getColor(R.color.identhub_color_highlight)
     val drawable = RippleDrawable(ColorStateList.valueOf(highlightColor), mask, mask)
     background = drawable
     stateListAnimator = null

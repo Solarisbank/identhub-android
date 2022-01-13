@@ -111,7 +111,7 @@
     <TextView
         android:id="@+id/findOutMore"
         style="@style/IdentHubTextView.HeadLine3"
-        android:textColor="@color/ident_hub_color_light_button_text_enabled"
+        android:textColor="@color/identhub_color_light_button_text_enabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/identhub_margin_32"

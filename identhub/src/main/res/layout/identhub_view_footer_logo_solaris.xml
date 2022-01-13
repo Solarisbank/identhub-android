@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/identhub_margin_4"
         android:text="@string/identhub_copyright"
-        android:textColor="@color/ident_hub_color_black50" />
+        android:textColor="@color/identhub_color_black50" />
 
     <ImageView
         android:layout_width="80dp"

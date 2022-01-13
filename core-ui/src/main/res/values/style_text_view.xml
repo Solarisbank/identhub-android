@@ -2,7 +2,7 @@
 <resources>
 
     <style name="IdentHubTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/ident_hub_color_black</item>
+        <item name="android:textColor">@color/identhub_color_black</item>
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0</item>
         <item name="fontFamily">sans-serif</item>
@@ -46,7 +46,7 @@
     </style>
 
     <style name="IdentHubColoredTextView.Green">
-        <item name="android:textColor">@color/ident_hub_color_dark_green</item>
+        <item name="android:textColor">@color/identhub_color_dark_green</item>
     </style>
 
     <!-- small -->
@@ -84,7 +84,7 @@
 
     <!-- error message -->
     <style name="IdentHubTextView.Tiny.Error">
-        <item name="android:textColor">@color/ident_hub_color_error</item>
+        <item name="android:textColor">@color/identhub_color_error</item>
     </style>
 
     <style name="IdentHubCurrentStepLabelCommon" parent="IdentHubTextView">

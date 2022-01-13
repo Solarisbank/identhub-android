@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <attr name="IdentHubStartImageTextViewStyle" format="reference" />
 
-    <declare-styleable name="IdentHubStartImageTextView">
+    <declare-styleable name="IdentHubStartImageTextView" tools:ignore="ResourceName">
         <attr name="android:text" />
         <attr name="android:drawable" />
         <attr name="textTopMargin" format="dimension" />

@@ -24,15 +24,15 @@ class CustomizationRepositoryImpl(
 
     private fun createCustomization(style: StyleDto? = null): Customization {
         val colors = Customization.Colors(
-            primary = getSDKColor(style?.colors?.primary, R.color.ident_hub_color_primary),
+            primary = getSDKColor(style?.colors?.primary, R.color.identhub_color_primary),
             primaryDark = getSDKColor(
                 style?.colors?.primaryDark,
-                R.color.ident_hub_color_primary_dark
+                R.color.identhub_color_primary_dark
             ),
-            secondary = getSDKColor(style?.colors?.secondary, R.color.ident_hub_color_secondary),
+            secondary = getSDKColor(style?.colors?.secondary, R.color.identhub_color_secondary),
             secondaryDark = getSDKColor(
                 style?.colors?.secondaryDark,
-                R.color.ident_hub_color_secondary_dark
+                R.color.identhub_color_secondary_dark
             )
         )
         val dimens = Customization.Dimens(
