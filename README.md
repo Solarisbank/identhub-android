@@ -4,7 +4,7 @@ Android SDK for Solarisbank IdentHub.
 It provides an easy way to integrate identification provided by Solarisbank into your Android app.
 
 ## Installation
-Add `identhub-android` as a dependency to your `build.gradle` file:
+Add `identhub-android` as a dependency to your `build.gradle` file. For `$latest_version` check [Releases](../../releases).
 
 ```groovy
 repositories {
@@ -28,9 +28,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.solarisbank.identhub:identhub-android:1.5.3'
+    implementation "de.solarisbank.identhub:identhub-android:$latest_version"
     // Optional integration of Fourthline SDK
-    implementation 'de.solarisbank.identhub:identhub-android-fourthline:1.5.3'
+    implementation "de.solarisbank.identhub:identhub-android-fourthline:$latest_version"
 }
 ```
 
