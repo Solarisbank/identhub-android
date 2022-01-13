@@ -10,7 +10,7 @@
     <string name="identhub_contract_signing_notice1" translatable="false"/>
     <string name="identhub_contract_signing_notice2" translatable="false"/>
     <string name="identhub_contract_signing_sign_action">Sign and Submit</string>
-    <string name="identhub_contract_signing_code_expires">Expires in %1$s</string>
+    <string name="identhub_contract_signing_code_expires">You can resend the code in %1$s</string>
     <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
     <string name="identhub_contract_signing_code_request_new_button">Request new code</string>
     <string name="identhub_contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>

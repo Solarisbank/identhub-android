@@ -105,7 +105,7 @@ class PhoneVerificationView @JvmOverloads constructor(
     }
 
     companion object {
-        const val TIMER_DURATION_SECONDS = 10L
+        const val TIMER_DURATION_SECONDS = 20L
     }
 }
 

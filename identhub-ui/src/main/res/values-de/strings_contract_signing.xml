@@ -7,7 +7,7 @@
     <string name="identhub_contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
     <string name="identhub_contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
     <string name="identhub_contract_signing_sign_action">Unterzeichnen und Abschicken</string>
-    <string name="identhub_contract_signing_code_expires">Läuft ab in %1$s</string>
+    <string name="identhub_contract_signing_code_expires">Sie können den Code erneut absenden in %1$s</string>
     <string name="identhub_contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
     <string name="identhub_contract_signing_code_request_new_button">Neuen Code erfragen</string>
     <string name="identhub_contract_signing_terms_label">Es gelten die AGBs</string>
