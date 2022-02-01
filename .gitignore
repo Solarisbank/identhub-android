@@ -3,6 +3,7 @@
 *.aar
 *.ap_
 *.aab
+**/release/output-metadata.json
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -55,6 +56,7 @@ captures/
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 .idea/misc.xml
+.idea/jarRepositories.xml
 .DS_Store
 
 # Keystore files

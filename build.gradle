@@ -5,7 +5,7 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
@@ -21,7 +21,7 @@ allprojects {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven {
             url "https://maven.pkg.github.com/Fourthline-com/FourthlineSDK-Android"
             credentials {
