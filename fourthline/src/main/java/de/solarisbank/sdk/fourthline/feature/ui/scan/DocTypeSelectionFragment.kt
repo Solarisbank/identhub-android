@@ -1,7 +1,9 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.view.isVisible
@@ -38,13 +39,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private var confirmButton: Button? = null
     private var imageView: ImageView? = null
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
-        activityViewModels()
-    }
+    private val kycSharedViewModel: KycSharedViewModel by lazy { activityViewModels() }
 
-    private val activityViewModel: FourthlineViewModel by lazy<FourthlineViewModel> {
-        activityViewModels()
-    }
+    private val activityViewModel: FourthlineViewModel by lazy { activityViewModels() }
 
     override fun inject(component: FourthlineFragmentComponent) {
         component.inject(this)
@@ -76,7 +73,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        kycSharedViewModel.supportedDocLiveData.observe(viewLifecycleOwner, { processState(it) })
+        kycSharedViewModel.supportedDocLiveData.observe(viewLifecycleOwner) { processState(it) }
     }
 
     override fun initViewModel() {
@@ -91,8 +88,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         confirmButton!!.setOnClickListener { moveToDocScanFragment() }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun processState(personDataStateDto: PersonDataStateDto) {
-        Timber.d("processState 0 : ${personDataStateDto}")
+        Timber.d("processState 0 : $personDataStateDto")
         when (personDataStateDto) {
             is PersonDataStateDto.UPLOADING -> {
                 Timber.d("processState 1")
@@ -135,18 +133,17 @@ class DocTypeSelectionFragment: FourthlineFragment() {
             }
             is PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR -> {
                 showAlertFragment(
-                    //todo add trasnlation
                     title = getString(R.string.identhub_location_not_active_title),
                     message = getString(R.string.identhub_location_not_active_message),
-                    positiveLabel = getString(R.string.identhub_enable_location_button),
-                    negativeLabel = getString(R.string.identhub_quit_location_button),
-                    positiveAction = {
+                    negativeLabel = getString(R.string.identhub_enable_location_button),
+                    positiveLabel = getString(R.string.identhub_quit_location_button),
+                    negativeAction = {
                         requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                         Handler(Looper.getMainLooper()).postDelayed({
                             processState(PersonDataStateDto.RETRY_LOCATION_FETCHING)
                         }, 1000)
                     },
-                    negativeAction = {
+                    positiveAction = {
                         activityViewModel.setFourthlineIdentificationFailure()
                     }
 
@@ -175,16 +172,22 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                 ) })
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         requestLocationPermission()
     }
 
-
-    private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+    private fun requestLocationPermission(askedBefore: Boolean = false) {
+        val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        if (ContextCompat.checkSelfPermission(requireContext(), permission) != PermissionChecker.PERMISSION_GRANTED) {
             Timber.d("requestLocationPermission() 1")
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
+            if (shouldShowRequestPermissionRationale(permission)) {
+                showLocationPermissionRationale(alwaysDenied = false)
+            } else if (askedBefore) {
+                showLocationPermissionRationale(alwaysDenied = true)
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
+            }
         } else {
             Timber.d("requestLocationPermission() 2")
             fetchData()
@@ -193,12 +196,8 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Timber.d("onRequestPermissionsResult")
-        if (requestCode == LOCATION_PERMISSION_CODE && (grantResults.isEmpty() || grantResults[0] != PermissionChecker.PERMISSION_GRANTED)) {
-            Timber.d("onRequestPermissionsResult 1")
-            requestLocationPermission()
-        } else if (requestCode == LOCATION_PERMISSION_CODE && (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED)){
-            Timber.d("onRequestPermissionsResult 2")
-            fetchData()
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            requestLocationPermission(askedBefore = true)
         }
     }
 
@@ -233,6 +232,30 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                 tag = "DocScanError"
             )
         }
+    }
+
+    private fun showLocationPermissionRationale(alwaysDenied: Boolean) {
+        showAlertFragment(
+            title = getString(R.string.identhub_fourthline_permission_rationale_title),
+            message = getString(R.string.identhub_fourthline_location_permission_rationale_message),
+            negativeLabel = getString(R.string.identhub_fourthline_permission_rationale_ok),
+            negativeAction = {
+                if (alwaysDenied) {
+                    Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", requireContext().packageName, null)
+                    }.also {
+                        startActivity(it)
+                    }
+                } else {
+                    requestLocationPermission(askedBefore = true)
+                }
+            },
+            positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
+            positiveAction = {
+                activityViewModel.setFourthlineIdentificationFailure()
+            }
+        )
     }
 
     companion object {

@@ -218,11 +218,11 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun showRationale(permission: String) {
         showAlertFragment(
-            getString(R.string.identhub_fourthline_permission_rationale_title),
-            getString(R.string.identhub_fourthline_permission_rationale_message),
-            getString(R.string.identhub_fourthline_permission_rationale_ok),
-            getString(R.string.identhub_fourthline_permission_rationale_quit),
-            {
+            title = getString(R.string.identhub_fourthline_permission_rationale_title),
+            message = getString(R.string.identhub_fourthline_permission_rationale_message),
+            negativeLabel = getString(R.string.identhub_fourthline_permission_rationale_ok),
+            positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
+            negativeAction = {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                     Intent().apply {
                         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -234,7 +234,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
                     proceedWithPermissions()
                 }
             },
-            { viewModel.setFourthlineIdentificationFailure() },
+            positiveAction = {
+                viewModel.setFourthlineIdentificationFailure()
+            }
         )
     }
 

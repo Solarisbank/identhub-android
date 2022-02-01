@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="identhub_location_not_active_title">Location error</string>
-    <string name="identhub_location_not_active_message">Enable location</string>
+    <string name="identhub_location_not_active_message">Bitte aktivieren Sie die Ortung und stellen Sie sicher, dass der Modus \"Hohe Genauigkeit\" eingestellt ist.</string>
     <string name="identhub_enable_location_button">Ermöglichen</string>
     <string name="identhub_quit_location_button">Verlassen</string>
     <string name="identhub_location_fetching_error_title">Location error</string>
     <string name="identhub_location_fetching_error_message">Location was not obtained</string>
     <string name="identhub_doc_type_retry_button">Erneut versuchen</string>
+    <string name="identhub_fourthline_location_permission_rationale_message">Wir benötigen Zugriff auf Ihren Standort, um Sie zu identifizieren.</string>
 </resources>
