@@ -3,12 +3,12 @@
     <string name="identhub_selfie_scanner_scan_successful">Scansione riuscita</string>
     <string name="identhub_selfie_scanner_retake">Ripetere</string>
     <string name="identhub_selfie_scanner_confirm">Confermare</string>
-    <string name="identhub_selfie_intro">Il tuo viso è chiaramente visibile e all\'interno dello schermo?</string>
+    <string name="identhub_selfie_intro">Il tuo viso è chiaramente visibile e all’interno dello schermo?</string>
     <string name="identhub_selfie_manual">Si prega di fare una foto selfie</string>
     <string name="identhub_selfie_turn_left">Per favore gira la testa a sinistra</string>
     <string name="identhub_selfie_turn_right">Per favore gira la testa a destra</string>
     <string name="identhub_selfie_step_scanning">Riconoscimento…</string>
-    <string name="identhub_selfie_step_checking_liveness">Comprobando la viveza...</string>
+    <string name="identhub_selfie_step_checking_liveness">Comprobando la viveza…</string>
     <string name="identhub_selfie_result_successful">Scansione riuscita</string>
     <string name="identhub_selfie_warning_not_detected">Volto non riconosciuto</string>
     <string name="identhub_selfie_warning_not_in_frame">Adatta il tuo viso alla cornice della foto</string>

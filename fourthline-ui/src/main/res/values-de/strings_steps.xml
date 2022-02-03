@@ -2,7 +2,7 @@
 <resources>
     <string name="identhub_fourthline_activity_intro_step_label">Überprüfen der Identität</string>
     <string name="identhub_fourthline_activity_selfie_step_label">Machen Sie ein Selfie</string>
-    <string name="identhub_fourthline_activity_select_id_step_label">Wählen Sie Ihr Dokument für die Identifizierung</string>
+    <string name="identhub_fourthline_activity_select_id_step_label">Ihr Ausweisdokument</string>
     <string name="identhub_fourthline_activity_confirm_information_step_label">Bestätigung der Daten</string>
     <string name="identhub_fourthline_activity_verifying_step_label">Verifizierung</string>
 </resources>

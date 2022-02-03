@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_terms_button_submit">Ulteriore</string>
+    <string name="identhub_fourthline_terms_button_submit">Continua</string>
     <string name="identhub_fourthline_terms_verify_title">Verifica la tua identità</string>
     <string name="identhub_fourthline_terms_description_start">Scatta una foto selfie e scansiona il tuo documento d\'identità o il passaporto.\n\nAssicurati di consentire l\'accesso a:</string>
     <string name="identhub_fourthline_terms_description_list_item1">La tua posizione</string>
