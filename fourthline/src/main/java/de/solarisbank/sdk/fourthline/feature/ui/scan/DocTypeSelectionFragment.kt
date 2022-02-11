@@ -174,19 +174,23 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     override fun onStart() {
         super.onStart()
-        requestLocationPermission()
+        requestLocationPermission(askedBefore = false, rationalize = false)
     }
 
-    private fun requestLocationPermission(askedBefore: Boolean = false) {
+    private fun requestLocationPermission(askedBefore: Boolean = false, rationalize: Boolean = true) {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         if (ContextCompat.checkSelfPermission(requireContext(), permission) != PermissionChecker.PERMISSION_GRANTED) {
             Timber.d("requestLocationPermission() 1")
             if (shouldShowRequestPermissionRationale(permission)) {
-                showLocationPermissionRationale(alwaysDenied = false)
+                if (rationalize) {
+                    showLocationPermissionRationale(alwaysDenied = false)
+                } else {
+                    requestPermissions(arrayOf(permission), LOCATION_PERMISSION_CODE)
+                }
             } else if (askedBefore) {
                 showLocationPermissionRationale(alwaysDenied = true)
             } else {
-                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
+                requestPermissions(arrayOf(permission), LOCATION_PERMISSION_CODE)
             }
         } else {
             Timber.d("requestLocationPermission() 2")
@@ -197,7 +201,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Timber.d("onRequestPermissionsResult")
         if (requestCode == LOCATION_PERMISSION_CODE) {
-            requestLocationPermission(askedBefore = true)
+            requestLocationPermission(askedBefore = true, rationalize = true)
         }
     }
 
@@ -248,7 +252,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         startActivity(it)
                     }
                 } else {
-                    requestLocationPermission(askedBefore = true)
+                    requestLocationPermission(askedBefore = true, rationalize = false)
                 }
             },
             positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
