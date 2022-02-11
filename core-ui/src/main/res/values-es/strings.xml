@@ -8,4 +8,9 @@
     <string name="identhub_ok_button">OK</string>
     <string name="identhub_generic_error_title">Error desconocido</string>
     <string name="identhub_generic_error_message">No se ha podido realizar la verificación</string>
+
+    <string name="identhub_stepindicator_verification_bank_label">Verificación Bancaria</string>
+    <string name="identhub_stepindicator_verification_bank_next_label">Siguiente: firmar el contrato</string>
+    <string name="identhub_stepindicator_verification_id_label">Verificación del documento de identidad</string>
+    <string name="identgub_stepindicator_sign_documents_label">Firmar documentos</string>
 </resources>

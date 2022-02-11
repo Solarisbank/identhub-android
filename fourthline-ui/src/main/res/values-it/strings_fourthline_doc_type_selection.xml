@@ -2,7 +2,7 @@
 <resources>
     <string name="identhub_fourthline_doc_type_selection_title">Scatta 2 foto del tuo documento d’identità per confermare il tuo selfie.</string>
     <string name="identhub_fourthline_toc_type_selection_choose_title">Seleziona il tuo ID:</string>
-    <string name="identhub_fourthline_doc_type_selection_next_button">Continuare</string>
+    <string name="identhub_fourthline_doc_type_selection_next_button">Successivo</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">Documento di identificazione non supportato</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_message">Sfortunatamente, non supportiamo ancora i tuoi documenti di identificazione.</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_button">OK</string>

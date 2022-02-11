@@ -3,7 +3,7 @@
     <string name="identhub_verification_bank_title">Verify your identity.</string>
     <string name="identhub_verification_bank_description">Depending on the functionality of your bank account you will verify by logging into your online banking or by taking a selfie and scanning your ID/Passport.</string>
     <string name="identhub_verification_bank_second_description">Please provide your bank account IBAN and we will check the best option for you.</string>
-    <string name="identhub_verification_bank_encrypted_label">Encripted transmission active</string>
+    <string name="identhub_verification_bank_encrypted_label">Encrypted transmission active</string>
     <string name="identhub_verification_bank_notice_label">Notice</string>
     <string name="identhub_verification_bank_notice_value" />
     <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>

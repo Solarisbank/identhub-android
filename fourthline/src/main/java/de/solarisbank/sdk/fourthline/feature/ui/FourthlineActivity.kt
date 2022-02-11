@@ -68,7 +68,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
             stepIndicator.hide()
         } else {
             stepIndicator.customize(customizationRepository.get())
-            stepIndicator.setCurrentStepLabel("ID verification")
+            stepIndicator.setCurrentStepLabelRes(R.string.identhub_stepindicator_verification_id_label)
             stepIndicator.setPassedStep(3)
         }
     }

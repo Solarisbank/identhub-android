@@ -7,4 +7,9 @@
     <string name="identhub_ok_button">OK</string>
     <string name="identhub_generic_error_title">Errore sconosciuto</string>
     <string name="identhub_generic_error_message">La tua verifica non può essere completata</string>
+
+    <string name="identhub_stepindicator_verification_bank_label">Verifica della Banca</string>
+    <string name="identhub_stepindicator_verification_bank_next_label">Successiva: firma del Contratto</string>
+    <string name="identhub_stepindicator_verification_id_label">Verifica del Documento di Identita</string>
+    <string name="identgub_stepindicator_sign_documents_label">Firma dei Documenti</string>
 </resources>

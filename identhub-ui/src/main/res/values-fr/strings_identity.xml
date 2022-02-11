@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_identity_activity_label_progress">Progression de l’identification</string>
+    <string name="identhub_identity_activity_label_progress">Identification en cours</string>
     <string name="identhub_identity_dialog_quit_process_title">Êtes-vous sûr de vouloir quitter le processus d’intégration ?</string>
     <string name="identhub_identity_dialog_quit_process_message">Votre progression sera perdue. Vous devrez répéter les étapes la prochaine fois.</string>
     <string name="identhub_identity_dialog_quit_process_positive_button">Quitter</string>

@@ -6,7 +6,7 @@
     <string name="identhub_contract_signing_preview_notice_label">Voir vos documents</string>
     <string name="identhub_contract_signing_preview_send_code_action">Envoyer un code pour signer</string>
     <string name="identhub_contract_signing_description">Un code de vérification a été envoyé sur votre téléphone (%1$s). Saisir le code ci-dessous</string>
-    <string name="identhub_contract_signing_sign_action">Signer et soumettre</string>
+    <string name="identhub_contract_signing_sign_action">Signer et envoyer</string>
     <string name="identhub_contract_signing_code_expires">Vous pouvez renvoyer le code dans %1$s</string>
     <string name="identhub_contract_signing_code_request_new">Le code était incorrect ou non valide. \nVeuillez demander un nouveau code et réessayer</string>
     <string name="identhub_contract_signing_code_request_new_button">Demander un nouveau code</string>

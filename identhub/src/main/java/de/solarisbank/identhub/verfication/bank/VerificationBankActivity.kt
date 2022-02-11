@@ -55,8 +55,8 @@ class VerificationBankActivity : IdentHubActivity() {
             if (!IdentHubSession.hasPhoneVerification) {
                 startStep = COMPLETED_STEP.VERIFICATION_BANK.index
             }
-            stepIndicator.setCurrentStepLabel("Bank verification") //todo create ticket for translation
-            stepIndicator.setNextStepLabel("Next: Sign contract") //todo create ticket for translation
+            stepIndicator.setCurrentStepLabelRes(R.string.identhub_stepindicator_verification_bank_label)
+            stepIndicator.setNextStepLabelRes(R.string.identhub_stepindicator_verification_bank_next_label)
             stepIndicatorStep = lastCompletedStep?.index ?: startStep
             stepIndicatorVisible = true
         }

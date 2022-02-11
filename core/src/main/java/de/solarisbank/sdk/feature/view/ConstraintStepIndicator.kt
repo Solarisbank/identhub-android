@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
@@ -152,8 +153,18 @@ class ConstraintStepIndicator @JvmOverloads constructor(
         currentStepLabel.text = text
     }
 
+    fun setCurrentStepLabelRes(@StringRes res: Int) {
+        context?.getString(res)?.let(currentStepLabel::setText)
+            ?: Timber.e("No context attached")
+    }
+
     fun setNextStepLabel(text: String) {
         nextStepLabel.text = text
+    }
+
+    fun setNextStepLabelRes(@StringRes res: Int) {
+        context?.getString(res)?.let(nextStepLabel::setText)
+            ?: Timber.e("No context attached")
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
