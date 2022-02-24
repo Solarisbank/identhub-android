@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_contract_signing_preview_title">Quasi finito!</string>
-    <string name="identhub_contract_signing_preview_subtitle">Si prega di firmare la richiesta della carta facendo clic su \"Ricevi e firma codice\" di seguito, quindi inserisci il codice a 4 cifre nell\'apposito campo.</string>
+    <string name="identhub_contract_signing_preview_title">Controlli il suo documento(i)</string>
+    <string name="identhub_contract_signing_preview_subtitle">La preghiamo di revisionare il documento(i) prima di firmalo(i).</string>
+    <string name="identhub_contract_signing_finish_title">Identificato con successo!</string>
+    <string name="identhub_contract_signing_finish_subtitle">Hai completato l\'identificazione!\nScarica i documenti e conservali in un luogo sicuro per riferimenti futuri.</string>
+    <string name="identhub_contract_signing_finish_button">Fine</string>
+    <string name="identhub_contract_signing_preview_view_document">Visualizzare il documento</string>
     <string name="identhub_contract_signing_preview_notice">Nota</string>
     <string name="identhub_contract_signing_preview_notice_label">Visualizza i tuoi documenti qui:</string>
-    <string name="identhub_contract_signing_preview_send_code_action">Ricevi e firma il codice</string>
+    <string name="identhub_contract_signing_preview_send_code_action">Ricevi il codice e firma</string>
     <string name="identhub_contract_signing_description">Inserisci il codice di verifica inviato al tuo telefono (%1$s).</string>
     <string name="identhub_contract_signing_sign_action">Invio e Firma</string>
     <string name="identhub_contract_signing_code_expires">Puoi inviare di nuovo il codice %1$s</string>
-    <string name="identhub_contract_signing_code_request_new">Il codice non è corretto o è scaduto.\nRichiedi un nuovo codice e riprova.</string>
+    <string name="identhub_contract_signing_code_request_new">Il codice non è corretto o è scaduto.</string>
     <string name="identhub_contract_signing_code_request_new_button">Richiedi nuovo codice</string>
     <string name="identhub_contract_signing_terms_label">Si applicano i termini e condizioni</string>
     <string name="identhub_contract_signing_terms_bank_ident_label">Si applicano i termini e condizioni di contratto di Swisscom</string>

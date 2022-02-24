@@ -54,7 +54,6 @@ class ContractSigningViewModel(
             countDownTimeEventLiveData.postValue(
                 Event(CountDownTime(millisUntilFinished, true))
             )
-            counterFinished = true
         }
     }
 
@@ -127,22 +126,12 @@ class ContractSigningViewModel(
         startTimer()
     }
 
-    fun startTimer() {
-        counterFinished = false
+    private fun startTimer() {
         countDownTimer.start()
-    }
-
-    fun stopTimer() {
-        countDownTimer.cancel()
-    }
-
-    fun getCounterFinished(): Boolean {
-        return counterFinished
     }
 
     fun onSubmitButtonClicked(confirmToken: String) {
         Timber.d("onSubmitButtonClicked, confrimToken: $confirmToken")
-        stopTimer()
         compositeDisposable.add(
                 confirmContractSignUseCase
                     .execute(confirmToken)
@@ -176,7 +165,6 @@ class ContractSigningViewModel(
 
     companion object {
         private const val INTERVAL_IN_SEC = 1L
-        private const val COUNTER_TIME = 45L
-        private var counterFinished = false
+        private const val COUNTER_TIME = 20L
     }
 }

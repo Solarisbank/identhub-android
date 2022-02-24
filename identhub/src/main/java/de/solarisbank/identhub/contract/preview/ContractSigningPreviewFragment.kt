@@ -1,21 +1,12 @@
 package de.solarisbank.identhub.contract.preview
 
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.method.LinkMovementMethod
-import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.R
@@ -26,7 +17,6 @@ import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.data.dto.DocumentDto
-import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
@@ -40,15 +30,13 @@ import java.io.File
 class ContractSigningPreviewFragment : IdentHubFragment() {
     private val adapter = DocumentAdapter()
     private var clickDisposable = Disposables.disposed()
-    private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
-    private val viewModel: ContractSigningPreviewViewModel by lazy<ContractSigningPreviewViewModel> { viewModels() }
+    private val sharedViewModel: ContractViewModel by lazy { activityViewModels() }
+    private val viewModel: ContractSigningPreviewViewModel by lazy { viewModels() }
 
+    private var titleView: TextView? = null
+    private var subtitleView: TextView? = null
     private var documentsList: RecyclerView? = null
     private var submitButton: Button? = null
-    private var termsAndConditionsString: TextView? = null
-    private var additionalTermsAndConditionsDot: TextView? = null
-    private var additionalTermsAndConditionsString: TextView? = null
-    private var imageView: ImageView? = null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -57,26 +45,22 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_contract_signing_preview, container, false)
                 .also {
+                    titleView = it.findViewById(R.id.title)
+                    subtitleView = it.findViewById(R.id.subtitle)
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
-                    termsAndConditionsString = it.findViewById(R.id.termsAndConditionsString)
-                    additionalTermsAndConditionsDot = it.findViewById(R.id.additionalTermsAndConditionsDot)
-                    additionalTermsAndConditionsString = it.findViewById(R.id.additionalTermsAndConditionsString)
-                    imageView = it.findViewById(R.id.scratch)
                     customizeUI()
                 }
     }
 
     private fun customizeUI() {
         submitButton?.customize(customization)
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         viewModel.refreshIdentificationData()
-        observeIdentification()
         observeContracts()
         observeDownloadPdfFile()
         observeDownloadingPdfFiles()
@@ -90,36 +74,28 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         documentsList!!.layoutManager = LinearLayoutManager(context)
         documentsList!!.setHasFixedSize(true)
         documentsList!!.adapter = adapter
-        submitButton!!.setOnClickListener { sharedViewModel.navigateToContractSigningProcess() }
-    }
-
-    private fun observeIdentification() {
-        viewModel.getIdentificationData().observe(viewLifecycleOwner, Observer { onIdentification(it) } )
-    }
-
-    private fun onIdentification(result: Result<IdentificationDto>) {
-        if (result.succeeded) {
-            if (result.data!!.method == "bank_id") {
-                termsAndConditionsString!!.setText(R.string.identhub_contract_signing_terms_bank_id_label)
-            } else if (result.data!!.method == "bank") {
-                termsAndConditionsString!!.setText(R.string.identhub_contract_signing_terms_bank_ident_label)
-            }
-            val link = getString(R.string.identhub_contract_signing_additional_terms_link)
-            if (link.isNotBlank()) {
-                Timber.d("onIdentification(): link %s", link)
-                additionalTermsAndConditionsString!!.visibility = VISIBLE
-                additionalTermsAndConditionsDot!!.visibility = VISIBLE
-                val label = getString(R.string.identhub_contract_signing_additional_terms_label)
-                val additionalTermsSpannable = SpannableString(label)
-                additionalTermsSpannable.setSpan(URLSpan(link), 0, label.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                additionalTermsAndConditionsString!!.text = additionalTermsSpannable
-                additionalTermsAndConditionsString!!.movementMethod = LinkMovementMethod()
-            }
+        val isPreview = arguments?.getBoolean("isPreview") ?: true
+        if (isPreview) {
+            titleView?.text = getString(R.string.identhub_contract_signing_preview_title)
+            subtitleView?.text = getString(R.string.identhub_contract_signing_preview_subtitle)
+            submitButton?.text = getString(R.string.identhub_contract_signing_preview_send_code_action)
+        } else {
+            titleView?.text = getString(R.string.identhub_contract_signing_finish_title)
+            subtitleView?.text = getString(R.string.identhub_contract_signing_finish_subtitle)
+            submitButton?.text = getString(R.string.identhub_contract_signing_finish_button)
+        }
+        submitButton!!.setOnClickListener {
+            if (isPreview)
+                sharedViewModel.navigateToContractSigningProcess()
+            else
+                sharedViewModel.callOnSuccessResult()
         }
     }
 
     private fun observeDownloadingPdfFiles() {
-        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner, Observer { onDownloadedPdfFiles(it) })
+        viewModel.getFetchPdfFilesResultLiveData().observe(viewLifecycleOwner) {
+            onDownloadedPdfFiles(it)
+        }
     }
 
     private fun onDownloadedPdfFiles(result: Result<List<File>>) {
@@ -134,7 +110,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     }
 
     private fun observeDownloadPdfFile() {
-        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner, Observer { onPdfFileFetched(it) })
+        viewModel.getFetchPdfResultLiveData().observe(viewLifecycleOwner) { onPdfFileFetched(it) }
     }
 
     private fun onPdfFileFetched(result: Result<File?>) {
@@ -146,7 +122,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     }
 
     private fun observeContracts() {
-        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner, Observer { onDocumentResultChanged(it) })
+        viewModel.getDocumentsResultLiveData().observe(viewLifecycleOwner) { onDocumentResultChanged(it) }
     }
 
     private fun onDocumentResultChanged(result: Result<List<DocumentDto>>) {
@@ -171,16 +147,6 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         clickDisposable.dispose()
         documentsList = null
         submitButton = null
-        termsAndConditionsString = null
-        additionalTermsAndConditionsDot = null
-        additionalTermsAndConditionsString = null
-        imageView = null
         super.onDestroyView()
-    }
-
-    companion object {
-        fun newInstance(): Fragment {
-            return ContractSigningPreviewFragment()
-        }
     }
 }

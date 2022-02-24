@@ -10,11 +10,32 @@
         <action
             android:id="@+id/action_contractSigningPreviewFragment_to_contractSigningFragment"
             app:destination="@id/contractSigningFragment" />
+        <argument
+            android:name="isPreview"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/identhub_contractsigningpreviewfragment"
+        android:name="de.solarisbank.identhub.contract.preview.ContractSigningPreviewFragment"
+        android:label="ContractSigningPreviewFragment">
+        <argument
+            android:name="isPreview"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/contractSigningFragment"
         android:name="de.solarisbank.identhub.contract.sign.ContractSigningFragment"
-        android:label="ContractSigningFragment" />
+        android:label="ContractSigningFragment" >
+        <action
+            android:id="@+id/identhub_action_contractsigningfragment_to_identhub_contractsigningpreviewfragment"
+            app:destination="@id/identhub_contractsigningpreviewfragment" >
+            <argument
+                android:name="isPreview"
+                android:defaultValue="false" />
+        </action>
+    </fragment>
 
 </navigation>
 

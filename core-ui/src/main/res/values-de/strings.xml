@@ -11,5 +11,5 @@
     <string name="identhub_stepindicator_verification_bank_label">Verifizierung der Bank</string>
     <string name="identhub_stepindicator_verification_bank_next_label">Als nächstes: Vertragsunterzeichnung.</string>
     <string name="identhub_stepindicator_verification_id_label">Verifizierung des Personalausweises</string>
-    <string name="identgub_stepindicator_sign_documents_label">Unterzeichnung der Dokumente.</string>
+    <string name="identhub_stepindicator_sign_documents_label">Unterzeichnung der Dokumente.</string>
 </resources>

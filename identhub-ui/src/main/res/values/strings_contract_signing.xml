@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_contract_signing_preview_title">Nearly there!</string>
-    <string name="identhub_contract_signing_preview_subtitle">In the following please sign your application by entering the code that will be send to your phone.</string>
+    <string name="identhub_contract_signing_preview_title">Check your document(s)</string>
+    <string name="identhub_contract_signing_preview_subtitle">Please review the document(s) before you sign them.</string>
+    <string name="identhub_contract_signing_finish_title">Identification Successful!</string>
+    <string name="identhub_contract_signing_finish_subtitle">You have completed the identification process! \nDownload documents and save in secure place for future reference.</string>
+    <string name="identhub_contract_signing_finish_button">Finish</string>
+    <string name="identhub_contract_signing_preview_view_document">View document</string>
     <string name="identhub_contract_signing_preview_notice">Notice</string>
     <string name="identhub_contract_signing_preview_notice_label">View your documents</string>
     <string name="identhub_contract_signing_preview_send_code_action">Send code to sign</string>
@@ -11,7 +15,7 @@
     <string name="identhub_contract_signing_notice2" translatable="false"/>
     <string name="identhub_contract_signing_sign_action">Sign and Submit</string>
     <string name="identhub_contract_signing_code_expires">You can resend the code in %1$s</string>
-    <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid. \nPlease request a new code and try again</string>
+    <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid.</string>
     <string name="identhub_contract_signing_code_request_new_button">Request new code</string>
     <string name="identhub_contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
     <string name="identhub_contract_signing_terms_label">The T&amp;Cs apply</string>

@@ -96,4 +96,15 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="IdentHubTopHeaderTitle" parent="IdentHubTextView">
+        <item name="android:textSize">@dimen/identhub_top_header_title_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/identhub_h1_text_color</item>
+    </style>
+
+    <style name="IdentHubParagraphText" parent="IdentHubTextView">
+        <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/identhub_paragraph_text_color</item>
+    </style>
 </resources>

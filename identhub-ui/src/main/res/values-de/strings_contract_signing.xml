@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_contract_signing_preview_title">Fast fertig!</string>
-    <string name="identhub_contract_signing_preview_subtitle">Bitte unterzeichnen Sie Ihren Kartenantrag, indem Sie unten auf  “Code empfangen und unterzeichnen“ klicken und im Folgenden den 4-stelligen Code in dem entsprechenden Feld eingeben.</string>
+    <string name="identhub_contract_signing_preview_title">Prüfen Sie Ihr(e) Dokument(e)</string>
+    <string name="identhub_contract_signing_preview_subtitle">Bitte prüfen Sie das/die Dokument(e), bevor Sie es/sie unterschreiben.</string>
+    <string name="identhub_contract_signing_finish_title">Erfolgreich identifiziert!</string>
+    <string name="identhub_contract_signing_finish_subtitle">Sie haben die Identifikation abgeschlossen!\nLaden Sie die Dokumente herunter und bewahren Sie diese an einem sicheren Ort auf, um später darauf zurückgreifen zu können.</string>
+    <string name="identhub_contract_signing_finish_button">Beenden</string>
+    <string name="identhub_contract_signing_preview_view_document">Dokument ansehen</string>
     <string name="identhub_contract_signing_preview_notice">Hinweis</string>
     <string name="identhub_contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
     <string name="identhub_contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
     <string name="identhub_contract_signing_description">Geben Sie bitte den Überprüfungscode ein, der an Ihr Telefon (%1$s) gesendet wurde.</string>
-    <string name="identhub_contract_signing_sign_action">Einreichen und Unterschreiben</string>
-    <string name="identhub_contract_signing_code_expires">Sie können den Code erneut absenden in %1$s</string>
-    <string name="identhub_contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.\nBitte fragen Sie einen neuen Code an und versuchen es erneut.</string>
-    <string name="identhub_contract_signing_code_request_new_button">Neuen Code erfragen</string>
+    <string name="identhub_contract_signing_sign_action">Unterschreiben und abschicken</string>
+    <string name="identhub_contract_signing_code_expires">Sie können einen neuen Code anfordern in %1$s</string>
+    <string name="identhub_contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Neuen Code anfordern</string>
     <string name="identhub_contract_signing_terms_label">Es gelten die AGBs</string>
     <string name="identhub_contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
     <string name="identhub_contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>

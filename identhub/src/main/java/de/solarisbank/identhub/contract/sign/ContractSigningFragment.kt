@@ -20,6 +20,7 @@ import de.solarisbank.identhub.domain.data.dto.ContractSigningState
 import de.solarisbank.identhub.verfication.phone.PhoneVerificationViewModel
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
+import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.data.entity.CountDownTime
 import de.solarisbank.sdk.data.entity.format
@@ -27,6 +28,7 @@ import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import io.reactivex.Observable
@@ -38,8 +40,8 @@ class ContractSigningFragment : IdentHubFragment() {
     private val digitsEditTexts: MutableList<EditText> = ArrayList()
     private var disposable = Disposables.disposed()
     private val listLevelDrawables: MutableList<LevelListDrawable> = ArrayList()
-    private val sharedViewModel: ContractViewModel by lazy<ContractViewModel> { activityViewModels() }
-    private val viewModel: ContractSigningViewModel by lazy<ContractSigningViewModel> { viewModels() }
+    private val sharedViewModel: ContractViewModel by lazy { activityViewModels() }
+    private val viewModel: ContractSigningViewModel by lazy { viewModels() }
 
     private var codeInput: EditText? = null
     private var currentFocusedEditText: View? = null
@@ -79,7 +81,7 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun customizeUI() {
         submitButton?.customize(customization)
-        sendNewCode?.customize(customization)
+        sendNewCode?.customize(customization, ButtonStyle.SecondaryNoBackground)
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         progress?.customize(customization)
         codeProgress?.customize(customization)
@@ -103,7 +105,6 @@ class ContractSigningFragment : IdentHubFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        observeAuthorizeResult()
         observeIdentificationResult()
         observableInputs()
         observeCountDownTimeEvent()
@@ -122,17 +123,12 @@ class ContractSigningFragment : IdentHubFragment() {
 
     private fun sendNewCodeClickListener() {
         viewModel.onSendNewCodeClicked()
-        viewModel.startTimer()
         codeInput!!.text.clear()
+        onStateOfDigitInputChanged(DEFAULT_STATE)
         codeInput!!.addTextChangedListener(codeInputValidator)
     }
 
     private fun initFocusListener() {
-        val onFocusChangeListener = OnFocusChangeListener { view: View?, hasFocus: Boolean ->
-            if (hasFocus) {
-                currentFocusedEditText = view
-            }
-        }
         codeInput!!.requestFocus()
     }
 
@@ -156,31 +152,10 @@ class ContractSigningFragment : IdentHubFragment() {
         }
     }
 
-    private fun observeAuthorizeResult() {
-        viewModel.getAuthorizeResultLiveData().observe(viewLifecycleOwner, Observer { onAuthorizeResultChanged(it) })
-    }
-
-    private fun onAuthorizeResultChanged(result: Result<Any>) {
-        when (result) {
-            is Result.Success -> {
-                sendNewCode!!.visibility = View.VISIBLE
-                submitButton!!.visibility = View.GONE
-            }
-            is Result.Error -> {
-                sendNewCode!!.visibility = View.GONE
-                submitButton!!.visibility = View.VISIBLE
-            }
-            else -> {
-                onStateOfDigitInputChanged(DEFAULT_STATE)
-            }
-        }
-    }
-
     private fun observeIdentificationResult() {
-        viewModel.getIdentificationStateLiveData().observe(
-            viewLifecycleOwner,
-            { onIdentificationResultChanged(it) }
-        )
+        viewModel.getIdentificationStateLiveData().observe(viewLifecycleOwner) {
+            onIdentificationResultChanged(it)
+        }
     }
 
     private fun onIdentificationResultChanged(state: ContractSigningState) {
@@ -218,9 +193,6 @@ class ContractSigningFragment : IdentHubFragment() {
         val countDownTime = event.content
         if (countDownTime != null) {
             sendNewCode!!.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
-            errorMessage!!.visibility = if (countDownTime.isFinish) View.VISIBLE else View.GONE
-            codeInput!!.isEnabled = !countDownTime.isFinish
-            submitButton!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.GONE
             newCodeCounter!!.visibility = if (!countDownTime.isFinish) View.VISIBLE else View.INVISIBLE
             newCodeCounter!!.text = String.format(getString(R.string.identhub_contract_signing_code_expires), countDownTime.format())
         }
@@ -244,17 +216,33 @@ class ContractSigningFragment : IdentHubFragment() {
     }
 
     private fun onStateOfDigitInputChanged(state: Int) {
-        val error = state == ERROR_STATE || viewModel.getCounterFinished()
-        submitButton!!.setText(if (state == LOADING_STATE) R.string.identhub_verification_phone_status_verifying else R.string.identhub_contract_signing_sign_action)
-        submitButton!!.isEnabled = state != LOADING_STATE && isSubmitButtonEnabled()
-
-        errorMessage!!.visibility = if (error) View.VISIBLE else View.GONE
-        sendNewCode!!.visibility = if (error) View.VISIBLE else View.GONE
-        submitButton!!.visibility = if (!error) View.VISIBLE else View.GONE
-        newCodeCounter!!.visibility = if (!error) View.VISIBLE else View.GONE
-
-        codeProgress!!.visibility = if (state == LOADING_STATE) View.VISIBLE else View.GONE
-        codeInput!!.isEnabled = state != LOADING_STATE && !error
+        when(state) {
+            LOADING_STATE -> {
+                hideKeyboard()
+                submitButton?.text = getString(R.string.identhub_verification_phone_status_verifying)
+                submitButton?.isEnabled = false
+                errorMessage?.visibility = View.GONE
+                codeProgress?.visibility = View.VISIBLE
+            }
+            ERROR_STATE -> {
+                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.isEnabled = isSubmitButtonEnabled()
+                errorMessage?.visibility = View.VISIBLE
+                codeProgress?.visibility = View.GONE
+            }
+            SUCCESS_STATE -> {
+                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.isEnabled = false
+                errorMessage?.visibility = View.GONE
+                codeProgress?.visibility = View.GONE
+            }
+            else -> {
+                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.isEnabled = isSubmitButtonEnabled()
+                errorMessage?.visibility = View.GONE
+                codeProgress?.visibility = View.GONE
+            }
+        }
         listLevelDrawables.forEach { it.level = state }
     }
 
