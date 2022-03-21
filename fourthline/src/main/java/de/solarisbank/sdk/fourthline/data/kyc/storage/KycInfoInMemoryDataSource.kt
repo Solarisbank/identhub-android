@@ -82,7 +82,9 @@ class KycInfoInMemoryDataSource {
             kycInfo.address = Address().also {
                 personDataDto.address?.apply {
                     it.street = street
-                    it.streetNumber = streetNumber?.streetNumber()
+                    /* Fourthline indicated that this field is mandatory on their API even though
+                    It's optional here. They asked us to send 0 if no streetNumber was available */
+                    it.streetNumber = streetNumber?.streetNumber() ?: 0
                     it.streetNumberSuffix = streetNumber?.streetSuffix()
                     it.city = city
                     it.countryCode = personDataDto.address?.country
