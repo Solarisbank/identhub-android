@@ -1,12 +1,10 @@
 package de.solarisbank.identhub.contract.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import de.solarisbank.identhub.contract.adapter.DocumentViewHolder
 import de.solarisbank.sdk.data.dto.DocumentDto
 import com.jakewharton.rxrelay2.PublishRelay
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import android.view.View
 import de.solarisbank.identhub.R
 import io.reactivex.Observable
 import java.util.ArrayList
@@ -25,7 +23,7 @@ class DocumentAdapter : RecyclerView.Adapter<DocumentViewHolder>() {
 
     override fun onBindViewHolder(holder: DocumentViewHolder, position: Int) {
         val document = documents[position]
-        holder.bindAction { actionClickRelay.accept(document) }
+        holder.bind(document) { actionClickRelay.accept(document) }
     }
 
     override fun getItemCount(): Int {

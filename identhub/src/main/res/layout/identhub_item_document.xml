@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:id="@+id/viewDocumentLayout"
@@ -26,6 +28,7 @@
             android:src="@drawable/identhub_ic_view_document"/>
 
         <TextView
+            android:id="@+id/documentNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/identhub_contract_signing_preview_view_document"
