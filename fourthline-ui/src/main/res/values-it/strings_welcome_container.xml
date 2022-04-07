@@ -2,7 +2,7 @@
 <resources>
     <string name="identhub_fourthline_welcome_container_title">Successivamente, scatta un selfie (foto).</string>
     <string name="identhub_fourthline_welcome_container_first_tick">L\'app riconoscerà il tuo viso.</string>
-    <string name="identhub_fourthline_welcome_container_second_tick">Pruebe la viveza siguiendo las instrucciones que aparecen en la pantalla.</string>
+    <string name="identhub_fourthline_welcome_container_second_tick">Dimostra di non essere un robot seguendo le istruzioni sullo schermo.</string>
     <string name="identhub_fourthline_welcome_container_description">Assicurati di avere abbastanza luce. Se indossi gli occhiali, assicurati che non siano riflettenti.</string>
     <string name="identhub_fourthline_welcome_container_notice">Se l\'app non riconosce il tuo viso, scadrà dopo 10 secondi e dovrai ricominciare il processo.</string>
     <string name="identhub_fourthline_welcome_container_continue_button">Continuare</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_type_selection_title">Please take 2 pictures of your ID to confirm your selfie.</string>
+    <string name="identhub_fourthline_doc_type_selection_title" />
     <string name="identhub_fourthline_toc_type_selection_choose_title">Choose your document type:</string>
     <string name="identhub_fourthline_doc_type_selection_next_button">Next</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">ID document not supported</string>

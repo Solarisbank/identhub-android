@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_type_selection_title">Haz 2 fotos de tu documento para confirmar tu selfie.</string>
+    <string name="identhub_fourthline_doc_type_selection_title" />
     <string name="identhub_fourthline_toc_type_selection_choose_title">Elige el tipo de documento:</string>
     <string name="identhub_fourthline_doc_type_selection_next_button">Siguiente</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">Documento de identidad no admitido</string>
