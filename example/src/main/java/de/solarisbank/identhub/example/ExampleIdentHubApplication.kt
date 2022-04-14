@@ -3,12 +3,13 @@ package de.solarisbank.identhub.example
 import android.app.Application
 import timber.log.Timber
 
-class ExampleApplication : Application() {
+@Suppress("unused")
+class ExampleIdentHubApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        if(BuildConfig.DEBUG){
+        if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
-//        }
+        }
     }
 }

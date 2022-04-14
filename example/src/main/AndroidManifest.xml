@@ -6,13 +6,13 @@
 
     <application
         android:allowBackup="false"
-        android:name=".ExampleApplication"
+        android:name=".ExampleIdentHubApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/identhub_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <activity android:name=".IdentitySelectionActivity">
+        <activity android:name=".ExampleIdentHubActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,10 +34,6 @@
                     android:host="person-onboarding.solaris-staging.de" />
             </intent-filter>
         </activity>
-        <activity android:name=".IdentHubInteractionActivity"
-            android:exported="false">
-        </activity>
-
     </application>
 
 </manifest>
