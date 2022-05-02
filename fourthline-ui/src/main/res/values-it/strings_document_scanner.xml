@@ -18,12 +18,12 @@
     <string name="identhub_document_scanner_clear_picture_list_item3">Nella foto sono visibili tutti gli angoli?</string>
 
     <string name="identhub_document_scanner_side_front_title">Scansiona il fronte del documento</string>
-    <string name="identhub_document_scanner_side_front_angled_title">Scansiona il fronte del documento da un angolo</string>
+    <string name="identhub_document_scanner_side_front_angled_title">Scansiona il fronte del documento inclinato</string>
     <string name="identhub_document_scanner_side_back_title">Scansiona il retro del documento</string>
-    <string name="identhub_document_scanner_side_back_angled_title">Scansiona il retro del documento da un angolo</string>
+    <string name="identhub_document_scanner_side_back_angled_title">Scansiona il retro del documento inclinato</string>
     <string name="identhub_document_scanner_side_inside_left_title">Scansiona la parte interna sinistra del documento</string>
-    <string name="identhub_document_scanner_side_inside_left_angled_title">Scansiona la parte interna sinistra del documento da un angolo</string>
+    <string name="identhub_document_scanner_side_inside_left_angled_title">Scansiona la parte interna sinistra del documento inclinato</string>
     <string name="identhub_document_scanner_side_inside_right_title">Scansiona la parte interna destra del documento</string>
-    <string name="identhub_document_scanner_side_inside_right_angled_title">Scansiona la parte interna destra del documento da un angolo</string>
+    <string name="identhub_document_scanner_side_inside_right_angled_title">Scansiona la parte interna destra del documento inclinato</string>
     <string name="identhub_document_scanner_side_undefined_title">Faccia una foto al documento, per favore</string>
 </resources>
