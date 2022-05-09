@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_scanner_error_timeout">Scanner scaduto. Per favore riprova.</string>
-    <string name="identhub_scanner_error_face_disappeared">La cara ha desaparecido durante la comprobación de viveza. Asegúrese de que su cara es visible durante todo el escaneo del selfie. Vuelva a intentarlo.</string>
+    <string name="identhub_scanner_error_timeout">Scansione scaduta. Riprova per favore</string>
+    <string name="identhub_scanner_error_face_disappeared">Il tuo volto è scomparso durante il selfie di verifica della tua presenza fisica. Ti preghiamo di assicurarti che il tuo volto sia visibile per tutto il tempo di acquisizione del selfie. Riprova per favore.</string>
     <string name="identhub_scanner_error_camera_permission">Si prega di consentire l\'accesso alla fotocamera.</string>
     <string name="identhub_scanner_error_recording_failed">Acquisizione video non riuscita.</string>
     <string name="identhub_scanner_error_interrupted">Lo scanner è stato interrotto.</string>
