@@ -110,7 +110,7 @@ class IdentHubSessionComponent private constructor(
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-                networkModule, userAgentInterceptorProvider, httpLoggingInterceptorProvider
+                networkModule, userAgentInterceptorProvider, dynamicBaseUrlInterceptorProvider,httpLoggingInterceptorProvider
         ))
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(
                 networkModule,

@@ -8,8 +8,8 @@ class DynamicIdetityRetrofitDataSource(
     private val initializeIdentificationApi: InitializeIdentificationApi
     ) {
 
-    fun getInitialization(url: String): Single<InitializationDto> {
-        return initializeIdentificationApi.getInitialization(url)
+    fun getInitialization(): Single<InitializationDto> {
+        return initializeIdentificationApi.getInitialization()
     }
 
 }

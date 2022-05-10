@@ -42,7 +42,7 @@ class IdentHubSessionUseCase(
         val obtainer = object : SingleUseCase<String, InitializationDto>() {
             override fun invoke(param: String): Single<NavigationalResult<InitializationDto>> {
                 return identHubSessionRepository
-                    .getRequiredIdentificationFlow(param).map { NavigationalResult(it) }
+                    .getRequiredIdentificationFlow().map { NavigationalResult(it) }
             }
         }
 

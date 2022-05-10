@@ -5,7 +5,7 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface InitializeIdentificationApi {
-    @GET
-    fun getInitialization(@Url url: String): Single<InitializationDto>
+interface InitializeIdentificationApi { //Url added in DynamicBaseUrlInterceptor
+    @GET(".")
+    fun getInitialization(): Single<InitializationDto>
 }

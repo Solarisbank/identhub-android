@@ -15,8 +15,8 @@ class IdentHubSessionRepository(
                 return identificationRoomDataSource.obtainIdentificationDto()
         }
 
-        fun getRequiredIdentificationFlow(url: String): Single<InitializationDto> {
-                return dynamicIdetityRetrofitDataSource.getInitialization(url)
+        fun getRequiredIdentificationFlow(): Single<InitializationDto> {
+                return dynamicIdetityRetrofitDataSource.getInitialization()
         }
 
 }

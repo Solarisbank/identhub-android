@@ -56,7 +56,7 @@ class IdentHubSessionTestComponent private constructor(
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
 
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
-    lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
+    lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
     private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationLocalDataSource>
@@ -111,7 +111,7 @@ class IdentHubSessionTestComponent private constructor(
         }
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-                networkModule, userAgentInterceptorProvider, httpLoggingInterceptorProvider
+                networkModule, userAgentInterceptorProvider,dynamicBaseUrlInterceptorProvider, httpLoggingInterceptorProvider
         ))
         retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(
                 networkModule,
