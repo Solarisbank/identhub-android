@@ -45,16 +45,16 @@
                 android:adjustViewBounds="true"
                 />
 
-            <ProgressBar
-                style="@style/IdentHubProgressBarStyle"
-                android:id="@+id/progress"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="@dimen/identhub_margin_32"
+            <TextView
+                android:id="@+id/title"
+                style="@style/IdentHubTopHeaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/identhub_contract_signing_title"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintTop_toBottomOf="@id/scratch"
-                />
+                android:layout_marginTop="@dimen/identhub_margin_24"/>
 
             <TextView
                 android:id="@+id/description"
@@ -62,11 +62,11 @@
                 android:visibility="invisible"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:layout_marginTop="@dimen/identhub_margin_24"
                 android:text="@string/identhub_contract_signing_description"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/scratch"
+                app:layout_constraintTop_toBottomOf="@id/title"
                 />
 
             <EditText
@@ -143,26 +143,21 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginTop="@dimen/identhub_margin_32"
-                android:layout_marginEnd="@dimen/identhub_margin_8"
-                android:src="@drawable/identhub_ic_info"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/newCodeCounter"
-                />
-
             <TextView
                 android:id="@+id/transactionDescription"
                 style="@style/IdentHubTextView.Small_13"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/identhub_margin_8"
-                app:layout_constraintTop_toTopOf="@+id/imageView"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintStart_toEndOf="@+id/imageView" />
+                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:text="@string/identhub_contract_signing_preview_transaction_info"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                android:background="@drawable/identhub_textbox_without_border_drawable"
+                android:padding="@dimen/identhub_margin_12"
+                android:drawableStart="@drawable/ic_info"
+                android:drawablePadding="@dimen/identhub_margin_4"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/newCodeCounter" />
 
             <de.solarisbank.sdk.feature.view.BulletListLayout
                 android:id="@+id/noticeBulletList"
@@ -183,5 +178,5 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/identhub_default_page_padding"
         android:enabled="false"
-        android:text="@string/identhub_contract_signing_sign_action" />
+        android:text="@string/identhub_contract_signing_confirm" />
 </RelativeLayout>

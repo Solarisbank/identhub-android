@@ -9,15 +9,18 @@
     <string name="identhub_contract_signing_preview_notice">Remarque</string>
     <string name="identhub_contract_signing_preview_notice_label">Voir vos documents</string>
     <string name="identhub_contract_signing_preview_send_code_action">Envoyer un code pour signer</string>
-    <string name="identhub_contract_signing_description">Un code de vérification a été envoyé sur votre téléphone (%1$s). Saisir le code ci-dessous</string>
+    <string name="identhub_contract_signing_description">Saisir le code à 6 chiffres envoyé à %1$s.</string>
     <string name="identhub_contract_signing_sign_action">Signer et envoyer</string>
     <string name="identhub_contract_signing_code_expires">Vous pouvez renvoyer le code dans %1$s</string>
     <string name="identhub_contract_signing_code_request_new">Le code était incorrect ou non valide.</string>
-    <string name="identhub_contract_signing_code_request_new_button">Demander un nouveau code</string>
-    <string name="identhub_contract_signing_preview_transaction_info">Votre ID de transaction est %1$s.\nVérifiez que c’est le même que dans le SMS que vous venez de recevoir.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Envoyer un nouveau code</string>
+    <string name="identhub_contract_signing_preview_transaction_info">Votre ID de transaction est %1$s\nAssurez-vous qu’il s’agit du même SMS que celui que vous venez de recevoir.</string>
     <string name="identhub_contract_signing_terms_label">Les conditions générales s’appliquent</string>
     <string name="identhub_contract_signing_terms_bank_ident_label">Les conditions générales de Swisscom s’appliquent</string>
     <string name="identhub_contract_signing_terms_bank_id_label">Les conditions générales de Namirial s’appliquent</string>
     <string name="identhub_contract_signing_preview_render_pdf_error">Impossible d’ouvrir le fichier pdf.</string>
     <string name="identhub_contract_signing_preview_download_error">Impossible de télécharger tous les fichiers.</string>
+
+    <string name="identhub_contract_signing_title">Confirmez vos détails</string>
+    <string name="identhub_contract_signing_confirm">Confirmer</string>
 </resources>

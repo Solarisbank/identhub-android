@@ -9,14 +9,18 @@
     <string name="identhub_contract_signing_preview_notice">Nota</string>
     <string name="identhub_contract_signing_preview_notice_label">Visualizza i tuoi documenti qui:</string>
     <string name="identhub_contract_signing_preview_send_code_action">Ricevi il codice e firma</string>
-    <string name="identhub_contract_signing_description">Inserisci il codice di verifica inviato al tuo telefono (%1$s).</string>
+    <string name="identhub_contract_signing_description">Inserisci il codice a 6 cifre che hai ricevuto %1$s.</string>
     <string name="identhub_contract_signing_sign_action">Invio e Firma</string>
     <string name="identhub_contract_signing_code_expires">Puoi inviare di nuovo il codice %1$s</string>
     <string name="identhub_contract_signing_code_request_new">Il codice non è corretto o è scaduto.</string>
-    <string name="identhub_contract_signing_code_request_new_button">Richiedi nuovo codice</string>
+    <string name="identhub_contract_signing_code_request_new_button">Invia nuovo codice</string>
     <string name="identhub_contract_signing_terms_label">Si applicano i termini e condizioni</string>
     <string name="identhub_contract_signing_terms_bank_ident_label">Si applicano i termini e condizioni di contratto di Swisscom</string>
     <string name="identhub_contract_signing_terms_bank_id_label">Si applicano i termini e condizioni generali di Namirial</string>
     <string name="identhub_contract_signing_preview_render_pdf_error">Impossibile eseguire il rendering del file pdf.</string>
     <string name="identhub_contract_signing_preview_download_error">Impossibile scaricare tutti i file.</string>
+    <string name="identhub_contract_signing_preview_transaction_info">Il tuo ID transazione è %1$s\nAssicurati di avere lo stesso ID transazione nell SMS.</string>
+
+    <string name="identhub_contract_signing_title">Confermi i Suoi dettagli</string>
+    <string name="identhub_contract_signing_confirm">Confermare</string>
 </resources>

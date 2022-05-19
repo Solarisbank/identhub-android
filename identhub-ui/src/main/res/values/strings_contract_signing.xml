@@ -9,15 +9,15 @@
     <string name="identhub_contract_signing_preview_notice">Notice</string>
     <string name="identhub_contract_signing_preview_notice_label">View your documents</string>
     <string name="identhub_contract_signing_preview_send_code_action">Send code to sign</string>
-    <string name="identhub_contract_signing_description">A verification code was sent to your phone (%1$s). Enter the code below</string>
+    <string name="identhub_contract_signing_description">Enter the 6-digit code sent to %1$s.</string>
     <string name="identhub_contract_signing_notice_title" translatable="false"/>
     <string name="identhub_contract_signing_notice1" translatable="false"/>
     <string name="identhub_contract_signing_notice2" translatable="false"/>
     <string name="identhub_contract_signing_sign_action">Sign and Submit</string>
     <string name="identhub_contract_signing_code_expires">You can resend the code in %1$s</string>
     <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid.</string>
-    <string name="identhub_contract_signing_code_request_new_button">Request new code</string>
-    <string name="identhub_contract_signing_preview_transaction_info">Your transaction ID is %1$s.\nMake sure it is the same in SMS you just received.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Send new code</string>
+    <string name="identhub_contract_signing_preview_transaction_info">Your transaction ID is %1$s\nMake sure it is the same in SMS you just received.</string>
     <string name="identhub_contract_signing_terms_label">The T&amp;Cs apply</string>
     <string name="identhub_contract_signing_terms_bank_ident_label">The T&amp;Cs of Swisscom apply</string>
     <string name="identhub_contract_signing_terms_bank_id_label">The T&amp;Cs of Namirial apply</string>
@@ -29,4 +29,7 @@
         <item quantity="one">1 file has been downloaded.</item>
         <item quantity="other">%d files have been downloaded.</item>
     </plurals>
+
+    <string name="identhub_contract_signing_title">Confirm your details</string>
+    <string name="identhub_contract_signing_confirm">Confirm</string>
 </resources>

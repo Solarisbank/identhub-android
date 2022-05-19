@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.isVisible
@@ -34,7 +33,6 @@ import de.solarisbank.sdk.feature.view.BulletListLayout
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
-import java.util.*
 
 class ContractSigningFragment : IdentHubFragment() {
     private val digitsEditTexts: MutableList<EditText> = ArrayList()
@@ -51,7 +49,6 @@ class ContractSigningFragment : IdentHubFragment() {
     private var transactionDescription: TextView? = null
     private var errorMessage: TextView? = null
     private var submitButton: Button? = null
-    private var progress: ProgressBar? = null
     private var codeProgress: ProgressBar? = null
     private var imageView: ImageView? = null
     private var bulletList: BulletListLayout? = null
@@ -70,7 +67,6 @@ class ContractSigningFragment : IdentHubFragment() {
                     transactionDescription = it.findViewById(R.id.transactionDescription)
                     errorMessage = it.findViewById(R.id.errorMessage)
                     submitButton = it.findViewById(R.id.submitButton)
-                    progress = it.findViewById(R.id.progress)
                     codeProgress = it.findViewById(R.id.codeProgress)
                     imageView = it.findViewById(R.id.scratch)
                     bulletList = it.findViewById(R.id.noticeBulletList)
@@ -83,7 +79,6 @@ class ContractSigningFragment : IdentHubFragment() {
         submitButton?.customize(customization)
         sendNewCode?.customize(customization, ButtonStyle.SecondaryNoBackground)
         imageView?.isVisible = customization.customFlags.shouldShowLargeImages
-        progress?.customize(customization)
         codeProgress?.customize(customization)
     }
 
@@ -148,7 +143,6 @@ class ContractSigningFragment : IdentHubFragment() {
             }
             description!!.text = String.format(requireContext().resources.getString(R.string.identhub_contract_signing_description), number)
             description!!.visibility = View.VISIBLE
-            progress!!.visibility = View.INVISIBLE
         }
     }
 
@@ -156,13 +150,15 @@ class ContractSigningFragment : IdentHubFragment() {
         viewModel.getIdentificationStateLiveData().observe(viewLifecycleOwner) {
             onIdentificationResultChanged(it)
         }
+
     }
 
     private fun onIdentificationResultChanged(state: ContractSigningState) {
         //todo move to use case and replace with states
-        Timber.d("onIdentificationResultChanged, result: ${state}")
+        Timber.d("onIdentificationResultChanged, result: $state")
         when (state) {
             is ContractSigningState.SUCCESSFUL -> {
+                transactionDescription!!.visibility = View.VISIBLE
                 transactionDescription!!.text = String.format(
                     getString(R.string.identhub_contract_signing_preview_transaction_info),
                     state.identificationId
@@ -171,6 +167,7 @@ class ContractSigningFragment : IdentHubFragment() {
                 sharedViewModel.callOnSuccessResult()
             }
             is ContractSigningState.CONFIRMED -> {
+                transactionDescription!!.visibility = View.VISIBLE
                 transactionDescription!!.text = String.format(
                     getString(R.string.identhub_contract_signing_preview_transaction_info),
                     state.identificationId
@@ -225,19 +222,19 @@ class ContractSigningFragment : IdentHubFragment() {
                 codeProgress?.visibility = View.VISIBLE
             }
             ERROR_STATE -> {
-                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.text = getString(R.string.identhub_contract_signing_confirm)
                 submitButton?.isEnabled = isSubmitButtonEnabled()
                 errorMessage?.visibility = View.VISIBLE
                 codeProgress?.visibility = View.GONE
             }
             SUCCESS_STATE -> {
-                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.text = getString(R.string.identhub_contract_signing_confirm)
                 submitButton?.isEnabled = false
                 errorMessage?.visibility = View.GONE
                 codeProgress?.visibility = View.GONE
             }
             else -> {
-                submitButton?.text = getString(R.string.identhub_contract_signing_sign_action)
+                submitButton?.text = getString(R.string.identhub_contract_signing_confirm)
                 submitButton?.isEnabled = isSubmitButtonEnabled()
                 errorMessage?.visibility = View.GONE
                 codeProgress?.visibility = View.GONE
@@ -275,7 +272,6 @@ class ContractSigningFragment : IdentHubFragment() {
         transactionDescription = null
         errorMessage = null
         submitButton = null
-        progress = null
         codeProgress = null
         imageView = null
         bulletList = null
