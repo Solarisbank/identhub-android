@@ -7,6 +7,18 @@
     android:gravity="center"
     tools:parentTag="android.widget.LinearLayout">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Confirm Phone"
+        android:text="@string/identhub_contract_signing_confirm_phone"
+        style="@style/IdentHubTextView.HeadLine1"
+        android:textSize="18sp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="24dp"
+        />
+
     <TextView
         android:id="@+id/description"
         style="@style/IdentHubTextView.Regular"

@@ -29,7 +29,7 @@
         <item quantity="one">1 file has been downloaded.</item>
         <item quantity="other">%d files have been downloaded.</item>
     </plurals>
-
+    <string name="identhub_contract_signing_confirm_phone">Confirm Phone</string>
     <string name="identhub_contract_signing_title">Confirm your details</string>
     <string name="identhub_contract_signing_confirm">Confirm</string>
 </resources>

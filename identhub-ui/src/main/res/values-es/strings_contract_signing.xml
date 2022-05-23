@@ -20,7 +20,7 @@
     <string name="identhub_contract_signing_terms_bank_id_label">Se aplican los Términos y condiciones de Namirial</string>
     <string name="identhub_contract_signing_preview_render_pdf_error">No se ha podido renderizar el archivo pdf.</string>
     <string name="identhub_contract_signing_preview_download_error">No se han podido descargar todos los archivos.</string>
-
+    <string name="identhub_contract_signing_confirm_phone">Confirme su numero de teléfono</string>
     <string name="identhub_contract_signing_title">Confirme sus detalles</string>
     <string name="identhub_contract_signing_confirm">Confirmar</string>
 </resources>
