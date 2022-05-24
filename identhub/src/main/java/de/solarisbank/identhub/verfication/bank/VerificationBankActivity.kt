@@ -104,7 +104,7 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun setSubStep(naviDirection: NaviDirection.FragmentDirection) {
       if (naviDirection.actionId == R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment ||
-          naviDirection.actionId == R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment ||
+          naviDirection.actionId == R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment ||
           naviDirection.actionId == R.id.action_verificationBankFragment_to_establishConnectionFragment ||
           naviDirection.actionId == R.id.action_verificationBankExternalGatewayFragment_to_processingVerificationFragment) {
             stepIndicatorStep = 2

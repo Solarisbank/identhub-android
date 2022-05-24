@@ -14,4 +14,6 @@
     <string name="identhub_stepindicator_verification_bank_next_label">Next: Sign contract</string>
     <string name="identhub_stepindicator_verification_id_label">ID verification</string>
     <string name="identhub_stepindicator_sign_documents_label">Sign documents</string>
+
+    <string name="identhub_next">Next</string>
 </resources>

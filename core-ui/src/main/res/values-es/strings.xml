@@ -13,4 +13,6 @@
     <string name="identhub_stepindicator_verification_bank_next_label">Siguiente: firmar el contrato</string>
     <string name="identhub_stepindicator_verification_id_label">Verificación del documento de identidad</string>
     <string name="identhub_stepindicator_sign_documents_label">Firmar documentos</string>
+
+    <string name="identhub_next">Siguiente</string>
 </resources>

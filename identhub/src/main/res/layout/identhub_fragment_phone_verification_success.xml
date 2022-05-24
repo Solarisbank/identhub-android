@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
+
+    <ImageView
+        android:id="@+id/done1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_margin_24"
+        android:src="@drawable/identhub_ic_done_pure"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description"
+        style="@style/IdentHubTopHeaderTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/identhub_margin_8"
+        android:text="@string/identhub_contract_phone_verification_successful"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toEndOf="@id/done1"
+        app:layout_constraintTop_toTopOf="@+id/done1" />
+
+    <TextView
+        android:id="@+id/descriptionDetail"
+        style="@style/IdentHubTextView.Small_15"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/identhub_contract_phone_verification_next_step"
+        app:layout_constraintTop_toBottomOf="@+id/done1"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        android:layout_marginTop="@dimen/identhub_margin_24" />
+
+    <Button
+        android:id="@+id/submitButton"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/identhub_default_button_height"
+        android:text="@string/identhub_next"
+        android:layout_marginBottom="@dimen/identhub_margin_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

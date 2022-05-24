@@ -12,4 +12,6 @@
     <string name="identhub_stepindicator_verification_bank_next_label">Successiva: firma del Contratto</string>
     <string name="identhub_stepindicator_verification_id_label">Verifica del Documento di Identita</string>
     <string name="identhub_stepindicator_sign_documents_label">Firma dei Documenti</string>
+
+    <string name="identhub_next">Avanti</string>
 </resources>

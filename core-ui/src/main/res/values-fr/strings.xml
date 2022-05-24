@@ -12,4 +12,6 @@
     <string name="identhub_stepindicator_verification_bank_next_label">Ensuite: signature du contrat</string>
     <string name="identhub_stepindicator_verification_id_label">Vérification des papiers d\'identité</string>
     <string name="identhub_stepindicator_sign_documents_label">Signature des documents</string>
+
+    <string name="identhub_next">Suite</string>
 </resources>

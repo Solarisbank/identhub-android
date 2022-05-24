@@ -9,4 +9,6 @@
     <string name="identhub_verification_phone_action_next_step">Begin Bank Identification</string>
     <string name="identhub_verification_phone_action_quit">Quit</string>
     <string name="identhub_verification_phone_action_retry">Retry TAN verification</string>
+    <string name="identhub_contract_phone_verification_successful">Phone verification successful!</string>
+    <string name="identhub_contract_phone_verification_next_step">For the next step please have your <b>IBAN</b> and <b>login credentials</b> for your online banking at hand.</string>
 </resources>

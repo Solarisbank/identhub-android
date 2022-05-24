@@ -9,4 +9,7 @@
     <string name="identhub_verification_phone_action_next_step">Inizia identificazione bancaria</string>
     <string name="identhub_verification_phone_action_quit">Uscire</string>
     <string name="identhub_verification_phone_action_retry">Riprova la verifica TAN</string>
+
+    <string name="identhub_contract_phone_verification_successful">Verifica telefonica riuscita!</string>
+    <string name="identhub_contract_phone_verification_next_step">Per il prossimo passo la preghiamo di avere l´<b>IBAN</b> e <b>le credenziali di accesso</b> a portata di mano</string>
 </resources>

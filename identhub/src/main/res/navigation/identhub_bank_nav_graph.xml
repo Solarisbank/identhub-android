@@ -13,6 +13,27 @@
             app:popUpToInclusive="true"
             app:destination="@id/verificationBankIbanFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/phoneVerificationFragment"
+        android:name="de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment"
+        android:label="phoneVerificationFragment" >
+        <action
+            android:id="@+id/action_phoneVerificationFragment_to_verificationPhoneSuccessMessageFragment"
+            app:destination="@id/verificationPhoneSuccessMessageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verificationPhoneSuccessMessageFragment"
+        android:name="de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment"
+        android:label="VerificationPhoneSuccessMessageFragment">
+        <action
+            android:id="@+id/action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment"
+            app:popUpTo="@+id/verificationPhoneSuccessMessageFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/verificationBankIbanFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/verificationBankIbanFragment"
         android:name="de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment"
@@ -52,14 +73,6 @@
         android:id="@+id/processingVerificationFragment"
         android:name="de.solarisbank.identhub.verfication.bank.gateway.processing.ProcessingVerificationFragment"
         android:label="ProcessingVerificationFragment">
-    </fragment>
-    <fragment
-        android:id="@+id/phoneVerificationFragment"
-        android:name="de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment"
-        android:label="phoneVerificationFragment" >
-        <action
-            android:id="@+id/action_phoneVerificationFragment_to_verificationBankIbanFragment"
-            app:destination="@id/verificationBankIbanFragment" />
     </fragment>
 
 </navigation>

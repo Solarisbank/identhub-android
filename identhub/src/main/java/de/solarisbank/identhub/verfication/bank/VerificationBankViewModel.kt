@@ -82,7 +82,7 @@ class VerificationBankViewModel(
     }
 
     fun navigateToPhoneVerificationSuccess() {
-        navigateTo(R.id.action_phoneVerificationFragment_to_verificationBankIbanFragment)
+        navigateTo(R.id.action_phoneVerificationFragment_to_verificationPhoneSuccessMessageFragment)
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
