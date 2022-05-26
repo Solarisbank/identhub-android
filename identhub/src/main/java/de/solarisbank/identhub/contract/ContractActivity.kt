@@ -2,8 +2,7 @@ package de.solarisbank.identhub.contract
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.lifecycle.Observer
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -17,21 +16,25 @@ import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
 import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.sdk.domain.model.result.Event
-import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
     private lateinit var viewModel: ContractViewModel
-    private lateinit var solarisIndicator: ConstraintStepIndicator
+   private var contractClose: AppCompatImageView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.identhub_activity_contract)
+        contractClose = findViewById(R.id.img_contract_close)
         Timber.d("intent.getStringExtra(IdentHub.SESSION_URL_KEY): ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initGraph()
-        initView()
         observeViewModel()
         viewModel.saveQesStepParameters(intent.toQesStepParameters())
+
+        contractClose?.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun Intent.toQesStepParameters(): QesStepParametersDto {
@@ -48,18 +51,6 @@ class ContractActivity : IdentHubActivity() {
         navHostFragment.navController.setGraph(navGraph, intent.extras)
     }
 
-    private fun initView() {
-        solarisIndicator = findViewById(R.id.stepIndicator)
-        if (intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)) {
-            solarisIndicator.customize(customizationRepository.get())
-            solarisIndicator.setCurrentStepLabelRes(R.string.identhub_stepindicator_sign_documents_label)
-            solarisIndicator.setPassedStep(3)
-            solarisIndicator.visibility = View.VISIBLE
-        } else {
-            solarisIndicator.visibility = View.GONE
-        }
-        setTitle(R.string.identhub_identity_activity_third_step_label)
-    }
 
     override fun inject(identHubActivitySubcomponent: IdentHubActivitySubcomponent) {
         identHubActivitySubcomponent.inject(this)
@@ -68,10 +59,8 @@ class ContractActivity : IdentHubActivity() {
     private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(ContractViewModel::class.java)
-        viewModel.getNaviDirectionEvent().observe(
-            this, Observer
-            { event: Event<NaviDirection> -> onNavigationChanged(event) }
-        )
+        viewModel.getNaviDirectionEvent().observe(this)
+        { event: Event<NaviDirection> -> onNavigationChanged(event) }
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {

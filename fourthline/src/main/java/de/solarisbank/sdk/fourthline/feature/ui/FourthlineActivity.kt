@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
@@ -19,15 +20,11 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
-import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.sdk.domain.model.result.Event
-import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
-import de.solarisbank.sdk.fourthline.hide
-import de.solarisbank.sdk.fourthline.show
 import de.solarisbank.sdk.fourthline.toFourthlineStepParametersDto
 import timber.log.Timber
 
@@ -36,11 +33,11 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private lateinit var viewModel: FourthlineViewModel
 
     private lateinit var navHostFragment: View
-    private lateinit var stepIndicator: ConstraintStepIndicator
-
+    private var fourthLineClose: AppCompatImageView? = null
     private var awaitedDirection: NaviDirection.FragmentDirection? = null
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
+
     override fun inject(activitySubcomponent: FourthlineActivitySubcomponent) {
         activitySubcomponent.inject(this)
     }
@@ -48,29 +45,22 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.identhub_activity_fourthline)
+        fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
         Timber.d("intent: $intent")
         Timber.d("Intent: SESSION_URL_KEY: ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
         observeViewModel()
         initGraph()
         viewModel.saveFourthlineStepParameters(intent.toFourthlineStepParametersDto())
+
+        fourthLineClose?.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
-        initStepIndicator()
         supportActionBar?.setShowHideAnimationEnabled(false)
-    }
-
-    private fun initStepIndicator() {
-        stepIndicator = findViewById(R.id.stepIndicator)
-        if (!shouldShowStepIndicator) {
-            stepIndicator.hide()
-        } else {
-            stepIndicator.customize(customizationRepository.get())
-            stepIndicator.setCurrentStepLabelRes(R.string.identhub_stepindicator_verification_id_label)
-            stepIndicator.setPassedStep(3)
-        }
     }
 
     private fun initGraph() {
@@ -174,12 +164,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun toggleTopBars(show: Boolean) {
         if (show) {
-            supportActionBar?.show()
-            if (shouldShowStepIndicator)
-                stepIndicator.show()
+            fourthLineClose!!.visibility = View.VISIBLE
         } else {
-            supportActionBar?.hide()
-            stepIndicator.hide()
+            fourthLineClose!!.visibility = View.GONE
         }
     }
 
@@ -267,9 +254,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
-
-    private val shouldShowStepIndicator: Boolean
-        get() = intent.getBooleanExtra(SHOW_STEP_INDICATOR, true)
 
     companion object {
         private const val PERMISSION_CAMERA_CODE = 32

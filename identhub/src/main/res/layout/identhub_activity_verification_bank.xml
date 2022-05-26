@@ -21,15 +21,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp"/>
 
-    <de.solarisbank.sdk.feature.view.ConstraintStepIndicator
-        android:id="@+id/stepIndicator"
-        android:layout_width="0dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_bank_verification_close"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:srcCompat="@drawable/ic_cross"
         app:layout_constraintTop_toTopOf="parent"
-        app:stepsAmount="amount3"
-        android:layout_marginTop="@dimen/identhub_margin_12" />
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        android:layout_marginTop="@dimen/identhub_margin_12"
+        android:padding="@dimen/identhub_margin_12"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -40,8 +40,7 @@
         app:defaultNavHost="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stepIndicator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="@dimen/identhub_margin_12"/>
+        app:layout_constraintTop_toBottomOf="@+id/img_bank_verification_close"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
