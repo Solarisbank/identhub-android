@@ -17,8 +17,9 @@ const val SHOW_STEP_INDICATOR = "SHOW_STEP_INDICATOR"
 
 fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): Intent {
     return when(route) {
-        FIRST_STEP_DIRECTION.BANK_IBAN.destination ->
+        FIRST_STEP_DIRECTION.BANK_IBAN.destination -> {
             provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
+        }
         FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination ->
             provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
                 .also { it.putExtra(FIRST_STEP_KEY, FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination) }

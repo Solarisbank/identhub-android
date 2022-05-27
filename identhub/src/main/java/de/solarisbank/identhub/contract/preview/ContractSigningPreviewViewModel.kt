@@ -9,6 +9,7 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.data.dto.IdentificationDto
+import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
@@ -31,6 +32,10 @@ class ContractSigningPreviewViewModel(
     private val identificationResultLiveData: MutableLiveData<Result<IdentificationDto>> = MutableLiveData()
     private val fetchPdfResultLiveData: MutableLiveData<Result<File?>> = MutableLiveData()
     private val fetchPdfFilesResultLiveData: MutableLiveData<Result<List<File>>> = MutableLiveData()
+
+    fun getInitializationDto(): InitializationDto? {
+        return getIdentificationUseCase.getInitializationDto()
+    }
 
     fun refreshIdentificationData() {
         compositeDisposable.add(

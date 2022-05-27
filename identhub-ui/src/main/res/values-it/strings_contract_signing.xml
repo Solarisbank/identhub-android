@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_contract_signing_preview_title">Controlli il suo documento(i)</string>
-    <string name="identhub_contract_signing_preview_subtitle">La preghiamo di revisionare il documento(i) prima di firmalo(i).</string>
+    <string name="identhub_contract_signing_preview_title">Scarica e controlla i tuoi dati</string>
+    <string name="identhub_contract_signing_preview_subtitle">La preghiamo di controllare il/i documento/i seguente</string>
     <string name="identhub_contract_signing_finish_title">Identificato con successo!</string>
     <string name="identhub_contract_signing_finish_subtitle">Hai completato l\'identificazione!\nScarica i documenti e conservali in un luogo sicuro per riferimenti futuri.</string>
     <string name="identhub_contract_signing_finish_button">Fine</string>
@@ -23,4 +23,6 @@
     <string name="identhub_contract_signing_confirm_phone">Confermare il telefono</string>
     <string name="identhub_contract_signing_title">Confermi i Suoi dettagli</string>
     <string name="identhub_contract_signing_confirm">Confermare</string>
+    <string name="identhub_contract_signing_preview_terms_condition">Si applicano i termini e le condizioni di %1$s.</string>
+    <string name="identhub_contract_signing_preview_terms_condition_part">Swisscom</string>
 </resources>

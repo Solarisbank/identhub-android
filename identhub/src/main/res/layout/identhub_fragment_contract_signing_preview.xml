@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="@dimen/identhub_default_page_padding"/>
+        app:layout_constraintGuide_end="@dimen/identhub_margin_24"/>
 
     <ScrollView
         android:id="@+id/scroll"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topGuideline"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        app:layout_constraintBottom_toTopOf="@+id/submitButton">
+        app:layout_constraintBottom_toTopOf="@+id/contractSignTermsCondition">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,12 +75,26 @@
         </LinearLayout>
     </ScrollView>
 
+    <TextView
+        android:id="@+id/contractSignTermsCondition"
+        style="@style/IdentHubParagraphText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/identhub_margin_24"
+        app:layout_constraintStart_toEndOf="@+id/startGuideline"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        android:visibility="gone"
+        android:text="@string/identhub_contract_signing_preview_terms_condition" />
+
     <Button
         android:id="@+id/submitButton"
         style="@style/IdentHubPrimaryButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:text="@string/identhub_contract_signing_preview_send_code_action"
+        android:text="@string/identhub_next"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline" />

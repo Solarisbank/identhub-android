@@ -23,6 +23,11 @@ abstract class BaseFragment : Fragment() {
 
     private val alertViewModel: AlertViewModel by lazy { activityViewModels() }
 
+    companion object {
+        const val privacyLink = "https://www.solarisbank.com/en/privacy-policy/"
+        const val termsLink = "https://www.solarisbank.com/en/customer-information/"
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()

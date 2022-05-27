@@ -1,6 +1,8 @@
 package de.solarisbank.identhub.contract.preview
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import de.solarisbank.identhub.base.IdentHubFragment
 import de.solarisbank.identhub.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.di.FragmentComponent
+import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.data.dto.DocumentDto
@@ -23,9 +26,12 @@ import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.domain.model.result.throwable
 import de.solarisbank.sdk.feature.PdfIntent
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.customization.customizeLinks
+import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import java.io.File
+
 
 class ContractSigningPreviewFragment : IdentHubFragment() {
     private val adapter = DocumentAdapter()
@@ -37,6 +43,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
     private var subtitleView: TextView? = null
     private var documentsList: RecyclerView? = null
     private var submitButton: Button? = null
+    private var contractSignTermsCondition:TextView?=null
 
     override fun inject(component: FragmentComponent) {
         component.inject(this)
@@ -49,12 +56,14 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
                     subtitleView = it.findViewById(R.id.subtitle)
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
+                    contractSignTermsCondition = it.findViewById(R.id.contractSignTermsCondition)
                     customizeUI()
                 }
     }
 
     private fun customizeUI() {
         submitButton?.customize(customization)
+        contractSignTermsCondition?.customizeLinks(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,7 +87,7 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         if (isPreview) {
             titleView?.text = getString(R.string.identhub_contract_signing_preview_title)
             subtitleView?.text = getString(R.string.identhub_contract_signing_preview_subtitle)
-            submitButton?.text = getString(R.string.identhub_contract_signing_preview_send_code_action)
+            submitButton?.text = getString(R.string.identhub_next)
         } else {
             titleView?.text = getString(R.string.identhub_contract_signing_finish_title)
             subtitleView?.text = getString(R.string.identhub_contract_signing_finish_subtitle)
@@ -90,6 +99,23 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
             else
                 sharedViewModel.callOnSuccessResult()
         }
+
+        if (viewModel.getInitializationDto()!!.firstStep == FIRST_STEP_DIRECTION.BANK_IBAN.destination) {
+            contractSignTermsCondition!!.visibility = View.VISIBLE
+            setTermsConditionSpan()
+        } else {
+            contractSignTermsCondition!!.visibility = View.GONE
+        }
+
+    }
+
+    @SuppressLint("StringFormatMatches", "StringFormatInvalid")
+    private fun setTermsConditionSpan() {
+        val termsPartText = getString(R.string.identhub_contract_signing_preview_terms_condition_part)
+        val termsText = getString(R.string.identhub_contract_signing_preview_terms_condition, termsPartText)
+        val spanned = termsText.linkOccurrenceOf(termsPartText, termsLink)
+        contractSignTermsCondition?.text = spanned
+        contractSignTermsCondition?.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun observeDownloadingPdfFiles() {

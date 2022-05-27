@@ -297,8 +297,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
 
     companion object {
         private const val MIN_IBAN_LENGTH = 15
-        private const val privacyLink = "https://www.solarisbank.com/en/privacy-policy/"
-        private const val termsLink = "https://www.solarisbank.com/en/customer-information/"
     }
 }
 
