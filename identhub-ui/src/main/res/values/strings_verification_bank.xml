@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_verification_bank_title">Verify your identity.</string>
-    <string name="identhub_verification_bank_description">Depending on the functionality of your bank account you will verify by logging into your online banking or by taking a selfie and scanning your ID/Passport.</string>
-    <string name="identhub_verification_bank_second_description">Please provide your bank account IBAN and we will check the best option for you.</string>
-    <string name="identhub_verification_bank_encrypted_label">Encrypted transmission active</string>
+    <string name="identhub_verification_bank_title">Enter your IBAN</string>
+    <string name="identhub_verification_bank_description">Please enter the IBAN of your German bank account. Unfortunately, joint accounts are not supported.</string>
+    <string name="identhub_verification_bank_encrypted_label">Your data is secured with encryption</string>
     <string name="identhub_verification_bank_notice_label">Notice</string>
     <string name="identhub_verification_bank_notice_value" />
     <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>

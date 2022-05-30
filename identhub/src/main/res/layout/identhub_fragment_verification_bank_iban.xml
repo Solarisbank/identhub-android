@@ -79,7 +79,7 @@
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <TextView
+          <!--  <TextView
                 android:id="@+id/secondDescription"
                 style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
@@ -90,7 +90,7 @@
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
+                app:layout_constraintTop_toBottomOf="@+id/description" />-->
 
             <ImageView
                 android:id="@+id/lock_image"
@@ -99,7 +99,7 @@
                 android:layout_marginTop="@dimen/identhub_margin_16"
                 android:src="@drawable/identhub_ic_baseline_lock_24"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/secondDescription" />
+                app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <TextView
                 android:id="@+id/encription_info"
@@ -196,7 +196,7 @@
         android:layout_weight="1"
         android:layout_marginTop="@dimen/identhub_margin_4"
         android:layout_marginBottom="@dimen/identhub_margin_4"
-        android:text="@string/identhub_verification_bank_action_next_step"
+        android:text="@string/identhub_next"
         />
 
     <ProgressBar

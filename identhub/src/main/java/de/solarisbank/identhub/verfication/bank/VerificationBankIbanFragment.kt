@@ -1,18 +1,13 @@
 package de.solarisbank.identhub.verfication.bank
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
-import android.text.SpannableString
-import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.R
@@ -21,7 +16,6 @@ import de.solarisbank.identhub.di.FragmentComponent
 import de.solarisbank.identhub.feature.model.ErrorState
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
-import de.solarisbank.identhub.ui.CustomClickableSpan
 import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
@@ -42,7 +36,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
     private var submitButton: Button? = null
-    private var secondDescription: TextView? = null
     private var imageView: ImageView? = null
     private var termsCheckBox: CheckBox? = null
     private var termsDisclaimer: TextView? = null
@@ -63,7 +56,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
-                    secondDescription = it.findViewById(R.id.secondDescription)
                     imageView = it.findViewById(R.id.image)
                     termsCheckBox = it.findViewById(R.id.termsCheckBox)
                     termsCheckBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState() }
@@ -111,15 +103,15 @@ class VerificationBankIbanFragment : IdentHubFragment() {
     }
 
     private fun observeVerifyResult() {
-        ibanViewModel.getVerificationStateLiveData().observe(viewLifecycleOwner, { setState(it) })
-        ibanViewModel.getTermsAgreedLiveData().observe(viewLifecycleOwner, { agreed ->
+        ibanViewModel.getVerificationStateLiveData().observe(viewLifecycleOwner) { setState(it) }
+        ibanViewModel.getTermsAgreedLiveData().observe(viewLifecycleOwner) { agreed ->
             if (agreed) {
                 termsCheckBox?.isChecked = true
                 termsLayout?.isVisible = false
             } else {
                 termsCheckBox?.isVisible = true
             }
-        })
+        }
     }
 
     private fun setState(state: VerificationState) {
@@ -200,29 +192,7 @@ class VerificationBankIbanFragment : IdentHubFragment() {
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )
-        addInfoToDescription()
         setTermsText()
-    }
-
-    private fun addInfoToDescription() {
-        val descriptionText = getString(R.string.identhub_verification_bank_second_description)
-        val desc = SpannableString("$descriptionText ")
-        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.identhub_ic_question)!!
-        drawable.bounds = Rect(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        val imageSpan = ImageSpan(drawable)
-        val clickSpan = CustomClickableSpan {
-            showAlertFragment(
-                getString(R.string.identhub_iban_verification_about_identity_verification_title),
-                getString(R.string.identhub_iban_verification_about_identity_verification_message),
-                getString(R.string.identhub_ok_button),
-                positiveAction = {}
-            )
-        }
-        val length = descriptionText.length
-        desc.setSpan(imageSpan, length, length + 1, SPAN_INCLUSIVE_EXCLUSIVE)
-        desc.setSpan(clickSpan, length, length + 1, SPAN_INCLUSIVE_EXCLUSIVE)
-        secondDescription!!.text = desc
-        secondDescription!!.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun setTermsText() {
@@ -286,7 +256,6 @@ class VerificationBankIbanFragment : IdentHubFragment() {
         ibanInputErrorLabel = null
         progressBar = null
         submitButton = null
-        secondDescription = null
         imageView = null
         termsCheckBox = null
         termsDisclaimer = null
