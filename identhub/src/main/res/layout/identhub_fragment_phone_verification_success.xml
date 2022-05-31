@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/identhub_contract_phone_verification_next_step"
-        app:layout_constraintTop_toBottomOf="@+id/done1"
+        app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         android:layout_marginTop="@dimen/identhub_margin_24" />

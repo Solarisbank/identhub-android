@@ -68,7 +68,6 @@ class VerificationBankActivity : IdentHubActivity() {
             when (naviDirection) {
                 is NaviDirection.FragmentDirection -> {
                     val naviActionId = naviDirection.actionId
-                  //  setSubStep(naviDirection)
                     Navigation
                         .findNavController(this, R.id.nav_host_fragment)
                         .navigate(naviActionId, naviDirection.args)
