@@ -1,8 +1,6 @@
 package de.solarisbank.identhub.identity;
 
-import static de.solarisbank.identhub.session.IdentHub.IDENTIFICATION_ID_KEY;
 import static de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY;
-import static de.solarisbank.identhub.session.feature.navigation.router.RouterKt.COMPLETED_STEP_KEY;
 
 import android.os.Bundle;
 
@@ -12,17 +10,13 @@ import androidx.lifecycle.ViewModel;
 
 import de.solarisbank.identhub.R;
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
-import de.solarisbank.identhub.session.IdentHub;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection;
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP;
-import de.solarisbank.sdk.data.dto.IdentificationDto;
 import de.solarisbank.sdk.domain.model.result.Event;
-import de.solarisbank.sdk.domain.model.result.Result;
 import io.reactivex.disposables.CompositeDisposable;
-import kotlin.Unit;
-import timber.log.Timber;
 
+//todo remove
 public final class IdentityActivityViewModel extends ViewModel {
 
     public static final int ACTION_QUIT = -1;
@@ -72,24 +66,6 @@ public final class IdentityActivityViewModel extends ViewModel {
         navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment);
     }
 
-    public void navigateToContractSigningPreview() {
-        if (IdentHub.INSTANCE.isPaymentResultAvailable()) {
-            compositeDisposable.add(getIdentificationUseCase.execute(Unit.INSTANCE).subscribe(result -> {
-                if (result instanceof Result.Success) {
-                    IdentificationDto identification = ((Result.Success<IdentificationDto>) result).getData();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(COMPLETED_STEP_KEY, COMPLETED_STEP.VERIFICATION_BANK.getIndex());
-                    bundle.putString(IDENTIFICATION_ID_KEY, identification.getId());
-
-                    navigateTo(ACTION_STOP_WITH_RESULT, bundle);
-                }
-            }, throwable -> Timber.e(throwable, "Cannot load identification data")));
-
-        } else {
-            navigateTo(R.id.action_processingVerificationFragment_to_contractSigningPreviewFragment);
-        }
-    }
-
     public void navigateToContractSigningProcess() {
         navigateTo(R.id.action_contractSigningPreviewFragment_to_contractSigningFragment);
     }
@@ -126,14 +102,6 @@ public final class IdentityActivityViewModel extends ViewModel {
     protected void onCleared() {
         compositeDisposable.clear();
         super.onCleared();
-    }
-
-    public void doOnNavigationChanged(int actionId) {
-        if (IdentHub.INSTANCE.isPaymentResultAvailable() && actionId == ACTION_STOP_WITH_RESULT) {
-            identificationStepPreferences.save(COMPLETED_STEP.VERIFICATION_BANK);
-        } else if (actionId == ACTION_SUMMARY_WITH_RESULT) {
-            identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING);
-        }
     }
 
     public COMPLETED_STEP getLastCompletedStep() {

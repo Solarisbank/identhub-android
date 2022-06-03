@@ -84,14 +84,12 @@ class DocScanFragment : DocumentScannerFragment() {
     private var animator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Timber.d("onCreate")
         val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
         inject(activityComponent.fragmentComponent().create())
         (arguments?.getSerializable(DOC_TYPE_KEY) as? AppliedDocument)?.let {
             currentDocumentType = it.toDocumentType()
         }
         super.onCreate(savedInstanceState)
-        Timber.d("onCreate end")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

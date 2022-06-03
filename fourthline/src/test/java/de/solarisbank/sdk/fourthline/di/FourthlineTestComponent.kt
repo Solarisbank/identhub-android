@@ -19,23 +19,26 @@ import de.solarisbank.identhub.session.data.person.PersonDataApiFactory
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.identhub.session.data.person.PersonDataDataSourceFactory
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryFactory
-import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
+import de.solarisbank.identhub.session.feature.di.IdentHubViewModelComponent
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.customization.CustomizationRepositoryFactory
 import de.solarisbank.sdk.data.datasource.*
-import de.solarisbank.sdk.data.di.*
+import de.solarisbank.sdk.data.di.IdentificationModule
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.sdk.data.di.network.api.IdentificationApiFactory
 import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory
-import de.solarisbank.sdk.data.repository.*
+import de.solarisbank.sdk.data.repository.IdentificationRepository
+import de.solarisbank.sdk.data.repository.IdentificationRepositoryFactory
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.feature.config.*
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.CoreModule
@@ -45,7 +48,10 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.data.identification.*
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
@@ -118,6 +124,7 @@ class FourthlineTestComponent private constructor(
     private val kycUploadModule: KycUploadModule,
     private val identificationModule: IdentificationModule
 ) {
+    private val savedStateHandle: SavedStateHandle = mockk<SavedStateHandle>()
 
     private lateinit var applicationContextProvider: Provider<Context>
     lateinit var deleteKycInfoUseCaseProvider: Provider<DeleteKycInfoUseCase>
@@ -319,9 +326,10 @@ class FourthlineTestComponent private constructor(
             }
         })
 
-        initializationInfoRepositoryProvider = IdentHubSessionComponent
-            .getInstance(applicationContextProvider.get())
-            .getInitializationInfoRepositoryProvider()
+        initializationInfoRepositoryProvider = IdentHubViewModelComponent
+            .getInstance(applicationContextProvider.get(), savedStateHandle = savedStateHandle)
+            .initializationInfoRepositoryProvider
+
 
         customizationRepositoryProvider = DoubleCheck.provider(
             CustomizationRepositoryFactory(

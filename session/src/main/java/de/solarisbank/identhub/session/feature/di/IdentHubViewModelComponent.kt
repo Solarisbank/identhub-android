@@ -3,21 +3,17 @@ package de.solarisbank.identhub.session.feature.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.data.datasource.DynamicIdetityRetrofitDataSource
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
-import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
-import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory
-import de.solarisbank.identhub.session.data.di.SessionModule
-import de.solarisbank.identhub.session.data.di.SessionUrlLocalDataSourceFactory
+import de.solarisbank.identhub.session.data.datasource.SessionStateSavedStateHandleDataSource
+import de.solarisbank.identhub.session.data.di.*
 import de.solarisbank.identhub.session.data.network.InitializeIdentificationApi
 import de.solarisbank.identhub.session.data.network.UserAgentInterceptor
 import de.solarisbank.identhub.session.data.repository.IdentHubSessionRepository
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryImpl
+import de.solarisbank.identhub.session.data.repository.SessionStateRepository
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
-import de.solarisbank.identhub.session.feature.IdentHubSessionObserver
-import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.data.di.datasource.IdentificationInMemoryDataSourceFactory
@@ -31,9 +27,7 @@ import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSourceFac
 import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
-import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
-import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -41,10 +35,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 //todo split to a separate gradle module
-class IdentHubSessionComponent private constructor(
+class IdentHubViewModelComponent private constructor(
     val coreModule: CoreModule,
     val networkModule: NetworkModule,
-    val identHubSessionModule: IdentHubSessionModule,
+    private val savedStateHandle: SavedStateHandle,
     private val sessionModule: SessionModule,
     private val applicationContextProvider: ApplicationContextProvider
 ){
@@ -63,11 +57,13 @@ class IdentHubSessionComponent private constructor(
     private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationLocalDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
-    private lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
+    private lateinit var identHubSessionStateSavedStateHandleDataSourceProvider: Provider<SessionStateSavedStateHandleDataSource>
+    private lateinit var identHubSessionStateRepositoryProvider: Provider<SessionStateRepository>
+    lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
     private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     private lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
-    private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
+    lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
 
     init {
         initialize()
@@ -75,10 +71,6 @@ class IdentHubSessionComponent private constructor(
 
     fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return identificationInMemoryDataSourceProvider
-    }
-
-    fun getInitializationInfoRepositoryProvider(): Provider<InitializationInfoRepository> {
-        return initializationInfoRepositoryProvider
     }
 
     private fun initialize() {
@@ -107,8 +99,16 @@ class IdentHubSessionComponent private constructor(
                 return IdentityInitializationRepositoryImpl(identityInitializationDataSourceProvider.get())
             }
         })
-        sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider))
-        dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(networkModule, sessionUrlRepositoryProvider))
+        sessionUrlRepositoryProvider =
+            DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(
+                sessionModule,
+                sessionUrlLocalDataSourceProvider
+            ))
+        dynamicBaseUrlInterceptorProvider =
+            DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(
+                networkModule,
+                sessionUrlRepositoryProvider
+            ))
         okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
                 networkModule, userAgentInterceptorProvider, dynamicBaseUrlInterceptorProvider,httpLoggingInterceptorProvider
         ))
@@ -146,14 +146,24 @@ class IdentHubSessionComponent private constructor(
             }
         })
 
+        identHubSessionStateSavedStateHandleDataSourceProvider = DoubleCheck.provider(
+            ProvideSessionStateDataSourceFactory.create(savedStateHandle)
+        )
+
+        identHubSessionStateRepositoryProvider = DoubleCheck.provider(
+            ProvideSessionStateRepositoryFactory.create(identHubSessionStateSavedStateHandleDataSourceProvider.get())
+        )
+
         identHubSessionUseCaseProvider = DoubleCheck.provider(object :
             Factory<IdentHubSessionUseCase> {
             override fun get(): IdentHubSessionUseCase {
                 return IdentHubSessionUseCase(
-                        identHubSessionRepositoryProvider.get(),
-                        sessionUrlRepositoryProvider.get(),
-                        identityInitializationRepositoryProvider.get()
-                        )
+                    identHubSessionRepositoryProvider.get(),
+                    initializationInfoRepositoryProvider.get(),
+                    identHubSessionStateRepositoryProvider.get(),
+                    sessionUrlRepositoryProvider.get(),
+                    identityInitializationRepositoryProvider.get()
+                )
             }
         })
 
@@ -164,6 +174,7 @@ class IdentHubSessionComponent private constructor(
 
         initializationInfoRepositoryProvider = DoubleCheck.provider(InitializationInfoRepositoryFactory(
             coreModule,
+            savedStateHandle,
             initializationInfoRetrofitDataSourceProvider,
             sessionUrlRepositoryProvider
         ))
@@ -176,74 +187,19 @@ class IdentHubSessionComponent private constructor(
         }
     }
 
-    fun identHubSessionObserverSubComponent(): IdentHubObserverSubcomponent.Factory {
-        return IdentHubSessionObserverSubComponentFactory()
-    }
-
-    inner class IdentHubSessionObserverSubComponentFactory : IdentHubObserverSubcomponent.Factory {
-        override fun create(): IdentHubObserverSubcomponent {
-            return IdentHubSessionObserverSubComponent(identHubSessionModule)
-        }
-    }
-
-    inner class IdentHubSessionObserverSubComponent(
-            val identHubSessionModule: IdentHubSessionModule
-    ) : IdentHubObserverSubcomponent {
-
-        private var saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> =
-                DoubleCheck.provider(object :
-                    Factory<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>> {
-                    override fun get(): Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>> {
-                        return emptyMap()
-                    }
-
-                })
-
-        private var mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> =
-                DoubleCheck.provider(IdentHubViewModelProvider(identHubSessionModule, identHubSessionUseCaseProvider.get(), initializationInfoRepositoryProvider))
-
-        private var assistedViewModelFactoryProvider: Provider<AssistedViewModelFactory> =
-                DoubleCheck.provider(
-                    IdentHubeSessionViewModelFactory.create(
-                        identHubSessionModule,
-                        saveStateViewModelMapProvider,
-                        mapOfClassOfAndProviderOfViewModelProvider
-                    )
-                )
-
-        override fun inject(identHubSessionObserver: IdentHubSessionObserver) {
-            IdentHubSessionObserverInjector.injectAssistedViewModelFactory(identHubSessionObserver,
-                assistedViewModelFactoryProvider.get())
-        }
-
-    }
-
-    internal class IdentHubViewModelProvider(
-        private val identHubSessionModule: IdentHubSessionModule,
-        private val identHubSessionUseCase: IdentHubSessionUseCase,
-        private val initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>,
-    ) : Provider<Map<Class<out ViewModel>, Provider<ViewModel>>> {
-        override fun get(): Map<Class<out ViewModel>, Provider<ViewModel>> {
-            return (LinkedHashMap<Class<out ViewModel>, Provider<ViewModel>>() )
-                    .also {
-                        it[IdentHubSessionViewModel::class.java] = IdentHubSessionViewModelFactory(identHubSessionModule, identHubSessionUseCase, initializationInfoRepositoryProvider)
-                    }
-        }
-    }
-
     companion object {
         private val lock = Any()
-        private var identHubSessionComponent: IdentHubSessionComponent? = null
+        private var identHubSessionComponent: IdentHubViewModelComponent? = null
 
-        fun getInstance(applicationContext: Context): IdentHubSessionComponent {
+        fun getInstance(applicationContext: Context, savedStateHandle: SavedStateHandle): IdentHubViewModelComponent {
             synchronized(lock) {
                 if(identHubSessionComponent == null) {
-                    identHubSessionComponent = IdentHubSessionComponent(
-                            coreModule = CoreModule(),
-                            networkModule = NetworkModule(),
-                            sessionModule = SessionModule(),
-                            identHubSessionModule = IdentHubSessionModule(),
-                            applicationContextProvider = ApplicationContextProvider(applicationContext)
+                    identHubSessionComponent = IdentHubViewModelComponent(
+                        coreModule = CoreModule(),
+                        networkModule = NetworkModule(),
+                        savedStateHandle = savedStateHandle,
+                        sessionModule = SessionModule(),
+                        applicationContextProvider = ApplicationContextProvider(applicationContext)
                     )
                 }
             }

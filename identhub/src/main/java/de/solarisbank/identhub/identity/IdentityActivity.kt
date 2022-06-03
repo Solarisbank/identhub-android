@@ -58,8 +58,8 @@ class IdentityActivity : IdentHubActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(IdentityActivityViewModel::class.java)
         viewModel.naviDirectionEvent.observe(
-            this,
-            { event: Event<NaviDirection> -> onNavigationChanged(event) })
+            this
+        ) { event: Event<NaviDirection> -> onNavigationChanged(event) }
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {

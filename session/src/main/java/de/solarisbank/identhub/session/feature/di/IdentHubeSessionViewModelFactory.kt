@@ -9,14 +9,12 @@ import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 
 class IdentHubeSessionViewModelFactory private constructor(
     private val identHubSessionModule: IdentHubSessionModule,
-    private val saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>,
-    private val mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>>
+    private val saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>
 ) : Factory<AssistedViewModelFactory> {
 
     override fun get(): AssistedViewModelFactory {
         return identHubSessionModule.provideViewModelFactory(
-                saveStateViewModelMapProvider.get(),
-                mapOfClassOfAndProviderOfViewModelProvider.get()
+                saveStateViewModelMapProvider.get()
         )
     }
 
@@ -25,12 +23,10 @@ class IdentHubeSessionViewModelFactory private constructor(
         fun create(
             identHubSessionModule: IdentHubSessionModule,
             saveStateViewModelMapProvider: Provider<Map<Class<out ViewModel>, Factory2<ViewModel, SavedStateHandle>>>,
-            mapOfClassOfAndProviderOfViewModelProvider: Provider<Map<Class<out ViewModel>, Provider<ViewModel>>>
         ): IdentHubeSessionViewModelFactory {
             return IdentHubeSessionViewModelFactory(
                     identHubSessionModule,
-                    saveStateViewModelMapProvider,
-                    mapOfClassOfAndProviderOfViewModelProvider
+                    saveStateViewModelMapProvider
             )
         }
     }

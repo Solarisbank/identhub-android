@@ -66,6 +66,8 @@ class IdentHubSessionUseCaseTest : StringSpec ({
         val identificationState: NavigationalResult<String> =
             identHubSessionUseCase!!.obtainLocalIdentificationState().blockingGet()
 
+        print("identificationState.data : ${identificationState.data}")
+        print("identificationState.nextStep : ${identificationState.nextStep}")
         identificationState.data shouldBe "FIRST_STEP_KEY"
         identificationState.nextStep shouldBe "bank/iban"
     }

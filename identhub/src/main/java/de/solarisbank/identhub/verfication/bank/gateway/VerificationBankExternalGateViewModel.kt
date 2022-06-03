@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
-import de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY
+import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result

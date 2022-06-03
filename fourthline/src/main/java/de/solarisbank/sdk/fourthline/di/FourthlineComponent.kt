@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
 import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
@@ -20,23 +19,29 @@ import de.solarisbank.identhub.session.data.person.PersonDataApiFactory
 import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.identhub.session.data.person.PersonDataDataSourceFactory
 import de.solarisbank.identhub.session.data.repository.IdentityInitializationRepositoryFactory
-import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent
+import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.customization.CustomizationRepositoryFactory
-import de.solarisbank.sdk.data.datasource.*
-import de.solarisbank.sdk.data.di.*
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
+import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource
+import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
+import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
+import de.solarisbank.sdk.data.di.IdentificationModule
 import de.solarisbank.sdk.data.di.datasource.IdentificationRetrofitDataSourceFactory
 import de.solarisbank.sdk.data.di.datasource.MobileNumberDataSourceFactory
 import de.solarisbank.sdk.data.di.network.*
 import de.solarisbank.sdk.data.di.network.NetworkModuleProvideDynamicUrlInterceptorFactory.Companion.create
 import de.solarisbank.sdk.data.di.network.api.IdentificationApiFactory
 import de.solarisbank.sdk.data.di.network.api.MobileNumberApiFactory
-import de.solarisbank.sdk.data.repository.*
+import de.solarisbank.sdk.data.repository.IdentificationRepository
+import de.solarisbank.sdk.data.repository.IdentificationRepositoryFactory
+import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.di.IdentificationPollingStatusUseCaseFactory
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
-import de.solarisbank.sdk.feature.config.*
+import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.di.BaseFragmentDependencies
 import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.CoreModule
@@ -46,7 +51,10 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
-import de.solarisbank.sdk.fourthline.data.identification.*
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
+import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationApiFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRepositoryFactory
 import de.solarisbank.sdk.fourthline.data.identification.factory.ProvideFourthlineIdentificationRetrofitDataSourceFactory
@@ -179,7 +187,7 @@ class FourthlineComponent private constructor(
 
     private fun initialize() {
         applicationContextProvider = ApplicationContextProvider(libraryComponent)
-        identificationLocalDataSourceProvider = IdentHub.getIdentificationLocalDataSourceProvider()
+        identificationLocalDataSourceProvider = IdentHubSessionViewModel.INSTANCE!!.getIdentificationLocalDataSourceProvider()
         moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
 
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(create(sessionModule))
@@ -311,9 +319,8 @@ class FourthlineComponent private constructor(
             }
         })
 
-        initializationInfoRepositoryProvider = IdentHubSessionComponent
-            .getInstance(applicationContextProvider.get())
-            .getInitializationInfoRepositoryProvider()
+        initializationInfoRepositoryProvider =
+            IdentHubSessionViewModel.initializationInfoRepositoryProvider!!
 
         customizationRepositoryProvider = DoubleCheck.provider(
             CustomizationRepositoryFactory(
@@ -442,13 +449,6 @@ class FourthlineComponent private constructor(
                 UploadResultFragmentInjector(baseFragmentDependencies).injectMembers(uploadResultFragment)
             }
 
-        }
-    }
-
-    internal class SharedPreferencesProvider(private val activityComponent: CoreActivityComponent) :
-        Provider<SharedPreferences> {
-        override fun get(): SharedPreferences {
-            return activityComponent.sharedPreferences()
         }
     }
 

@@ -3,17 +3,24 @@ package de.solarisbank.identhub.session.feature
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.os.Looper
-import androidx.annotation.MainThread
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import de.solarisbank.identhub.session.feature.di.IdentHubActivityComponent
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
-import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.identhub.session.feature.navigation.router.*
+import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.sdk.data.entity.NavigationalResult
 import timber.log.Timber
 
-class IdentHubSession {
+/**
+ * Due to compatibility of previous api and reducing of required logic implementation this class
+ * encapsulates interaction with activity callbacks.
+ *
+ * This class has lifecycle as sdk initialization activity
+ */
+class IdentHubSession : ViewModelFactoryContainer {
+
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     private var lastCompetedStep: COMPLETED_STEP? = null
@@ -23,17 +30,21 @@ class IdentHubSession {
     private var paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
 
-    val isPaymentProcessAvailable: Boolean
+    private lateinit var activity: FragmentActivity
+
+    private lateinit var activityComponent: IdentHubActivityComponent
+    override lateinit var viewModelFactory: (FragmentActivity) -> ViewModelProvider.Factory
+    private lateinit var viewModel: IdentHubSessionViewModel
+
+    private val isPaymentProcessAvailable: Boolean
         get() = paymentErrorCallback != null || paymentSuccessCallback != null
 
     internal var sessionUrl: String? = null
-        set(value) {
-            field = value
-            MAIN_PROCESS?.sessionUrl = value
-        }
 
-    @MainThread
-    @Synchronized
+    /**
+     * Sets required callbacks for indication sdk results and logic that requires
+     * context
+     */
     fun onCompletionCallback(
         fragmentActivity: FragmentActivity,
         successCallback: ((IdentHubSessionResult) -> Unit),
@@ -47,33 +58,118 @@ class IdentHubSession {
         initMainProcess(fragmentActivity)
     }
 
-    fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
-        return MAIN_PROCESS!!.getIdentificationLocalDataSourceProvider()
+    private fun initMainProcess(activity: FragmentActivity) {
+        Timber.d("initMainProcess, fragmentActivity : $activity, this : $this")
+        this.activity = activity
+        activityComponent = IdentHubActivityComponent(this.activity)
+        activityComponent.inject(this)
+
+        viewModel = viewModelFactory.invoke(activity).create(IdentHubSessionViewModel::class.java)
+        IdentHubSessionViewModel.INSTANCE!!.saveSessionId(sessionUrl)
+        viewModel.initializationStateLiveData
+            .observe(this.activity) { processInitializationStateResult(it) }
+        viewModel.sessionStepResultLiveData.observe(activity) { processSessionResult(it)}
     }
 
-    private fun initMainProcess(fragmentActivity: FragmentActivity) {
-        Timber.d("initMainProcess, fragmentActivity : $fragmentActivity, this : $this")
-
-        if(Looper.myLooper() != Looper.getMainLooper()) {
-            throw IllegalThreadStateException("This method must be called on the main thread!")
-        }
-
-        if (MAIN_PROCESS == null) {
-            MAIN_PROCESS = IdentHubSessionObserver(
-                ::onResultSuccess,
-                ::onResultFailure
+    private fun processInitializationStateResult(result: Result<NavigationalResult<String>>) {
+        Timber.d("processInitializationStateResult, result: $result ")
+        if (result.isSuccess) {
+            val navResult = result.getOrNull()!!
+            if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
+                Timber.d("processInitializationStateResult 1")
+                activity.startActivity(
+                    toFirstStep(activity, navResult.nextStep!!, sessionUrl)
+                )
+            } else if (navResult.data == NEXT_STEP_KEY && navResult.nextStep != null) {
+                Timber.d("processInitializationStateResult 2")
+                val nextStep = toNextStep(activity, navResult.nextStep!!, sessionUrl)
+                if (nextStep != null) {
+                    activity.startActivity(nextStep)
+                } else {
+                    identificationErrorCallback!!.invoke(
+                        IdentHubSessionFailure(message = "Session aborted", step = null)
+                    )
+                }
+            } else {
+                Timber.d("processInitializationStateResult 4")
+            }
+        } else {
+            identificationErrorCallback!!.invoke(
+                IdentHubSessionFailure(
+                    //todo clear how fourthline simplified should be shown
+                    message = "", null
+                )
             )
         }
-        MAIN_PROCESS?.fragmentActivity = fragmentActivity
-        MAIN_PROCESS?.sessionUrl = sessionUrl
     }
 
-    @Synchronized
+    private fun processSessionResult(sessionStepResult: SessionStepResult) {
+        //todo move logic to usecase, confirm both platform step result contract
+        Timber.d("setSessionResult 0 : $sessionStepResult")
+        when (sessionStepResult) {
+            is NaviDirection.NextStepStepResult -> {
+                Timber.d("setSessionResult 1")
+                executeNextStepResult(
+                    sessionStepResult.nextStep,
+                    sessionStepResult.completedStep
+                )
+            }
+            //todo check on usecase
+            is NaviDirection.PaymentSuccessfulStepResult -> {
+                if (isPaymentProcessAvailable) {
+                    onResultSuccess(sessionStepResult)
+                } else {
+                    executeNextStepResult(
+                        sessionStepResult.nextStep,
+                        null
+                    )
+                }
+            }
+            is NaviDirection.VerificationSuccessfulStepResult -> {
+                Timber.d("setSessionResult 2")
+                onResultSuccess(sessionStepResult)
+            }
+            is NaviDirection.ConfirmationSuccessfulStepResult -> {
+                Timber.d("setSessionResult 2.1")
+                onResultSuccess(sessionStepResult)
+            }
+
+            is NaviDirection.VerificationFailureStepResult -> {
+                Timber.d("setSessionResult 3")
+                onResultFailure(IdentHubSessionFailure(
+                    step = sessionStepResult.completedStep?.let {
+                        COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
+                    }
+                ))
+            }
+        }
+    }
+
+    private fun executeNextStepResult(nextStep: String?, completedStep: Int?) {
+        Timber.d(" executeNextStepResult, nextStep : $nextStep")
+        nextStep?.let {
+            toNextStep(activity, it, sessionUrl)?.let { nextStepIntent ->
+                activity.startActivity(nextStepIntent)
+            }
+        }?:run {
+            //todo better to check in sender
+            identificationErrorCallback!!.invoke(
+                IdentHubSessionFailure(
+                    message = "Session aborted",
+                    step = COMPLETED_STEP.getEnum(completedStep ?: -1)
+                )
+            )
+        }
+    }
+
+    /**
+     * Sets successfull and faile callbacks for optional intermediate step
+     * for partners that use payment checking
+     */
     fun onPaymentCallback(
         paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null,
         paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
     ) {
-
         this.paymentErrorCallback = paymentErrorCallback
         this.paymentSuccessCallback = paymentSuccessCallback
     }
@@ -119,26 +215,6 @@ class IdentHubSession {
                     )
                 }
             }
-
-        }
-    }
-
-    private fun onResultSuccess(identHubSessionResult: IdentHubSessionResult) {
-        Timber.d("onResultSuccess")
-        lastCompetedStep = identHubSessionResult.step
-        val paymentSuccessCallback = this.paymentSuccessCallback
-        val identificationSuccessCallback = this.identificationSuccessCallback
-        if (paymentSuccessCallback != null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
-            Timber.d("onResultSuccess 1")
-            paymentSuccessCallback(identHubSessionResult)
-        }else if(paymentSuccessCallback == null && (identHubSessionResult.step == COMPLETED_STEP.VERIFICATION_BANK)) {
-            Timber.d("onResultSuccess 2")
-            //todo check if this case is required in onResultSuccess(sessionStepResult: SessionStepResult)
-            MAIN_PROCESS?.obtainNextStep()
-        } else if (identificationSuccessCallback != null) {
-            Timber.d("onResultSuccess 3")
-            reset()
-            identificationSuccessCallback(identHubSessionResult)
         }
     }
 
@@ -147,7 +223,10 @@ class IdentHubSession {
         lastCompetedStep = identHubSessionFailure.step
         val paymentErrorCallback = this.paymentErrorCallback
         val identificationErrorCallback = this.identificationErrorCallback
-        if (paymentErrorCallback != null && identHubSessionFailure.step == COMPLETED_STEP.VERIFICATION_BANK) {
+        if (
+            paymentErrorCallback != null &&
+            identHubSessionFailure.step == COMPLETED_STEP.VERIFICATION_BANK
+        ) {
             Timber.d("onResultFailure 1")
             paymentErrorCallback(identHubSessionFailure)
         } else if (identificationErrorCallback != null) {
@@ -157,43 +236,29 @@ class IdentHubSession {
         }
     }
 
-    @Synchronized
+    /**
+     * Starts identification process
+     */
     fun start() {
-        Timber.d("start, MAIN_PROCESS : $MAIN_PROCESS, this $this")
-        if (MAIN_PROCESS == null) {
-            throw NullPointerException("You need to call create method first")
-        }
-        Timber.d("STARTED : $STARTED; RESUMED : $RESUMED")
-        if (!STARTED) {
-            MAIN_PROCESS?.obtainLocalIdentificationState()
-            STARTED = true
-            if (paymentSuccessCallback == null) {
-                RESUMED = true
-            }
-        }
+        Timber.d("start, paymentSuccessCallback != null : ${ paymentSuccessCallback != null }")
+        viewModel.startIdentificationProcess(paymentSuccessCallback != null)
     }
 
-    @Synchronized
+    /**
+     * Uses for resuming identification process in case
+     * of optional payment checking for some partners
+     */
     fun resume() {
-        Timber.d("resume, MAIN_PROCESS : $MAIN_PROCESS, this $this")
-        if (MAIN_PROCESS == null) {
-            throw NullPointerException("You cannot resume the flow if the session is not started")
-        }
-        Timber.d("STARTED : $STARTED; RESUMED : $RESUMED")
-        if (STARTED && !RESUMED) {
-            MAIN_PROCESS?.obtainLocalIdentificationState()
-            RESUMED = true
-        }
+        Timber.d("resume")
+        viewModel.resumeIdentificationProcess()
     }
 
+    /**
+     * Resets identification process
+     */
     internal fun reset() {
-        Timber.d("reset(), MAIN_PROCESS : $MAIN_PROCESS, this $this")
-        identificationErrorCallback = null
-        paymentSuccessCallback = null
-        paymentErrorCallback = null
-        identificationSuccessCallback = null
-        STARTED = false
-        RESUMED = false
+        Timber.d("reset(), this $this")
+        viewModel.resetIdentificationProcess()
     }
 
     private fun loadAppName(context: Context) {
@@ -211,26 +276,13 @@ class IdentHubSession {
         }
     }
 
-    fun setSessionResult(sessionStepResult: SessionStepResult) {
-        MAIN_PROCESS?.setSessionResult(sessionStepResult)
-    }
-
     companion object {
-        @kotlin.jvm.JvmStatic
-        val ACTION_NEXT_STEP: Int = 99
-
+        //todo move to a repository
         @kotlin.jvm.JvmField
         var hasPhoneVerification: Boolean = true
 
         @kotlin.jvm.JvmField
         var appName: String = "Unknown"
-
-        @Volatile
-        private var MAIN_PROCESS: IdentHubSessionObserver? = null
-
-        private var STARTED: Boolean = false
-
-        private var RESUMED: Boolean = false
     }
 }
 

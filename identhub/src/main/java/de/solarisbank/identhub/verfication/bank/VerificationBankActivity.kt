@@ -2,6 +2,7 @@ package de.solarisbank.identhub.verfication.bank
 
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -51,7 +52,8 @@ class VerificationBankActivity : IdentHubActivity() {
     private fun observeViewModel() {
         viewModel = ViewModelProvider(this, viewModelFactory)
                 .get(VerificationBankViewModel::class.java)
-        viewModel.getNaviDirectionEvent().observe(this) { event: Event<NaviDirection> -> onNavigationChanged(event) }
+        viewModel.getNaviDirectionEvent().observe(this
+        ) { event: Event<NaviDirection> -> onNavigationChanged(event) }
         viewModel.cancelState.observe(this) { onCancel(it) }
     }
 

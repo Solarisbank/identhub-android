@@ -1,21 +1,19 @@
 package de.solarisbank.identhub.session.feature.di
 
+import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
-import de.solarisbank.sdk.feature.config.InitializationInfoRepository
-import de.solarisbank.sdk.feature.di.internal.Factory
-import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.feature.di.internal.Factory2
 
 class IdentHubSessionViewModelFactory(
     private val identHubSessionModule: IdentHubSessionModule,
-    private val identHubSessionUseCase: IdentHubSessionUseCase,
-    private val initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>,
-): Factory<ViewModel> {
+    private val application: Application
+): Factory2<ViewModel, SavedStateHandle> {
 
-    override fun get(): ViewModel {
+    override fun create(value: SavedStateHandle): ViewModel {
         return identHubSessionModule.provideIdentHubSessionViewModel(
-            identHubSessionUseCase,
-            initializationInfoRepositoryProvider.get()
+            value,
+            application
         )
     }
 }

@@ -7,8 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
-import de.solarisbank.identhub.session.IdentHub.SESSION_URL_KEY
-import de.solarisbank.identhub.session.IdentHub.VERIFICATION_BANK_URL_KEY
+import de.solarisbank.identhub.session.IdentHub.Companion.SESSION_URL_KEY
+import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP

@@ -1,16 +1,17 @@
 package de.solarisbank.identhub.session.feature.base
 
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.di.IdentHubSessionReceiver
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
+import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.feature.base.BaseActivity
 import timber.log.Timber
 
 open class SessionNavigationActivity : BaseActivity() {
 
-    private var identHubSessionReceiver: IdentHubSessionReceiver = IdentHub
+    private var identHubSessionReceiver: IdentHubSessionReceiver =
+        IdentHubSessionViewModel.INSTANCE!!
 
     protected fun quit(sessionStepResult: SessionStepResult) {
         Timber.d("quit, state : ${sessionStepResult}")

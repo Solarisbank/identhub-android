@@ -178,7 +178,7 @@ class PersonDataUseCaseTest : StringSpec({
         val actualResult: Result<PersonDataDto> = personDataUseCase.execute("https://stackoverflow.com/questions/59305818/crashlytics-doesnt-display-native-crashes/").blockingGet()
 
         if (!actualResult.succeeded) {
-            println("aChub actualResult.throwable?.message : " + actualResult.throwable?.message)
+            println("actualResult.throwable?.message : " + actualResult.throwable?.message)
         }
 
         actualResult.succeeded shouldBe true

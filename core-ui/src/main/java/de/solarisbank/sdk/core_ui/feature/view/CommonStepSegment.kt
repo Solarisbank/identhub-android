@@ -45,7 +45,7 @@ class CommonStepSegment @JvmOverloads constructor(
     }
 
     override fun setBackgroundColor(color: Int) {
-        Timber.d("aChub setBackgroundColor")
+        Timber.d("setBackgroundColor")
         step1Image!!.setBackgroundColor(color)
     }
 

@@ -7,12 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityExampleIdenthubBinding
 import de.solarisbank.identhub.session.IdentHub
+import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.IdentHubSessionFailure
 import de.solarisbank.identhub.session.feature.IdentHubSessionResult
 import timber.log.Timber
 
 class ExampleIdentHubActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExampleIdenthubBinding
+    private lateinit var session: IdentHubSession
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +24,8 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         setContentView(view)
 
         prefillSessionUrl()
-        binding.startButton.setOnClickListener {
-            setLoadingState()
-            IdentHub.sessionWithUrl(binding.sessionInputField.text.toString().trim())
+
+        session = IdentHub().sessionWithUrl(binding.sessionInputField.text.toString().trim())
             .apply {
                 onCompletionCallback(
                     fragmentActivity = this@ExampleIdentHubActivity,
@@ -31,8 +33,11 @@ class ExampleIdentHubActivity : AppCompatActivity() {
                     errorCallback = this@ExampleIdentHubActivity::onFailure,
                     confirmationSuccessCallback = this@ExampleIdentHubActivity::onConfirmationSuccess
                 )
-                start()
             }
+
+        binding.startButton.setOnClickListener {
+            setLoadingState()
+            session.start()
         }
     }
 
@@ -67,11 +72,6 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         Timber.d("onFailure; IdentHubSessionFailure identification has not completed: $message")
         binding.callbackResult.text = "onFailure called"
         binding.callbackResult.setTextColor(Color.RED)
-    }
-
-    override fun onDestroy() {
-        IdentHub.clear()
-        super.onDestroy()
     }
 
     private fun prefillSessionUrl() {

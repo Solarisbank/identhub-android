@@ -37,7 +37,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private var awaitedDirection: NaviDirection.FragmentDirection? = null
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
-
     override fun inject(activitySubcomponent: FourthlineActivitySubcomponent) {
         activitySubcomponent.inject(this)
     }
@@ -45,22 +44,19 @@ class FourthlineActivity : FourthlineBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.identhub_activity_fourthline)
-        fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
+
         Timber.d("intent: $intent")
         Timber.d("Intent: SESSION_URL_KEY: ${intent.getStringExtra(IdentHub.SESSION_URL_KEY)}")
         initView()
         observeViewModel()
         initGraph()
         viewModel.saveFourthlineStepParameters(intent.toFourthlineStepParametersDto())
-
-        fourthLineClose?.setOnClickListener {
-            onBackPressed()
-        }
     }
 
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
-        supportActionBar?.setShowHideAnimationEnabled(false)
+        fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
+        fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
     }
 
     private fun initGraph() {
@@ -68,12 +64,7 @@ class FourthlineActivity : FourthlineBaseActivity() {
                 supportFragmentManager.findFragmentById(R.id.nav_host_fragment
                 ) as NavHostFragment).navController
         val navInflater: NavInflater = navController.navInflater
-        navGraph = navInflater.inflate(R.navigation.identhub_fourthline_navigation)
-
-        if (intent.hasExtra(SHOW_UPLOADING_SCREEN)) {
-            navGraph.startDestination = R.id.kycUploadFragment
-        }
-        navController.graph = navGraph
+        navController.graph = navInflater.inflate(R.navigation.identhub_fourthline_navigation)
         setUpDestinationListener()
     }
 

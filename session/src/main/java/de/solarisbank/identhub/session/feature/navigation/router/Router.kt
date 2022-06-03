@@ -16,6 +16,7 @@ const val IS_FOURTHLINE_SIGNING = "IS_FOURTHLINE_SIGNING"
 const val SHOW_STEP_INDICATOR = "SHOW_STEP_INDICATOR"
 
 fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): Intent {
+    Timber.d("toFirstStep, route : $route")
     return when(route) {
         FIRST_STEP_DIRECTION.BANK_IBAN.destination -> {
             provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)

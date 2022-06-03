@@ -61,7 +61,6 @@ import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
-import de.solarisbank.identhub.session.IdentHub;
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource;
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory;
 import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory;
@@ -83,7 +82,7 @@ import de.solarisbank.identhub.session.data.verification.phone.VerificationPhone
 import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneApiFactory;
 import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneRepositoryFactory;
 import de.solarisbank.identhub.session.data.verification.phone.factory.VerificationPhoneNetworkDataSourceFactory;
-import de.solarisbank.identhub.session.feature.di.IdentHubSessionComponent;
+import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivity;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankFragmentInjector;
@@ -253,7 +252,7 @@ public class IdenthubComponent {
             VerificationPhoneModule verificationPhoneModule
     ) {
         applicationContextProvider = new ApplicationContextProvider(libraryComponent);
-        identificationLocalDataSourceProvider = IdentHub.INSTANCE.getIdentificationLocalDataSourceProvider();
+        identificationLocalDataSourceProvider = IdentHubSessionViewModel.Companion.getINSTANCE().getIdentificationLocalDataSourceProvider();
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule));
         sessionUrlRepositoryProvider = DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(sessionModule, sessionUrlLocalDataSourceProvider));
         sharedPreferencesProvider = DoubleCheck.provider((Factory<SharedPreferences>) () -> applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE));
@@ -332,9 +331,7 @@ public class IdenthubComponent {
         getIdentificationUseCaseProvider = GetIdentificationUseCaseFactory.create(contractSignRepositoryProvider, identityInitializationRepositoryProvider);
         verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(verificationBankRepositoryProvider, identityInitializationRepositoryProvider);
 
-        initializationInfoRepositoryProvider = IdentHubSessionComponent.Companion
-                .getInstance(applicationContextProvider.get())
-                .getInitializationInfoRepositoryProvider();
+        initializationInfoRepositoryProvider = IdentHubSessionViewModel.Companion.getInitializationInfoRepositoryProvider();
 
         customizationRepositoryProvider = DoubleCheck.provider(new CustomizationRepositoryFactory(
                 coreModule,

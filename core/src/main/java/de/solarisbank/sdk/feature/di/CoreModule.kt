@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.feature.di
 
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.customization.CustomizationRepositoryImpl
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
@@ -36,10 +37,12 @@ class CoreModule {
     }
 
     fun provideInitializationInfoRepository(
+        savedStateHandle: SavedStateHandle,
         initializationInfoRetrofitDataSource: InitializationInfoRetrofitDataSource,
         sessionUrlRepository: SessionUrlRepository
     ): InitializationInfoRepository {
         return InitializationInfoRepositoryImpl(
+            savedStateHandle,
             initializationInfoRetrofitDataSource,
             sessionUrlRepository
         )
