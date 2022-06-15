@@ -56,7 +56,9 @@ class FourthlineActivity : FourthlineBaseActivity() {
     private fun initView() {
         navHostFragment = findViewById(R.id.nav_host_fragment)
         fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
-        fourthLineClose = findViewById(R.id.img_identhub_fourth_line_close)
+        fourthLineClose?.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun initGraph() {

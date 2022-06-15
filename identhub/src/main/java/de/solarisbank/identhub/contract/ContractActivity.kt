@@ -20,7 +20,7 @@ import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
     private lateinit var viewModel: ContractViewModel
-   private var contractClose: AppCompatImageView? = null
+    private var contractClose: AppCompatImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
