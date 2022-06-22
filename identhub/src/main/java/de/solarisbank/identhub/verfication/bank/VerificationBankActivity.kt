@@ -84,7 +84,7 @@ class VerificationBankActivity : IdentHubActivity() {
 
     private fun onCancel(state: Boolean?) {
         if(state == true) {
-            quit(null)
+            quit(NaviDirection.VerificationFailureStepResult())
         }
     }
 }

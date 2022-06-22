@@ -51,18 +51,6 @@ abstract class BaseActivity : AppCompatActivity() {
         viewModelFactory = assistedViewModelFactory.create(this, intent.extras)
     }
 
-    protected fun quit(bundle: Bundle?) {
-        Timber.d("quit, bundle : ${bundle}")
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(
-                        Intent(IDENTHUB_STEP_ACTION)
-                                .apply { bundle?.let { putExtras(it) } }
-                )
-        finish()
-    }
-
-
-
     fun showAlertFragment(
         title: String,
         message: String,
