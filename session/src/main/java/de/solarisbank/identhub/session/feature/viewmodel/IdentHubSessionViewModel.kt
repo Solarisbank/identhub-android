@@ -53,20 +53,6 @@ class IdentHubSessionViewModel(
     }
 
     fun startIdentificationProcess(isResumeExpected: Boolean) {
-        obtainLocalIdentificationState(isResumeExpected)
-        identHubSessionUseCase.startIdentification(isResumeExpected)
-    }
-
-    fun resumeIdentificationProcess() {
-        identHubSessionUseCase.resumeIdentification()
-    }
-
-    @SuppressLint("CheckResult")
-    fun resetIdentificationProcess() {
-        identHubSessionUseCase.resetIdentification().blockingGet()
-    }
-
-    private fun obtainLocalIdentificationState(isResumeExpected: Boolean) {
         compositeDisposable.add(
             //todo move to usecase
             identHubSessionUseCase.startIdentification(isResumeExpected)
@@ -87,6 +73,15 @@ class IdentHubSessionViewModel(
                     }
                 )
         )
+    }
+
+    fun resumeIdentificationProcess() {
+        identHubSessionUseCase.resumeIdentification()
+    }
+
+    @SuppressLint("CheckResult")
+    fun resetIdentificationProcess() {
+        identHubSessionUseCase.resetIdentification().blockingGet()
     }
 
     fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
