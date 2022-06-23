@@ -28,6 +28,14 @@ import de.solarisbank.sdk.feature.di.CoreModule
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.logger.LoggerHttpInterceptor
+import de.solarisbank.sdk.logger.LoggerUseCase
+import de.solarisbank.sdk.logger.config.LoggerRepository
+import de.solarisbank.sdk.logger.config.LoggerRepositoryFactory
+import de.solarisbank.sdk.logger.data.LoggerAPI
+import de.solarisbank.sdk.logger.data.LoggerApiFactory
+import de.solarisbank.sdk.logger.data.LoggerRetrofitDataSource
+import de.solarisbank.sdk.logger.data.LoggerRetrofitDataSourceFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -53,6 +61,7 @@ class IdentHubViewModelComponent private constructor(
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
+    private lateinit var loggingInterceptorProvider: Provider<LoggerHttpInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>
     private lateinit var identificationInMemoryDataSourceProvider: Provider<IdentificationLocalDataSource>
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
@@ -65,6 +74,11 @@ class IdentHubViewModelComponent private constructor(
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
     lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
 
+    lateinit var loggerRetrofitDataSourceProvider: Provider<LoggerRetrofitDataSource>
+    lateinit var loggerRepositoryProvider: Provider<LoggerRepository>
+    lateinit var loggerApiProvider: Provider<LoggerAPI>
+    lateinit var loggerUseCaseProvider: Provider<LoggerUseCase>
+
     init {
         initialize()
     }
@@ -73,18 +87,32 @@ class IdentHubViewModelComponent private constructor(
         return identificationInMemoryDataSourceProvider
     }
 
+    fun getLoggerUseCase(): Provider<LoggerUseCase> {
+        return loggerUseCaseProvider
+    }
+
     private fun initialize() {
 
-        rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
-        moshiConverterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
+        rxJavaCallAdapterFactoryProvider =
+            DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
+        moshiConverterFactoryProvider =
+            DoubleCheck.provider(NetworkModuleProvideMoshiConverterFactory.create(networkModule))
         userAgentInterceptorProvider = DoubleCheck.provider(
-            NetworkModuleProvideUserAgentInterceptorFactory.create())
-        httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
-        sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
+            NetworkModuleProvideUserAgentInterceptorFactory.create()
+        )
+        httpLoggingInterceptorProvider = DoubleCheck.provider(
+            NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule)
+        )
+        httpLoggingInterceptorProvider = DoubleCheck.provider(
+            NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule)
+        )
+        sessionUrlLocalDataSourceProvider =
+            DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
         sharedPreferencesProvider = DoubleCheck.provider(object :
             Factory<SharedPreferences> {
             override fun get(): SharedPreferences {
-                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
+                return applicationContextProvider.get()
+                    .getSharedPreferences("identhub", Context.MODE_PRIVATE)
             }
         })
         identityInitializationDataSourceProvider = DoubleCheck.provider(object :
@@ -100,23 +128,41 @@ class IdentHubViewModelComponent private constructor(
             }
         })
         sessionUrlRepositoryProvider =
-            DoubleCheck.provider(ProvideSessionUrlRepositoryFactory.create(
-                sessionModule,
-                sessionUrlLocalDataSourceProvider
-            ))
+            DoubleCheck.provider(
+                ProvideSessionUrlRepositoryFactory.create(
+                    sessionModule,
+                    sessionUrlLocalDataSourceProvider
+                )
+            )
         dynamicBaseUrlInterceptorProvider =
-            DoubleCheck.provider(NetworkModuleProvideDynamicUrlInterceptorFactory.create(
+            DoubleCheck.provider(
+                NetworkModuleProvideDynamicUrlInterceptorFactory.create(
+                    networkModule,
+                    sessionUrlRepositoryProvider
+                )
+            )
+        loggingInterceptorProvider = DoubleCheck.provider(object : Factory<LoggerHttpInterceptor> {
+            override fun get(): LoggerHttpInterceptor {
+                return LoggerHttpInterceptor()
+            }
+        })
+        okHttpClientProvider = DoubleCheck.provider(
+            NetworkModuleProvideOkHttpClientFactory.create(
                 networkModule,
-                sessionUrlRepositoryProvider
-            ))
-        okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-                networkModule, userAgentInterceptorProvider, dynamicBaseUrlInterceptorProvider,httpLoggingInterceptorProvider
-        ))
-        retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(
+                userAgentInterceptorProvider,
+                dynamicBaseUrlInterceptorProvider,
+                httpLoggingInterceptorProvider,
+                loggingInterceptorProvider
+            )
+        )
+        retrofitProvider = DoubleCheck.provider(
+            NetworkModuleProvideRetrofitFactory.create(
                 networkModule,
                 moshiConverterFactoryProvider,
                 okHttpClientProvider,
-                rxJavaCallAdapterFactoryProvider))
+                rxJavaCallAdapterFactoryProvider
+            )
+        )
 
         identificationApiProvider = DoubleCheck.provider(object :
             Factory<InitializeIdentificationApi> {
@@ -172,12 +218,29 @@ class IdentHubViewModelComponent private constructor(
             InitializationInfoRetrofitDataSourceFactory(coreModule, initializationInfoApiProvider)
         )
 
-        initializationInfoRepositoryProvider = DoubleCheck.provider(InitializationInfoRepositoryFactory(
-            coreModule,
-            savedStateHandle,
-            initializationInfoRetrofitDataSourceProvider,
-            sessionUrlRepositoryProvider
-        ))
+        initializationInfoRepositoryProvider = DoubleCheck.provider(
+            InitializationInfoRepositoryFactory(
+                coreModule,
+                savedStateHandle,
+                initializationInfoRetrofitDataSourceProvider,
+                sessionUrlRepositoryProvider
+            )
+        )
+        loggerApiProvider = DoubleCheck.provider(LoggerApiFactory(coreModule, retrofitProvider))
+        loggerRetrofitDataSourceProvider =
+            DoubleCheck.provider(LoggerRetrofitDataSourceFactory(coreModule, loggerApiProvider))
+        loggerRepositoryProvider = DoubleCheck.provider(
+            LoggerRepositoryFactory(
+                coreModule,
+                loggerRetrofitDataSourceProvider
+            )
+        )
+        loggerUseCaseProvider = DoubleCheck.provider(object : Factory<LoggerUseCase> {
+            override fun get(): LoggerUseCase {
+                return LoggerUseCase(loggerRepositoryProvider.get())
+            }
+
+        })
     }
 
     internal class ApplicationContextProvider(val applicationContext: Context) :
@@ -186,6 +249,7 @@ class IdentHubViewModelComponent private constructor(
             return applicationContext
         }
     }
+
 
     companion object {
         private val lock = Any()

@@ -11,6 +11,8 @@ import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.*
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.logger.IdLogger
+import de.solarisbank.sdk.logger.LoggerUseCase
 import timber.log.Timber
 
 /**
@@ -35,6 +37,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     private lateinit var activityComponent: IdentHubActivityComponent
     override lateinit var viewModelFactory: (FragmentActivity) -> ViewModelProvider.Factory
     private lateinit var viewModel: IdentHubSessionViewModel
+    private var loggerUseCase: LoggerUseCase? = null
 
     private val isPaymentProcessAvailable: Boolean
         get() = paymentErrorCallback != null || paymentSuccessCallback != null
@@ -64,15 +67,20 @@ class IdentHubSession : ViewModelFactoryContainer {
         activityComponent = IdentHubActivityComponent(this.activity)
         activityComponent.inject(this)
 
+
+
         viewModel = viewModelFactory.invoke(activity).create(IdentHubSessionViewModel::class.java)
         IdentHubSessionViewModel.INSTANCE!!.saveSessionId(sessionUrl)
+        loggerUseCase = viewModel.getLoggerUseCase()
+        IdLogger.inject(loggerUseCase)
         viewModel.initializationStateLiveData
             .observe(this.activity) { processInitializationStateResult(it) }
-        viewModel.sessionStepResultLiveData.observe(activity) { processSessionResult(it)}
+        viewModel.sessionStepResultLiveData.observe(activity) { processSessionResult(it) }
     }
 
     private fun processInitializationStateResult(result: Result<NavigationalResult<String>>) {
         Timber.d("processInitializationStateResult, result: $result ")
+
         if (result.isSuccess) {
             val navResult = result.getOrNull()!!
             if (navResult.data == FIRST_STEP_KEY && navResult.nextStep != null) {
@@ -106,6 +114,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     private fun processSessionResult(sessionStepResult: SessionStepResult) {
         //todo move logic to usecase, confirm both platform step result contract
         Timber.d("setSessionResult 0 : $sessionStepResult")
+        IdLogger.logAction("$sessionStepResult", "processSessionResult")
         when (sessionStepResult) {
             is NaviDirection.NextStepStepResult -> {
                 Timber.d("setSessionResult 1")
@@ -242,6 +251,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     fun start() {
         Timber.d("start, paymentSuccessCallback != null : ${ paymentSuccessCallback != null }")
         viewModel.startIdentificationProcess(paymentSuccessCallback != null)
+
     }
 
     /**
@@ -259,6 +269,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     internal fun reset() {
         Timber.d("reset(), this $this")
         viewModel.resetIdentificationProcess()
+        IdLogger.cleanLogger()
     }
 
     private fun loadAppName(context: Context) {
@@ -286,5 +297,14 @@ class IdentHubSession : ViewModelFactoryContainer {
     }
 }
 
-data class IdentHubSessionResult(val identificationId: String, val step: COMPLETED_STEP?)
-data class IdentHubSessionFailure(val message: String? = null, val step: COMPLETED_STEP?)
+data class IdentHubSessionResult(val identificationId: String, val step: COMPLETED_STEP?) {
+    init {
+        IdLogger.logAction(step?.index.toString(), "IdentHubSessionResult")
+    }
+}
+
+data class IdentHubSessionFailure(val message: String? = null, val step: COMPLETED_STEP?) {
+    init {
+        IdLogger.logAction("$message step || Message $message", "IdentHubSessionFailure")
+    }
+}

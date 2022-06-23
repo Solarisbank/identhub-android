@@ -86,6 +86,7 @@ import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.logger.LoggerHttpInterceptor
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.OkHttpClient
@@ -147,9 +148,11 @@ class IdentHubTestComponent {
     private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
     private lateinit var getMobileNumberUseCaseProvider: Provider<GetMobileNumberUseCase>
-//    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
+
+    //    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
 //    private lateinit var identityInitializationSharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
     lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
+    private lateinit var loggingInterceptorProvider: Provider<LoggerHttpInterceptor>
 
 
     private constructor (
@@ -213,7 +216,8 @@ class IdentHubTestComponent {
             object : Factory<IdentityInitializationRepository> {
                 override fun get(): IdentityInitializationRepository {
                     return mockk<IdentityInitializationRepository>() {
-                        every { getInitializationDto() } returns basicInitializationDto }
+                        every { getInitializationDto() } returns basicInitializationDto
+                    }
                 }
             })
         dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(
@@ -221,6 +225,8 @@ class IdentHubTestComponent {
                 networkModule, sessionUrlRepositoryProvider
             )
         )
+        loggingInterceptorProvider = DoubleCheck.provider(
+            Factory { LoggerHttpInterceptor() })
         rxJavaCallAdapterFactoryProvider =
             DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
         moshiConverterFactoryProvider =
@@ -235,7 +241,7 @@ class IdentHubTestComponent {
                 networkModule,
                 dynamicBaseUrlInterceptorProvider,
                 userAgentInterceptorProvider,
-                httpLoggingInterceptorProvider
+                httpLoggingInterceptorProvider, loggingInterceptorProvider
             )
         )
         retrofitProvider = DoubleCheck.provider(

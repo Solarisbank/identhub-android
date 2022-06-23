@@ -3,7 +3,7 @@ package de.solarisbank.identhub.domain.contract
 import de.solarisbank.identhub.di.IdentHubTestComponent
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
 import de.solarisbank.sdk.data.di.IdentificationModule
-import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
+import de.solarisbank.identhub.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Factory

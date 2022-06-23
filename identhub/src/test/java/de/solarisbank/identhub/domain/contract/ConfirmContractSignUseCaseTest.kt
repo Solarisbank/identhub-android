@@ -5,7 +5,7 @@ import de.solarisbank.identhub.data.dto.QesStepParametersDto
 import de.solarisbank.identhub.di.IdentHubTestComponent
 import de.solarisbank.identhub.domain.data.dto.ContractSigningState
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
-import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
+import de.solarisbank.identhub.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data

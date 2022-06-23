@@ -17,6 +17,8 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.logger.IdLogger
+import de.solarisbank.sdk.logger.LoggerUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -88,6 +90,10 @@ class IdentHubSessionViewModel(
         return identHubSessionComponent.getIdentificationLocalDataSourceProvider()
     }
 
+    fun getLoggerUseCase(): LoggerUseCase {
+        return identHubSessionComponent.getLoggerUseCase().get()
+    }
+
     override fun onCleared() {
         Timber.d("onCleared")
         resetIdentificationProcess()
@@ -122,4 +128,6 @@ class IdentHubSessionViewModel(
     override fun setSessionResult(sessionStepResult: SessionStepResult) {
         _sessionStepResultLiveData.value = sessionStepResult
     }
+
+
 }

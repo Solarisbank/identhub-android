@@ -18,7 +18,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     }
 
     private fun observeScreenState() {
-        processingVerificationViewModel.processingVerificationEvent((sharedViewModel).iban!!).observe(viewLifecycleOwner, Observer { setState(it) })
+        processingVerificationViewModel.processingVerificationEvent((sharedViewModel)?.iban!!).observe(viewLifecycleOwner, Observer { setState(it) })
     }
 
     private fun setState(result: ProcessingVerificationResult) {
@@ -26,7 +26,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
 
         when (result) {
             is ProcessingVerificationResult.VerificationSuccessful -> {
-                sharedViewModel.callOnPaymentResult(result.id, result.nextStep)
+                sharedViewModel?.callOnPaymentResult(result.id, result.nextStep)
             }
             is ErrorState -> {
                 showAlert(result)
@@ -39,21 +39,21 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
         when (state) {
             is ProcessingVerificationResult.PaymentInitAuthPersonError -> {
                 Timber.d("showAlert 1")
-                action = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                action = { sharedViewModel?.postDynamicNavigationNextStep(state.nextStep) }
             }
 
             is ProcessingVerificationResult.PaymentInitFailedError -> {
                 Timber.d("showAlert 2")
-                action = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                action = { sharedViewModel?.postDynamicNavigationNextStep(state.nextStep) }
             }
 
             is ProcessingVerificationResult.PaymentInitExpiredError -> {
                 Timber.d("showAlert 3")
-                action = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) }
+                action = { sharedViewModel?.postDynamicNavigationNextStep(state.nextStep) }
             }
             is ProcessingVerificationResult.GenericError -> {
                 Timber.d("showAlert 4")
-                action = { sharedViewModel.callOnFailure() }
+                action = { sharedViewModel?.callOnFailure() }
             }
             else -> return
         }

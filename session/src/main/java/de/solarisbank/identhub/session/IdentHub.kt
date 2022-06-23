@@ -2,6 +2,7 @@ package de.solarisbank.identhub.session
 
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class IdentHub {
@@ -15,10 +16,14 @@ class IdentHub {
     fun sessionWithUrl(url: String): IdentHubSession {
         val apiUrl = buildApiUrl(url)
         SESSION?.sessionUrl = apiUrl
+
+        IdLogger.setupLogger()
+        IdLogger.logAction("SDK Started")
         return SESSION ?: IdentHubSession().apply {
             sessionUrl = apiUrl
             SESSION = this
         }
+
     }
 
     @Synchronized

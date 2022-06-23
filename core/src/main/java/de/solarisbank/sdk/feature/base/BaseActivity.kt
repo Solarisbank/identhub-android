@@ -14,6 +14,7 @@ import de.solarisbank.sdk.feature.di.CoreActivityComponent
 import de.solarisbank.sdk.feature.di.DiLibraryComponent
 import de.solarisbank.sdk.feature.di.LibraryComponent
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -41,6 +42,7 @@ abstract class BaseActivity : AppCompatActivity() {
         injectMe()
         super.onCreate(savedInstanceState)
         initViewModel()
+        IdLogger.logNav("Activity OnCreate ${this::class.java}")
     }
 
     protected open fun injectMe() {
@@ -80,6 +82,7 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null
+        IdLogger.logNav("Activity OnDestroy ${this::class.java}")
     }
 
     companion object {

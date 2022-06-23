@@ -11,6 +11,11 @@ import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.config.InitializationInfoRepositoryImpl
 import de.solarisbank.sdk.feature.config.InitializationInfoRetrofitDataSource
 import de.solarisbank.sdk.feature.di.internal.Provider
+import de.solarisbank.sdk.logger.config.LoggerRepository
+import de.solarisbank.sdk.logger.config.LoggerRepositoryImpl
+import de.solarisbank.sdk.logger.data.LoggerAPI
+import de.solarisbank.sdk.logger.data.LoggerApiFactory
+import de.solarisbank.sdk.logger.data.LoggerRetrofitDataSource
 import retrofit2.Retrofit
 
 class CoreModule {
@@ -46,5 +51,18 @@ class CoreModule {
             initializationInfoRetrofitDataSource,
             sessionUrlRepository
         )
+    }
+
+
+    fun provideInitializeLoggerApi(retrofit: Retrofit): LoggerAPI {
+        return retrofit.create(LoggerAPI::class.java)
+    }
+
+    fun provideLoggerRetrofitDataSource(loggerAPI: LoggerAPI): LoggerRetrofitDataSource {
+        return LoggerRetrofitDataSource(loggerAPI)
+    }
+
+    fun provideLoggerRepository(loggerRetorfitDataSource: LoggerRetrofitDataSource): LoggerRepository {
+        return LoggerRepositoryImpl(loggerRetorfitDataSource)
     }
 }

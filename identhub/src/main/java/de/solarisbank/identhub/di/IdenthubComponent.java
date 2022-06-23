@@ -133,6 +133,7 @@ import de.solarisbank.sdk.feature.di.internal.Factory;
 import de.solarisbank.sdk.feature.di.internal.Factory2;
 import de.solarisbank.sdk.feature.di.internal.Provider;
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory;
+import de.solarisbank.sdk.logger.LoggerHttpInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
@@ -162,6 +163,7 @@ public class IdenthubComponent {
     private Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
 
     private Provider<DynamicBaseUrlInterceptor> dynamicBaseUrlInterceptorProvider;
+    private Provider<LoggerHttpInterceptor> loggingInterceptorProvider;
     private Provider<CallAdapter.Factory> rxJavaCallAdapterFactoryProvider;
     private Provider<MoshiConverterFactory> moshiConverterFactoryProvider;
     private Provider<HttpLoggingInterceptor> httpLoggingInterceptorProvider;
@@ -264,6 +266,12 @@ public class IdenthubComponent {
                         networkModule,
                         sessionUrlRepositoryProvider
                 ));
+        loggingInterceptorProvider = DoubleCheck.provider(new Factory<LoggerHttpInterceptor>() {
+            @Override
+            public LoggerHttpInterceptor get() {
+                return new LoggerHttpInterceptor();
+            }
+        });
         rxJavaCallAdapterFactoryProvider =
                 DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule));
         moshiConverterFactoryProvider =
@@ -273,7 +281,7 @@ public class IdenthubComponent {
         httpLoggingInterceptorProvider =
                 DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule));
         okHttpClientProvider =
-                DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(networkModule, dynamicBaseUrlInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider));
+                DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(networkModule, dynamicBaseUrlInterceptorProvider, userAgentInterceptorProvider, httpLoggingInterceptorProvider, loggingInterceptorProvider));
         retrofitProvider =
                 DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(networkModule, moshiConverterFactoryProvider, okHttpClientProvider, rxJavaCallAdapterFactoryProvider));
         verificationPhoneApiProvider =

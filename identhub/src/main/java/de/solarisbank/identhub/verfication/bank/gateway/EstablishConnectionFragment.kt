@@ -41,6 +41,6 @@ class EstablishConnectionFragment : ProgressIndicatorFragment() {
     }
 
     private fun onSecureConnectionEstablished(event: Event<Any>) {
-        sharedViewModel.moveToExternalGate()
+        sharedViewModel?.moveToExternalGate()
     }
 }

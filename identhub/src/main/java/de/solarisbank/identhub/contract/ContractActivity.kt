@@ -16,6 +16,7 @@ import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
 import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
 import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class ContractActivity : IdentHubActivity() {
@@ -65,7 +66,8 @@ class ContractActivity : IdentHubActivity() {
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         val naviDirection = event.content
-        Timber.d("onNavigationChanged 0, naviDirection: ${naviDirection}")
+        Timber.d("onNavigationChanged 0, naviDirection: $naviDirection")
+        IdLogger.logNav("onNavigationChanged 0, naviDirection: $naviDirection")
         if (naviDirection != null) {
             when (naviDirection) {
                 is SessionStepResult -> {

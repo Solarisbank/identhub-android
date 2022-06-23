@@ -12,6 +12,7 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
 import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class FourthlineViewModel (
@@ -122,12 +123,17 @@ class FourthlineViewModel (
             Event<NaviDirection>(NaviDirection.NextStepStepResult(
                 nextStep,
                 COMPLETED_STEP.VERIFICATION_BANK.index
-            ))
+            )
+            )
     }
 
     companion object {
         const val NEXT_STEP_ARG = "nextStepArg"
         const val IDENTIFICATION_ID = "identificationId"
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 
 }

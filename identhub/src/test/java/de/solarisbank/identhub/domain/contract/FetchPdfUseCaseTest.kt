@@ -5,7 +5,7 @@ import de.solarisbank.identhub.data.contract.ContractSignRetrofitDataSource
 import de.solarisbank.identhub.di.IdentHubTestComponent
 import de.solarisbank.identhub.file.FileController
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
-import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
+import de.solarisbank.identhub.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.DocumentDto
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.every

@@ -6,6 +6,7 @@ import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 open class SessionNavigationActivity : BaseActivity() {
@@ -14,8 +15,9 @@ open class SessionNavigationActivity : BaseActivity() {
         IdentHubSessionViewModel.INSTANCE!!
 
     protected fun quit(sessionStepResult: SessionStepResult) {
-        Timber.d("quit, state : ${sessionStepResult}")
+        Timber.d("quit, state : $sessionStepResult")
         identHubSessionReceiver.setSessionResult(sessionStepResult)
+        IdLogger.logNav("IdentHub SDK was closed${sessionStepResult.toString()}")
         finish()
     }
 

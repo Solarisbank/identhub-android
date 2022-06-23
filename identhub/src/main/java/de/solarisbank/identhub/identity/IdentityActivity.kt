@@ -12,6 +12,7 @@ import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.view.ConstraintStepIndicator
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class IdentityActivity : IdentHubActivity() {
@@ -63,11 +64,11 @@ class IdentityActivity : IdentHubActivity() {
     }
 
     private fun onNavigationChanged(event: Event<NaviDirection>) {
-        val naviDirection = event.content
         event.content?.let {
             when (it) {
                 is NaviDirection.FragmentDirection -> {
-                    Timber.d("onNavigationChanged 1; it: ${it}")
+                    Timber.d("onNavigationChanged 1; it: $it")
+                    IdLogger.logNav("onNavigationChanged 1; it: $it")
                     when (it.actionId) {
                         R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment -> {
                             stepIndicator.setPassedStep(2)
@@ -78,7 +79,8 @@ class IdentityActivity : IdentHubActivity() {
                     }
                 }
                 is SessionStepResult -> {
-                    Timber.d("onNavigationChanged 2; it: ${it}")
+                    Timber.d("onNavigationChanged 2; it: $it")
+                    IdLogger.logNav("onNavigationChanged 2; it: $it")
                     quit(it)
                 }
             }

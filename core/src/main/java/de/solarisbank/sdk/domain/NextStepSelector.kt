@@ -2,6 +2,7 @@ package de.solarisbank.sdk.domain
 
 import android.annotation.SuppressLint
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 /**

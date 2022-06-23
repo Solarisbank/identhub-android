@@ -108,6 +108,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructions
 import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragmentInjector
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragment
 import de.solarisbank.sdk.fourthline.feature.ui.welcome.WelcomePageFragmentInjector
+import de.solarisbank.sdk.logger.LoggerHttpInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -161,6 +162,8 @@ class FourthlineComponent private constructor(
     private lateinit var identificationIdInterceptorProvider: Provider<IdentificationIdInterceptor>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
     private lateinit var httpLoggingInterceptorProvider: Provider<HttpLoggingInterceptor>
+    private lateinit var loggingInterceptorProvider: Provider<LoggerHttpInterceptor>
+
 
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
@@ -231,20 +234,33 @@ class FourthlineComponent private constructor(
                 return IdentificationIdInterceptor(identificationLocalDataSourceProvider.get())
             }
         })
-        dynamicBaseUrlInterceptorProvider = DoubleCheck.provider(create(networkModule, sessionUrlRepositoryProvider))
+        dynamicBaseUrlInterceptorProvider =
+            DoubleCheck.provider(create(networkModule, sessionUrlRepositoryProvider))
         userAgentInterceptorProvider = DoubleCheck.provider(
-            NetworkModuleProvideUserAgentInterceptorFactory.create())
-        httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
-        okHttpClientProvider = DoubleCheck.provider(NetworkModuleProvideOkHttpClientFactory.create(
-            networkModule,
-            dynamicBaseUrlInterceptorProvider,
-            identificationIdInterceptorProvider,
-            userAgentInterceptorProvider,
-            httpLoggingInterceptorProvider
-        ))
-        rxJavaCallAdapterFactoryProvider = DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
-        retrofitProvider = DoubleCheck.provider(NetworkModuleProvideRetrofitFactory.create(
-            networkModule,
+            NetworkModuleProvideUserAgentInterceptorFactory.create()
+        )
+        httpLoggingInterceptorProvider = DoubleCheck.provider(
+            NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule)
+        )
+        loggingInterceptorProvider = DoubleCheck.provider(object : Factory<LoggerHttpInterceptor> {
+            override fun get(): LoggerHttpInterceptor {
+                return LoggerHttpInterceptor()
+            }
+        })
+        okHttpClientProvider = DoubleCheck.provider(
+            NetworkModuleProvideOkHttpClientFactory.create(
+                networkModule,
+                dynamicBaseUrlInterceptorProvider,
+                identificationIdInterceptorProvider,
+                userAgentInterceptorProvider,
+                httpLoggingInterceptorProvider, loggingInterceptorProvider
+            )
+        )
+        rxJavaCallAdapterFactoryProvider =
+            DoubleCheck.provider(NetworkModuleProvideRxJavaCallAdapterFactory.create(networkModule))
+        retrofitProvider = DoubleCheck.provider(
+            NetworkModuleProvideRetrofitFactory.create(
+                networkModule,
             moshiConverterFactoryProvider,
             okHttpClientProvider,
             rxJavaCallAdapterFactoryProvider

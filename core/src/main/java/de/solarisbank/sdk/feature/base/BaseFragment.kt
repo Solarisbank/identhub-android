@@ -13,6 +13,7 @@ import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.alert.showAlertFragment
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.logger.IdLogger
 
 abstract class BaseFragment : Fragment() {
     lateinit var assistedViewModelFactory: AssistedViewModelFactory
@@ -31,6 +32,11 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        IdLogger.logNav("Fragment OnCreate ${this::class.java}")
     }
 
     protected open fun initViewModel() {
@@ -75,6 +81,7 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null
+        IdLogger.logNav("Fragment OnDestroy ${this::class.java}")
         super.onDestroyView()
     }
 }
