@@ -14,11 +14,13 @@
             android:name="de.solarisbank.identhub.verfication.bank.VerificationBankActivity"
             android:theme="@style/IdentHubTheme"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name="de.solarisbank.identhub.contract.ContractActivity"
             android:theme="@style/IdentHubTheme"
+            android:exported="false"
             android:screenOrientation="portrait" />
 
         <provider

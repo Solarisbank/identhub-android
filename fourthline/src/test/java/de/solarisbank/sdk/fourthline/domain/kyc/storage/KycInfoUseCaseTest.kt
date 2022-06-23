@@ -123,11 +123,10 @@ class KycInfoUseCaseTest : StringSpec ({
     "checkUpdateKycWithSelfieScannerResult"{
         val metadataMockk = mockk<com.fourthline.vision.selfie.SelfieScannerMetadata>() {
             every { timestamp } returns Date()
-            every { location } returns
-                    mockk<com.fourthline.vision.Coordinate>() {
-                        every { first } returns 1111.0
-                        every { second } returns 1111.0
-                    }
+            every { location } returns mockk() {
+                every { first } returns 1111.0
+                every { second } returns 1111.0
+            }
         }
         val selfieScannerResult = mockk<SelfieScannerResult>() {
             every { image } returns mockk<com.fourthline.vision.ScannerImage>() {
@@ -135,7 +134,7 @@ class KycInfoUseCaseTest : StringSpec ({
                 every { cropped } returns mockk()
             }
             every { metadata } returns metadataMockk
-            every { videoUrl } returns mockk<URI>()
+            every { videoRecording } returns mockk()
         }
         val kycInfoUseCase = initKycInfoUseCase()
         kycInfoUseCase.updateKycWithSelfieScannerResult(selfieScannerResult)
@@ -148,7 +147,7 @@ class KycInfoUseCaseTest : StringSpec ({
         val metadataMockk =
             mockk<com.fourthline.vision.document.DocumentScannerStepMetadata>() {
                 every { timestamp } returns Date()
-                every { location } returns mockk<com.fourthline.vision.Coordinate>() {
+                every { location } returns mockk() {
                     every { first } returns 1111.0
                     every { second } returns 2222.0
                 }

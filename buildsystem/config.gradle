@@ -1,8 +1,8 @@
 ext {
     buildConfig = [
-            compileSdk: 30,
+            compileSdk: 31,
             minSdk: 23,
-            targetSdk: 30,
+            targetSdk: 31,
             buildTools: "30.0.3"
     ]
     libConfig = [

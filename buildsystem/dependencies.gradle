@@ -25,7 +25,7 @@ ext {
             "androidx.fragment:fragment-ktx:$fragmentVersion",
     ]
 
-    fourthlineVersion = "2.5.0"
+    fourthlineVersion = "2.11.0"
     fourthline = [
             "com.fourthline:fourthline-kyc:$fourthlineVersion",
 //            "com.fourthline:fourthline-core:$fourthlineVersion",
@@ -74,7 +74,7 @@ ext {
 
     okHttpVersion = '4.9.3'
     retrofitVersion = '2.5.0'
-    moshi = '1.9.3'
+    moshi = '1.13.0'
     networking = [
             libs: [
                     "com.squareup.moshi:moshi:$moshi",

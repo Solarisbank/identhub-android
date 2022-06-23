@@ -89,7 +89,6 @@ class SelfieFragment : SelfieScannerFragment() {
         return SelfieScannerConfig(
             debugModeEnabled = false,
             recordingType = RecordingType.VIDEO_ONLY,
-            includeManualSelfiePolicy = false,
             livenessCheckType = LivenessCheckType.HEAD_TURN
         )
     }

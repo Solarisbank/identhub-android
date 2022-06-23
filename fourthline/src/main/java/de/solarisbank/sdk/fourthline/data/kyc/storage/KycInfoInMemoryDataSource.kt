@@ -127,7 +127,7 @@ class KycInfoInMemoryDataSource {
                     image = result.image.full,
                     timestamp = result.metadata.timestamp.time,
                     location = result.metadata.location,
-                    videoUrl = result.videoUrl
+                    videoRecording = result.videoRecording
             )
         } finally {
             mutex.unlock()
@@ -197,7 +197,7 @@ class KycInfoInMemoryDataSource {
         val mrtd = (result.mrzInfo as? MrtdMrzInfo)
         kycInfo.document = Document(
                 images = docPagesMap.entries.filter { it.key.docType == docType }.map { it.value }.toList(),
-                videoUrl = result.videoUrl,
+                videoRecording = result.videoRecording,
                 number = mrtd?.documentNumber,
                 expirationDate = mrtd?.expirationDate,
                 type = docType

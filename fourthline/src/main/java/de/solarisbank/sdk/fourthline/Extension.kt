@@ -37,14 +37,12 @@ fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGl
 
 fun SelfieScannerStep.asString(context: Context) =  when (this) {
     SelfieScannerStep.SELFIE -> context.resources.getString(R.string.identhub_selfie_intro)
-    SelfieScannerStep.MANUAL_SELFIE -> context.resources.getString(R.string.identhub_selfie_manual)
     SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.identhub_selfie_turn_left)
     SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.identhub_selfie_turn_right)
 }
 
 fun SelfieScannerWarning.asString(context: Context) = when (this) {
     SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.identhub_selfie_warning_not_detected)
-    SelfieScannerWarning.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.identhub_scanner_error_multiple_faces_detected)
     SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.identhub_selfie_warning_not_in_frame)
     SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.identhub_selfie_warning_too_close)
     SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.identhub_selfie_warning_too_far)
@@ -57,7 +55,6 @@ fun SelfieScannerError.asString(context: Context) = when (this) {
     SelfieScannerError.TIMEOUT -> context.resources.getString(R.string.identhub_scanner_error_timeout)
     SelfieScannerError.FACE_DISAPPEARED -> context.resources.getString(R.string.identhub_scanner_error_face_disappeared)
     SelfieScannerError.CAMERA_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_camera_permission)
-    SelfieScannerError.MANUAL_SELFIE_NOT_ALLOWED -> context.resources.getString(R.string.identhub_scanner_error_unknown)
     SelfieScannerError.RECORDING_FAILED -> context.resources.getString(R.string.identhub_scanner_error_recording_failed)
     SelfieScannerError.RECORD_AUDIO_PERMISSION_NOT_GRANTED -> context.resources.getString(R.string.identhub_scanner_error_unknown)
     SelfieScannerError.SCANNER_INTERRUPTED -> context.resources.getString(R.string.identhub_scanner_error_interrupted)
