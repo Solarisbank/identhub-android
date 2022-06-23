@@ -20,7 +20,7 @@ abstract class ProgressIndicatorFragment : IdentHubFragment() {
 
     private val NO_RESOURCE = -1
 
-    protected var sharedViewModel: VerificationBankViewModel? = null
+    protected lateinit var sharedViewModel: VerificationBankViewModel
 
     protected var progressBar: ProgressBar? = null
     protected var title: TextView? = null
@@ -80,5 +80,12 @@ abstract class ProgressIndicatorFragment : IdentHubFragment() {
             VerificationBankViewModel::class.java
         )
     }
-
+    
+    override fun onDestroyView() {
+        progressBar = null
+        title = null
+        description = null
+        super.onDestroyView()
+    }
+    
 }
