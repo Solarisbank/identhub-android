@@ -29,8 +29,6 @@ import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUs
 import de.solarisbank.identhub.domain.verification.phone.*
 import de.solarisbank.identhub.file.FileController
 import de.solarisbank.identhub.file.FileControllerFactory
-import de.solarisbank.identhub.identity.IdentityActivity
-import de.solarisbank.identhub.identity.IdentityActivityInjector
 import de.solarisbank.identhub.identity.IdentityModule
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
 import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory.Companion.create
@@ -524,13 +522,6 @@ class IdentHubTestComponent {
         override fun inject(contractActivity: ContractActivity) {
             injectAssistedViewModelFactory(
                 contractActivity,
-                assistedViewModelFactoryProvider!!.get()
-            )
-        }
-
-        override fun inject(identityActivity: IdentityActivity?) {
-            IdentityActivityInjector.injectAssistedViewModelFactory(
-                identityActivity,
                 assistedViewModelFactoryProvider!!.get()
             )
         }

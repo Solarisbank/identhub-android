@@ -4,17 +4,6 @@
     android:id="@+id/nav_graph">
 
     <fragment
-        android:id="@+id/verificationBankIntroFragment"
-        android:name="de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment"
-        android:label="VerificationBankIntroFragment">
-        <action
-            android:id="@+id/action_verificationBankIntroFragment_to_verificationBankIbanFragment"
-            app:popUpTo="@+id/verificationBankIntroFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/verificationBankIbanFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/phoneVerificationFragment"
         android:name="de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment"
         android:label="phoneVerificationFragment" >
@@ -43,11 +32,6 @@
             app:popUpTo="@id/verificationBankIbanFragment"
             app:popUpToInclusive="true"
             app:destination="@id/establishConnectionFragment" />
-        <action
-            android:id="@+id/action_verificationBankFragment_to_verificationBankErrorMessageFragment"
-            app:destination="@id/verificationBankErrorMessageFragment"
-            app:popUpTo="@id/verificationBankIbanFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/verificationBankExternalGatewayFragment"

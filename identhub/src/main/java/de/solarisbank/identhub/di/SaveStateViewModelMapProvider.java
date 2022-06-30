@@ -76,8 +76,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         ));
         map.put(VerificationBankViewModel.class, new VerificationBankViewModelFactory(
                 verificationBankModule,
-                identificationStepPreferencesProvider,
-                getIdentificationUseCaseProvider,
                 sessionUrlRepositoryProvider,
                 initializationInfoRepositoryProvider
         ));

@@ -24,8 +24,6 @@ import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUs
 import de.solarisbank.identhub.domain.verification.bank.VerifyIBanUseCase;
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase;
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase;
-import de.solarisbank.identhub.identity.IdentityActivityViewModel;
-import de.solarisbank.identhub.identity.IdentityActivityViewModelFactory;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanViewModel;
@@ -148,7 +146,6 @@ public final class ViewModelMapProvider implements Provider<Map<Class<? extends 
                 confirmContractSignUseCaseProvider,
                 getMobileNumberUseCaseProvider
         ));
-        map.put(IdentityActivityViewModel.class, IdentityActivityViewModelFactory.create(identityModule, getIdentificationUseCaseProvider, identificationStepPreferencesProvider));
         map.put(PhoneVerificationViewModel.class, new PhoneVerificationViewModelFactory(identityModule, phoneVerificationUseCaseProvider));
         map.put(VerificationPhoneSuccessViewModel.class, VerificationPhoneSuccessViewModelFactory.create(identityModule));
         map.put(VerificationBankIbanViewModel.class, new VerificationBankIbanViewModelFactory(

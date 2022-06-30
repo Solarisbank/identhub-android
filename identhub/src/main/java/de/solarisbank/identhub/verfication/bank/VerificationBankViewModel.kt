@@ -6,10 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.R
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.session.IdentHub.Companion.SESSION_URL_KEY
 import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
-import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
@@ -20,8 +18,6 @@ import timber.log.Timber
 
 class VerificationBankViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val identificationStepPreferences: IdentificationStepPreferences,
-    private val getIdentificationUseCase: GetIdentificationUseCase,
     private val sessionUrlRepository: SessionUrlRepository,
     private val initializationInfoRepository: InitializationInfoRepository
     ) : ViewModel() {
@@ -103,17 +99,9 @@ class VerificationBankViewModel(
         navigateTo(actionId, null, nextStep)
     }
 
-    fun navigateToVerficationBankIban() {
-        navigateTo(R.id.action_verificationBankIntroFragment_to_verificationBankIbanFragment)
-    }
-
     override fun onCleared() {
         compositeDisposable.clear()
         super.onCleared()
-    }
-
-    fun getLastCompletedStep(): COMPLETED_STEP? {
-        return identificationStepPreferences.get()
     }
 
     fun cancelIdentification() {

@@ -220,13 +220,13 @@ class FourthlineComponent private constructor(
             IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
         identityInitializationRepositoryProvider = DoubleCheck.provider(
             IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
-        deleteKycInfoUseCaseProvider = DeleteKycInfoUseCaseFactory.create(applicationContextProvider)
-        kycInfoInMemoryDataSourceProvider = KycInfoInMemoryDataSourceFactory.create()
-        kycInfoRepositoryProvider = KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider)
-        kycInfoUseCaseProvider = KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider, kycInfoRepositoryProvider)
-        locationDataSourceProvider = LocationDataSourceFactory.create(applicationContextProvider.get())
-        locationRepositoryProvider = LocationRepositoryFactory.create(locationDataSourceProvider.get())
-        locationUseCaseProvider = LocationUseCaseFactory.create(locationRepositoryProvider.get())
+        deleteKycInfoUseCaseProvider = DoubleCheck.provider(DeleteKycInfoUseCaseFactory.create(applicationContextProvider))
+        kycInfoInMemoryDataSourceProvider = DoubleCheck.provider(KycInfoInMemoryDataSourceFactory.create())
+        kycInfoRepositoryProvider = DoubleCheck.provider(KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider))
+        kycInfoUseCaseProvider = DoubleCheck.provider(KycInfoUseCaseFactory.create(identityInitializationRepositoryProvider, kycInfoRepositoryProvider))
+        locationDataSourceProvider = DoubleCheck.provider(LocationDataSourceFactory.create(applicationContextProvider.get()))
+        locationRepositoryProvider = DoubleCheck.provider(LocationRepositoryFactory.create(locationDataSourceProvider.get()))
+        locationUseCaseProvider = DoubleCheck.provider(LocationUseCaseFactory.create(locationRepositoryProvider.get()))
 
         identificationIdInterceptorProvider = DoubleCheck.provider(object :
             Factory<IdentificationIdInterceptor> {

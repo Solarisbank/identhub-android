@@ -56,8 +56,6 @@ import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhon
 import de.solarisbank.identhub.domain.verification.phone.VerificationPhoneRepository;
 import de.solarisbank.identhub.file.FileController;
 import de.solarisbank.identhub.file.FileControllerFactory;
-import de.solarisbank.identhub.identity.IdentityActivity;
-import de.solarisbank.identhub.identity.IdentityActivityInjector;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment;
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector;
@@ -87,8 +85,6 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankActivity;
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivityInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankFragmentInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment;
-import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragment;
-import de.solarisbank.identhub.verfication.bank.VerificationBankIntroFragmentInjector;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragmentInjector;
@@ -506,11 +502,6 @@ public class IdenthubComponent {
             ContractActivityInjector.injectCustomizationRepository(contractActivity, customizationRepositoryProvider.get());
         }
 
-        @Override
-        public void inject(IdentityActivity identityActivity) {
-            IdentityActivityInjector.injectAssistedViewModelFactory(identityActivity, assistedViewModelFactoryProvider.get());
-        }
-
         @NotNull
         @Override
         public FragmentComponent.Factory fragmentComponent() {
@@ -599,10 +590,6 @@ public class IdenthubComponent {
                 new ProgressIndicatorFragmentInjector(baseFragmentDependencies).injectMembers(progressIndicatorFragment);
             }
 
-            @Override
-            public void inject(VerificationBankIntroFragment verificationBankIntroFragment) {
-                new VerificationBankIntroFragmentInjector(baseFragmentDependencies).injectMembers(verificationBankIntroFragment);
-            }
         }
     }
 }
