@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -20,7 +21,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
+import com.fourthline.core.VideoDuration
+import com.fourthline.core.VideoRecording
+import com.fourthline.core.location.Coordinate
 import com.fourthline.vision.RecordingType
+import com.fourthline.vision.ScannerImage
 import com.fourthline.vision.document.*
 import de.solarisbank.sdk.core_ui.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
@@ -46,17 +51,22 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.net.URI
+import java.util.*
+
 
 class DocScanFragment : DocumentScannerFragment() {
 
     private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-            .get(FourthlineViewModel::class.java)
+        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
     }
 
     private val kycSharedViewModel: KycSharedViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)
-            .get(KycSharedViewModel::class.java)
+        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
     }
 
     private var documentMask: AppCompatImageView? = null
@@ -82,6 +92,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private var cleanupJob: Job? = null
     private var showSnapshotJob: Job? = null
     private var animator: ObjectAnimator? = null
+    private var isEmulator=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
@@ -90,11 +101,74 @@ class DocScanFragment : DocumentScannerFragment() {
             currentDocumentType = it.toDocumentType()
         }
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+
+        activityViewModel.getEmulator.observe(requireActivity()) {
+            isEmulator = it
+            if(isEmulator) {
+                copyDocumentVideoFileToCache()
+            }
+        }
+    }
+
+    private fun setDocumentScanFlowLocally(){
+        lifecycleScope.launch(Dispatchers.Main) {
+
+            val scannerStepOneResult = DocumentScannerStepResult(image = ScannerImage(full = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_passport_cropped),
+                cropped = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_passport)),
+                metadata = DocumentScannerStepMetadata(timestamp= Date(), fileSide = DocumentFileSide.FRONT, isAngled = false,
+                    location = Coordinate(52.5200, 13.4050)
+                ), validationErrors = emptySet())
+            kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, scannerStepOneResult)
+
+            val scannerStepTwoResult = DocumentScannerStepResult(image = ScannerImage(full = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_passport),
+                cropped = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_passport_cropped)),
+                metadata = DocumentScannerStepMetadata(timestamp= Date(), fileSide = DocumentFileSide.FRONT, isAngled = true,
+                    location = Coordinate(52.5200, 13.4050)
+                ), validationErrors = emptySet())
+            kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, scannerStepTwoResult)
+
+
+            val list: MutableList<DocumentScannerStepResult> = ArrayList()
+            list.add(scannerStepOneResult)
+            list.add(scannerStepTwoResult)
+
+            val scannerResult = DocumentScannerResult(videoRecording = VideoRecording(url = URI("file:"+requireActivity().cacheDir.absolutePath+ "/fourthline/video_a5c04b06-ef75-4515-9efa-f7a9f42edbdb.mp4"), duration = VideoDuration.DEFAULT,
+                location = Coordinate(23.0327185, 72.5076461)),mrzInfo = null, documentType = currentDocumentType,
+                stepResults = list)
+            kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, scannerResult)
+            activityViewModel.navigateFromDocScanToDocResult()
+        }
+    }
+
+    private fun copyDocumentVideoFileToCache(){
+        val pathSDCard =
+            requireActivity().cacheDir.absolutePath+ "/fourthline/video_a5c04b06-ef75-4515-9efa-f7a9f42edbdb.mp4"
+        try {
+            val inputStream: InputStream = resources.openRawResource(R.raw.test_document)
+            var out: FileOutputStream? = null
+            out = FileOutputStream(pathSDCard)
+            val buff = ByteArray(1024)
+            var read: Int
+            try {
+                while (inputStream.read(buff).also { read = it } > 0) {
+                    out.write(buff, 0, read)
+                }
+            } finally {
+                inputStream.close()
+                out.close()
+                setDocumentScanFlowLocally()
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onDestroyView() {
@@ -154,7 +228,9 @@ class DocScanFragment : DocumentScannerFragment() {
             }
             documentMask?.setImageResource(maskResource)
             takeSnapshot = findViewById(R.id.takeSnapshot)
-            takeSnapshot?.setOnClickListener { takeSnapshot() }
+            takeSnapshot?.setOnClickListener {
+                takeSnapshot()
+            }
             scanPreview = findViewById(R.id.scanPreview)
             stepLabel = findViewById(R.id.stepName)
             resultButtons = findViewById(R.id.resultButtonsRoot)
@@ -291,7 +367,7 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun onStepSuccess(result: DocumentScannerStepResult) {
         Timber.d("onStepSuccess: ${step?.fileSide?.name}")
-
+        Timber.d("onScannerStep: $result")
         cleanupJob?.cancel()
         lifecycleScope.launch(Dispatchers.Main) {
             showIntermediateResult(result.image.cropped)
@@ -301,17 +377,19 @@ class DocScanFragment : DocumentScannerFragment() {
 
     override fun onFail(error: DocumentScannerError) {
         Timber.d("onFail")
-        lifecycleScope.launch(Dispatchers.Main) {
-            val args = Bundle().apply {
-                putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
-                putString(KEY_MESSAGE, error.asString(requireContext()))
+        if(!isEmulator){
+            lifecycleScope.launch(Dispatchers.Main) {
+                val args = Bundle().apply {
+                    putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
+                    putString(KEY_MESSAGE, error.asString(requireContext()))
+                }
+                activityViewModel.navigateFromDocScanToDocTypeSelection(args)
             }
-            activityViewModel.navigateFromDocScanToDocTypeSelection(args)
         }
     }
 
     override fun onSuccess(result: DocumentScannerResult) {
-        Timber.d("onSuccess")
+        Timber.d("onScanner: $result")
         lifecycleScope.launch(Dispatchers.Main) {
             kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, result)
             activityViewModel.navigateFromDocScanToDocResult()
