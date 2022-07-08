@@ -1,6 +1,5 @@
 package de.solarisbank.sdk.fourthline.feature.ui.selfie
 
-import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.fourthline.core.VideoDuration
-import com.fourthline.core.VideoRecording
-import com.fourthline.core.location.Coordinate
 import com.fourthline.vision.RecordingType
-import com.fourthline.vision.ScannerImage
 import com.fourthline.vision.selfie.*
 import de.solarisbank.sdk.core_ui.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
@@ -33,12 +28,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.net.URI
-import java.util.*
 
 
 class SelfieFragment : SelfieScannerFragment() {
@@ -68,7 +57,6 @@ class SelfieFragment : SelfieScannerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var cleanupJob: Job? = null
-    private var isEmulator=false
 
     private val customization: Customization by lazy {
         customizationRepository.get()
@@ -94,51 +82,6 @@ class SelfieFragment : SelfieScannerFragment() {
         (view as ViewGroup).onLayoutMeasuredOnce {
             punchhole!!.punchholeRect = getFaceDetectionArea()
             punchhole!!.postInvalidate()
-        }
-        activityViewModel.getEmulator.observe(requireActivity()) {
-            isEmulator = it
-            if(isEmulator) {
-                copySelfieVideoFileToCache()
-            }
-        }
-    }
-
-    private fun setSelfieFlowLocally(){
-        lifecycleScope.launch(Dispatchers.Main) {
-            val selfieResult = SelfieScannerResult(image = ScannerImage(full = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_selfie),
-                cropped = BitmapFactory.decodeResource(resources, R.drawable.identhub_test_selfie)),
-                metadata = SelfieScannerMetadata(timestamp= Date(), location = Coordinate(52.5200, 13.4050)),
-                videoRecording = VideoRecording(url = URI("file:"+requireActivity().cacheDir.absolutePath+ "/fourthline/video_9608f8af-6975-4bae-a7b9-fd219332f69b.mp4"),
-                    duration = VideoDuration.DEFAULT,
-                    location = Coordinate(52.5200, 13.4050)))
-
-            kycSharedViewModel.updateKycWithSelfieScannerResult(selfieResult)
-            activityViewModel.navigateFromSelfieToSelfieResult()
-        }
-    }
-
-    private fun copySelfieVideoFileToCache(){
-        val pathSDCard =
-            requireActivity().cacheDir.absolutePath+ "/fourthline/video_9608f8af-6975-4bae-a7b9-fd219332f69b.mp4"
-        try {
-            val inputStream: InputStream = resources.openRawResource(R.raw.test_selfie)
-            var out: FileOutputStream? = null
-            out = FileOutputStream(pathSDCard)
-            val buff = ByteArray(1024)
-            var read: Int
-            try {
-                while (inputStream.read(buff).also { read = it } > 0) {
-                    out.write(buff, 0, read)
-                }
-            } finally {
-                inputStream.close()
-                out.close()
-                setSelfieFlowLocally()
-            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 
@@ -181,10 +124,8 @@ class SelfieFragment : SelfieScannerFragment() {
 
     override fun onFail(error: SelfieScannerError) {
         Timber.d("onFail: ${error.name}")
-        if(!isEmulator){
-            lifecycleScope.launch(Dispatchers.Main) {
-                activityViewModel.navigateFromSelfieToSelfieInstructions(error.asString(requireContext()))
-            }
+        lifecycleScope.launch(Dispatchers.Main) {
+            activityViewModel.navigateFromSelfieToSelfieInstructions(error.asString(requireContext()))
         }
     }
 
@@ -209,8 +150,8 @@ class SelfieFragment : SelfieScannerFragment() {
     }
 
     override fun onSuccess(result: SelfieScannerResult) {
+        Timber.d("onSuccess()")
 
-        Timber.d("onScanSelfie-->$result")
         lifecycleScope.launch(Dispatchers.Main) {
             icon?.visibility = View.VISIBLE
             icon?.setImageLevel(1)

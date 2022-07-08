@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
+import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
@@ -50,19 +51,6 @@ class FourthlineActivity : FourthlineBaseActivity() {
         observeViewModel()
         initGraph()
         viewModel.saveFourthlineStepParameters(intent.toFourthlineStepParametersDto())
-
-
-        when {
-            isGenymotionEmulator(Build.MODEL) -> {
-                viewModel.isEmulator.postValue(true)
-            }
-            buildModelContainsEmulatorHints(Build.MODEL) -> {
-                viewModel.isEmulator.postValue(true)
-            }
-            else -> {
-                viewModel.isEmulator.postValue(false)
-            }
-        }
     }
 
     private fun initView() {
@@ -271,14 +259,4 @@ class FourthlineActivity : FourthlineBaseActivity() {
         const val FOURTHLINE_SELFIE_RETAKE = "SelfieRetake"
     }
 
-    private fun isGenymotionEmulator(buildManufacturer: String?): Boolean {
-        return buildManufacturer != null &&
-                (buildManufacturer.contains("Genymotion") || buildManufacturer == "unknown")
-    }
-
-    private fun buildModelContainsEmulatorHints(buildModel: String): Boolean {
-        return (buildModel.startsWith("sdk")
-                || "google_sdk" == buildModel || buildModel.contains("Emulator")
-                || buildModel.contains("Android SDK"))
-    }
 }

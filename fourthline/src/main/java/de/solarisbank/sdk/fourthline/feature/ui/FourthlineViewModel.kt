@@ -12,6 +12,7 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
 import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class FourthlineViewModel (
@@ -21,9 +22,6 @@ class FourthlineViewModel (
 
     private val _navigationActionId = MutableLiveData<Event<NaviDirection>>()
     val navigationActionId = _navigationActionId as LiveData<Event<NaviDirection>>
-
-    var isEmulator = MutableLiveData<Boolean>()
-    val getEmulator = isEmulator as LiveData<Boolean>
 
     fun saveFourthlineStepParameters(fourthlineStepParametersDto: FourthlineStepParametersDto) {
         fourthlineStepParametersUseCase.saveParameters(fourthlineStepParametersDto)
