@@ -24,8 +24,7 @@ import java.io.File
 class KycUploadFragment : FourthlineFragment() {
 
     private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-            .get(FourthlineViewModel::class.java)
+        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
     }
 
     private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {

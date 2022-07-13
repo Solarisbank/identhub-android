@@ -132,6 +132,8 @@ class DocScanResultFragment : FourthlineFragment() {
         issueDateTextInput = null
         expireDateTextInput = null
         continueButton = null
+        issueDateError = null
+        expiryDateError = null
         super.onDestroyView()
     }
 

@@ -42,7 +42,6 @@ class ContractSigningFragment : IdentHubFragment() {
     private val viewModel: ContractSigningViewModel by lazy { viewModels() }
 
     private var codeInput: EditText? = null
-    private var currentFocusedEditText: View? = null
     private var description: TextView? = null
     private var sendNewCode: Button? = null
     private var newCodeCounter: TextView? = null
@@ -264,7 +263,6 @@ class ContractSigningFragment : IdentHubFragment() {
     override fun onDestroyView() {
         disposable.dispose()
         digitsEditTexts.clear()
-        currentFocusedEditText = null
         codeInput = null
         description = null
         sendNewCode = null

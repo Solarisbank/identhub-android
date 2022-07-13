@@ -27,8 +27,7 @@ class PassingPossibilityFragment : FourthlineFragment() {
     }
 
     private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
+        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
     }
 
     override fun inject(component: FourthlineFragmentComponent) {

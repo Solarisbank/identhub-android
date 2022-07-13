@@ -42,8 +42,7 @@ class SelfieFragment : SelfieScannerFragment() {
     private var progressBar: ProgressBar? = null
 
     private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
+        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
     }
 
     private val kycSharedViewModel: KycSharedViewModel by lazy {

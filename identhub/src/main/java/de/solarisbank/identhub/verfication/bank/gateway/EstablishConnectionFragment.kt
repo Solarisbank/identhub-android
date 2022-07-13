@@ -37,7 +37,8 @@ class EstablishConnectionFragment : ProgressIndicatorFragment() {
 
     private fun observeScreenState() {
         verificationBankExternalGateViewModel!!.establishSecureConnectionEvent.observe(
-            viewLifecycleOwner, { event: Event<Any> -> onSecureConnectionEstablished(event) })
+            viewLifecycleOwner
+        ) { event: Event<Any> -> onSecureConnectionEstablished(event) }
     }
 
     private fun onSecureConnectionEstablished(event: Event<Any>) {

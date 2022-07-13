@@ -173,6 +173,8 @@ class ContractSigningPreviewFragment : IdentHubFragment() {
         clickDisposable.dispose()
         documentsList = null
         submitButton = null
+        titleView = null
+        subtitleView= null
         super.onDestroyView()
     }
 }

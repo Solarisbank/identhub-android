@@ -74,7 +74,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private var bulletList: BulletListLayout? = null
 
     internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var customizationRepository: CustomizationRepository
     private lateinit var currentDocumentType: DocumentType
     private val customization: Customization by lazy { customizationRepository.get() }
