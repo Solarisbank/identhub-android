@@ -12,6 +12,9 @@ class IdentHub {
 
     private var SESSION: IdentHubSession? = null
 
+    /**
+     * optional enableLocalLogger field to enable local logging of SDK. Will be disabled by default.
+     */
     @Synchronized
     fun sessionWithUrl(url: String): IdentHubSession {
         val apiUrl = buildApiUrl(url)

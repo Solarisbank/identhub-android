@@ -12,14 +12,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
-import java.util.concurrent.ConcurrentLinkedQueue
-import kotlin.collections.ArrayList
 
 class IdLogger private constructor(
 ) {
     companion object {
         @Volatile
-        private var localList = ConcurrentLinkedQueue<LogJson>()
+        private var localList = RWLockList(ArrayList())
         private var appsDefaultExceptionHandler: Thread.UncaughtExceptionHandler? = null
 
         @Volatile
@@ -27,10 +25,13 @@ class IdLogger private constructor(
         private lateinit var timberLoggerTree: LoggerTree
 
         private var loggerUseCaseInstance: LoggerUseCase? = null
-        private val IS_SEND_LOGS = false
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
         private const val bundlerDelay: Long = 5000
         private var loggerRunnable: Runnable? = null
+        private var isLocalLoggingEnabled = false
+        private var shouldUploadLog = false
+        private var currentLogLevel = LogLevel.WARN
+
 
         /**
          * will be called on the Start of the SDK to setup exception handler and basic logger.
@@ -57,14 +58,22 @@ class IdLogger private constructor(
          */
         @JvmStatic
         fun cleanLogger() {
-            localList.also {
-                if (it.isNotEmpty()) {
-                    uploadLogs()
-                    it.clear()
-                }
-            }
+            uploadLogs()
             appsDefaultExceptionHandler?.let { Thread.setDefaultUncaughtExceptionHandler(it) } //Setting the Host app's default thread back.
             Timber.uproot(timberLoggerTree)
+        }
+
+        @JvmStatic
+        fun setLocalLogging(isEnabled: Boolean) {
+            isLocalLoggingEnabled = isEnabled
+        }
+
+        enum class LogLevel(val value: Int) {
+            DEBUG(0),
+            INFO(1),
+            WARN(2),
+            ERROR(3),
+            FAULT(4)
         }
 
         private val logSuccess = { _: Boolean ->
@@ -75,19 +84,39 @@ class IdLogger private constructor(
 
         }
 
+        /**
+         * Checks weather the current log is equal or above the current log level set.
+         */
+        private fun isInLoggingLevel(logLevel: String): Boolean {
+            return when (logLevel) {
+                LogLevel.DEBUG.name -> LogLevel.DEBUG.value >= currentLogLevel.value
+                LogLevel.INFO.name -> LogLevel.INFO.value >= currentLogLevel.value
+                LogLevel.WARN.name -> LogLevel.WARN.value >= currentLogLevel.value
+                LogLevel.ERROR.name -> LogLevel.ERROR.value >= currentLogLevel.value
+                LogLevel.FAULT.name -> LogLevel.FAULT.value >= currentLogLevel.value
+                else -> {
+                    false
+                }
+            }
+        }
+
         @SuppressLint("LogNotTimber") //using it for local logging, Can't use timber because , all timber logs are intercepted and logged here.
         @Synchronized
         private fun logJsonEvent(logType: String, log: String, category: String = "") {
-            Log.d("IdLogger: Type->$logType", log)
+            if (isLocalLoggingEnabled && isInLoggingLevel(logType))
+                Log.d("IdLogger: Type->$logType", log)
+
             val jsonlog = LogJson(
                 log,
                 logType, category
             )
 
-            localList.add(jsonlog)
+            if (!shouldUploadLog) {
+                localList.add(jsonlog)
 
-            loggerUseCaseInstance?.let {
-                spawnHandler()
+                loggerUseCaseInstance?.let {
+                    spawnHandler()
+                }
             }
         }
 
@@ -95,7 +124,7 @@ class IdLogger private constructor(
             if (loggerRunnable == null) {
                 loggerRunnable = Runnable {
                     uploadLogs()
-                    loggerRunnable = null;
+                    loggerRunnable = null
                 }
 
                 loggerRunnable?.let {
@@ -107,14 +136,15 @@ class IdLogger private constructor(
 
         @SuppressLint("CheckResult")
         private fun uploadLogs() {
-            if (localList.isNotEmpty()) {
-                val list = ArrayList<LogJson>()
-                list.addAll(localList.toList()) //creating a new list form the Queue
-                loggerUseCaseInstance?.invoke(LogContent(list))
+            if (!shouldUploadLog)
+                return
+
+            val logs = localList.getAndClear()
+            if (logs.isNotEmpty()) {
+                loggerUseCaseInstance?.invoke(LogContent(logs))
                     ?.subscribeOn(Schedulers.io())
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe(logSuccess, logError)
-                localList.clear()
             }
         }
 
@@ -124,7 +154,7 @@ class IdLogger private constructor(
          * Log method for Navigation
          */
         fun logNav(log: String, category: String = "") {
-            logJsonEvent(LogType.nav, log, category)
+            logJsonEvent(LogLevel.INFO.name, log, category)
         }
 
         /**
@@ -132,7 +162,7 @@ class IdLogger private constructor(
          * Log method for Event
          */
         fun logEvent(log: String, category: String = "") {
-            logJsonEvent(LogType.event, log, category)
+            logJsonEvent(LogLevel.INFO.name, log, category)
         }
 
         /**
@@ -140,7 +170,7 @@ class IdLogger private constructor(
          * Log method for Action
          */
         fun logAction(log: String, category: String = "") {
-            logJsonEvent(LogType.action, log, category)
+            logJsonEvent(LogLevel.DEBUG.name, log, category)
         }
 
         /**
@@ -149,7 +179,7 @@ class IdLogger private constructor(
          */
 
         fun logError(log: String, category: String = "") {
-            logJsonEvent(LogType.error, log, category)
+            logJsonEvent(LogLevel.ERROR.name, log, category)
         }
 
         /**
@@ -157,7 +187,7 @@ class IdLogger private constructor(
          * Log method for Information
          */
         fun logInfo(log: String, category: String = "") {
-            logJsonEvent(LogType.info, log, category)
+            logJsonEvent(LogLevel.INFO.name, log, category)
         }
 
         /**
@@ -165,9 +195,8 @@ class IdLogger private constructor(
          * Log method for Fault
          */
         fun logFault(log: String, category: String = "") {
-            logJsonEvent(LogType.fault, log, category)
+            logJsonEvent(LogLevel.WARN.name, log, category)
         }
-
 
 
         // Fetch device information here
@@ -189,7 +218,3 @@ class IdLogger private constructor(
         }
     }
 }
-
-
-
-
