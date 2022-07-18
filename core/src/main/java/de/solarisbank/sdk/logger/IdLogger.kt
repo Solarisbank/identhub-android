@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package de.solarisbank.sdk.logger
 
 import android.annotation.SuppressLint
@@ -7,48 +9,58 @@ import android.os.Looper
 import android.util.Log
 import de.solarisbank.sdk.logger.domain.model.LogContent
 import de.solarisbank.sdk.logger.domain.model.LogJson
-import de.solarisbank.sdk.logger.domain.model.LogType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 
 class IdLogger private constructor(
 ) {
+
+    enum class LogLevel(val value: Int) {
+        DEBUG(1),
+        INFO(2),
+        WARN(3),
+        ERROR(4),
+        FAULT(5)
+    }
+
+    sealed class Category(val name: String) {
+        object Default: Category("")
+        object Nav: Category("Nav")
+        object Api: Category("API")
+        class Other(name: String) : Category(name)
+    }
+
     companion object {
+        private const val BUNDLER_DELAY = 5000L
+        private const val TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+
         @Volatile
         private var localList = RWLockList(ArrayList())
-        private var appsDefaultExceptionHandler: Thread.UncaughtExceptionHandler? = null
 
         @Volatile
         private lateinit var instance: IdLogger
-        private lateinit var timberLoggerTree: LoggerTree
 
         private var loggerUseCaseInstance: LoggerUseCase? = null
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
-        private const val bundlerDelay: Long = 5000
         private var loggerRunnable: Runnable? = null
-        private var isLocalLoggingEnabled = false
         private var shouldUploadLog = false
-        private var currentLogLevel = LogLevel.WARN
+        private var localLogLevel = LogLevel.INFO
+        private var remoteLogLevel = LogLevel.WARN
+        private val timeFormatter = SimpleDateFormat(TIME_FORMAT, Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
 
 
         /**
          * will be called on the Start of the SDK to setup exception handler and basic logger.
          */
-        @JvmStatic
         fun setupLogger(
         ): IdLogger {
             instance = IdLogger()
-            appsDefaultExceptionHandler =
-                Thread.getDefaultUncaughtExceptionHandler() //Save a instance of Host app's thread.
-            timberLoggerTree = LoggerTree()
-            Timber.plant(timberLoggerTree)
-            Thread.setDefaultUncaughtExceptionHandler { _, e ->
-                logJsonEvent(LogType.error, e.stackTrace.joinToString(separator = ","))
 
-            }
-            logJsonEvent(LogType.info, getDeviceInfo())
+            logEvent(LogLevel.INFO, getDeviceInfo())
 
             return instance
         }
@@ -56,24 +68,16 @@ class IdLogger private constructor(
         /**
          * will be called on the exit of the SDK to restore teh exception handler.
          */
-        @JvmStatic
         fun cleanLogger() {
             uploadLogs()
-            appsDefaultExceptionHandler?.let { Thread.setDefaultUncaughtExceptionHandler(it) } //Setting the Host app's default thread back.
-            Timber.uproot(timberLoggerTree)
         }
 
-        @JvmStatic
-        fun setLocalLogging(isEnabled: Boolean) {
-            isLocalLoggingEnabled = isEnabled
+        fun setLocalLogLevel(logLevel: LogLevel) {
+            localLogLevel = logLevel
         }
 
-        enum class LogLevel(val value: Int) {
-            DEBUG(0),
-            INFO(1),
-            WARN(2),
-            ERROR(3),
-            FAULT(4)
+        fun setRemoteLogLevel(logLevel: LogLevel) {
+            remoteLogLevel = logLevel
         }
 
         private val logSuccess = { _: Boolean ->
@@ -84,35 +88,46 @@ class IdLogger private constructor(
 
         }
 
-        /**
-         * Checks weather the current log is equal or above the current log level set.
-         */
-        private fun isInLoggingLevel(logLevel: String): Boolean {
-            return when (logLevel) {
-                LogLevel.DEBUG.name -> LogLevel.DEBUG.value >= currentLogLevel.value
-                LogLevel.INFO.name -> LogLevel.INFO.value >= currentLogLevel.value
-                LogLevel.WARN.name -> LogLevel.WARN.value >= currentLogLevel.value
-                LogLevel.ERROR.name -> LogLevel.ERROR.value >= currentLogLevel.value
-                LogLevel.FAULT.name -> LogLevel.FAULT.value >= currentLogLevel.value
-                else -> {
-                    false
-                }
+        @SuppressLint("LogNotTimber") //using it for local logging, Can't use timber because , all timber logs are intercepted and logged here.
+        @Synchronized
+        private fun logEvent(logLevel: LogLevel, log: String, category: Category = Category.Default) {
+            localLog(logLevel, log, category)
+            remoteLog(logLevel, log, category)
+        }
+
+        @SuppressLint("LogNotTimber")
+        private fun localLog(logLevel: LogLevel, log: String, category: Category) {
+            if (logLevel.value < localLogLevel.value)
+                return
+
+            val tag = if (category != Category.Default) {
+                "IdLogger (${category.name})"
+            } else {
+                "IdLogger"
+            }
+
+            when(logLevel) {
+                LogLevel.DEBUG -> Log.d(tag, log)
+                LogLevel.INFO -> Log.i(tag, log)
+                LogLevel.WARN -> Log.w(tag, log)
+                LogLevel.ERROR, LogLevel.FAULT -> Log.e(tag, log)
             }
         }
 
-        @SuppressLint("LogNotTimber") //using it for local logging, Can't use timber because , all timber logs are intercepted and logged here.
-        @Synchronized
-        private fun logJsonEvent(logType: String, log: String, category: String = "") {
-            if (isLocalLoggingEnabled && isInLoggingLevel(logType))
-                Log.d("IdLogger: Type->$logType", log)
+        private fun remoteLog(logLevel: LogLevel, log: String, category: Category) {
+            if (logLevel.value < remoteLogLevel.value)
+                return
 
-            val jsonlog = LogJson(
-                log,
-                logType, category
+            // TODO: Check timestamp and timezone
+            val jsonLog = LogJson(
+                detail = log,
+                type = logLevel.name,
+                category = category.name,
+                timestamp = timeFormatter.format(Date())
             )
 
             if (!shouldUploadLog) {
-                localList.add(jsonlog)
+                localList.add(jsonLog)
 
                 loggerUseCaseInstance?.let {
                     spawnHandler()
@@ -128,7 +143,7 @@ class IdLogger private constructor(
                 }
 
                 loggerRunnable?.let {
-                    loggerDelayedHandler.postDelayed(it, bundlerDelay)
+                    loggerDelayedHandler.postDelayed(it, BUNDLER_DELAY)
                 }
             }
         }
@@ -150,54 +165,45 @@ class IdLogger private constructor(
 
 
         /**
-         * @param log of type String
+         * @param message of type String
          * Log method for Navigation
          */
-        fun logNav(log: String, category: String = "") {
-            logJsonEvent(LogLevel.INFO.name, log, category)
+        fun nav(message: String) {
+            logEvent(LogLevel.INFO, message, Category.Nav)
         }
 
         /**
-         * @param log of type String
-         * Log method for Event
+         * @param message of type String
+         * Log method for Debug
          */
-        fun logEvent(log: String, category: String = "") {
-            logJsonEvent(LogLevel.INFO.name, log, category)
+        fun debug(message: String, category: Category = Category.Default) {
+            logEvent(LogLevel.DEBUG, message, category)
         }
 
         /**
-         * @param log of type String
-         * Log method for Action
-         */
-        fun logAction(log: String, category: String = "") {
-            logJsonEvent(LogLevel.DEBUG.name, log, category)
-        }
-
-        /**
-         * @param log of type String
+         * @param message of type String
          * Log method for Error
          */
 
-        fun logError(log: String, category: String = "") {
-            logJsonEvent(LogLevel.ERROR.name, log, category)
+        fun error(message: String, category: Category = Category.Default) {
+            logEvent(LogLevel.ERROR, message, category)
         }
 
         /**
-         * @param log of type String
+         * @param message of type String
          * Log method for Information
          */
-        fun logInfo(log: String, category: String = "") {
-            logJsonEvent(LogLevel.INFO.name, log, category)
+        fun info(message: String, category: Category = Category.Default) {
+            logEvent(LogLevel.INFO, message, category)
         }
 
         /**
-         * @param log of type String
+         * @param message of type String
          * Log method for Fault
          */
-        fun logFault(log: String, category: String = "") {
-            logJsonEvent(LogLevel.WARN.name, log, category)
+        fun fault(message: String, category: Category = Category.Default) {
+            logEvent(LogLevel.FAULT, message, category)
         }
-
 
         // Fetch device information here
         private fun getDeviceInfo(): String {

@@ -61,6 +61,14 @@ class IdentHubSession : ViewModelFactoryContainer {
         initMainProcess(fragmentActivity)
     }
 
+    fun setRemoteLoggingLevel(logLevel: IdLogger.LogLevel) {
+        IdLogger.setRemoteLogLevel(logLevel)
+    }
+
+    fun setLocalLoggingLevel(logLevel: IdLogger.LogLevel) {
+        IdLogger.setLocalLogLevel(logLevel)
+    }
+
     private fun initMainProcess(activity: FragmentActivity) {
         Timber.d("initMainProcess, fragmentActivity : $activity, this : $this")
         this.activity = activity
@@ -114,7 +122,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     private fun processSessionResult(sessionStepResult: SessionStepResult) {
         //todo move logic to usecase, confirm both platform step result contract
         Timber.d("setSessionResult 0 : $sessionStepResult")
-        IdLogger.logAction("$sessionStepResult", "processSessionResult")
+        IdLogger.debug("SessionResult: $sessionStepResult")
         when (sessionStepResult) {
             is NaviDirection.NextStepStepResult -> {
                 Timber.d("setSessionResult 1")
@@ -251,7 +259,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     fun start() {
         Timber.d("start, paymentSuccessCallback != null : ${ paymentSuccessCallback != null }")
         viewModel.startIdentificationProcess(paymentSuccessCallback != null)
-
+        IdLogger.debug("SDK started")
     }
 
     /**
@@ -299,12 +307,12 @@ class IdentHubSession : ViewModelFactoryContainer {
 
 data class IdentHubSessionResult(val identificationId: String, val step: COMPLETED_STEP?) {
     init {
-        IdLogger.logAction(step?.index.toString(), "IdentHubSessionResult")
+        IdLogger.debug("SessionResultCreated: ${step?.index}")
     }
 }
 
 data class IdentHubSessionFailure(val message: String? = null, val step: COMPLETED_STEP?) {
     init {
-        IdLogger.logAction("$message step || Message $message", "IdentHubSessionFailure")
+        IdLogger.debug("SessionFailureCreated. Step: ${step?.index}, Message: $message")
     }
 }

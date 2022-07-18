@@ -10,6 +10,7 @@ import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.IdentHubSessionFailure
 import de.solarisbank.identhub.session.feature.IdentHubSessionResult
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class ExampleIdentHubActivity : AppCompatActivity() {
@@ -27,6 +28,9 @@ class ExampleIdentHubActivity : AppCompatActivity() {
 
         session = IdentHub().sessionWithUrl(binding.sessionInputField.text.toString().trim())
             .apply {
+                if (BuildConfig.DEBUG) {
+                    setLocalLoggingLevel(IdLogger.LogLevel.DEBUG)
+                }
                 onCompletionCallback(
                     fragmentActivity = this@ExampleIdentHubActivity,
                     successCallback = this@ExampleIdentHubActivity::onSuccess,

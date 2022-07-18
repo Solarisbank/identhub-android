@@ -36,7 +36,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        IdLogger.logNav("Fragment OnCreate ${this::class.java}")
+        IdLogger.nav("Fragment OnCreate ${this::class.java}")
     }
 
     protected open fun initViewModel() {
@@ -81,7 +81,7 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null
-        IdLogger.logNav("Fragment OnDestroy ${this::class.java}")
+        IdLogger.nav("Fragment OnDestroy ${this::class.java}")
         super.onDestroyView()
     }
 }

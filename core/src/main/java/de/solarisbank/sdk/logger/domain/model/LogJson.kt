@@ -17,8 +17,5 @@ data class LogJson(
     @Json(name = "category")
     val category: String? = null,
     @Json(name = "timestamp")
-    val timeStamp: String = SimpleDateFormat(
-        "yyyy-MM-dd HH:mm:ss.SSSSSS",
-        Locale.getDefault()
-    ).format(Date()).toString()
+    val timestamp: String
 )

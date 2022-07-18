@@ -67,7 +67,7 @@ class ContractActivity : IdentHubActivity() {
     private fun onNavigationChanged(event: Event<NaviDirection>) {
         val naviDirection = event.content
         Timber.d("onNavigationChanged 0, naviDirection: $naviDirection")
-        IdLogger.logNav("onNavigationChanged 0, naviDirection: $naviDirection")
+        IdLogger.nav("onNavigationChanged, naviDirection: $naviDirection")
         if (naviDirection != null) {
             when (naviDirection) {
                 is SessionStepResult -> {

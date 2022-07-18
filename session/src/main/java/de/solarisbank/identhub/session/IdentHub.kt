@@ -21,7 +21,7 @@ class IdentHub {
         SESSION?.sessionUrl = apiUrl
 
         IdLogger.setupLogger()
-        IdLogger.logAction("SDK Started")
+
         return SESSION ?: IdentHubSession().apply {
             sessionUrl = apiUrl
             SESSION = this

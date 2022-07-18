@@ -8,12 +8,21 @@ class LoggerHttpInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
         val response = chain.proceed(request)
-        if (response.code in 400..500 && !request.url.toString()
-                .contains("sdk_logging")
+        if (response.code in 400..500 && !request.url.toString().contains("sdk_logging")
         ) { //Filtering out logging failures.
 
-            IdLogger.logError("Network Error:" + "${request.url}" + "\n ${response.body}")
+            val responseBodyString = try {
+                response.body?.string()
+            } catch(throwable: Throwable) {
+                null
+            } ?: ""
+
+            IdLogger.error(
+                message = "Network Error. [Url]: ${request.url}, \n [Response]: $responseBodyString",
+                category = IdLogger.Category.Api
+            )
         }
+
         return response
     }
 }
