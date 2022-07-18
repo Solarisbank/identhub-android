@@ -23,6 +23,7 @@ import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.domain.toPersonDataStateDto
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -76,6 +77,7 @@ class KycSharedViewModel(
                     {personData, ip -> personData to ip})
                         .doOnSuccess { pair ->
                             Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
+                            IdLogger.info("Person data and IP fetched.")
                             if(
                                     pair.first.succeeded
                                     && pair.second.succeeded
@@ -106,6 +108,7 @@ class KycSharedViewModel(
                         }
                         .doOnError {
                             Timber.e(it, "fetchPersonDataAndIp() 5")
+                            IdLogger.error("Fetching Person data and IP Failed: $it")
                             _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
                         }
                         .subscribeOn(Schedulers.io())
@@ -123,17 +126,20 @@ class KycSharedViewModel(
                         when (it) {
                             is LocationDto.SUCCESS -> {
                                 Timber.d("fetchPersonDataAndLocation() 1")
+                                IdLogger.info("Fetching location success")
                                 runBlocking { kycInfoUseCase.updateKycLocation(it.location) }
                                 _supportedDocLiveData.postValue(_personDataStateLiveData.value)
                             }
                             else -> {
                                 Timber.d("fetchPersonDataAndLocation() 2")
+                                IdLogger.warn("Fetch location unsuccessful: ${it::class.java.name}")
                                 _supportedDocLiveData.postValue(it.toPersonDataStateDto())
                             }
                         }
                     }
                     .doOnError {
                         Timber.d("fetchPersonDataAndLocation() 3")
+                        IdLogger.error("Fetch location failed. ${it.message}")
                         _supportedDocLiveData.postValue(PersonDataStateDto.LOCATION_FETCHING_ERROR)
                     }
             }
@@ -186,6 +192,7 @@ class KycSharedViewModel(
         compositeDisposable.clear()
         deleteKycInfoUseCase.clearPersonDataCaches()
         Timber.d("onCleared() 2")
+        IdLogger.info("KycSharedViewModel - Cleared")
         super.onCleared()
     }
 }

@@ -36,16 +36,10 @@ class IdLogger private constructor(
         private const val BUNDLER_DELAY = 5000L
         private const val TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
-        @Volatile
         private var localList = RWLockList(ArrayList())
-
-        @Volatile
-        private lateinit var instance: IdLogger
-
         private var loggerUseCaseInstance: LoggerUseCase? = null
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
         private var loggerRunnable: Runnable? = null
-        private var shouldUploadLog = false
         private var localLogLevel = LogLevel.INFO
         private var remoteLogLevel = LogLevel.WARN
         private val timeFormatter = SimpleDateFormat(TIME_FORMAT, Locale.US).apply {
@@ -56,19 +50,14 @@ class IdLogger private constructor(
         /**
          * will be called on the Start of the SDK to setup exception handler and basic logger.
          */
-        fun setupLogger(
-        ): IdLogger {
-            instance = IdLogger()
-
+        fun setupLogger() {
             logEvent(LogLevel.INFO, getDeviceInfo())
-
-            return instance
         }
 
         /**
-         * will be called on the exit of the SDK to restore teh exception handler.
+         * will be called on the exit of the SDK
          */
-        fun cleanLogger() {
+        fun clearLogger() {
             uploadLogs()
         }
 
@@ -81,11 +70,11 @@ class IdLogger private constructor(
         }
 
         private val logSuccess = { _: Boolean ->
-
+            localLog(LogLevel.DEBUG, "Logs uploaded successfully", Category.Api)
         }
 
-        private val logError = { _: Throwable ->
-
+        private val logError = { t: Throwable ->
+            localLog(LogLevel.DEBUG, "Logs upload failed. ${t.message}", Category.Api)
         }
 
         @SuppressLint("LogNotTimber") //using it for local logging, Can't use timber because , all timber logs are intercepted and logged here.
@@ -101,9 +90,9 @@ class IdLogger private constructor(
                 return
 
             val tag = if (category != Category.Default) {
-                "Identhub (${category.name})"
+                "IdentHub (${category.name})"
             } else {
-                "Identhub"
+                "IdentHub"
             }
 
             when(logLevel) {
@@ -126,16 +115,14 @@ class IdLogger private constructor(
                 timestamp = timeFormatter.format(Date())
             )
 
-            if (!shouldUploadLog) {
-                localList.add(jsonLog)
-
-                loggerUseCaseInstance?.let {
-                    spawnHandler()
-                }
-            }
+            localList.add(jsonLog)
+            spawnHandler()
         }
 
         private fun spawnHandler() {
+            if (loggerUseCaseInstance == null)
+                return
+
             if (loggerRunnable == null) {
                 loggerRunnable = Runnable {
                     uploadLogs()
@@ -151,9 +138,6 @@ class IdLogger private constructor(
 
         @SuppressLint("CheckResult")
         private fun uploadLogs() {
-            if (!shouldUploadLog)
-                return
-
             val logs = localList.getAndClear()
             if (logs.isNotEmpty()) {
                 loggerUseCaseInstance?.invoke(LogContent(logs))
@@ -178,6 +162,14 @@ class IdLogger private constructor(
          */
         fun debug(message: String, category: Category = Category.Default) {
             logEvent(LogLevel.DEBUG, message, category)
+        }
+
+        /**
+         * @param message of type String
+         * Log method for Warn
+         */
+        fun warn(message: String, category: Category = Category.Default) {
+            logEvent(LogLevel.WARN, message, category)
         }
 
         /**

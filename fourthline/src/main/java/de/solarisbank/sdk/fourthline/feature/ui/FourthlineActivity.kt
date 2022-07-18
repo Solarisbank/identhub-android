@@ -26,6 +26,7 @@ import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.base.FourthlineBaseActivity
 import de.solarisbank.sdk.fourthline.di.FourthlineActivitySubcomponent
 import de.solarisbank.sdk.fourthline.toFourthlineStepParametersDto
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class FourthlineActivity : FourthlineBaseActivity() {
@@ -172,8 +173,10 @@ class FourthlineActivity : FourthlineBaseActivity() {
 
     private fun requestPermission(permissionCode: Int, rationalizeCode: Int?): Boolean {
         val permission = getPermissionFromCode(permissionCode) ?: return true
+        IdLogger.info("Requesting permission for: $permission")
         return if (ContextCompat.checkSelfPermission(this, permission) != PermissionChecker.PERMISSION_GRANTED) {
             if (permissionCode == rationalizeCode) {
+                IdLogger.info("Showing rationale for permission: $permission")
                 showRationale(permission)
             } else {
                 ActivityCompat.requestPermissions(
@@ -208,13 +211,16 @@ class FourthlineActivity : FourthlineBaseActivity() {
                         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                         data = Uri.fromParts("package", packageName, null)
                     }.also {
+                        IdLogger.warn("Going for settings for permission: $permission")
                         startActivity(it)
                     }
                 } else {
+                    IdLogger.warn("Requesting permission again: $permission")
                     proceedWithPermissions()
                 }
             },
             positiveAction = {
+                IdLogger.error("The user did not give the permission: $permission")
                 viewModel.setFourthlineIdentificationFailure()
             }
         )

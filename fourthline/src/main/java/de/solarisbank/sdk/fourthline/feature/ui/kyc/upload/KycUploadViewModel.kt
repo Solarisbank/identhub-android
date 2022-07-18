@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -30,10 +31,12 @@ class KycUploadViewModel(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ t1 ->
                             Timber.d("uploadKyc(), upload successful")
+                            IdLogger.info("KYC upload result: ${t1::class.java.name}")
                             _uploadingStatus.value = Event(t1)
                         },{ t2 ->
                             if (t2 != null) {
                                 Timber.e(t2,"uploadKyc(), upload failed")
+                                IdLogger.error("KYC upload failed: ${t2.message}")
                                 _uploadingStatus.value =
                                         Event(KycUploadStatusDto.GenericError)
                         }}

@@ -18,6 +18,7 @@ import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 import java.util.*
 
@@ -130,6 +131,16 @@ class KycInfoUseCase(
                 "\n addressValidationError : $addressValidationError"
         )
 
+        IdLogger.info("validateFycInfo" +
+            "\n documentValidationError : $documentValidationError" +
+                    "\n personValidationError  : $personValidationError " +
+                    "\n providerValidationError : $providerValidationError" +
+                    "\n metadataValidationError : $metadataValidationError" +
+                    "\n selfieValidationError : $selfieValidationError" +
+                    "\n secondaryValidationError : $secondaryValidationError" +
+                    "\n contactsValidationError : $contactsValidationError" +
+                    "\n addressValidationError : $addressValidationError")
+
         return documentValidationError.isNullOrEmpty()
                 && personValidationError.isNullOrEmpty()
                 && providerValidationError.isNullOrEmpty()
@@ -143,13 +154,16 @@ class KycInfoUseCase(
     suspend fun createKycZip(applicationContext: Context): ZipCreationStateDto {
         val kycInfo = kycInfoRepository.getKycInfo()
         Timber.d("getKycUriZip : $kycInfo")
+        IdLogger.info("Zipping of Kyc info started")
         var zipCreationStateDto: ZipCreationStateDto = ZipCreationStateDto.ERROR
         if (validateFycInfo(kycInfo)) {
             try {
-                Zipper().createZipFile(kycInfo, applicationContext)?.let {
+                Zipper().createZipFile(kycInfo, applicationContext).let {
                     zipCreationStateDto = ZipCreationStateDto.SUCCESS(it)
+                    IdLogger.info("Zip creation successful")
                 }
             } catch (zipperError: ZipperError) {
+                IdLogger.error("Zipper error : ${zipperError::class.java.name}")
                 when (zipperError) {
                     ZipperError.KycNotValid -> Timber.d("Error in kyc object")
                     ZipperError.CannotCreateZip -> Timber.d("Error creating zip file")
@@ -157,6 +171,8 @@ class KycInfoUseCase(
                     ZipperError.ZipExceedMaximumSize -> Timber.d("Zip file exceed 100MB")
                 }
             }
+        } else {
+            IdLogger.error("Zip creation failed")
         }
         Timber.d("uri: $zipCreationStateDto")
         return zipCreationStateDto

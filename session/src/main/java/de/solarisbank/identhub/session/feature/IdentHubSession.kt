@@ -75,8 +75,6 @@ class IdentHubSession : ViewModelFactoryContainer {
         activityComponent = IdentHubActivityComponent(this.activity)
         activityComponent.inject(this)
 
-
-
         viewModel = viewModelFactory.invoke(activity).create(IdentHubSessionViewModel::class.java)
         IdentHubSessionViewModel.INSTANCE!!.saveSessionId(sessionUrl)
         loggerUseCase = viewModel.getLoggerUseCase()
@@ -277,7 +275,7 @@ class IdentHubSession : ViewModelFactoryContainer {
     internal fun reset() {
         Timber.d("reset(), this $this")
         viewModel.resetIdentificationProcess()
-        IdLogger.cleanLogger()
+        IdLogger.clearLogger()
     }
 
     private fun loadAppName(context: Context) {

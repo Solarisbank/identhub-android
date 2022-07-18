@@ -29,6 +29,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
 class DocTypeSelectionFragment: FourthlineFragment() {
@@ -179,6 +180,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
 
     private fun requestLocationPermission(askedBefore: Boolean = false, rationalize: Boolean = true) {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        IdLogger.info("Requesting location permission")
         if (ContextCompat.checkSelfPermission(requireContext(), permission) != PermissionChecker.PERMISSION_GRANTED) {
             Timber.d("requestLocationPermission() 1")
             if (shouldShowRequestPermissionRationale(permission)) {
@@ -249,14 +251,17 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                         data = Uri.fromParts("package", requireContext().packageName, null)
                     }.also {
+                        IdLogger.warn("Going for settings for location permission")
                         startActivity(it)
                     }
                 } else {
+                    IdLogger.warn("Requesting location permission again")
                     requestLocationPermission(askedBefore = true, rationalize = false)
                 }
             },
             positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
             positiveAction = {
+                IdLogger.error("The user did not give the location permission")
                 activityViewModel.setFourthlineIdentificationFailure()
             }
         )

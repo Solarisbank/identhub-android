@@ -20,6 +20,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 import java.util.*
 
@@ -92,6 +93,8 @@ class DocScanResultFragment : FourthlineFragment() {
 
 
         kycSharedViewModel.getKycDocument().let { doc ->
+            IdLogger.info("Kyc Doc info was extracted: DocNumber: ${!doc.number.isNullOrEmpty()} " +
+                    "ExpirationDate: ${doc.expirationDate != null}")
             docNumberTextInput!!.setText(doc.number)
             doc.issueDate?.let { issueDateTextInput!!.setDate(it) }?:let {
                 doc.expirationDate?.let {

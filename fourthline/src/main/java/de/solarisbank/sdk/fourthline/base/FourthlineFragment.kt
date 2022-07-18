@@ -5,8 +5,6 @@ import android.widget.Toast
 import de.solarisbank.sdk.feature.base.BaseFragment
 import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
-import de.solarisbank.sdk.logger.IdLogger
-
 
 abstract class FourthlineFragment : BaseFragment() {
 
