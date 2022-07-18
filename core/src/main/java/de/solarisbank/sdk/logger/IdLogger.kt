@@ -101,9 +101,9 @@ class IdLogger private constructor(
                 return
 
             val tag = if (category != Category.Default) {
-                "IdLogger (${category.name})"
+                "Identhub (${category.name})"
             } else {
-                "IdLogger"
+                "Identhub"
             }
 
             when(logLevel) {
