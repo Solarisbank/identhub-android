@@ -18,11 +18,12 @@ class IdLogger private constructor(
 ) {
 
     enum class LogLevel(val value: Int) {
-        DEBUG(1),
-        INFO(2),
-        WARN(3),
-        ERROR(4),
-        FAULT(5)
+        DEBUG(10),
+        INFO(20),
+        WARN(30),
+        ERROR(40),
+        FAULT(50),
+        NONE(1000)
     }
 
     sealed class Category(val name: String) {
@@ -41,7 +42,7 @@ class IdLogger private constructor(
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
         private var loggerRunnable: Runnable? = null
         private var localLogLevel = LogLevel.INFO
-        private var remoteLogLevel = LogLevel.WARN
+        private var remoteLogLevel = LogLevel.NONE
         private val timeFormatter = SimpleDateFormat(TIME_FORMAT, Locale.US).apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }

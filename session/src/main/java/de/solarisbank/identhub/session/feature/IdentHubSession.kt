@@ -61,7 +61,7 @@ class IdentHubSession : ViewModelFactoryContainer {
         initMainProcess(fragmentActivity)
     }
 
-    fun setRemoteLoggingLevel(logLevel: IdLogger.LogLevel) {
+    fun enableRemoteLogging(logLevel: IdLogger.LogLevel) {
         IdLogger.setRemoteLogLevel(logLevel)
     }
 
