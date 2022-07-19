@@ -34,11 +34,7 @@
 }
 
 # Remove log calls
--assumenosideeffects class android.util.Log {
-    public static *** d(...);
-    public static *** e(...);
-}
--assumenosideeffects class timber.log.Timber {
+-assumenosideeffects class Timber.log.Timber {
     public static *** d(...);
     public static *** e(...);
 }
