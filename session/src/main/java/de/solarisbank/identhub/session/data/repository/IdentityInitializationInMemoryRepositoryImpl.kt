@@ -9,7 +9,7 @@ class IdentityInitializationRepositoryImpl(
     ) : IdentityInitializationRepository {
 
     override fun saveInitializationDto(initializationDto: InitializationDto) {
-        identityInitializationDataSource.saveInitializationDto(initializationDto)
+        return identityInitializationDataSource.saveInitializationDto(initializationDto)
     }
 
     override fun getInitializationDto(): InitializationDto? {
@@ -17,6 +17,6 @@ class IdentityInitializationRepositoryImpl(
     }
 
     override fun deleteInitializationDto() {
-        identityInitializationDataSource.deleteInitializationDto()
+        return identityInitializationDataSource.deleteInitializationDto()
     }
 }

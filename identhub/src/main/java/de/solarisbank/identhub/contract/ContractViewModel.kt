@@ -9,7 +9,6 @@ import de.solarisbank.identhub.data.dto.QesStepParametersDto
 import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase
 import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
 import de.solarisbank.sdk.data.dto.IdentificationDto
@@ -23,7 +22,6 @@ import timber.log.Timber
 
 class ContractViewModel(
     savedStateHandle: SavedStateHandle,
-    private val identificationStepPreferences: IdentificationStepPreferences,
     sessionUrlRepository: SessionUrlRepository,
     private val getIdentificationUseCase: GetIdentificationUseCase,
     private val qesStepParametersUseCase: QesStepParametersUseCase
@@ -56,7 +54,6 @@ class ContractViewModel(
     }
 
     fun callOnSuccessResult() {
-        identificationStepPreferences.save(COMPLETED_STEP.CONTRACT_SIGNING)
         compositeDisposable.add(
             getIdentificationUseCase
                 .execute(Unit)

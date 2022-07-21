@@ -15,7 +15,7 @@ class ContractSigningPreviewViewModelFactory(
     private val fetchPdfUseCaseProvider: Provider<FetchPdfUseCase>,
     private val getIdentificationUseCaseProvider: Provider<GetIdentificationUseCase>,
     private val fetchingAuthorizedIBanStatusUseCaseProvider: Provider<FetchingAuthorizedIBanStatusUseCase>
-) : Factory<ViewModel?> {
+) : Factory<ViewModel> {
     override fun get(): ViewModel {
         return contractUiModule.provideContractSigningPreviewViewModel(
             getDocumentsFromVerificationBankUseCaseProvider.get(),

@@ -1,13 +1,12 @@
 package de.solarisbank.sdk.fourthline.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.identhub.domain.ip.IpObtainingUseCaseFactory
-import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
-import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationInMemoryDataSource
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
 import de.solarisbank.identhub.session.data.di.ProvideSessionUrlRepositoryFactory
 import de.solarisbank.identhub.session.data.di.SessionModule
@@ -161,18 +160,13 @@ class FourthlineTestComponent private constructor(
     private lateinit var identificationIdInterceptorProvider: Provider<IdentificationIdInterceptor>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
     private lateinit var httpLoggingInterceptorProvider: Provider<HttpLoggingInterceptor>
-
     private lateinit var identificationApiProvider: Provider<IdentificationApi>
     private lateinit var identificationRetrofitDataSourceProvider: Provider<IdentificationRetrofitDataSource>
     private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
     private lateinit var mobileNumberApiProvider: Provider<MobileNumberApi>
     private lateinit var mobileNumberDataSourceProvider: Provider<MobileNumberDataSource>
-
-
-    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
-    private lateinit var identitySharedPrefsDataSourceProvider: Provider<IdentityInitializationSharedPrefsDataSource>
+    private lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
-
     private lateinit var kycUploadApiProvider: Provider<KycUploadApi>
     private lateinit var kycUploadRetrofitDataSourceProvider: Provider<KycUploadRetrofitDataSource>
     private lateinit var kycUploadRepositoryProvider: Provider<KycUploadRepository>
@@ -202,13 +196,6 @@ class FourthlineTestComponent private constructor(
             sessionModule, sessionUrlLocalDataSourceProvider
         ))
 
-        sharedPreferencesProvider = DoubleCheck.provider(object :
-            Factory<SharedPreferences> {
-            override fun get(): SharedPreferences {
-                return applicationContextProvider.get().getSharedPreferences("identhub", Context.MODE_PRIVATE)
-            }
-        })
-
         fourthlineStepParametersDataSourceProvider = DoubleCheck.provider(
             FourthlineStepParametersDataSourceFactory.create())
         fourthlineStepParametersRepositoryProvider = DoubleCheck.provider(
@@ -220,10 +207,13 @@ class FourthlineTestComponent private constructor(
             DoubleCheck.provider(FourthlineStepParametersUseCaseFactory.create(
                 fourthlineStepParametersRepositoryProvider.get()
             ))
-        identitySharedPrefsDataSourceProvider = DoubleCheck.provider(
-            IdentityInitializationSharedPrefsDataSourceFactory.create(sharedPreferencesProvider))
+        identityInitializationDataSourceProvider = DoubleCheck.provider(object : Factory<IdentityInitializationDataSource> {
+            override fun get(): IdentityInitializationDataSource {
+                return IdentityInitializationInMemoryDataSource()
+            }
+        })
         identityInitializationRepositoryProvider = DoubleCheck.provider(
-            IdentityInitializationRepositoryFactory.create(identitySharedPrefsDataSourceProvider))
+            IdentityInitializationRepositoryFactory.create(identityInitializationDataSourceProvider))
         deleteKycInfoUseCaseProvider = DeleteKycInfoUseCaseFactory.create(applicationContextProvider)
         kycInfoInMemoryDataSourceProvider = KycInfoInMemoryDataSourceFactory.create()
         kycInfoRepositoryProvider = KycInfoRepositoryFactory.create(kycInfoInMemoryDataSourceProvider)
@@ -458,13 +448,6 @@ class FourthlineTestComponent private constructor(
                 UploadResultFragmentInjector(baseFragmentDependencies).injectMembers(uploadResultFragment)
             }
 
-        }
-    }
-
-    internal class SharedPreferencesProvider(private val activityComponent: CoreActivityComponent) :
-        Provider<SharedPreferences> {
-        override fun get(): SharedPreferences {
-            return activityComponent.sharedPreferences()
         }
     }
 

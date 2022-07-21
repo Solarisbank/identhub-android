@@ -1,11 +1,10 @@
 package de.solarisbank.identhub.session.feature.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import de.solarisbank.identhub.session.data.datasource.DynamicIdetityRetrofitDataSource
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
-import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationInMemoryDataSource
 import de.solarisbank.identhub.session.data.datasource.SessionStateSavedStateHandleDataSource
 import de.solarisbank.identhub.session.data.di.*
 import de.solarisbank.identhub.session.data.network.InitializeIdentificationApi
@@ -69,7 +68,6 @@ class IdentHubViewModelComponent private constructor(
     private lateinit var identHubSessionStateSavedStateHandleDataSourceProvider: Provider<SessionStateSavedStateHandleDataSource>
     private lateinit var identHubSessionStateRepositoryProvider: Provider<SessionStateRepository>
     lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
-    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     private lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
     lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
@@ -85,6 +83,10 @@ class IdentHubViewModelComponent private constructor(
 
     fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return identificationInMemoryDataSourceProvider
+    }
+
+    fun getIdentityInitializationDataSource(): Provider<IdentityInitializationDataSource> {
+        return identityInitializationDataSourceProvider
     }
 
     fun getLoggerUseCase(): Provider<LoggerUseCase> {
@@ -108,17 +110,11 @@ class IdentHubViewModelComponent private constructor(
         )
         sessionUrlLocalDataSourceProvider =
             DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
-        sharedPreferencesProvider = DoubleCheck.provider(object :
-            Factory<SharedPreferences> {
-            override fun get(): SharedPreferences {
-                return applicationContextProvider.get()
-                    .getSharedPreferences("identhub", Context.MODE_PRIVATE)
-            }
-        })
+
         identityInitializationDataSourceProvider = DoubleCheck.provider(object :
             Factory<IdentityInitializationDataSource> {
-            override fun get(): IdentityInitializationSharedPrefsDataSource {
-                return IdentityInitializationSharedPrefsDataSource(sharedPreferencesProvider.get())
+            override fun get(): IdentityInitializationInMemoryDataSource {
+                return IdentityInitializationInMemoryDataSource()
             }
         })
         identityInitializationRepositoryProvider = DoubleCheck.provider(object :

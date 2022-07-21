@@ -2,7 +2,6 @@ package de.solarisbank.sdk.feature.di
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.feature.di.internal.DoubleCheck
 import de.solarisbank.sdk.feature.di.internal.Provider
@@ -33,24 +32,15 @@ class DiLibraryComponent private constructor(libraryModule: LibraryModule) : Lib
         }
     }
 
-    private class CoreActivityComponentImpl(activityModule: ActivityModule) :
-        CoreActivityComponent {
+    private class CoreActivityComponentImpl(activityModule: ActivityModule) : CoreActivityComponent {
 
         private val contextProvider: Provider<Context> = DoubleCheck.provider(
             ActivityModuleContextFactory.create(activityModule)
         )
 
-        val sharedPreferencesProvider: Provider<SharedPreferences> = DoubleCheck.provider(
-            SharedPreferencesFactory.create(activityModule, contextProvider)
-        )
         override fun context(): Context {
             return contextProvider.get()
         }
-
-        override fun sharedPreferences(): SharedPreferences {
-            return sharedPreferencesProvider.get()
-        }
-
 
         override fun inject(introActivity: BaseActivity) {
 

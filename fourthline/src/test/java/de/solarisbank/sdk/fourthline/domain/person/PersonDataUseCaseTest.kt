@@ -1,6 +1,5 @@
 package de.solarisbank.sdk.fourthline.domain.person
 
-import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
 import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.IdentificationDto
@@ -149,19 +148,6 @@ class PersonDataUseCaseTest : StringSpec({
 
         mockkConstructor(LocationDataSourceFactory::class)
         every { anyConstructed<LocationDataSourceFactory>().get() } returns mockk<LocationDataSourceImpl>()
-        mockkConstructor(IdentityInitializationSharedPrefsDataSourceFactory::class)
-        every { anyConstructed<IdentityInitializationSharedPrefsDataSourceFactory>().get() } returns
-                mockk {
-                    every { getInitializationDto() } returns
-                            mockk {
-                                every { partnerSettings } returns
-                                        mockk {
-                                            every { defaultToFallbackStep } returns
-                                                    defaultToFallbackStepParam
-                                        }
-                            }
-                }
-
         mockkConstructor(IdentificationInMemoryDataSource::class)
         every { anyConstructed<IdentificationInMemoryDataSource>().obtainIdentificationDto() } returns Single.just(identificationDtoMockk)
         every { anyConstructed<IdentificationInMemoryDataSource>().saveIdentification(any()) } returns Completable.complete()

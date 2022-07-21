@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.domain.location
 
 import android.location.Location
-import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.fourthline.data.dto.LocationDto
 import de.solarisbank.sdk.fourthline.data.location.LocationDataSourceFactory
@@ -48,19 +47,6 @@ class LocationUseCaseTest : StringSpec({
         locationDto: LocationDto,
         defaultToFallbackStepParam: Boolean = false
     ): LocationUseCase {
-
-        mockkConstructor(IdentityInitializationSharedPrefsDataSourceFactory::class)
-        every { anyConstructed<IdentityInitializationSharedPrefsDataSourceFactory>().get() } returns
-                mockk {
-                    every { getInitializationDto() } returns
-                            mockk {
-                                every { partnerSettings } returns
-                                        mockk {
-                                            every { defaultToFallbackStep } returns
-                                                    defaultToFallbackStepParam
-                                        }
-                            }
-                }
 
         val locationDataSourceImplMockk = mockk<LocationDataSourceImpl>() {
             every { getLocation() } returns Single.just(locationDto)

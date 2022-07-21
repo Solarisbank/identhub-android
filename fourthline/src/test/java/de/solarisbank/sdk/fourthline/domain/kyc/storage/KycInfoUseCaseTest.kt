@@ -7,8 +7,7 @@ import com.fourthline.core.DocumentType
 import com.fourthline.kyc.KycInfo
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
-import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationInMemoryDataSource
 import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.Address
 import de.solarisbank.sdk.data.dto.PersonDataDto
@@ -25,7 +24,6 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import java.net.URI
 import java.util.*
 
 class KycInfoUseCaseTest : StringSpec ({
@@ -50,19 +48,17 @@ class KycInfoUseCaseTest : StringSpec ({
 
     val fourthlineProviderTestValue = "testPartner"
 
-    val identityInitializationSharedPrefsDataSource =
-        mockk<IdentityInitializationSharedPrefsDataSource> {
-            every { getInitializationDto() } returns
-                    mockk {
-                        every { partnerSettings } returns
-                                mockk {
-                                    every { defaultToFallbackStep } returns
-                                            false
-                                }
-                        every { fourthlineProvider } returns
-                                fourthlineProviderTestValue
-                    }
-        }
+    mockkConstructor(IdentityInitializationInMemoryDataSource::class)
+    every { anyConstructed<IdentityInitializationInMemoryDataSource>().getInitializationDto() } returns
+            mockk {
+                every { partnerSettings } returns
+                        mockk {
+                            every { defaultToFallbackStep } returns
+                                    false
+                        }
+                every { fourthlineProvider } returns
+                        fourthlineProviderTestValue
+            }
 
     fun initKycInfoUseCase(): KycInfoUseCase {
 
@@ -70,12 +66,11 @@ class KycInfoUseCaseTest : StringSpec ({
         every { anyConstructed<LocationDataSourceFactory>().get() } returns
                 mockk<LocationDataSourceImpl>()
 
-        mockkConstructor(IdentityInitializationSharedPrefsDataSourceFactory::class)
-        every { anyConstructed<IdentityInitializationSharedPrefsDataSourceFactory>().get() } returns
-                identityInitializationSharedPrefsDataSource
-
         mockkConstructor(MutableLiveData::class)
         every { anyConstructed<MutableLiveData<Bitmap>>().setValue(any()) } returns Unit
+
+
+
         return FourthlineTestComponent.getInstance(
             networkModule = NetworkModuleTestFactory(mockWebServer)
                 .provideNetworkModule()
@@ -111,7 +106,7 @@ class KycInfoUseCaseTest : StringSpec ({
         val kycInfoUseCase = initKycInfoUseCase()
         kycInfoUseCase.updateWithPersonDataDto(personDataDto)
 
-        verify { identityInitializationSharedPrefsDataSource.getInitializationDto() }
+//        verify { identityInitializationInMemoryDataSource.getInitializationDto() }
         verify { personDataDto.firstName }
         verify { personDataDto.lastName }
         verify { personDataDto.gender }

@@ -15,7 +15,6 @@ import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
 import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
-import de.solarisbank.identhub.session.data.preferences.IdentificationStepPreferences;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
@@ -35,7 +34,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
     private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
     private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
     private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
-    private final Provider<IdentificationStepPreferences> identificationStepPreferencesProvider;
     private final Provider<SessionUrlRepository> sessionUrlRepositoryProvider;
     private final Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
     private final Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
@@ -46,7 +44,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
             Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
             Provider<InitializationInfoRepository> initializationInfoRepositoryProvider,
             IdentityModule identityModule,
-            Provider<IdentificationStepPreferences> identificationStepPreferencesProvider,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
             VerificationBankModule verificationBankModule,
             ContractUiModule contractUiModule,
@@ -57,7 +54,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
-        this.identificationStepPreferencesProvider = identificationStepPreferencesProvider;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
         this.verificationBankModule = verificationBankModule;
         this.contractUiModule = contractUiModule;
@@ -81,7 +77,6 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         ));
         map.put(ContractViewModel.class, ContractViewModelFactory.create(
                 contractUiModule,
-                identificationStepPreferencesProvider,
                 sessionUrlRepositoryProvider,
                 getIdentificationUseCaseProvider,
                 qesStepParametersUseCaseProvider

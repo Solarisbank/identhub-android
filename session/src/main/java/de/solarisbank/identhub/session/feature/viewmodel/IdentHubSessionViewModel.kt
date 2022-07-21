@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
 import de.solarisbank.identhub.session.domain.IdentHubSessionUseCase
 import de.solarisbank.identhub.session.domain.utils.SessionAlreadyResumedException
 import de.solarisbank.identhub.session.domain.utils.SessionAlreadyStartedException
@@ -17,7 +18,6 @@ import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.di.internal.Provider
-import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.logger.LoggerUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -88,6 +88,10 @@ class IdentHubSessionViewModel(
 
     fun getIdentificationLocalDataSourceProvider(): Provider<IdentificationLocalDataSource> {
         return identHubSessionComponent.getIdentificationLocalDataSourceProvider()
+    }
+
+    fun getInitializationInMemoryDataSourceProvider(): Provider<IdentityInitializationDataSource> {
+        return identHubSessionComponent.getIdentityInitializationDataSource()
     }
 
     fun getLoggerUseCase(): LoggerUseCase {

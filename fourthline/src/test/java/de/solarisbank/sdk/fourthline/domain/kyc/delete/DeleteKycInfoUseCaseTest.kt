@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.domain.kyc.delete
 
 import android.content.Context
-import de.solarisbank.identhub.session.data.di.IdentityInitializationSharedPrefsDataSourceFactory
 import de.solarisbank.sdk.data.datasource.IdentificationInMemoryDataSource
 import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.data.dto.IdentificationDto
@@ -78,20 +77,6 @@ class DeleteKycInfoUseCaseTest : StringSpec ({
         mockkConstructor(LocationDataSourceFactory::class)
         every { anyConstructed<LocationDataSourceFactory>().get() } returns
                 mockk<LocationDataSourceImpl>()
-
-        mockkConstructor(IdentityInitializationSharedPrefsDataSourceFactory::class)
-        every { anyConstructed<IdentityInitializationSharedPrefsDataSourceFactory>().get() } returns
-                mockk {
-                    every { getInitializationDto() } returns
-                            mockk {
-                                every { partnerSettings } returns
-                                        mockk {
-                                            every { defaultToFallbackStep } returns
-                                                    defaultToFallbackStepParam
-                                        }
-                            }
-                }
-
 
         return FourthlineTestComponent.getInstance(
             networkModule = NetworkModuleTestFactory(mockWebServer)

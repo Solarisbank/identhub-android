@@ -1,12 +1,11 @@
 package de.solarisbank.identhub.session.feature.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.data.datasource.DynamicIdetityRetrofitDataSource
 import de.solarisbank.identhub.session.data.datasource.IdentityInitializationDataSource
-import de.solarisbank.identhub.session.data.datasource.IdentityInitializationSharedPrefsDataSource
+import de.solarisbank.identhub.session.data.datasource.IdentityInitializationInMemoryDataSource
 import de.solarisbank.identhub.session.data.datasource.SessionStateSavedStateHandleDataSource
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
 import de.solarisbank.identhub.session.data.di.ProvideSessionStateRepositoryFactory
@@ -67,7 +66,6 @@ class IdentHubSessionTestComponent private constructor(
     private lateinit var dynamicIdetityRetrofitDataSourceProvider: Provider<DynamicIdetityRetrofitDataSource>
     private lateinit var identHubSessionRepositoryProvider: Provider<IdentHubSessionRepository>
     lateinit var identHubSessionUseCaseProvider: Provider<IdentHubSessionUseCase>
-    private lateinit var sharedPreferencesProvider: Provider<SharedPreferences>
     lateinit var identityInitializationDataSourceProvider: Provider<IdentityInitializationDataSource>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
     private lateinit var initializationInfoApiProvider: Provider<InitializationInfoApi>
@@ -90,11 +88,10 @@ class IdentHubSessionTestComponent private constructor(
             NetworkModuleProvideUserAgentInterceptorFactory.create())
         httpLoggingInterceptorProvider = DoubleCheck.provider(NetworkModuleProvideHttpLoggingInterceptorFactory.create(networkModule))
         sessionUrlLocalDataSourceProvider = DoubleCheck.provider(SessionUrlLocalDataSourceFactory.create(sessionModule))
-        sharedPreferencesProvider = Factory<SharedPreferences> { mockk<SharedPreferences>() }
         identityInitializationDataSourceProvider = DoubleCheck.provider(object :
             Factory<IdentityInitializationDataSource> {
-            override fun get(): IdentityInitializationSharedPrefsDataSource {
-                return mockk<IdentityInitializationSharedPrefsDataSource>() {
+            override fun get(): IdentityInitializationInMemoryDataSource {
+                return mockk<IdentityInitializationInMemoryDataSource>() {
                     every { saveInitializationDto(any()) } returns Unit
                     every { getInitializationDto() } returns null
                     every { deleteInitializationDto() } returns Unit

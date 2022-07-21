@@ -73,9 +73,9 @@ class KycSharedViewModel(
         compositeDisposable.add(
                 Single.zip(
                     personDataUseCase.execute(sessionId).subscribeOn(Schedulers.io()),
-                    ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io()),
-                    {personData, ip -> personData to ip})
-                        .doOnSuccess { pair ->
+                    ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io())
+                ) { personData, ip -> personData to ip }
+                    .doOnSuccess { pair ->
                             Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
                             IdLogger.info("Person data and IP fetched.")
                             if(
