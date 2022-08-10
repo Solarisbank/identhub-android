@@ -52,7 +52,6 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
                 alertViewModel.sendEvent(AlertEvent.Positive(tag))
                 dismiss()
             }
-            customize(customization, ButtonStyle.Alternative)
         }
         val negativeLabel = args.getString(KEY_NEGATIVE_LABEL)
         if (negativeLabel != null) {
@@ -62,7 +61,6 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
                     alertViewModel.sendEvent(AlertEvent.Negative(tag))
                     dismiss()
                 }
-                customize(customization)
             }
         } else {
             view.findViewById<Button>(R.id.negativeButton).isVisible = false

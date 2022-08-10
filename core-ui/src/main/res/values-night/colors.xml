@@ -10,9 +10,9 @@
     <color name="identhub_color_errorSurface">#fff5f5</color>
     <color name="identhub_color_surface">#242A32</color>
     <color name="identhub_color_background">#414D5D</color>
-    <color name="identhub_color_light_button_text_enabled">#C9CFD6</color>
+    <color name="identhub_color_light_button_text_enabled">#FFFFFF</color>
     <color name="identhub_color_edit_text">#BCBCBC</color>
-    <color name="identhub_color_separator">#33E6E6E6</color>
+    <color name="identhub_color_separator">#FFFFFF</color>
     <color name="identhub_color_highlight">#33FFFFFF</color>
 
     <color name="identhub_color_text_box">#C9CFD6</color>

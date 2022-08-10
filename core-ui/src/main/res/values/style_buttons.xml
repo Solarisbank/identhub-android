@@ -33,4 +33,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@fontFamily/roboto_medium</item>
     </style>
+
+    <style name="IdentHubDialogButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/identhub_button_dialog_background</item>
+        <item name="android:gravity">center</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

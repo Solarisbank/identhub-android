@@ -35,15 +35,14 @@
 
             <Button
                 android:id="@+id/positiveButton"
-                style="@style/IdentHubAlternativeButton"
+                style="@style/IdentHubDialogButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/identhub_default_button_height"
                 android:layout_weight="1"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="@dimen/identhub_margin_4"
-                android:layout_marginBottom="@dimen/identhub_margin_4"
-                android:textSize="16sp" />
+                android:layout_marginBottom="@dimen/identhub_margin_4" />
 
             <View
                 android:id="@+id/buttomSeparator"
@@ -53,7 +52,7 @@
 
             <Button
                 android:id="@+id/negativeButton"
-                style="@style/IdentHubPrimaryButton"
+                style="@style/IdentHubDialogButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/identhub_default_button_height"
                 android:layout_weight="1"
@@ -61,8 +60,7 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginTop="@dimen/identhub_margin_4"
                 android:layout_marginBottom="@dimen/identhub_margin_4"
-                android:textSize="16sp"/>
-
+                android:textColor="@color/identhub_color_primary" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
