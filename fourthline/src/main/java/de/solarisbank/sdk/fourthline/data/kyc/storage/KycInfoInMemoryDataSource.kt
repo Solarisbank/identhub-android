@@ -188,6 +188,7 @@ class KycInfoInMemoryDataSource {
         try {
             obtainDocument(docType, result)
             updateKycPerson(result)
+            obtainTaxInfo(result)
         } finally {
             mutex.unlock()
         }
@@ -211,6 +212,7 @@ class KycInfoInMemoryDataSource {
     @SuppressLint("BinaryOperationInTimber")
     private fun updateKycPerson(result: DocumentScannerResult) {
         val mrtd = result.mrzInfo as? MrtdMrzInfo
+
         kycInfo.person.apply {
             val recognizedFirstNames = mrtd?.firstNames?.joinToString(separator = " ")
             val recognizedLastNames = mrtd?.lastNames?.joinToString(separator = " ")
@@ -240,12 +242,23 @@ class KycInfoInMemoryDataSource {
                 birthDate = recognizedBirthDate
             }
         }
+
+    }
+
+    private fun obtainTaxInfo(result: DocumentScannerResult){
+        val mrtd = result.mrzInfo as? MrtdMrzInfo
+        if(mrtd!=null && mrtd.optionalData!!.isNotBlank()){
+            kycInfo.taxInfo?.apply {
+                taxpayerIdentificationNumber = mrtd.optionalData
+                taxationCountryCode = mrtd.issuingCountry
+            }
+        }
     }
 
     suspend fun updateKycLocation(resultLocation: Location) {
         mutex.lock()
         try {
-            kycInfo.metadata!!.location =
+            kycInfo.metadata.location =
                 Pair(resultLocation.latitude, resultLocation.longitude)
         } finally {
             mutex.unlock()
