@@ -42,10 +42,17 @@ class IdLogger private constructor(
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
         private var loggerRunnable: Runnable? = null
         private var localLogLevel = LogLevel.INFO
-        private var remoteLogLevel = LogLevel.NONE
+        private var remoteLogLevel = LogLevel.WARN
+        // remoteLoggingEnabled will be `null` until we fetch the config from server
+        private var remoteLoggingEnabled: Boolean? = null
         private val timeFormatter = SimpleDateFormat(TIME_FORMAT, Locale.US).apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }
+
+        private val shouldStoreRemoteLogs: Boolean
+        get() = remoteLoggingEnabled == null || remoteLoggingEnabled == true
+        private val shouldUploadLogs: Boolean
+        get() =  remoteLoggingEnabled == true && loggerUseCaseInstance != null
 
 
         /**
@@ -68,6 +75,13 @@ class IdLogger private constructor(
 
         fun setRemoteLogLevel(logLevel: LogLevel) {
             remoteLogLevel = logLevel
+        }
+
+        fun setRemoteLoggingEnabled(enabled: Boolean) {
+            remoteLoggingEnabled = enabled
+            if (enabled) {
+                spawnHandler()
+            }
         }
 
         private val logSuccess = { _: Boolean ->
@@ -101,14 +115,17 @@ class IdLogger private constructor(
                 LogLevel.INFO -> Log.i(tag, log)
                 LogLevel.WARN -> Log.w(tag, log)
                 LogLevel.ERROR, LogLevel.FAULT -> Log.e(tag, log)
+                LogLevel.NONE -> { /* Ignore */ }
             }
         }
 
         private fun remoteLog(logLevel: LogLevel, log: String, category: Category) {
+            if (!shouldStoreRemoteLogs)
+                return
+
             if (logLevel.value < remoteLogLevel.value)
                 return
 
-            // TODO: Check timestamp and timezone
             val jsonLog = LogJson(
                 detail = log,
                 type = logLevel.name,
@@ -121,7 +138,7 @@ class IdLogger private constructor(
         }
 
         private fun spawnHandler() {
-            if (loggerUseCaseInstance == null)
+            if (!shouldUploadLogs)
                 return
 
             if (loggerRunnable == null) {

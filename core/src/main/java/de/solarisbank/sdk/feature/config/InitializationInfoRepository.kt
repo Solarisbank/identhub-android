@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import de.solarisbank.sdk.data.dto.InitializationInfoDto
 import de.solarisbank.sdk.data.dto.StyleDto
 import de.solarisbank.sdk.data.repository.SessionUrlRepository
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.Single
 import java.io.Serializable
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -28,6 +29,7 @@ class InitializationInfoRepositoryImpl(
         return initializationInfoRetrofitDataSource.getInfo(sessionUrlRepository.get()!!)
             .doOnSuccess {
                 saveInitializationInfoDto(it)
+                IdLogger.setRemoteLoggingEnabled(enabled = it.sdkLogging)
             }
     }
 
