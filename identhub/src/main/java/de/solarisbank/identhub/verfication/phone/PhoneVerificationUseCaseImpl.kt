@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.verfication.phone
 
-import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
+import de.solarisbank.identhub.data.contract.step.parameters.GetMobileNumberUseCase
 import de.solarisbank.identhub.domain.verification.phone.AuthorizeVerificationPhoneUseCase
 import de.solarisbank.identhub.domain.verification.phone.ConfirmVerificationPhoneUseCase
 import de.solarisbank.sdk.data.dto.MobileNumberDto
@@ -12,6 +12,7 @@ import io.reactivex.Single
 class PhoneVerificationUseCaseImpl(
     private val authorizeVerificationPhoneUseCase: AuthorizeVerificationPhoneUseCase,
     private val confirmVerificationPhoneUseCase: ConfirmVerificationPhoneUseCase,
+    // TODO
     private val getMobileNumberUseCase: GetMobileNumberUseCase
 ): PhoneVerificationUseCase {
     override fun verifyToken(token: String): Completable {

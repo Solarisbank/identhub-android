@@ -7,12 +7,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.solarisbank.identhub.contract.ContractUiModule;
-import de.solarisbank.identhub.contract.ContractViewModel;
-import de.solarisbank.identhub.contract.ContractViewModelFactory;
-import de.solarisbank.identhub.domain.contract.GetDocumentsUseCase;
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase;
-import de.solarisbank.identhub.domain.contract.step.parameters.QesStepParametersUseCase;
+import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersUseCase;
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase;
 import de.solarisbank.identhub.identity.IdentityModule;
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule;
@@ -20,6 +15,7 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankViewModel;
 import de.solarisbank.identhub.verfication.bank.VerificationBankViewModelFactory;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModel;
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGateViewModelFactory;
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource;
 import de.solarisbank.sdk.data.repository.SessionUrlRepository;
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository;
 import de.solarisbank.sdk.feature.di.internal.Factory2;
@@ -30,35 +26,29 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
 
     private final IdentityModule identityModule;
     private final VerificationBankModule verificationBankModule;
-    private final ContractUiModule contractUiModule;
-    private final Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider;
-    private final Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider;
     private final Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider;
     private final Provider<SessionUrlRepository> sessionUrlRepositoryProvider;
     private final Provider<InitializationInfoRepository> initializationInfoRepositoryProvider;
     private final Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider;
+    private final Provider<IdentificationLocalDataSource> identificationLocalDataSourceProvider;
 
     public SaveStateViewModelMapProvider(
-            Provider<GetDocumentsUseCase> getDocumentsUseCaseProvider,
-            Provider<GetIdentificationUseCase> getIdentificationUseCaseProvider,
             Provider<FetchingAuthorizedIBanStatusUseCase> fetchingAuthorizedIBanStatusUseCaseProvider,
             Provider<InitializationInfoRepository> initializationInfoRepositoryProvider,
             IdentityModule identityModule,
             Provider<SessionUrlRepository> sessionUrlRepositoryProvider,
             VerificationBankModule verificationBankModule,
-            ContractUiModule contractUiModule,
-            Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider
+            Provider<QesStepParametersUseCase> qesStepParametersUseCaseProvider,
+            Provider<IdentificationLocalDataSource> identificationLocalDataSourceProvider
 
     ) {
-        this.getDocumentsUseCaseProvider = getDocumentsUseCaseProvider;
-        this.getIdentificationUseCaseProvider = getIdentificationUseCaseProvider;
         this.fetchingAuthorizedIBanStatusUseCaseProvider = fetchingAuthorizedIBanStatusUseCaseProvider;
         this.identityModule = identityModule;
         this.sessionUrlRepositoryProvider = sessionUrlRepositoryProvider;
         this.verificationBankModule = verificationBankModule;
-        this.contractUiModule = contractUiModule;
         this.initializationInfoRepositoryProvider = initializationInfoRepositoryProvider;
         this.qesStepParametersUseCaseProvider = qesStepParametersUseCaseProvider;
+        this.identificationLocalDataSourceProvider = identificationLocalDataSourceProvider;
     }
 
     @Override
@@ -68,18 +58,13 @@ final class SaveStateViewModelMapProvider implements Provider<Map<Class<? extend
         map.put(VerificationBankExternalGateViewModel.class, VerificationBankExternalGateViewModelFactory.create(
                 verificationBankModule,
                 fetchingAuthorizedIBanStatusUseCaseProvider,
-                getIdentificationUseCaseProvider
+                identificationLocalDataSourceProvider
         ));
+
         map.put(VerificationBankViewModel.class, new VerificationBankViewModelFactory(
                 verificationBankModule,
                 sessionUrlRepositoryProvider,
                 initializationInfoRepositoryProvider
-        ));
-        map.put(ContractViewModel.class, ContractViewModelFactory.create(
-                contractUiModule,
-                sessionUrlRepositoryProvider,
-                getIdentificationUseCaseProvider,
-                qesStepParametersUseCaseProvider
         ));
 
         return map;

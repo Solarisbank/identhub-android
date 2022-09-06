@@ -105,6 +105,7 @@ dependencies {
     implementation kotlinCore
     implementation support
     implementation activity
+    implementation koin
 
     testImplementation mockkTest
     androidTestImplementation espresso

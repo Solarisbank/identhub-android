@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.domain.contract.GetIdentificationUseCase
 import de.solarisbank.identhub.domain.verification.bank.FetchingAuthorizedIBanStatusUseCase
 import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
-import de.solarisbank.sdk.data.dto.IdentificationDto
+import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
-import de.solarisbank.sdk.domain.model.result.data
-import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.feature.di.internal.Preconditions
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +17,7 @@ import java.util.concurrent.TimeUnit
 class VerificationBankExternalGateViewModel(
         savedStateHandle: SavedStateHandle,
         private val fetchingAuthorizedIBanStatusUseCase: FetchingAuthorizedIBanStatusUseCase,
-        private val getIdentificationUseCase: GetIdentificationUseCase
+        private val identificationLocalDataSource: IdentificationLocalDataSource
 ) : ViewModel() {
     private val verificationBankUrlLiveDataEvent: MutableLiveData<String>
     private val establishSecureConnectionLiveDataEvent: MutableLiveData<Event<Any>> = MutableLiveData()
@@ -45,14 +42,10 @@ class VerificationBankExternalGateViewModel(
         }
 
     fun getVerificationResultLiveData(): LiveData<Result<Any>> {
-        compositeDisposable.add(getIdentificationUseCase.execute(Unit)
-                .flatMapCompletable { result: Result<IdentificationDto> ->
-                    if (result.succeeded) {
-                        val identification = result.data!!
-                        fetchingAuthorizedIBanStatusUseCase.execute(identification.id)
-                    } else {
-                        throw IllegalArgumentException("Couldn't get the verification result")
-                    }
+        compositeDisposable.add(
+            identificationLocalDataSource.obtainIdentificationDto()
+                .flatMapCompletable { identification ->
+                    fetchingAuthorizedIBanStatusUseCase.execute(identification.id)
                 }.subscribe({ verificationStatusLiveDataEvent.postValue(Result.createEmptySuccess()) }
                 ) { verificationStatusLiveDataEvent.postValue(Result.createUnknown(it)) }
         )

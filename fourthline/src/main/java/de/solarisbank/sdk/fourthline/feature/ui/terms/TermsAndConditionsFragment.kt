@@ -58,7 +58,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
         val link = getString(R.string.identhub_fourthline_terms_conditions_link)
         val termsSpanned = terms.linkOccurrenceOf(termsLinkSection, link, linkAllIfNotFound = true)
         bulletList?.updateItems(
-            title = getString(R.string.identhub_contract_signing_preview_notice),
+            title = getString(R.string.identhub_verification_bank_notice_label),
             items = listOf(termsSpanned),
             titleStyle = BulletListLayout.TitleStyle.Notice,
             customization = customization

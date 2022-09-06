@@ -14,7 +14,7 @@ open class SessionNavigationActivity : BaseActivity() {
     private var identHubSessionReceiver: IdentHubSessionReceiver =
         IdentHubSessionViewModel.INSTANCE!!
 
-    protected fun quit(sessionStepResult: SessionStepResult) {
+    fun quit(sessionStepResult: SessionStepResult) {
         Timber.d("quit, state : $sessionStepResult")
         identHubSessionReceiver.setSessionResult(sessionStepResult)
         IdLogger.nav("IdentHub SDK was closed. $sessionStepResult")

@@ -13,6 +13,9 @@ import de.solarisbank.sdk.core.activityViewModels
 import de.solarisbank.sdk.core.viewModels
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.view.PhoneVerificationView
+import de.solarisbank.sdk.feature.view.PhoneVerificationViewEvent
+import de.solarisbank.sdk.feature.view.PhoneVerificationViewState
 
 class PhoneVerificationFragment: IdentHubFragment() {
 
@@ -37,10 +40,11 @@ class PhoneVerificationFragment: IdentHubFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getStateLiveData().observe(viewLifecycleOwner) {
             handleVerifyResult(it.verifyResult)
-            phoneVerificationView?.apply {
-                updatePhoneNumber(it.phoneNumber)
-                updateResendState(isResendButtonVisible = it.showResendButton)
-            }
+            phoneVerificationView?.updateState(PhoneVerificationViewState(
+                phoneNumber = it.phoneNumber,
+                verifyResult = it.verifyResult,
+                resendButtonVisible = it.showResendButton
+            ))
             submitButton?.isEnabled = it.submitEnabled
         }
         viewModel.getEventLiveData().observe(viewLifecycleOwner) {
@@ -70,13 +74,8 @@ class PhoneVerificationFragment: IdentHubFragment() {
     }
 
     private fun handleVerifyResult(result: Result<*>?) {
-        when (result) {
-            is Result.Loading -> {
-                phoneVerificationView?.updateErrorMessage(isVisible = false)
-            }
-            is Result.Error -> phoneVerificationView?.updateErrorMessage(isVisible = true)
-            is Result.Success -> sharedViewModel.navigateToPhoneVerificationSuccess()
-            null -> phoneVerificationView?.updateErrorMessage(isVisible = false)
+        if (result is Result.Success) {
+            sharedViewModel.navigateToPhoneVerificationSuccess()
         }
     }
 

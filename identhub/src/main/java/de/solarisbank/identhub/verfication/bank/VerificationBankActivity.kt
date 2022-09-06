@@ -38,9 +38,10 @@ class VerificationBankActivity : IdentHubActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navInflater = navHostFragment!!.navController.navInflater
         val navGraph = navInflater.inflate(R.navigation.identhub_bank_nav_graph)
-        navGraph.startDestination =
+        navGraph.setStartDestination(
             if (viewModel.isPhoneVerified()) R.id.verificationBankIbanFragment
             else R.id.phoneVerificationFragment
+        )
         navHostFragment.navController
             .setGraph(navGraph, intent.extras)
     }

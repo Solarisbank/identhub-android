@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.solarisbank.identhub">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -16,12 +17,6 @@
             android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
-
-        <activity
-            android:name="de.solarisbank.identhub.contract.ContractActivity"
-            android:theme="@style/IdentHubTheme"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <provider
             android:name=".feature.provider.IdentHubFileProvider"

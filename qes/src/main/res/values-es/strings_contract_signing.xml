@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identhub_contract_signing_preview_title">Descargue y compruebe sus datos</string>
+    <string name="identhub_contract_signing_preview_subtitle">Si prega di rivedere il documento seguente</string>
+    <string name="identhub_contract_signing_finish_title">¡Identificación realizada con éxito!</string>
+    <string name="identhub_contract_signing_finish_subtitle">Has completado el proceso de identificación.\nDescarga los documentos y guárdalos en un lugar seguro, para futuras consultas.</string>
+    <string name="identhub_contract_signing_finish_button">Terminar</string>
+    <string name="identhub_contract_signing_preview_view_document">Ver documento</string>
+    <string name="identhub_contract_signing_preview_notice">Aviso</string>
+    <string name="identhub_contract_signing_preview_notice_label">Visualiza tus documentos</string>
+    <string name="identhub_contract_signing_preview_send_code_action">Enviar código para firmar</string>
+    <string name="identhub_contract_signing_description">Introducir el código de 6 dígitos enviado a %1$s.</string>
+    <string name="identhub_contract_signing_sign_action">Enviar y Firmar</string>
+    <string name="identhub_contract_signing_code_expires">Puedes volver a enviar el código %1$s</string>
+    <string name="identhub_contract_signing_code_request_new">El código era incorrecto o inválido.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Enviar nuevo código</string>
+    <string name="identhub_contract_signing_preview_transaction_info">El ID de tu operación es %1$s\nAsegúrate de que es el mismo en el SMS que acabas de recibir.</string>
+    <string name="identhub_contract_signing_terms_label">Se aplican los Términos y condiciones</string>
+    <string name="identhub_contract_signing_terms_bank_ident_label">Se aplican los Términos y condiciones de Swisscom</string>
+    <string name="identhub_contract_signing_terms_bank_id_label">Se aplican los Términos y condiciones de Namirial</string>
+    <string name="identhub_contract_signing_preview_render_pdf_error">No se ha podido renderizar el archivo pdf.</string>
+    <string name="identhub_contract_signing_preview_download_error">No se han podido descargar todos los archivos.</string>
+    <string name="identhub_contract_signing_confirm_phone">Confirme su numero de teléfono</string>
+    <string name="identhub_contract_signing_title">Confirme sus detalles</string>
+    <string name="identhub_contract_signing_confirm">Confirmar</string>
+
+    <string name="identhub_contract_signing_preview_terms_condition">Se aplican los términos y condiciones de %1$s.</string>
+    <string name="identhub_contract_signing_preview_terms_condition_part">Swisscom</string>
+    <string name="identhub_contract_signing_precessing_application_message">Pronto podrás descargar todos los documentos firmados.</string>
+
+</resources>

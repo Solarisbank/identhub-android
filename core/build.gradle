@@ -111,7 +111,8 @@ dependencies {
     implementation kotlinCore
     implementation support
     implementation activity
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
+    implementation koin
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi"
 
     testImplementation mockkTest
     androidTestImplementation espresso

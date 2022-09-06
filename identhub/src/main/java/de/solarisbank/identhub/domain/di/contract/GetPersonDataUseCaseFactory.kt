@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.domain.di.contract
 
-import de.solarisbank.identhub.domain.contract.GetMobileNumberUseCase
+import de.solarisbank.identhub.data.contract.step.parameters.GetMobileNumberUseCase
 import de.solarisbank.sdk.data.repository.IdentificationRepository
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Preconditions

@@ -221,7 +221,7 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         super.onDestroyView()
     }
 
-    private fun handleErrors(saved: Bundle?) {
+    private fun `handleErrors`(saved: Bundle?) {
         val code = arguments?.getString(FourthlineActivity.KEY_CODE)
         val message = arguments?.getString(KEY_MESSAGE)
         if (saved != null) {

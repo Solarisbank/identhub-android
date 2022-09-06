@@ -18,7 +18,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="24dp"/>
 
-    <de.solarisbank.identhub.verfication.phone.PhoneVerificationView
+    <de.solarisbank.sdk.feature.view.PhoneVerificationView
         android:id="@+id/phoneVerification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
         android:layout_marginTop="80dp"
-        android:text="@string/identhub_contract_signing_sign_action"
+        android:text="@string/identhub_verification_phone_confirm"
         app:layout_constraintTop_toBottomOf="@+id/phoneVerification"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"/>

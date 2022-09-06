@@ -2,8 +2,8 @@ package de.solarisbank.identhub.domain.verification.bank
 
 import de.solarisbank.identhub.di.IdentHubTestComponent
 import de.solarisbank.identhub.domain.data.dto.IbanVerificationModel
-import de.solarisbank.identhub.di.network.NetworkModuleTestFactory
 import de.solarisbank.sdk.domain.model.result.Result
+import de.solarisbank.sdk.data.di.network.NetworkModuleTestFactory
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe

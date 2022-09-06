@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identhub_verification_phone_request_code">Request a new code in %1$s</string>
+    <string name="identhub_verification_phone_status_verifying">Verifying…</string>
+    <string name="identhub_verification_phone_error_title">Phone verification error</string>
+    <string name="identhub_verification_phone_error_default_message">Something went wrong.</string>
+    <string name="identhub_verification_phone_success_title">Phone verification successful</string>
+    <string name="identhub_verification_phone_success_message">Continue to identify yourself with a bank account.</string>
+    <string name="identhub_verification_phone_action_next_step">Begin Bank Identification</string>
+    <string name="identhub_verification_phone_action_quit">Quit</string>
+    <string name="identhub_verification_phone_action_retry">Retry TAN verification</string>
+    <string name="identhub_contract_phone_verification_successful">Phone verification successful!</string>
+    <string name="identhub_contract_phone_verification_next_step">For the next step please have your <b>IBAN</b> and <b>login credentials</b> for your online banking at hand.</string>
+    <string name="identhub_contract_phone_description">Enter the 6-digit code sent to %1$s:</string>
+    <string name="identhub_verification_phone_confirm">Confirm</string>
+    <string name="identhub_contract_signing_confirm_phone">Confirm Phone</string>
+    <string name="identhub_contract_signing_code_request_new">The code was incorrect or invalid.</string>
+    <string name="identhub_contract_signing_code_request_new_button">Send new code</string>
+</resources>

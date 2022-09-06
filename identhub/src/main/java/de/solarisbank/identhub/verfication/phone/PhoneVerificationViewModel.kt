@@ -3,6 +3,7 @@ package de.solarisbank.identhub.verfication.phone
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.solarisbank.sdk.data.utils.update
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.Type
@@ -27,7 +28,7 @@ class PhoneVerificationViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     stateLiveData.update {
-                        it.phoneNumber = result.data?.number
+                        copy(phoneNumber = result.data?.number)
                     }
                 }, {
                     Timber.d(it)
@@ -44,18 +45,19 @@ class PhoneVerificationViewModel(
             return
         }
 
+        stateLiveData.update { copy(verifyResult = Result.Loading) }
         disposables.add(
             phoneVerificationUseCase.verifyToken(code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     stateLiveData.update {
-                        it.verifyResult = Result.Success(Unit)
+                        copy(verifyResult = Result.Success(Unit))
                     }
                 }, { throwable ->
                     Timber.d(throwable)
                     stateLiveData.update {
-                        it.verifyResult = Result.Error(Type.Unknown, throwable)
+                        copy(verifyResult = Result.Error(Type.Unknown, throwable))
                     }
                 })
         )
@@ -63,7 +65,7 @@ class PhoneVerificationViewModel(
 
     fun resendCode() {
         stateLiveData.update {
-            it.showResendButton = false
+            copy(showResendButton = false)
         }
         eventLiveData.postValue(Event(PhoneVerificationEvent.ResentVerification))
 
@@ -81,7 +83,7 @@ class PhoneVerificationViewModel(
 
     fun resendTimerExpired() {
         stateLiveData.update {
-            it.showResendButton = true
+            copy(showResendButton = true)
         }
     }
 
@@ -93,11 +95,11 @@ class PhoneVerificationViewModel(
     fun codeChanged(code: String) {
         if(stateLiveData.value?.verifyResult is Result.Error) {
             stateLiveData.update {
-                it.verifyResult = null
+                copy(verifyResult = null)
             }
         }
         stateLiveData.update {
-            it.submitEnabled = code.length >= MIN_CODE_LENGTH
+            copy(submitEnabled = code.length >= MIN_CODE_LENGTH)
         }
     }
 
@@ -115,10 +117,4 @@ data class PhoneVerificationState(
 
 sealed class PhoneVerificationEvent {
     object ResentVerification: PhoneVerificationEvent()
-}
-
-fun <T> MutableLiveData<T>.update(reducer: (T) -> Unit) {
-    value = value?.apply {
-        reducer(this)
-    }
 }

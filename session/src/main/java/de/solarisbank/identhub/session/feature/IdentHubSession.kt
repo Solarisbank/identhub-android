@@ -10,9 +10,13 @@ import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.*
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.identhub.session.main.MainKoin
+import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
+import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.logger.LoggerUseCase
+import org.koin.core.context.loadKoinModules
 import timber.log.Timber
 
 /**
@@ -21,7 +25,7 @@ import timber.log.Timber
  *
  * This class has lifecycle as sdk initialization activity
  */
-class IdentHubSession : ViewModelFactoryContainer {
+class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
 
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
@@ -72,9 +76,10 @@ class IdentHubSession : ViewModelFactoryContainer {
     private fun initMainProcess(activity: FragmentActivity) {
         Timber.d("initMainProcess, fragmentActivity : $activity, this : $this")
         this.activity = activity
+        IdentHubKoinContext.setUpKoinApp(activity.applicationContext, sessionUrl)
+        getKoin().loadModules(listOf(MainKoin.module))
         activityComponent = IdentHubActivityComponent(this.activity)
         activityComponent.inject(this)
-
         viewModel = viewModelFactory.invoke(activity).create(IdentHubSessionViewModel::class.java)
         IdentHubSessionViewModel.INSTANCE!!.saveSessionId(sessionUrl)
         loggerUseCase = viewModel.getLoggerUseCase()

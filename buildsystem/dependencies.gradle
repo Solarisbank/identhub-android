@@ -50,21 +50,6 @@ ext {
             "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     ]
 
-    roomVersion = '2.1.0'
-    room = [
-            libs: [
-                    "androidx.room:room-runtime:$roomVersion",
-                    "androidx.room:room-ktx:$roomVersion",
-                    "androidx.room:room-rxjava2:2.0.0"
-            ],
-            proc: [
-                    "androidx.room:room-compiler:$roomVersion"
-            ],
-            test: [
-                    "androidx.room:room-testing:$roomVersion",
-            ]
-    ]
-
     navigationVersion = "2.3.3"
     navigation = [
             "androidx.navigation:navigation-runtime:$navigationVersion",
@@ -78,7 +63,7 @@ ext {
     networking = [
             libs: [
                     "com.squareup.moshi:moshi:$moshi",
-                    "com.squareup.moshi:moshi-adapters:1.11.0",
+                    "com.squareup.moshi:moshi-adapters:$moshi",
                     "com.squareup.moshi:moshi-kotlin:$moshi",
                     "com.squareup.okhttp3:okhttp:$okHttpVersion",
                     "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
@@ -87,6 +72,16 @@ ext {
             test: [
                     "com.squareup.okhttp3:mockwebserver:$okHttpVersion",
             ],
+    ]
+
+    koinVersion= "3.2.0"
+    koin = [
+            "io.insert-koin:koin-core:$koinVersion",
+            "io.insert-koin:koin-android:$koinVersion",
+            "io.insert-koin:koin-androidx-navigation:$koinVersion"
+    ]
+    koinTest = [
+            "io.insert-koin:koin-test:$koinVersion"
     ]
 
     leakCanary = [

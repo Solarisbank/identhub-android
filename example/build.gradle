@@ -65,6 +65,8 @@ dependencies {
     implementation activity
     implementation fragment
     implementation lifecycle.libs
+    implementation koin
     implementation project(path: ':identhub')
     implementation project(path: ':fourthline')
+    implementation project(path: ':qes')
 }

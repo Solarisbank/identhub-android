@@ -7,3 +7,4 @@ include ':fourthline-ui'
 include ':example'
 include ':session'
 rootProject.name = "identhub-android"
+include ':qes'
