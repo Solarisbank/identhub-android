@@ -1,7 +1,7 @@
-# Solarisbank IdentHub SDK
-Android SDK for Solarisbank IdentHub.
+# Solaris IdentHub SDK
+Android SDK for Solaris IdentHub.
 
-It provides an easy way to integrate identification provided by Solarisbank into your Android app.
+It provides an easy way to integrate identification provided by Solaris into your Android app.
 
 ## Installation
 Add `identhub-android` as a dependency to your `build.gradle` file. For `$latest_version` check [Releases](../../releases).
@@ -17,7 +17,32 @@ repositories {
             password = System.getenv("GITHUB_TOKEN")
         }
     }
-    // Optional integration of Fourthline SDK
+}
+
+dependencies {
+    implementation "de.solarisbank.identhub:identhub-android:$latest_version"
+}
+```
+
+### IdentHub SDK Modules
+The Solaris IdentHub SDK uses a modular approach that allows you to only include components that are necessary for the identification methods that you will actually use.
+
+The required dependency that consists of the core functionality is as follows:
+```groovy
+    implementation "de.solarisbank.identhub:identhub-android:$latest_version"
+```
+And here are the optional dependencies that can be added alongside the required one based on the flows you want to use in the SDK:
+```groovy
+    // Document verification using Fourthline SDK
+    implementation "de.solarisbank.identhub:identhub-android-fourthline:$latest_version"
+    // QES (Document Signing)
+    implementation "de.solarisbank.identhub:identhub-android-qes:$latest_version"
+```
+
+#### Optional dependency to Fourthline SDK
+For fourthline you should also include the following repository:
+```groovy
+    // Repository for the optional Fourthline dependency
     maven {
         url "https://maven.pkg.github.com/Fourthline-com/FourthlineSDK-Android"
         credentials {
@@ -25,25 +50,14 @@ repositories {
             password = System.getenv("GITHUB_TOKEN")
         }
     }
-}
-
-dependencies {
-    implementation "de.solarisbank.identhub:identhub-android:$latest_version"
-    // Optional integration of Fourthline SDK
-    implementation "de.solarisbank.identhub:identhub-android-fourthline:$latest_version"
-}
 ```
-
-Then issue a developer access token  https://github.com/settings/tokens with scope `read:packages` and trigger a build from your Terminal like this:
+Since this repository is **not publicly available**, you'll need access to it. Please get in contact with Solaris to request access.
+Using a github account that has access to Fourthline repositories, issue an [access token](https://github.com/settings/tokens) with scope `read:packages` and set that as environment variable `GITHUB_TOKEN` as you can see in the code above. You can also trigger a build from Terminal like this:
 
 ```sh
 GITHUB_TOKEN=<< github token >> ./gradlew :my-app:build
 ```
-
-Once the IdentHub SDK has been downloaded, Gradle will use it from your local cache.
-
-### Optional dependency to Fourthline SDK
-The Fourthline SDK is not publicly available. Please get in contact with Solarisbank to request access to it.
+This way gradle will cache the required dependencies.
 
 ## Usage
 Add the required permissions for IdentHub to your app's `Manifest.xml` file:
@@ -52,7 +66,7 @@ Add the required permissions for IdentHub to your app's `Manifest.xml` file:
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-First you need to create an identification session via the Solarisbank API. The session will contain a URL that can be passed to the IdentHub SDK to create a new session.
+First you need to create an identification session via the Solaris API. The session will contain a URL that can be passed to the IdentHub SDK to create a new session.
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
