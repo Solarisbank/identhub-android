@@ -15,7 +15,7 @@ import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.qes.QESModule
 import de.solarisbank.identhub.qes.R
-import de.solarisbank.identhub.qes.core.BaseFragment
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.domain.model.result.*
 import de.solarisbank.sdk.feature.PdfIntent
@@ -29,7 +29,7 @@ import timber.log.Timber
 import java.io.File
 
 
-class ContractSigningPreviewFragment : BaseFragment() {
+class ContractSigningPreviewFragment : NewBaseFragment() {
     private val adapter = DocumentAdapter()
     private var clickDisposable = Disposables.disposed()
     private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)

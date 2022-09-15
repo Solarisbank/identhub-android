@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.R
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
+import de.solarisbank.identhub.session.feature.navigation.router.MODULE_NAME
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.domain.model.result.Event
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             setCurrentModule(it.currentModule)
         }
         viewModel.events().observe(this, ::handleEvent)
+        viewModel.setModule(intent.extras?.getString(MODULE_NAME))
     }
 
     private fun setCurrentModule(module: IdenthubModule) {

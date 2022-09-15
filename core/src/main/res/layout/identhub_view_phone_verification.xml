@@ -35,6 +35,8 @@
         android:layout_height="42dp"
         android:textAlignment="center"
         android:layout_marginTop="@dimen/identhub_margin_24"
+        android:maxLines="1"
+        android:inputType="number"
         android:gravity="center" />
 
     <androidx.appcompat.widget.LinearLayoutCompat

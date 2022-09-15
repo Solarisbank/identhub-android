@@ -5,7 +5,9 @@ import android.content.Intent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.utils.*
 import de.solarisbank.sdk.data.dto.IdentificationDto
+import de.solarisbank.sdk.module.resolver.IdenthubModuleResolver
 import timber.log.Timber
+import kotlin.reflect.jvm.internal.impl.load.java.lazy.ModuleClassResolver
 
 const val STATUS_KEY = "STATUS_KEY"
 const val FIRST_STEP_KEY = "FIRST_STEP_KEY"
@@ -14,6 +16,7 @@ const val COMPLETED_STEP_KEY = "COMPLETED_STEP_KEY"
 const val CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY = "CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY"
 const val IS_FOURTHLINE_SIGNING = "IS_FOURTHLINE_SIGNING"
 const val SHOW_STEP_INDICATOR = "SHOW_STEP_INDICATOR"
+const val MODULE_NAME = "MODULE_NAME"
 
 fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): Intent {
     Timber.d("toFirstStep, route : $route")
@@ -62,9 +65,15 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
         NEXT_STEP_DIRECTION.BANK_IBAN.destination ->
             provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
         NEXT_STEP_DIRECTION.BANK_QES.destination ->
-            provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                }
         FIRST_STEP_DIRECTION.QES.destination ->
-            provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS) //todo check with backend
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                }
         NEXT_STEP_DIRECTION.BANK_ID_QES.destination ->
             provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
         NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination ->
@@ -83,14 +92,23 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
                     putExtra(SHOW_STEP_INDICATOR, false)
                 }
         NEXT_STEP_DIRECTION.FOURTHLINE_SIGNING_QES.destination ->
-            provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
                     putExtra(IS_FOURTHLINE_SIGNING, true)
                     putExtra(SHOW_STEP_INDICATOR, false)
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
                 }
         FIRST_STEP_DIRECTION.QES.destination ->
-            provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                }
         NEXT_STEP_DIRECTION.ABORT.destination -> null
+        NEXT_STEP_DIRECTION.MOBILE_NUMBER.destination ->
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.PhoneClassName)
+                }
         else -> throw IllegalArgumentException("wrong NextStep route: $route")
     }?.apply {
         if (sessionUrl != null) { putExtra(IdentHub.SESSION_URL_KEY, sessionUrl) }

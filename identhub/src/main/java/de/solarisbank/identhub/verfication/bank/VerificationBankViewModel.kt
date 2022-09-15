@@ -73,14 +73,6 @@ class VerificationBankViewModel(
         navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult(COMPLETED_STEP.VERIFICATION_BANK.index))
     }
 
-    fun navigateToIBanVerification() {
-        navigateTo(R.id.action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment)
-    }
-
-    fun navigateToPhoneVerificationSuccess() {
-        navigateTo(R.id.action_phoneVerificationFragment_to_verificationPhoneSuccessMessageFragment)
-    }
-
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
         if (nextStep != null) {
             Timber.d("navigateTo nextStep")

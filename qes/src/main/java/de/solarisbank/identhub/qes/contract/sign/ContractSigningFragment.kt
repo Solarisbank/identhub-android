@@ -11,7 +11,7 @@ import androidx.core.view.isVisible
 import de.solarisbank.identhub.qes.QESModule
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.contract.ContractViewModel
-import de.solarisbank.identhub.qes.core.BaseFragment
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
 import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.domain.model.result.Event
@@ -25,7 +25,7 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class ContractSigningFragment : BaseFragment() {
+class ContractSigningFragment : NewBaseFragment() {
     private var disposable = Disposables.disposed()
     private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)
     private val viewModel: ContractSigningViewModel by viewModel()
@@ -117,7 +117,6 @@ class ContractSigningFragment : BaseFragment() {
                 submitButton?.isEnabled = isSubmitButtonEnabled()
             }
         }
-
     }
 
     private fun updateViewWithSigningResult(result: ContractSigningResult) {

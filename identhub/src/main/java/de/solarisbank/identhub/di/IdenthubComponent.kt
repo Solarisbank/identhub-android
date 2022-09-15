@@ -3,16 +3,10 @@ package de.solarisbank.identhub.di
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.data.contract.step.parameters.*
-import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersDataSourceFactory.Companion.create
-import de.solarisbank.identhub.data.contract.step.parameters.QesStepParametersRepositoryFactory.Companion.create
 import de.solarisbank.identhub.di.ActivitySubModuleAssistedViewModelFactory.Companion.create
-import de.solarisbank.identhub.domain.di.contract.GetPersonDataUseCaseFactory.Companion.create
 import de.solarisbank.identhub.domain.verification.bank.*
 import de.solarisbank.identhub.domain.verification.bank.BankIdPostUseCaseFactory.Companion.create
 import de.solarisbank.identhub.domain.verification.bank.ProcessingVerificationUseCaseFactory.Companion.create
-import de.solarisbank.identhub.domain.verification.phone.*
-import de.solarisbank.identhub.identity.IdentityModule
 import de.solarisbank.identhub.progress.ProgressIndicatorFragment
 import de.solarisbank.identhub.progress.ProgressIndicatorFragmentInjector
 import de.solarisbank.identhub.session.data.di.NetworkModuleProvideUserAgentInterceptorFactory
@@ -27,12 +21,6 @@ import de.solarisbank.identhub.session.data.verification.bank.VerificationBankNe
 import de.solarisbank.identhub.session.data.verification.bank.factory.ProvideVerificationBankApiFactory
 import de.solarisbank.identhub.session.data.verification.bank.factory.ProvideVerificationBankRepositoryFactory
 import de.solarisbank.identhub.session.data.verification.bank.factory.VerificationBankNetworkDataSourceFactory
-import de.solarisbank.identhub.session.data.verification.phone.VerificationPhoneApi
-import de.solarisbank.identhub.session.data.verification.phone.VerificationPhoneModule
-import de.solarisbank.identhub.session.data.verification.phone.VerificationPhoneNetworkDataSource
-import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneApiFactory
-import de.solarisbank.identhub.session.data.verification.phone.factory.ProvideVerificationPhoneRepositoryFactory
-import de.solarisbank.identhub.session.data.verification.phone.factory.VerificationPhoneNetworkDataSourceFactory
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel.Companion.INSTANCE
 import de.solarisbank.identhub.verfication.bank.VerificationBankActivity
@@ -43,10 +31,6 @@ import de.solarisbank.identhub.verfication.bank.VerificationBankIbanFragment
 import de.solarisbank.identhub.verfication.bank.VerificationBankModule
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragment
 import de.solarisbank.identhub.verfication.bank.gateway.VerificationBankExternalGatewayFragmentInjector
-import de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment
-import de.solarisbank.identhub.verfication.phone.PhoneVerificationFragmentInjector
-import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment
-import de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragmentInjector
 import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.customization.CustomizationRepository
@@ -89,10 +73,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class IdenthubComponent private constructor(
     private val coreModule: CoreModule,
     libraryComponent: LibraryComponent,
-    private val identityModule: IdentityModule,
     private val activitySubModule: ActivitySubModule,
     private val networkModule: NetworkModule,
-    verificationPhoneModule: VerificationPhoneModule,
     sessionModule: SessionModule,
     verificationBankDataModule: VerificationBankDataModule,
     private val verficationBankModule: VerificationBankModule,
@@ -101,9 +83,6 @@ class IdenthubComponent private constructor(
     private lateinit var applicationContextProvider: Provider<Context>
     private lateinit var customizationRepositoryProvider: Provider<CustomizationRepository>
     private lateinit var initializationInfoRepositoryProvider: Provider<InitializationInfoRepository>
-    private lateinit var qesStepParametersDataSourceProvider: Provider<QesStepParametersDataSource>
-    private lateinit var qesStepParametersRepositoryProvider: Provider<QesStepParametersRepository>
-    private lateinit var qesStepParametersUseCaseProvider: Provider<QesStepParametersUseCase>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var loggingInterceptorProvider: Provider<LoggerHttpInterceptor>
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
@@ -112,11 +91,6 @@ class IdenthubComponent private constructor(
     private lateinit var okHttpClientProvider: Provider<OkHttpClient>
     private lateinit var userAgentInterceptorProvider: Provider<UserAgentInterceptor>
     private lateinit var retrofitProvider: Provider<Retrofit>
-    private lateinit var verificationPhoneApiProvider: Provider<VerificationPhoneApi>
-    private lateinit var verificationPhoneNetworkDataSourceProvider: Provider<VerificationPhoneNetworkDataSource>
-    private lateinit var verificationPhoneRepositoryProvider: Provider<VerificationPhoneRepository>
-    private lateinit var authorizeVerificationPhoneUseCaseProvider: Provider<AuthorizeVerificationPhoneUseCase>
-    private lateinit var confirmVerificationPhoneUseCaseProvider: Provider<ConfirmVerificationPhoneUseCase>
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
     private lateinit var sessionUrlRepositoryProvider: Provider<SessionUrlRepository>
     private lateinit var verificationBankApiProvider: Provider<VerificationBankApi>
@@ -131,14 +105,12 @@ class IdenthubComponent private constructor(
     private lateinit var identificationLocalDataSourceProvider: Provider<IdentificationLocalDataSource>
     private lateinit var identificationRepositoryProvider: Provider<IdentificationRepository>
     private lateinit var identificationPollingStatusUseCaseProvider: Provider<IdentificationPollingStatusUseCase>
-    private lateinit var getMobileNumberUseCaseProvider: Provider<GetMobileNumberUseCase>
     private lateinit var identityInitializationRepositoryProvider: Provider<IdentityInitializationRepository>
 
     private fun initialize(
         libraryComponent: LibraryComponent,
         sessionModule: SessionModule,
-        verificationBankDataModule: VerificationBankDataModule,
-        verificationPhoneModule: VerificationPhoneModule
+        verificationBankDataModule: VerificationBankDataModule
     ) {
         applicationContextProvider = ApplicationContextProvider(libraryComponent)
         identificationLocalDataSourceProvider =
@@ -194,23 +166,6 @@ class IdenthubComponent private constructor(
                 rxJavaCallAdapterFactoryProvider
             )
         )
-        verificationPhoneApiProvider = DoubleCheck.provider(
-            ProvideVerificationPhoneApiFactory.create(
-                verificationPhoneModule,
-                retrofitProvider
-            )
-        )
-        verificationPhoneNetworkDataSourceProvider =
-            VerificationPhoneNetworkDataSourceFactory.create(
-                verificationPhoneModule,
-                verificationPhoneApiProvider
-            )
-        verificationPhoneRepositoryProvider = DoubleCheck.provider(
-            ProvideVerificationPhoneRepositoryFactory.create(
-                verificationPhoneModule,
-                verificationPhoneNetworkDataSourceProvider
-            )
-        )
         verificationBankApiProvider = DoubleCheck.provider(
             ProvideVerificationBankApiFactory.create(
                 verificationBankDataModule,
@@ -228,11 +183,6 @@ class IdenthubComponent private constructor(
                 identificationLocalDataSourceProvider
             )
         )
-        qesStepParametersDataSourceProvider = DoubleCheck.provider(create())
-        qesStepParametersRepositoryProvider =
-            DoubleCheck.provider(create(qesStepParametersDataSourceProvider.get()))
-        qesStepParametersUseCaseProvider =
-            DoubleCheck.provider(QesStepParametersUseCaseFactory.create((qesStepParametersRepositoryProvider.get())))
         identificationApiProvider = DoubleCheck.provider(
             create(
                 identificationModule, retrofitProvider.get()
@@ -252,17 +202,12 @@ class IdenthubComponent private constructor(
                 mobileNumberDataSourceProvider.get()
             )
         )
-        getMobileNumberUseCaseProvider = create(identificationRepositoryProvider)
         identificationPollingStatusUseCaseProvider = DoubleCheck.provider(
             create(
                 identificationRepositoryProvider.get(),
                 identityInitializationRepositoryProvider.get()
             )
         )
-        authorizeVerificationPhoneUseCaseProvider =
-            AuthorizeVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider)
-        confirmVerificationPhoneUseCaseProvider =
-            ConfirmVerificationPhoneUseCaseFactory.create(verificationPhoneRepositoryProvider)
         fetchingAuthorizedIBanStatusUseCaseProvider =
             FetchingAuthorizedIBanStatusUseCaseFactory.create(verificationBankRepositoryProvider)
         verifyIBanUseCaseProvider = VerifyIBanUseCaseFactory.create(
@@ -286,17 +231,11 @@ class IdenthubComponent private constructor(
 
     private class Builder {
         private lateinit var coreModule: CoreModule
-        private lateinit var identityModule: IdentityModule
         private lateinit var libraryComponent: LibraryComponent
         private lateinit var activitySubModule: ActivitySubModule
         private lateinit var networkModule: NetworkModule
         fun setCoreModule(coreModule: CoreModule): Builder {
             this.coreModule = coreModule
-            return this
-        }
-
-        fun setIdentityModule(identityModule: IdentityModule): Builder {
-            this.identityModule = identityModule
             return this
         }
 
@@ -319,10 +258,8 @@ class IdenthubComponent private constructor(
             return IdenthubComponent(
                 coreModule,
                 libraryComponent,
-                identityModule,
                 activitySubModule,
                 networkModule,
-                VerificationPhoneModule(),
                 SessionModule(),
                 VerificationBankDataModule(),
                 VerificationBankModule(),
@@ -369,28 +306,19 @@ class IdenthubComponent private constructor(
                 identityInitializationRepositoryProvider!!
             )
             mapOfClassOfAndProviderOfViewModelProvider = ViewModelMapProvider(
-                coreModule!!,
-                identityModule!!,
+                coreModule,
                 verficationBankModule,
-                authorizeVerificationPhoneUseCaseProvider!!,
-                confirmVerificationPhoneUseCaseProvider!!,
-                fetchingAuthorizedIBanStatusUseCaseProvider!!,
                 verifyIBanUseCaseProvider!!,
-                identificationPollingStatusUseCaseProvider!!,
                 bankIdPostUseCaseProvider,
                 processingVerificationUseCaseProvider,
                 customizationRepositoryProvider!!,
-                initializationInfoRepositoryProvider!!,
-                getMobileNumberUseCaseProvider!!,
-                qesStepParametersRepositoryProvider!!
+                initializationInfoRepositoryProvider!!
             )
             saveStateViewModelMapProvider = SaveStateViewModelMapProvider(
                 fetchingAuthorizedIBanStatusUseCaseProvider,
                 initializationInfoRepositoryProvider,
-                identityModule,
                 sessionUrlRepositoryProvider,
                 verficationBankModule,
-                qesStepParametersUseCaseProvider,
                 identificationLocalDataSourceProvider
             )
             assistedViewModelFactoryProvider = DoubleCheck.provider(
@@ -433,17 +361,6 @@ class IdenthubComponent private constructor(
         private inner class FragmentComponentImp : FragmentComponent {
             private val fragmentAssistedViewModelFactoryProvider: Provider<AssistedViewModelFactory>
             private val baseFragmentDependencies: BaseFragmentDependencies
-            override fun inject(phoneVerificationFragment: PhoneVerificationFragment) {
-                PhoneVerificationFragmentInjector(baseFragmentDependencies).injectMembers(
-                    phoneVerificationFragment
-                )
-            }
-
-            override fun inject(successMessageFragment: VerificationPhoneSuccessMessageFragment) {
-                VerificationPhoneSuccessMessageFragmentInjector(baseFragmentDependencies).injectMembers(
-                    successMessageFragment
-                )
-            }
 
             override fun inject(verificationBankIbanFragment: VerificationBankIbanFragment) {
                 VerificationBankFragmentInjector(baseFragmentDependencies).injectMembers(
@@ -492,7 +409,6 @@ class IdenthubComponent private constructor(
                     identhubComponent = Builder()
                         .setLibraryComponent(libraryComponent)
                         .setCoreModule(CoreModule())
-                        .setIdentityModule(IdentityModule())
                         .setActivitySubModule(ActivitySubModule())
                         .setNetworkModule(NetworkModule())
                         .build()
@@ -506,8 +422,7 @@ class IdenthubComponent private constructor(
         initialize(
             libraryComponent,
             sessionModule,
-            verificationBankDataModule,
-            verificationPhoneModule
+            verificationBankDataModule
         )
     }
 }

@@ -58,3 +58,4 @@ const val FOURTHLINE_FLOW_ACTIVITY_ACTION = "de.solarisbank.identhub.FOURTHLINE_
 const val FOURTHLINE_ACTIVITY_REFERENCE_CLASS = "de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity"
 const val VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS = "de.solarisbank.identhub.verfication.bank.VerificationBankActivity"
 const val CONTRACT_ACTIVITY_REFERENCE_CLASS = "de.solarisbank.identhub.session.main.MainActivity"
+const val MAIN_ACTIVITY_REFERENCE_CLASS = "de.solarisbank.identhub.session.main.MainActivity"

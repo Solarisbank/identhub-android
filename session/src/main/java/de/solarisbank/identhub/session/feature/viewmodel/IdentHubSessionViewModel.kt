@@ -13,6 +13,10 @@ import de.solarisbank.identhub.session.domain.utils.SessionAlreadyStartedExcepti
 import de.solarisbank.identhub.session.feature.di.IdentHubSessionReceiver
 import de.solarisbank.identhub.session.feature.di.IdentHubViewModelComponent
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
+import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
+import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
+import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
+import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.model.result.Event
@@ -63,7 +67,12 @@ class IdentHubSessionViewModel(
                 .subscribe(
                     {
                         Timber.d("obtainLocalIdentificationState1 success: $it")
-                        _initializationStateLiveData.value = Result.success(it)
+                        if (initializationInfoRepositoryProvider.get().isPhoneVerified()) {
+                            _initializationStateLiveData.value = Result.success(it)
+                        } else {
+                            _initializationStateLiveData.value = Result.success(NavigationalResult(
+                                NEXT_STEP_KEY, NEXT_STEP_DIRECTION.MOBILE_NUMBER.destination))
+                        }
                     },
                     {
                         if (it is SessionAlreadyStartedException || it is SessionAlreadyResumedException) {
@@ -96,6 +105,11 @@ class IdentHubSessionViewModel(
 
     fun getLoggerUseCase(): LoggerUseCase {
         return identHubSessionComponent.getLoggerUseCase().get()
+    }
+
+    fun phoneVerificationDone() {
+        val firstStep = getInitializationInMemoryDataSourceProvider().get().getInitializationDto()?.firstStep
+        _initializationStateLiveData.value = Result.success(NavigationalResult(NEXT_STEP_KEY, firstStep))
     }
 
     override fun onCleared() {

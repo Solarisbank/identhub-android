@@ -85,7 +85,7 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
         loggerUseCase = viewModel.getLoggerUseCase()
         IdLogger.inject(loggerUseCase)
         viewModel.initializationStateLiveData
-            .observe(this.activity) { processInitializationStateResult(it) }
+            .observe(activity) { processInitializationStateResult(it) }
         viewModel.sessionStepResultLiveData.observe(activity) { processSessionResult(it) }
     }
 

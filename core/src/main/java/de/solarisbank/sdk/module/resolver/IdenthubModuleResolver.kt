@@ -2,21 +2,22 @@ package de.solarisbank.sdk.module.resolver
 
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
 import de.solarisbank.sdk.module.abstraction.IdenthubModuleFactory
-import de.solarisbank.sdk.module.di.SharedModuleServiceLocator
-import de.solarisbank.sdk.module.flows.qes.QESCoordinatorFactory
 import kotlin.reflect.full.createInstance
-import kotlin.reflect.full.primaryConstructor
 
 class IdenthubModuleResolver: IdenthubModuleFactory {
     override fun makeQES(): IdenthubModule? {
         return makeModule(QESClassName)
     }
 
+    override fun makePhone(): IdenthubModule? {
+        return makeModule(PhoneClassName)
+    }
+
     @Suppress("UNCHECKED_CAST")
-    fun <Module> makeModule(className: String): Module? {
+    fun makeModule(className: String): IdenthubModule? {
         return try {
             val kClass = Class.forName(className).kotlin
-            kClass.createInstance() as? Module
+            kClass.createInstance() as? IdenthubModule
         } catch (throwable: Throwable) {
             null
         }
@@ -24,5 +25,6 @@ class IdenthubModuleResolver: IdenthubModuleFactory {
 
     companion object {
         const val QESClassName = "de.solarisbank.identhub.qes.QESModule"
+        const val PhoneClassName = "de.solarisbank.identhub.phone.PhoneModule"
     }
 }

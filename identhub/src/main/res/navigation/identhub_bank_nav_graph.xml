@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
-
-    <fragment
-        android:id="@+id/phoneVerificationFragment"
-        android:name="de.solarisbank.identhub.verfication.phone.PhoneVerificationFragment"
-        android:label="phoneVerificationFragment" >
-        <action
-            android:id="@+id/action_phoneVerificationFragment_to_verificationPhoneSuccessMessageFragment"
-            app:destination="@id/verificationPhoneSuccessMessageFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/verificationPhoneSuccessMessageFragment"
-        android:name="de.solarisbank.identhub.verfication.phone.success.VerificationPhoneSuccessMessageFragment"
-        android:label="VerificationPhoneSuccessMessageFragment">
-        <action
-            android:id="@+id/action_verificationPhoneSuccessMessageFragment_to_verificationBankFragment"
-            app:popUpTo="@+id/verificationPhoneSuccessMessageFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/verificationBankIbanFragment" />
-    </fragment>
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/verificationBankIbanFragment">
 
     <fragment
         android:id="@+id/verificationBankIbanFragment"

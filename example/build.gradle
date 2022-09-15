@@ -69,4 +69,5 @@ dependencies {
     implementation project(path: ':identhub')
     implementation project(path: ':fourthline')
     implementation project(path: ':qes')
+    implementation project(path: ':phone')
 }

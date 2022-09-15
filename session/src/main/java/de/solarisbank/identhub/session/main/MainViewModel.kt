@@ -14,8 +14,9 @@ class MainViewModel: ViewModel(), Navigator {
     fun state(): LiveData<MainViewState> = viewState
     fun events(): LiveData<Event<MainViewEvent>> = viewEvent
 
-    init {
-        IdenthubModuleResolver().makeQES()?.let {
+    fun setModule(moduleName: String?) {
+        moduleName ?: return
+        IdenthubModuleResolver().makeModule(moduleName)?.let {
             viewState.value = MainViewState(currentModule = it)
             it.load()
         }
