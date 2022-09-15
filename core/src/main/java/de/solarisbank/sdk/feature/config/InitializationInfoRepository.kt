@@ -29,7 +29,7 @@ class InitializationInfoRepositoryImpl(
         return initializationInfoRetrofitDataSource.getInfo(sessionUrlRepository.get()!!)
             .doOnSuccess {
                 saveInitializationInfoDto(it)
-                IdLogger.setRemoteLoggingEnabled(enabled = it.sdkLogging)
+                IdLogger.setRemoteLoggingEnabled(enabled = it.sdkLogging ?: false)
             }
     }
 
