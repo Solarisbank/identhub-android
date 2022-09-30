@@ -231,10 +231,10 @@ class DocTypeSelectionFragment: FourthlineFragment() {
             showAlertFragment(
                 getString(R.string.identhub_scanner_error_title),
                 message ?: getString(R.string.identhub_scanner_error_unknown),
-                getString(R.string.identhub_scanner_error_scan_button_retry),
                 getString(R.string.identhub_scanner_error_scan_button_quit),
-                positiveAction = {},
-                negativeAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                getString(R.string.identhub_scanner_error_scan_button_retry),
+                positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                negativeAction = {},
                 tag = "DocScanError"
             )
         }

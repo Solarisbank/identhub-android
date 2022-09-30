@@ -153,10 +153,10 @@ class KycUploadFragment : FourthlineFragment() {
             is KycUploadStatusDto.GenericError, is KycUploadStatusDto.PreconditionsFailedError -> UploadViewState(
                 alertTitle = getString(R.string.identhub_kyc_upload_generic_error_title),
                 alertMessage = getString(R.string.identhub_kyc_upload_generic_error_subtitle),
-                positiveButtonLabel = getString(R.string.identhub_kyc_upload_generic_error_button),
-                negativeButtonLabel = getString(R.string.identhub_failure_no_fraud_negative),
-                positiveAlertButtonAction =  { activityViewModel.navigateFromKycUploadToPassingPossibility() },
-                negativeAlertButtonAction = { activityViewModel.setFourthlineIdentificationFailure() }
+                positiveButtonLabel = getString(R.string.identhub_failure_no_fraud_negative),
+                negativeButtonLabel = getString(R.string.identhub_kyc_upload_generic_error_button),
+                positiveAlertButtonAction =  { activityViewModel.setFourthlineIdentificationFailure() },
+                negativeAlertButtonAction = { activityViewModel.navigateFromKycUploadToPassingPossibility() }
             )
         }
     }
