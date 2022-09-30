@@ -101,7 +101,6 @@ dependencies {
     implementation rxJava
 
     implementation activity
-    implementation project(":fourthline-ui")
     implementation project(":identhub")
     implementation kotlinCore
     implementation navigation

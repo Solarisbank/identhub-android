@@ -32,4 +32,4 @@ jobs:
         env:
           FOURTHLINE_GRADLE_TOKEN: ${{ secrets.FOURTHLINE_GRADLE_TOKEN }}
       - name: Build release
-        run: ./gradlew clean :identhub-ui:assembleRelease :identhub:assembleRelease :fourthline-ui:assembleRelease :fourthline:assembleRelease :example:assembleRelease :core-ui:assembleRelease :core:assembleRelease :session:assembleRelease
+        run: ./gradlew clean :identhub-ui:assembleRelease :identhub:assembleRelease :fourthline:assembleRelease :example:assembleRelease :core-ui:assembleRelease :core:assembleRelease :session:assembleRelease
