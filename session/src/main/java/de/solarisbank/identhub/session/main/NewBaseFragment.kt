@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import org.koin.core.component.inject
 
 open class NewBaseFragment: Fragment(), IdenthubKoinComponent {
@@ -15,5 +16,20 @@ open class NewBaseFragment: Fragment(), IdenthubKoinComponent {
         return activity?.let {
             ViewModelProvider(it).get(MainViewModel::class.java)
         }
+    }
+
+    fun showAlertFragment(
+        title: String,
+        message: String,
+        positiveLabel: String = "Ok",
+        negativeLabel: String? = null,
+        positiveAction: () -> Unit,
+        negativeAction: (() -> Unit)? = null,
+        cancelAction: (() -> Unit)? = null,
+        tag: String = AlertDialogFragment.TAG
+    ) {
+        (activity as? MainActivity)?.showAlertFragment(title, message, positiveLabel, negativeLabel,
+            positiveAction, negativeAction, cancelAction, tag
+        )
     }
 }

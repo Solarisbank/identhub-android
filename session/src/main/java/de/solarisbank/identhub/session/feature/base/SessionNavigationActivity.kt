@@ -30,7 +30,7 @@ open class SessionNavigationActivity : BaseActivity() {
             positiveAction = {
                 //todo foresee intenttypes and avoid null bundle
                 Timber.d("Quit IdentHub SDK after back button pressed")
-                quit(NaviDirection.VerificationFailureStepResult(-1))
+                quit(NaviDirection.VerificationFailureStepResult())
             },
             tag = "BackButtonAlert")
     }

@@ -33,6 +33,8 @@ The required dependency that consists of the core functionality is as follows:
 ```
 And here are the optional dependencies that can be added alongside the required one based on the flows you want to use in the SDK:
 ```groovy
+    // Verification with bank account
+    implementation "de.solarisbank.identhub:identhub-android-bank:$latest_version"
     // Document verification using Fourthline SDK
     implementation "de.solarisbank.identhub:identhub-android-fourthline:$latest_version"
     // QES (Document Signing)

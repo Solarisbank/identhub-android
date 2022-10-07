@@ -101,7 +101,8 @@ dependencies {
     implementation rxJava
 
     implementation activity
-    implementation project(":identhub")
+    implementation project(":session")
+    implementation project(":core")
     implementation kotlinCore
     implementation navigation
     implementation support
@@ -111,13 +112,5 @@ dependencies {
     androidTestImplementation espresso
 
     testImplementation mockkTest
-
-//    constraints {
-//        androidTestImplementation('junit:junit') {
-//            version {
-//                require junitVersion
-//            }
-//        }
-//    }
 }
 

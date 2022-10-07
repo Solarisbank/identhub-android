@@ -26,5 +26,6 @@ class IdenthubModuleResolver: IdenthubModuleFactory {
     companion object {
         const val QESClassName = "de.solarisbank.identhub.qes.QESModule"
         const val PhoneClassName = "de.solarisbank.identhub.phone.PhoneModule"
+        const val BankClassName = "de.solarisbank.identhub.bank.BankModule"
     }
 }

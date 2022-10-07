@@ -19,6 +19,7 @@ import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIREC
 import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_KEY
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.entity.NavigationalResult
+import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import de.solarisbank.sdk.feature.di.internal.Provider
@@ -38,6 +39,9 @@ class IdentHubSessionViewModel(
 
     val initializationInfoRepositoryProvider: Provider<InitializationInfoRepository> =
         identHubSessionComponent.initializationInfoRepositoryProvider
+
+    val sessionUrlRepository: SessionUrlRepository =
+        identHubSessionComponent.sessionUrlRepositoryProvider.get()
 
     private var identHubSessionUseCase : IdentHubSessionUseCase =
         identHubSessionComponent.identHubSessionUseCaseProvider.get()

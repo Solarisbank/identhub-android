@@ -1,12 +1,12 @@
 package de.solarisbank.sdk.fourthline.data.identification.factory
 
-import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.feature.di.internal.Factory
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationModule
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
+import de.solarisbank.sdk.fourthline.data.person.PersonDataDataSource
 
 class ProvideFourthlineIdentificationRepositoryFactory private constructor(
     private val fourthlineIdentificationModule: FourthlineIdentificationModule,

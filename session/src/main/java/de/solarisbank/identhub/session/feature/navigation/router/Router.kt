@@ -22,11 +22,15 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
     Timber.d("toFirstStep, route : $route")
     return when(route) {
         FIRST_STEP_DIRECTION.BANK_IBAN.destination -> {
-            provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
         }
         FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination ->
-            provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
-                .also { it.putExtra(FIRST_STEP_KEY, FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination) }
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(FIRST_STEP_KEY, FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination)
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
+                }
         FIRST_STEP_DIRECTION.QES.destination ->
             provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
         FIRST_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination ->
@@ -63,7 +67,10 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
     Timber.d("toNextStep, route : $route")
     return when(route) {
         NEXT_STEP_DIRECTION.BANK_IBAN.destination ->
-            provideActivityIntent(context, VERIFICATION_BANK_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
+                .apply {
+                    putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
+                }
         NEXT_STEP_DIRECTION.BANK_QES.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {

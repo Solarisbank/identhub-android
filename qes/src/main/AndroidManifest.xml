@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application tools:node="merge">
-
-        <activity
-            android:name=".contract.ContractActivity"
-            android:theme="@style/IdentHubTheme"
+        <provider
+            android:name=".domain.IdentHubFileProvider"
+            android:authorities="${applicationId}.de.solarisbank.identhub.provider"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/identhub_file_paths" />
+        </provider>
 
     </application>
 

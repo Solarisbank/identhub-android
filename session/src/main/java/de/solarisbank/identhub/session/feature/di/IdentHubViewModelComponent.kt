@@ -58,7 +58,7 @@ class IdentHubViewModelComponent private constructor(
     private lateinit var rxJavaCallAdapterFactoryProvider: Provider<CallAdapter.Factory>
 
     private lateinit var sessionUrlLocalDataSourceProvider: Provider<SessionUrlLocalDataSource>
-    private lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
+    lateinit var sessionUrlRepositoryProvider: Provider<de.solarisbank.sdk.data.repository.SessionUrlRepository>
     private lateinit var dynamicBaseUrlInterceptorProvider: Provider<DynamicBaseUrlInterceptor>
     private lateinit var loggingInterceptorProvider: Provider<LoggerHttpInterceptor>
     private lateinit var identificationApiProvider: Provider<InitializeIdentificationApi>

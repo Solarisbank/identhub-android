@@ -4,7 +4,7 @@ import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 
 class SessionUrlDataSourceRepository(
         private val sessionUrlLocalDataSource: SessionUrlLocalDataSource
-) : de.solarisbank.sdk.data.repository.SessionUrlRepository {
+) : SessionUrlRepository {
     override fun get(): String? {
         return sessionUrlLocalDataSource.get()
     }

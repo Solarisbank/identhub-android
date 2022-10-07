@@ -159,7 +159,8 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
                 onResultFailure(IdentHubSessionFailure(
                     step = sessionStepResult.completedStep?.let {
                         COMPLETED_STEP.getEnum(sessionStepResult.completedStep)
-                    }
+                    },
+                    message = sessionStepResult.message
                 ))
             }
         }

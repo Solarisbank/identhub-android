@@ -74,7 +74,7 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         setResultState()
         val message = failure.message
         Timber.d("onFailure; IdentHubSessionFailure identification has not completed: $message")
-        binding.callbackResult.text = "onFailure called"
+        binding.callbackResult.text = "onFailure called: $message"
         binding.callbackResult.setTextColor(Color.RED)
     }
 

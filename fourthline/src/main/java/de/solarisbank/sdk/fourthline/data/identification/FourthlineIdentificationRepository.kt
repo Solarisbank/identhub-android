@@ -1,9 +1,9 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
-import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.PersonDataDto
+import de.solarisbank.sdk.fourthline.data.person.PersonDataDataSource
 import io.reactivex.Completable
 import io.reactivex.Single
 

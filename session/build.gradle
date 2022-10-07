@@ -61,7 +61,7 @@ afterEvaluate {
                 maven(MavenPublication) {
                     from components.release
                     groupId = project.group
-                    artifactId = 'identhub-android-session'
+                    artifactId = 'identhub-android'
                     // Version should match the release tag
                     version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
 
@@ -99,8 +99,7 @@ dependencies {
     implementation networking.libs
     implementation rxJava
     
-    implementation project(":core")
-//    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
+    api project(":core")
 
     implementation kotlinCore
     implementation support

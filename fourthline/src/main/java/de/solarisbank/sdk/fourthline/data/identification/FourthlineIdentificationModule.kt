@@ -1,8 +1,8 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
 
-import de.solarisbank.identhub.session.data.person.PersonDataDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationLocalDataSource
+import de.solarisbank.sdk.fourthline.data.person.PersonDataDataSource
 import retrofit2.Retrofit
 
 class FourthlineIdentificationModule {

@@ -3,10 +3,10 @@ package de.solarisbank.sdk.fourthline.di
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.feature.di.internal.Factory2
 import de.solarisbank.sdk.feature.di.internal.Provider
 import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
+import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase

@@ -32,6 +32,7 @@ sealed class NaviDirection {
     ): NaviDirection(), SessionStepResult
 
     class VerificationFailureStepResult(
+        val message: String? = null,
         val completedStep: Int? = null
     ): NaviDirection(), SessionStepResult
 }

@@ -11,13 +11,13 @@ import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.identhub.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.fourthline.data.dto.LocationDto
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
+import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
@@ -36,12 +36,12 @@ import java.util.*
 
 
 class KycSharedViewModel(
-        private val savedStateHandle: SavedStateHandle,
-        private val personDataUseCase: PersonDataUseCase,
-        private val kycInfoUseCase: KycInfoUseCase,
-        private val locationUseCase: LocationUseCase,
-        private val ipObtainingUseCase: IpObtainingUseCase,
-        private val deleteKycInfoUseCase: DeleteKycInfoUseCase
+    private val savedStateHandle: SavedStateHandle,
+    private val personDataUseCase: PersonDataUseCase,
+    private val kycInfoUseCase: KycInfoUseCase,
+    private val locationUseCase: LocationUseCase,
+    private val ipObtainingUseCase: IpObtainingUseCase,
+    private val deleteKycInfoUseCase: DeleteKycInfoUseCase
         ): ViewModel() {
 
     var kycURI: URI? = null

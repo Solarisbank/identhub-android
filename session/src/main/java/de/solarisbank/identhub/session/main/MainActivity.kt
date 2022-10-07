@@ -77,8 +77,9 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
         when (content) {
             is MainViewEvent.Navigate -> {
-                navController.navigate(content.navigationId)
+                navController.navigate(content.navigationId, args = content.bundle)
             }
+            is MainViewEvent.Close -> finish()
         }
     }
 
@@ -115,7 +116,9 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             negativeLabel = getString(R.string.identhub_identity_dialog_quit_process_negative_button),
             positiveAction = {
                 IdLogger.info("User quits the SDK")
-                IdentHubSessionViewModel.INSTANCE?.setSessionResult(NaviDirection.VerificationFailureStepResult(-1))
+                IdentHubSessionViewModel.INSTANCE?.setSessionResult(
+                    NaviDirection.VerificationFailureStepResult("User closed the SDK")
+                )
                 finish()
             },
             tag = "BackButtonAlert")
