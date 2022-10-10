@@ -107,7 +107,6 @@ dependencies {
     implementation networking.libs
     implementation rxJava
 
-    api project(":core-ui")
     implementation kotlinCore
     implementation support
     implementation activity

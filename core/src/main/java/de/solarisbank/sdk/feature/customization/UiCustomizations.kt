@@ -6,7 +6,7 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.widget.*
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.dto.Customization
 
 sealed class ButtonStyle {
     object Primary : ButtonStyle()

@@ -22,7 +22,7 @@ import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.document.*
-import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.feature.customization.ButtonStyle

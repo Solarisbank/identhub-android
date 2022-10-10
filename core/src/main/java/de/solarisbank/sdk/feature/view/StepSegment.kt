@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.core_ui.feature.view
+package de.solarisbank.sdk.feature.view
 
 import android.content.Context
 import android.util.AttributeSet

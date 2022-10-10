@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
+import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.sdk.feature.base.BaseActivity
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R

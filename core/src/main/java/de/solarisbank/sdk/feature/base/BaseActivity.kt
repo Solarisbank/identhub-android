@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel

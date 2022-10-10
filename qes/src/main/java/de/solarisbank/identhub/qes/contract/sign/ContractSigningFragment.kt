@@ -13,7 +13,7 @@ import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
-import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
+import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.customize

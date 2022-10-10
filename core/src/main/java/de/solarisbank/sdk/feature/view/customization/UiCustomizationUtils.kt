@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.core_ui.feature.view.customization
+package de.solarisbank.sdk.feature.view.customization
 
 import android.content.Context
 import android.content.res.Configuration

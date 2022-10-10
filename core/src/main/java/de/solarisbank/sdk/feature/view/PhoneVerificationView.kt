@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.core_ui.data.dto.Customization
+import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.entity.formatMinutesAndSeconds
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.ButtonStyle

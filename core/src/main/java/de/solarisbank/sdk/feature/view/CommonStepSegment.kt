@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.core_ui.feature.view
+package de.solarisbank.sdk.feature.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,7 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintSet
-import de.solarisbank.sdk.core_ui.R
+import de.solarisbank.sdk.core.R
 import timber.log.Timber
 
 

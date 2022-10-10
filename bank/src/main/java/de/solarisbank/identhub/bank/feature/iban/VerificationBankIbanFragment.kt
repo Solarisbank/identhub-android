@@ -16,8 +16,8 @@ import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
 import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
+import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.identhub.session.main.NewBaseFragment
-import de.solarisbank.sdk.core_ui.feature.view.hideKeyboard
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks

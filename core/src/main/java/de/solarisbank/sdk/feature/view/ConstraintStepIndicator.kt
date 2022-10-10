@@ -11,9 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.core_ui.data.dto.Customization
-import de.solarisbank.sdk.core_ui.feature.view.*
-import de.solarisbank.sdk.core_ui.feature.view.customization.isDarkMode
+import de.solarisbank.sdk.data.dto.Customization
+import de.solarisbank.sdk.feature.view.customization.isDarkMode
 import timber.log.Timber
 
 class ConstraintStepIndicator @JvmOverloads constructor(
