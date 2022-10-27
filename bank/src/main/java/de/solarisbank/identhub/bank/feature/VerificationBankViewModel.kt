@@ -3,7 +3,7 @@ package de.solarisbank.identhub.bank.feature
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.bank.R
-import de.solarisbank.identhub.session.main.ModuleOutcome
+import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import timber.log.Timber
 
@@ -19,7 +19,8 @@ class VerificationBankViewModel : ViewModel() {
 
     fun postDynamicNavigationNextStep(nextStep: String?) {
         Timber.d("postDynamicNavigationNextStep, nextStep : $nextStep")
-        navigator?.onOutcome(ModuleOutcome.NextStepOutcome(nextStep))
+        if (nextStep != null)
+            navigator?.onOutcome(ModuleOutcome.NextStepOutcome(nextStep))
     }
 
     fun moveToEstablishSecureConnection(bankIdentificationUrl: String?, nextStep: String? = null) {

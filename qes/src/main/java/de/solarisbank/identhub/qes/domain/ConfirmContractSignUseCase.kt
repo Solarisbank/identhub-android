@@ -2,7 +2,7 @@ package de.solarisbank.identhub.qes.domain
 
 import de.solarisbank.identhub.data.contract.ContractSignRepository
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
-import de.solarisbank.identhub.session.main.resolver.config.QesConfig
+import de.solarisbank.identhub.session.module.config.QesConfig
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status

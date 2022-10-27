@@ -15,7 +15,7 @@ object IdentHubKoinContext {
     private var app: KoinApplication? = null
     internal var mockro: MockroInterface? = null
 
-    fun setUpKoinApp(context: Context, sessionUrl: String?, mockroEnabled: Boolean = false) {
+    fun setUpKoinApp(context: Context, sessionUrl: String, mockroEnabled: Boolean = false) {
         if (app != null) return
         app = koinApplication {
             androidContext(context)

@@ -1,7 +1,7 @@
 package de.solarisbank.identhub.mockro.shared
 
 import de.solarisbank.identhub.mockro.Mockro
-import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.sdk.data.di.koin.MockroPersona
 
 data class PersonaConfig(
@@ -13,19 +13,19 @@ data class PersonaConfig(
         val current: PersonaConfig =
             when (Mockro.currentPersona) {
                 is MockroPersona.FourthlineSigningHappyPath -> PersonaConfig(
-                    firstStep = NEXT_STEP_DIRECTION.FOURTHLINE_SIGNING.destination,
-                    fourthlineStep = NEXT_STEP_DIRECTION.FOURTHLINE_SIGNING.destination,
-                    qesStep = NEXT_STEP_DIRECTION.FOURTHLINE_SIGNING_QES.destination
+                    firstStep = IdentificationStep.FOURTHLINE_SIGNING.destination,
+                    fourthlineStep = IdentificationStep.FOURTHLINE_SIGNING.destination,
+                    qesStep = IdentificationStep.FOURTHLINE_SIGNING_QES.destination
                 )
                 is MockroPersona.BankHappyPath -> PersonaConfig(
-                    firstStep = NEXT_STEP_DIRECTION.BANK_IBAN.destination,
-                    fourthlineStep = NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination,
-                    qesStep = NEXT_STEP_DIRECTION.BANK_QES.destination
+                    firstStep = IdentificationStep.BANK_IBAN.destination,
+                    fourthlineStep = IdentificationStep.FOURTHLINE_SIMPLIFIED.destination,
+                    qesStep = IdentificationStep.BANK_QES.destination
                 )
                 is MockroPersona.BankIdHappyPath -> PersonaConfig(
-                    firstStep = NEXT_STEP_DIRECTION.BANK_ID_IBAN.destination,
-                    fourthlineStep = NEXT_STEP_DIRECTION.BANK_ID_FOURTHLINE.destination,
-                    qesStep = NEXT_STEP_DIRECTION.BANK_ID_QES.destination
+                    firstStep = IdentificationStep.BANK_ID_IBAN.destination,
+                    fourthlineStep = IdentificationStep.BANK_ID_FOURTHLINE.destination,
+                    qesStep = IdentificationStep.BANK_ID_QES.destination
                 )
             }
     }

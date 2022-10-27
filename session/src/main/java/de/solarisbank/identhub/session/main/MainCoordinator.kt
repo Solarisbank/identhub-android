@@ -1,10 +1,11 @@
 package de.solarisbank.identhub.session.main
 
 import android.os.Bundle
-import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
-import de.solarisbank.identhub.session.main.outcome.PhoneModuleOutcome
-import de.solarisbank.identhub.session.main.resolver.IdenthubModuleResolver
-import de.solarisbank.identhub.session.main.resolver.ResolvedModule
+import de.solarisbank.sdk.data.IdentificationStep
+import de.solarisbank.identhub.session.module.outcome.PhoneModuleOutcome
+import de.solarisbank.identhub.session.module.IdenthubModuleResolver
+import de.solarisbank.identhub.session.module.ModuleOutcome
+import de.solarisbank.identhub.session.module.ResolvedModule
 import de.solarisbank.sdk.data.IdenthubResult
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
@@ -12,8 +13,8 @@ import de.solarisbank.sdk.data.initial.InitialConfigStorage
 class MainCoordinator(
     private val configStorage: InitialConfigStorage,
     private val moduleResolver: IdenthubModuleResolver,
-    private val eventHandler: (MainCoordinatorEvent) -> Unit
-    ): Navigator {
+    private val eventHandler: (MainCoordinatorEvent) -> Unit,
+) : Navigator {
 
     private var phoneVerified = false
 
@@ -22,7 +23,7 @@ class MainCoordinator(
             phoneVerified = configStorage.get().isPhoneNumberVerified
 
         if (!phoneVerified) {
-            handleStep(NEXT_STEP_DIRECTION.MOBILE_NUMBER.destination)
+            handleStep(IdentificationStep.MOBILE_NUMBER.destination)
         } else {
             goToFirstStep()
         }
@@ -50,14 +51,12 @@ class MainCoordinator(
     }
 
     private fun handleNextStepOutcome(outcome: ModuleOutcome.NextStepOutcome) {
-        if (outcome.nextStep != null) {
-            when (val resolved = moduleResolver.resolve(outcome.nextStep)) {
-                is ResolvedModule.Module -> {
-                    eventHandler(MainCoordinatorEvent.ModuleChange(resolved))
-                }
-                is ResolvedModule.Abort -> callFailure("Identification Aborted")
-                is ResolvedModule.UnknownModule -> callFailure("Couldn't find a module for step: ${outcome.nextStep}")
+        when (val resolved = moduleResolver.resolve(outcome.nextStep)) {
+            is ResolvedModule.Module -> {
+                eventHandler(MainCoordinatorEvent.ModuleChange(resolved))
             }
+            is ResolvedModule.Abort -> callFailure("Identification Aborted")
+            is ResolvedModule.UnknownModule -> callFailure("Couldn't find a module for step: ${outcome.nextStep}")
         }
     }
 
@@ -83,7 +82,7 @@ class MainCoordinator(
 }
 
 sealed class MainCoordinatorEvent {
-    data class Navigate(val navigationId: Int, val bundle: Bundle?): MainCoordinatorEvent()
-    data class ModuleChange(val module: ResolvedModule.Module): MainCoordinatorEvent()
-    data class ResultAvailable(val result: IdenthubResult): MainCoordinatorEvent()
+    data class Navigate(val navigationId: Int, val bundle: Bundle?) : MainCoordinatorEvent()
+    data class ModuleChange(val module: ResolvedModule.Module) : MainCoordinatorEvent()
+    data class ResultAvailable(val result: IdenthubResult) : MainCoordinatorEvent()
 }

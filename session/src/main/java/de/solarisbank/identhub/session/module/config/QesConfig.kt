@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.session.main.resolver.config
+package de.solarisbank.identhub.session.module.config
 
 data class QesConfig(
     val isConfirmAcceptable: Boolean

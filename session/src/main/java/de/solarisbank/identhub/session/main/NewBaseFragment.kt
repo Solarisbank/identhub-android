@@ -15,7 +15,7 @@ open class NewBaseFragment: Fragment(), IdenthubKoinComponent {
     val navigator: Navigator?
     get() {
         return activity?.let {
-            ViewModelProvider(it).get(MainViewModel::class.java).mainCoordinator
+            ViewModelProvider(it)[MainViewModel::class.java].mainCoordinator
         }
     }
 

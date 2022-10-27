@@ -9,9 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.identhub.session.R
-import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.domain.model.result.Event
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
     private fun setUpKoin() {
         val sessionUrl = intent.getStringExtra(StartIdenthubContract.SessionUrlKey)
-        IdentHubKoinContext.setUpKoinApp(this, buildApiUrl(sessionUrl!!))
+        IdentHubKoinContext.setUpKoinApp(this, sessionUrl!!)
         loadModules(listOf(MainKoin.module))
     }
 

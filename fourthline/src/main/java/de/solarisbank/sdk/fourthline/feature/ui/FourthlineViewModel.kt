@@ -3,7 +3,7 @@ package de.solarisbank.sdk.fourthline.feature.ui
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.session.main.ModuleOutcome
+import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.fourthline.R

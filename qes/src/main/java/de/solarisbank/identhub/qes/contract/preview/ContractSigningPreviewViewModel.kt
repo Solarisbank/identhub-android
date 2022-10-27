@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.qes.domain.FetchPdfUseCase
 import de.solarisbank.identhub.qes.domain.GetDocumentsUseCase
 import de.solarisbank.identhub.qes.domain.GetIdentificationUseCase
-import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.utils.update
@@ -35,7 +35,7 @@ class ContractSigningPreviewViewModel(
 
     init {
         val shouldShowTerms = getIdentificationUseCase.getInitialConfig()
-            .firstStep == FIRST_STEP_DIRECTION.BANK_IBAN.destination
+            .firstStep == IdentificationStep.BANK_IBAN.destination
         viewState.value = ContractSigningPreviewState(
             documents = Result.Loading,
             shouldShowTerms = shouldShowTerms

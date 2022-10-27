@@ -17,7 +17,7 @@ import androidx.webkit.WebViewCompat.postWebMessage
 import androidx.webkit.WebViewFeature
 import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
-import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel.Companion.VERIFICATION_BANK_URL_KEY
@@ -87,7 +87,7 @@ class VerificationBankExternalGatewayFragment : NewBaseFragment() {
                                 negativeAction = {
                                     Timber.d("Switch to Fourthline after abort button pressed")
                                     sharedViewModel?.postDynamicNavigationNextStep(
-                                        NEXT_STEP_DIRECTION.FOURTHLINE_SIMPLIFIED.destination)
+                                        IdentificationStep.FOURTHLINE_SIMPLIFIED.destination)
                                 }
                             )
                         }

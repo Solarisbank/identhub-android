@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.session.main.resolver.IdenthubModuleConfigurator
-import de.solarisbank.identhub.session.main.resolver.IdenthubModuleResolver
-import de.solarisbank.identhub.session.main.resolver.ResolvedModule
+import de.solarisbank.identhub.session.module.IdenthubModuleConfigurator
+import de.solarisbank.identhub.session.module.IdenthubModuleResolver
+import de.solarisbank.identhub.session.module.ResolvedModule
 import de.solarisbank.sdk.data.IdenthubResult
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.data.initial.InitialConfigUseCase

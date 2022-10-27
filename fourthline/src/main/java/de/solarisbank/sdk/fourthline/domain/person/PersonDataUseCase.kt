@@ -1,11 +1,12 @@
 package de.solarisbank.sdk.fourthline.domain.person
 
 import android.annotation.SuppressLint
-import de.solarisbank.identhub.session.feature.navigation.router.isIdentificationIdCreationRequired
+import de.solarisbank.sdk.data.IdentificationMethod
+import de.solarisbank.identhub.session.module.config.FourthlineIdentificationConfig
+import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
-import de.solarisbank.identhub.session.main.resolver.config.FourthlineIdentificationConfig
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import io.reactivex.Single
 import timber.log.Timber
@@ -51,5 +52,19 @@ class PersonDataUseCase(
                             .save(identificationDto).blockingGet()
                     return@map identificationDto.id
                 }
+    }
+}
+
+private fun isIdentificationIdCreationRequired(identificationDto: IdentificationDto): Boolean {
+    val method = identificationDto.method
+    val nextStep = identificationDto.nextStep
+    val hasBankIdNextStep = nextStep?.contains(IdentificationMethod.BANK_ID.strValue) == true
+    val hasBankNextStep = nextStep?.contains(IdentificationMethod.BANK.strValue) == true
+    return if (method == IdentificationMethod.BANK_ID.strValue && hasBankIdNextStep) {
+        return false
+    } else if (method == IdentificationMethod.BANK.strValue && !hasBankIdNextStep && hasBankNextStep) {
+        return false
+    } else {
+        true
     }
 }

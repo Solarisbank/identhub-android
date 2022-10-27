@@ -14,15 +14,15 @@ import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
-import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_DIRECTION
-import de.solarisbank.identhub.session.feature.navigation.router.FIRST_STEP_KEY
-import de.solarisbank.sdk.feature.view.hideKeyboard
+import de.solarisbank.sdk.data.FIRST_STEP_KEY
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.feature.view.BulletListLayout
+import de.solarisbank.sdk.feature.view.hideKeyboard
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -87,7 +87,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
 
     private fun initDefaultToBankId() {
         requireActivity().intent.getStringExtra(FIRST_STEP_KEY)?.let {
-            if (it == FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination) {
+            if (it == IdentificationStep.BANK_ID_IBAN.destination) {
                 defaultToBankId = true
             }
         }

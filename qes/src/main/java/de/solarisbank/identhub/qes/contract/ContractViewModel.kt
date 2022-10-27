@@ -3,7 +3,7 @@ package de.solarisbank.identhub.qes.contract
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
-import de.solarisbank.identhub.session.main.ModuleOutcome
+import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import de.solarisbank.sdk.data.entity.Status
 

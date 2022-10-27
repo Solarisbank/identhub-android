@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.session.main.resolver
+package de.solarisbank.identhub.session.module
 
 object IdenthubModules {
     const val QESClassName = "de.solarisbank.identhub.qes.QESModule"
