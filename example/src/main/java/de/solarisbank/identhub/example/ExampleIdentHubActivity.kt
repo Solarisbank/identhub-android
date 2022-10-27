@@ -6,14 +6,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityExampleIdenthubBinding
-import de.solarisbank.identhub.session.IdenthubContract
+import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.IdenthubResult
 import timber.log.Timber
 
 class ExampleIdentHubActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExampleIdenthubBinding
 
-    private val identhub = registerForActivityResult(IdenthubContract()) {
+    private val identhub = registerForActivityResult(StartIdenthubContract()) {
         when (it) {
             is IdenthubResult.Success -> onSuccess(it.identificationId)
             is IdenthubResult.Confirmed -> onConfirmationSuccess(it.identificationId)

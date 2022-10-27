@@ -3,8 +3,8 @@ package de.solarisbank.identhub.bank.feature.gateway
 import android.os.Bundle
 import android.view.View
 import de.solarisbank.identhub.bank.R
+import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.bank.feature.progress.ProgressIndicatorFragment
-import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.sdk.domain.model.result.Event
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -18,7 +18,7 @@ class EstablishConnectionFragment : ProgressIndicatorFragment() {
     }
 
     val verificationBankUrl: String?
-    get() = arguments?.getString(IdentHub.VERIFICATION_BANK_URL_KEY)
+    get() = arguments?.getString(VerificationBankViewModel.VERIFICATION_BANK_URL_KEY)
 
     override fun getIconResource(): Int {
         return R.drawable.identhub_ic_shield_32_secondary

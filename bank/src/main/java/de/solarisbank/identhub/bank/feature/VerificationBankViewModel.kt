@@ -3,7 +3,6 @@ package de.solarisbank.identhub.bank.feature
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.bank.R
-import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.identhub.session.main.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import timber.log.Timber
@@ -56,5 +55,9 @@ class VerificationBankViewModel : ViewModel() {
 
     fun cancelIdentification() {
         navigator?.onOutcome(ModuleOutcome.Failure("Identification cancelled"))
+    }
+
+    companion object {
+        const val VERIFICATION_BANK_URL_KEY = "verification_bank_url_key"
     }
 }

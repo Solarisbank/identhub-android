@@ -7,7 +7,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 
 fun HttpException.parseErrorResponseDto(): ErrorResponseDto? {
-    val jsonString = this.response().errorBody()?.string()
+    val jsonString = this.response()?.errorBody()?.string()
     Timber.d("parseErrorResponseDto: $jsonString")
     return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())

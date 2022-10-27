@@ -6,15 +6,20 @@ import androidx.activity.result.contract.ActivityResultContract
 import de.solarisbank.identhub.session.main.MainActivity
 import de.solarisbank.sdk.data.IdenthubResult
 
-class IdenthubContract: ActivityResultContract<String, IdenthubResult>() {
+class StartIdenthubContract: ActivityResultContract<String, IdenthubResult>() {
     override fun createIntent(context: Context, input: String): Intent {
         return Intent(context, MainActivity::class.java)
-            .putExtra("session_url", input)
+            .putExtra(SessionUrlKey, input)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): IdenthubResult {
-        return intent?.getBundleExtra(MainActivity.KEY_RESULT)?.let {
+        return intent?.getBundleExtra(ResultKey)?.let {
             IdenthubResult.fromBundle(it)
         } ?: IdenthubResult.Failed("Could not parse result")
+    }
+
+    companion object {
+        const val SessionUrlKey = "session_url_key"
+        const val ResultKey = "result_key"
     }
 }

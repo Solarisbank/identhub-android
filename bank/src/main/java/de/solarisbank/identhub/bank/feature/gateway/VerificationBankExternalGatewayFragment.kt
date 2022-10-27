@@ -17,10 +17,10 @@ import androidx.webkit.WebViewCompat.postWebMessage
 import androidx.webkit.WebViewFeature
 import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
-import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
+import de.solarisbank.identhub.bank.feature.VerificationBankViewModel.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.sdk.domain.model.result.Result
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

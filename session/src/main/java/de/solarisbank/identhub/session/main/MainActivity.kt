@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.identhub.session.R
 import de.solarisbank.identhub.session.feature.utils.buildApiUrl
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private val viewModel: MainViewModel by lazy { getViewModel() }
     private val alertViewModel: AlertViewModel by lazy {
         ViewModelProvider(this, object: ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return AlertViewModel(get()) as T
             }
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     }
 
     private fun setUpKoin() {
-        val sessionUrl = intent.getStringExtra("session_url")
+        val sessionUrl = intent.getStringExtra(StartIdenthubContract.SessionUrlKey)
         IdentHubKoinContext.setUpKoinApp(this, buildApiUrl(sessionUrl!!))
         loadModules(listOf(MainKoin.module))
     }
@@ -91,7 +93,10 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
                 navController.navigate(content.navigationId, args = content.bundle)
             }
             is MainViewEvent.Close -> {
-                setResult(RESULT_OK, Intent().putExtra(KEY_RESULT, content.result.toBundle()))
+                setResult(
+                    RESULT_OK,
+                    Intent().putExtra(StartIdenthubContract.ResultKey, content.result.toBundle())
+                )
                 finish()
             }
         }
@@ -160,6 +165,5 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
     companion object {
         const val KEY_NAVIGATION_ID = "key_navigation_id"
-        const val KEY_RESULT = "key_result"
     }
 }

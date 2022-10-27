@@ -30,6 +30,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
             is ErrorState -> {
                 showAlert(result)
             }
+            else -> { /* Ignore */ }
         }
     }
 
