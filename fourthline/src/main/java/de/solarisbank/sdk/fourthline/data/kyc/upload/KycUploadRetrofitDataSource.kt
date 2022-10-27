@@ -4,11 +4,16 @@ import de.solarisbank.sdk.fourthline.data.dto.KycUploadResponseDto
 import de.solarisbank.sdk.fourthline.data.getPartFile
 import io.reactivex.Single
 import java.io.File
+import java.net.URI
 
-class KycUploadRetrofitDataSource(private val kycUploadApi: KycUploadApi) {
+interface KycUploadDataSource {
+    fun uploadKYC(identificationId: String, fileUri: URI): Single<KycUploadResponseDto>
+}
 
-    fun uploadKYC(identificationId: String, file: File): Single<KycUploadResponseDto> {
-        return kycUploadApi.uploadKYC(url+identificationId+urlEnd, file.getPartFile())
+class KycUploadRetrofitDataSource(private val kycUploadApi: KycUploadApi): KycUploadDataSource {
+
+    override fun uploadKYC(identificationId: String, fileUri: URI): Single<KycUploadResponseDto> {
+        return kycUploadApi.uploadKYC(url+identificationId+urlEnd, File(fileUri).getPartFile())
     }
 
     companion object {

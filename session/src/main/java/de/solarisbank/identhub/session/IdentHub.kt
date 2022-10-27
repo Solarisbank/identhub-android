@@ -1,7 +1,10 @@
 package de.solarisbank.identhub.session
 
+import android.app.Activity
+import android.content.Intent
 import de.solarisbank.identhub.session.feature.IdentHubSession
 import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.identhub.session.main.MainActivity
 import de.solarisbank.sdk.logger.IdLogger
 import timber.log.Timber
 
@@ -26,7 +29,12 @@ class IdentHub {
             sessionUrl = apiUrl
             SESSION = this
         }
+    }
 
+    fun startForResult(activity: Activity, requestCode: Int, sessionUrl: String) {
+        val intent = Intent(activity, MainActivity::class.java)
+            .putExtra("session_url", sessionUrl)
+        activity.startActivityForResult(intent, requestCode)
     }
 
     @Synchronized

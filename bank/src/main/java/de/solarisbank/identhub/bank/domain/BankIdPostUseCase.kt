@@ -3,7 +3,7 @@ package de.solarisbank.identhub.bank.domain
 import de.solarisbank.identhub.bank.data.Iban
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.domain.NextStepSelector
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import io.reactivex.Single
@@ -11,7 +11,7 @@ import timber.log.Timber
 
 class BankIdPostUseCase(
     private val verificationBankRepository: VerificationBankRepository,
-    override val identityInitializationRepository: IdentityInitializationRepository
+    override val initialConfigStorage: InitialConfigStorage
 ) : SingleUseCase<Pair<String, IdentificationDto?>, IdentificationDto>(), NextStepSelector {
 
     override fun invoke(pair: Pair<String, IdentificationDto?>): Single<NavigationalResult<IdentificationDto>> {

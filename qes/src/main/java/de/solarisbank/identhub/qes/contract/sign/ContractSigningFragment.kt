@@ -111,7 +111,6 @@ class ContractSigningFragment : NewBaseFragment() {
                 val signingResult = result.data
                 updateViewWithSigningResult(signingResult)
                 sharedViewModel.onContractSigningResult(signingResult)
-                activity?.finish()
             }
             else -> {
                 submitButton?.isEnabled = isSubmitButtonEnabled()

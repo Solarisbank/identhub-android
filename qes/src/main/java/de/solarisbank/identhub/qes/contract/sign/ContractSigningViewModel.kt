@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.qes.domain.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.qes.domain.ConfirmContractSignUseCase
-import de.solarisbank.identhub.qes.domain.GetMobileNumberUseCase
 import de.solarisbank.sdk.data.utils.update
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

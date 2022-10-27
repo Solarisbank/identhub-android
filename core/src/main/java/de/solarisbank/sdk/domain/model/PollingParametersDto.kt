@@ -1,3 +1,3 @@
 package de.solarisbank.sdk.domain.model
 
-data class PollingParametersDto(val isConfirmedAcceptable: Boolean = false)
+data class PollingParametersDto(var isConfirmedAcceptable: Boolean = false)

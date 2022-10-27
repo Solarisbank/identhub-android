@@ -5,5 +5,5 @@ import androidx.annotation.IdRes
 
 interface Navigator {
     fun navigate(@IdRes navigationId: Int, bundle: Bundle? = null)
-    fun onResult(result: Any?)
+    fun onOutcome(outcome: ModuleOutcome?)
 }

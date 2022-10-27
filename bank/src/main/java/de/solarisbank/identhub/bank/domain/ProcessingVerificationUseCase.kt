@@ -4,7 +4,7 @@ import de.solarisbank.identhub.bank.data.ProcessingVerificationDto
 import de.solarisbank.sdk.data.entity.FailureReason
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.domain.NextStepSelector
 import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.data
@@ -17,7 +17,7 @@ import timber.log.Timber
 class ProcessingVerificationUseCase(
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
-    override val identityInitializationRepository: IdentityInitializationRepository
+    override val initialConfigStorage: InitialConfigStorage
 ) : SingleUseCase<String, ProcessingVerificationDto>(), NextStepSelector {
 
     override fun invoke(iban: String): Single<NavigationalResult<ProcessingVerificationDto>> {

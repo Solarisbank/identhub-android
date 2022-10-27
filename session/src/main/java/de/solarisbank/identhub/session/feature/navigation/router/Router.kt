@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.Intent
 import de.solarisbank.identhub.session.IdentHub
 import de.solarisbank.identhub.session.feature.utils.*
+import de.solarisbank.identhub.session.main.resolver.IdenthubModules
 import de.solarisbank.sdk.data.dto.IdentificationDto
-import de.solarisbank.sdk.module.resolver.IdenthubModuleResolver
 import timber.log.Timber
-import kotlin.reflect.jvm.internal.impl.load.java.lazy.ModuleClassResolver
 
 const val STATUS_KEY = "STATUS_KEY"
 const val FIRST_STEP_KEY = "FIRST_STEP_KEY"
@@ -23,13 +22,13 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
     return when(route) {
         FIRST_STEP_DIRECTION.BANK_IBAN.destination -> {
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
-                .putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
+                .putExtra(MODULE_NAME, IdenthubModules.BankClassName)
         }
         FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
                     putExtra(FIRST_STEP_KEY, FIRST_STEP_DIRECTION.BANK_ID_IBAN.destination)
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.BankClassName)
                 }
         FIRST_STEP_DIRECTION.QES.destination ->
             provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
@@ -37,12 +36,13 @@ fun toFirstStep(context: Context, route: String, sessionUrl: String? = null): In
             provideActivityIntent(context, FOURTHLINE_ACTIVITY_REFERENCE_CLASS)
                 .apply { action = FOURTHLINE_FLOW_ACTIVITY_ACTION } //todo remove action
         FIRST_STEP_DIRECTION.FOURTHLINE_SIGNING.destination ->
-            provideActivityIntent(context, FOURTHLINE_ACTIVITY_REFERENCE_CLASS)
+            provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
                     action = FOURTHLINE_FLOW_ACTIVITY_ACTION
                     putExtra(IS_FOURTHLINE_SIGNING, true)
                     putExtra(CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY, true)
                     putExtra(SHOW_STEP_INDICATOR, false)
+                    putExtra(MODULE_NAME, IdenthubModules.FourthlineClassName)
                 } //todo remove action
 
         else -> throw IllegalStateException()
@@ -69,17 +69,17 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
         NEXT_STEP_DIRECTION.BANK_IBAN.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.BankClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.BankClassName)
                 }
         NEXT_STEP_DIRECTION.BANK_QES.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.QESClassName)
                 }
         FIRST_STEP_DIRECTION.QES.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.QESClassName)
                 }
         NEXT_STEP_DIRECTION.BANK_ID_QES.destination ->
             provideActivityIntent(context, CONTRACT_ACTIVITY_REFERENCE_CLASS)
@@ -103,18 +103,18 @@ fun toNextStep(context: Context, route: String, sessionUrl: String? = null): Int
                 .apply {
                     putExtra(IS_FOURTHLINE_SIGNING, true)
                     putExtra(SHOW_STEP_INDICATOR, false)
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.QESClassName)
                 }
         FIRST_STEP_DIRECTION.QES.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.QESClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.QESClassName)
                 }
         NEXT_STEP_DIRECTION.ABORT.destination -> null
         NEXT_STEP_DIRECTION.MOBILE_NUMBER.destination ->
             provideActivityIntent(context, MAIN_ACTIVITY_REFERENCE_CLASS)
                 .apply {
-                    putExtra(MODULE_NAME, IdenthubModuleResolver.PhoneClassName)
+                    putExtra(MODULE_NAME, IdenthubModules.PhoneClassName)
                 }
         else -> throw IllegalArgumentException("wrong NextStep route: $route")
     }?.apply {

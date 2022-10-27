@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.domain
 
 import de.solarisbank.sdk.data.dto.PersonDataDto
-import de.solarisbank.sdk.fourthline.data.dto.LocationDto
+import de.solarisbank.sdk.fourthline.data.dto.LocationResult
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.NATIONAL_ID_CARD
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.valueOf
@@ -23,11 +23,11 @@ private fun String.appliedDocument(): AppliedDocument {
     }
 }
 
-fun LocationDto.toPersonDataStateDto(): PersonDataStateDto {
+fun LocationResult.toPersonDataStateDto(): PersonDataStateDto {
     return when (this) {
-        is LocationDto.NETWORK_NOT_ENABLED_ERROR -> PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR
-        is LocationDto.SUCCESS -> PersonDataStateDto.LOCATION_SUCCESS(this.location)
-        is LocationDto.LOCATION_CLIEN_NOT_ENABLED_ERROR -> PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR
-        is LocationDto.LOCATION_FETCHING_ERROR -> PersonDataStateDto.LOCATION_FETCHING_ERROR
+        is LocationResult.NetworkNotEnabledError -> PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR
+        is LocationResult.Success -> PersonDataStateDto.LOCATION_SUCCESS(location)
+        is LocationResult.LocationClientNotEnabledError -> PersonDataStateDto.LOCATION_CLIENT_NOT_ENABLED_ERROR
+        is LocationResult.LocationFetchingError -> PersonDataStateDto.LOCATION_FETCHING_ERROR
     }
 }

@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.session.IdentHub.Companion.VERIFICATION_BANK_URL_KEY
-import de.solarisbank.identhub.session.feature.navigation.NaviDirection
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.identhub.session.main.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import timber.log.Timber
 
@@ -17,12 +15,12 @@ class VerificationBankViewModel : ViewModel() {
 
     fun callOnPaymentResult(identificationId: String, nextStep: String) {
         Timber.d("callOnPaymentResult")
-        navigator?.onResult(nextStep)
+        navigator?.onOutcome(ModuleOutcome.NextStepOutcome(nextStep))
     }
 
     fun postDynamicNavigationNextStep(nextStep: String?) {
         Timber.d("postDynamicNavigationNextStep, nextStep : $nextStep")
-        IdentHubSessionViewModel.INSTANCE?.setSessionResult(NaviDirection.NextStepStepResult(nextStep))
+        navigator?.onOutcome(ModuleOutcome.NextStepOutcome(nextStep))
     }
 
     fun moveToEstablishSecureConnection(bankIdentificationUrl: String?, nextStep: String? = null) {
@@ -39,13 +37,13 @@ class VerificationBankViewModel : ViewModel() {
 
     fun callOnFailure() {
         Timber.d("callOnFailure")
-        IdentHubSessionViewModel.INSTANCE?.setSessionResult(NaviDirection.VerificationFailureStepResult(completedStep = COMPLETED_STEP.VERIFICATION_BANK.index))
+        navigator?.onOutcome(ModuleOutcome.Failure())
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {
         if (nextStep != null) {
             Timber.d("navigateTo nextStep")
-            IdentHubSessionViewModel.INSTANCE?.setSessionResult(NaviDirection.NextStepStepResult(nextStep))
+            navigator?.onOutcome(ModuleOutcome.NextStepOutcome(nextStep))
         } else {
             Timber.d("navigateTo fragmentDirection")
             navigator?.navigate(actionId, bundle)
@@ -57,6 +55,6 @@ class VerificationBankViewModel : ViewModel() {
     }
 
     fun cancelIdentification() {
-        IdentHubSessionViewModel.INSTANCE?.setSessionResult(NaviDirection.VerificationFailureStepResult())
+        navigator?.onOutcome(ModuleOutcome.Failure("Identification cancelled"))
     }
 }

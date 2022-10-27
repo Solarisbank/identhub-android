@@ -5,20 +5,20 @@ import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.fourthline.data.dto.KycUploadResponseDto
 import io.reactivex.Single
 import timber.log.Timber
-import java.io.File
+import java.net.URI
 
 class KycUploadRepository(
     private val identificationLocalDataSource: IdentificationLocalDataSource,
-    private val kycUploadRetrofitDataSource: KycUploadRetrofitDataSource
+    private val kycUploadDataSource: KycUploadDataSource
         ) {
 
-    fun uploadKyc(file: File): Single<KycUploadResponseDto> {
+    fun uploadKyc(fileUri: URI): Single<KycUploadResponseDto> {
         Timber.d("identificationRoomDataSource.getIdentification() : ${identificationLocalDataSource.obtainIdentificationDto()}")
         return identificationLocalDataSource.obtainIdentificationDto()
                 .flatMap {
                     identification ->
                     identificationLocalDataSource.saveIdentification(identification.apply { status = Status.UPLOAD.label })
-                            .andThen(kycUploadRetrofitDataSource.uploadKYC(identification.id, file))
+                            .andThen(kycUploadDataSource.uploadKYC(identification.id, fileUri))
                             .doOnSuccess{ identificationLocalDataSource.saveIdentification(identification.apply { status = Status.PENDING.label }) }
                 }
     }

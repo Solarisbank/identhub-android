@@ -9,32 +9,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.feature.view.hideKeyboard
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.view.hideKeyboard
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.logger.IdLogger
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import timber.log.Timber
 import java.util.*
 
 
-class DocScanResultFragment : FourthlineFragment() {
+class DocScanResultFragment : NewBaseFragment() {
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-            .get(FourthlineViewModel::class.java)
-    }
-
-    private val kycSharedViewModel: KycSharedViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
-    }
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     private var title: TextView? = null
     private var docNumberTextInput: EditText? = null
@@ -46,10 +38,6 @@ class DocScanResultFragment : FourthlineFragment() {
     private var issueDateWatcher: TextWatcher? = null
     private var expireDateWatcher: TextWatcher? = null
     private var docNumberWatcher: TextWatcher? = null
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_doc_scan_result, container, false)
@@ -119,7 +107,7 @@ class DocScanResultFragment : FourthlineFragment() {
                 kycSharedViewModel.updateExpireDate(expirationDate)
                 kycSharedViewModel.updateDocumentNumber(number)
                 hideKeyboard()
-                activityViewModel.navigateFromDocResultToSelfieInstructions()
+                activityViewModel.onDocResultOutcome()
             } else {
                 showGenericAlertFragment {  }
             }

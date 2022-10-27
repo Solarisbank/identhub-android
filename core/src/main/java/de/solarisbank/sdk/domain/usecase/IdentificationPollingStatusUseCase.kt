@@ -3,8 +3,8 @@ package de.solarisbank.sdk.domain.usecase
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.data.repository.IdentificationRepository
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
 import de.solarisbank.sdk.domain.NextStepSelector
 import de.solarisbank.sdk.domain.model.PollingParametersDto
 import io.reactivex.Observable
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class IdentificationPollingStatusUseCase(
     private val identificationRepository: IdentificationRepository,
-    override val identityInitializationRepository: IdentityInitializationRepository
+    override val initialConfigStorage: InitialConfigStorage
 ) : SingleUseCase<PollingParametersDto, IdentificationDto>(), NextStepSelector {
 
     override fun invoke(param: PollingParametersDto): Single<NavigationalResult<IdentificationDto>> {

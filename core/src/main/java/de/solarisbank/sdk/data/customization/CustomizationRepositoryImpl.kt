@@ -6,18 +6,18 @@ import androidx.annotation.ColorRes
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.dto.StyleDto
-import de.solarisbank.sdk.feature.config.InitializationInfoRepository
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import timber.log.Timber
 
 class CustomizationRepositoryImpl(
     private val context: Context,
-    private val initializationInfoRepository: InitializationInfoRepository
+    private val initialConfigStorage: InitialConfigStorage
     ): CustomizationRepository {
 
     var cached: Customization? = null
 
     override fun get(): Customization {
-        return cached ?: createCustomization(initializationInfoRepository.getStyle()).also {
+        return cached ?: createCustomization(initialConfigStorage.get().style).also {
             cached = it
         }
     }

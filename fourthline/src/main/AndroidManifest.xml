@@ -9,13 +9,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application tools:node="merge">
-        
-        <activity
-            android:name="de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity"
-            android:theme="@style/IdentHubTheme"
-            android:screenOrientation="portrait"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -5,34 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.session.IdentHub.Companion.SESSION_URL_KEY
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class PassingPossibilityFragment : FourthlineFragment() {
+class PassingPossibilityFragment : NewBaseFragment() {
 
     private var progressBar: ProgressBar? = null
-
-    private val kycSharedViewModel: KycSharedViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity)
-                .viewModelFactory)[KycSharedViewModel::class.java]
-    }
-
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
-    }
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_passing_possibility, container, false)
@@ -44,8 +30,9 @@ class PassingPossibilityFragment : FourthlineFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kycSharedViewModel.fetchPersonDataAndIp(requireActivity().intent.getStringExtra(SESSION_URL_KEY)!!)
-        kycSharedViewModel.passingPossibilityLiveData.observe(viewLifecycleOwner, { processState(it) })
+        activityViewModel.navigator = navigator
+        kycSharedViewModel.fetchPersonDataAndIp()
+        kycSharedViewModel.passingPossibilityLiveData.observe(viewLifecycleOwner) { processState(it) }
     }
 
     private fun customizeUI() {
@@ -59,7 +46,7 @@ class PassingPossibilityFragment : FourthlineFragment() {
             }
             is PersonDataStateDto.SUCCEEDED -> {
                 progressBar!!.visibility = View.INVISIBLE
-                activityViewModel.navigateFromPassingPossibilityToTc()
+                activityViewModel.onPassingPossibilityOutcome(PassingPossibilityOutcome.Success)
             }
             is PersonDataStateDto.EMPTY_DOCS_LIST_ERROR -> {
                 progressBar!!.visibility = View.INVISIBLE
@@ -68,7 +55,11 @@ class PassingPossibilityFragment : FourthlineFragment() {
                         message = getString(R.string.identhub_empty_id_doc_list_message),
                         positiveLabel = getString(R.string.identhub_ok_button),
                         positiveAction = {
-                            activityViewModel.setFourthlineIdentificationFailure()
+                            activityViewModel.onPassingPossibilityOutcome(
+                                PassingPossibilityOutcome.Failed(
+                                    "User closed the SDK because their ID document was not supported"
+                                )
+                            )
                         }
                 )
             }
@@ -79,10 +70,15 @@ class PassingPossibilityFragment : FourthlineFragment() {
                         message = getString(R.string.identhub_generic_error_message),
                         positiveLabel = getString(R.string.identhub_ok_button),
                         positiveAction = {
-                            activityViewModel.setFourthlineIdentificationFailure()
+                            activityViewModel.onPassingPossibilityOutcome(
+                                PassingPossibilityOutcome.Failed(
+                                    "Generic error happened when loading initial info of Fourthline identification"
+                                )
+                            )
                         }
                 )
             }
+            else -> { /* Ignore */ }
         }
     }
 
@@ -90,5 +86,10 @@ class PassingPossibilityFragment : FourthlineFragment() {
         progressBar = null
         super.onDestroyView()
     }
+}
+
+sealed class PassingPossibilityOutcome {
+    object Success: PassingPossibilityOutcome()
+    data class Failed(val message: String): PassingPossibilityOutcome()
 }
 

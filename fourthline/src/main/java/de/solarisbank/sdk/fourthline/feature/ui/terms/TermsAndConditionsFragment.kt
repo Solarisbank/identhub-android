@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.view.isVisible
-import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.feature.view.BulletListLayout
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class TermsAndConditionsFragment : FourthlineFragment() {
+class TermsAndConditionsFragment : NewBaseFragment() {
 
     private var bulletList: BulletListLayout? = null
     private var submitButton: Button? = null
@@ -24,9 +24,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
     private var condition1ImageView: ImageView? = null
     private var condition2ImageView: ImageView? = null
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        activityViewModels()
-    }
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
@@ -63,11 +61,7 @@ class TermsAndConditionsFragment : FourthlineFragment() {
             titleStyle = BulletListLayout.TitleStyle.Notice,
             customization = customization
         )
-        submitButton?.setOnClickListener { activityViewModel.navigateFromTcToDocTypeSelection() }
-    }
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
+        submitButton?.setOnClickListener { activityViewModel.onTermsOutcome() }
     }
 
     override fun onDestroyView() {

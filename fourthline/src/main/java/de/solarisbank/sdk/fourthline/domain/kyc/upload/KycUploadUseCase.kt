@@ -2,7 +2,7 @@ package de.solarisbank.sdk.fourthline.domain.kyc.upload
 
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.domain.NextStepSelector
 import de.solarisbank.sdk.domain.model.PollingParametersDto
 import de.solarisbank.sdk.domain.model.result.Result
@@ -16,17 +16,17 @@ import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import io.reactivex.Single
 import timber.log.Timber
-import java.io.File
+import java.net.URI
 
 class KycUploadUseCase  (
     private val kycUploadRepository: KycUploadRepository,
     private val deleteKycInfoUseCase: DeleteKycInfoUseCase,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-    override val identityInitializationRepository: IdentityInitializationRepository
+    override val initialConfigStorage: InitialConfigStorage
 ) : NextStepSelector {
 
-    fun uploadKyc(file: File): Single<KycUploadStatusDto> {
-        return kycUploadRepository.uploadKyc(file)
+    fun uploadKyc(fileUri: URI): Single<KycUploadStatusDto> {
+        return kycUploadRepository.uploadKyc(fileUri)
             .doOnSuccess { kycUploadResponseDto ->
                 Timber.d("uploadKyc(), upload successful, kycUploadResponseDto : $kycUploadResponseDto")
             }.doOnError {

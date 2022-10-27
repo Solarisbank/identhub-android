@@ -4,7 +4,8 @@ import de.solarisbank.identhub.bank.data.IbanVerificationModel
 import de.solarisbank.identhub.bank.data.Iban
 import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.data.utils.parseErrorResponseDto
 import de.solarisbank.sdk.domain.NextStepSelector
 import de.solarisbank.sdk.domain.model.result.Result
@@ -20,7 +21,7 @@ import java.net.HttpURLConnection
 
 class VerifyIBanUseCase(
     private val verificationBankRepository: VerificationBankRepository,
-    override val identityInitializationRepository: IdentityInitializationRepository
+    override val initialConfigStorage: InitialConfigStorage
 ) : SingleUseCase<String, IbanVerificationModel>(), NextStepSelector {
 
     private var ibanAttemts = 0
@@ -68,16 +69,16 @@ class VerifyIBanUseCase(
                     val type = it.type
                     Timber.d("Iban verification result $it, code : $code")
                     val initializationDto = getInitializationDto()
-                    if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto!!.fallbackStep != null) {
+                    if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto.defaultFallbackStep != null) {
                         ibanVerificationDto = if (
-                                initializationDto?.allowedRetries != null &&
+                                initializationDto.allowedRetries != null &&
                                 ibanAttemts < getInitializationDto()!!.allowedRetries
                         ) {
                             Timber.d("Iban verification result 2")
-                            IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, true)
+                            IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, true)
                         } else {
                             Timber.d("Iban verification result 3")
-                            IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
+                            IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, false)
                         }
                     } else if (type is Type.UnprocessableEntity) {
                         Timber.d("Iban verification result 4")
@@ -87,7 +88,7 @@ class VerifyIBanUseCase(
                         ibanVerificationDto = IbanVerificationModel.ExceedMaximumAttemptsError
                     } else if(type is Type.PreconditionFailed) {
                         Timber.d("Iban verification result 5.1")
-                        ibanVerificationDto = IbanVerificationModel.InvalidBankIdError(initializationDto!!.fallbackStep!!, false)
+                        ibanVerificationDto = IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, false)
                     } else {
                         Timber.d("Iban verification result 6")
                         ibanVerificationDto = IbanVerificationModel.GenericError
@@ -115,8 +116,8 @@ class VerifyIBanUseCase(
         }
     }
 
-    private fun getInitializationDto(): InitializationDto? {
-        return identityInitializationRepository.getInitializationDto()
+    private fun getInitializationDto(): IdenthubInitialConfig {
+        return initialConfigStorage.get()
     }
 
     companion object {

@@ -6,7 +6,8 @@ import android.location.LocationManager
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
-import de.solarisbank.sdk.fourthline.data.dto.LocationDto
+import de.solarisbank.sdk.fourthline.data.dto.Location
+import de.solarisbank.sdk.fourthline.data.dto.LocationResult
 import io.reactivex.Single
 import io.reactivex.subjects.SingleSubject
 import timber.log.Timber
@@ -15,7 +16,7 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
 
     private val locationManager =
         applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    private var locationResultSubject: SingleSubject<LocationDto>? = null
+    private var locationResultSubject: SingleSubject<LocationResult>? = null
     private var count = 0
 
     @SuppressLint("MissingPermission")
@@ -29,8 +30,8 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
                 if (it != null && !it.isFromMockProvider) {
                     Timber.d("dispatchLocationRequest() 1")
                     count = 0
-                    locationResultSubject!!.onSuccess(LocationDto.SUCCESS(it))
-                    locationResultSubject!!.onSuccess(LocationDto.SUCCESS(it))
+                    locationResultSubject!!.onSuccess(LocationResult.Success(Location(it)))
+                    locationResultSubject!!.onSuccess(LocationResult.Success(Location(it)))
                 } else {
                     if (count < FETCHING_LOCATION_AMOUNT) {
                         Timber.d("dispatchLocationRequest() 2")
@@ -38,7 +39,7 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
                     } else {
                         Timber.d("dispatchLocationRequest() 3")
                         count = 0
-                        locationResultSubject!!.onSuccess(LocationDto.LOCATION_FETCHING_ERROR)
+                        locationResultSubject!!.onSuccess(LocationResult.LocationFetchingError)
                     }
                 }
             }
@@ -55,7 +56,7 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
             isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         } catch (ex: Exception) {
             Timber.d("obtainLocation() 2")
-            locationResultSubject!!.onSuccess(LocationDto.LOCATION_CLIEN_NOT_ENABLED_ERROR)
+            locationResultSubject!!.onSuccess(LocationResult.LocationClientNotEnabledError)
         }
 
         try {
@@ -63,15 +64,15 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         } catch (ex: Exception) {
             Timber.d("obtainLocation() 4")
-            locationResultSubject!!.onSuccess(LocationDto.NETWORK_NOT_ENABLED_ERROR)
+            locationResultSubject!!.onSuccess(LocationResult.NetworkNotEnabledError)
         }
 
         if (!isGpsEnabled) {
             Timber.d("obtainLocation() 5")
-            locationResultSubject!!.onSuccess(LocationDto.LOCATION_CLIEN_NOT_ENABLED_ERROR)
+            locationResultSubject!!.onSuccess(LocationResult.LocationClientNotEnabledError)
         } else if (!isNetworkEnabled) {
             Timber.d("obtainLocation() 6")
-            locationResultSubject!!.onSuccess(LocationDto.NETWORK_NOT_ENABLED_ERROR)
+            locationResultSubject!!.onSuccess(LocationResult.NetworkNotEnabledError)
         } else {
             Timber.d("obtainLocation() 7")
             dispatchLocationRequest()
@@ -79,7 +80,7 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
     }
 
     @Synchronized
-    override fun getLocation(): Single<LocationDto> {
+    override fun getLocation(): Single<LocationResult> {
         Timber.d("getLocation() 0")
         locationResultSubject = SingleSubject.create()
         obtainLocationDto()

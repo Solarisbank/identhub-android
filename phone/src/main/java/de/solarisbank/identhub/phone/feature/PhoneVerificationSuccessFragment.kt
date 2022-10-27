@@ -22,7 +22,6 @@ class PhoneVerificationSuccessFragment : NewBaseFragment()  {
                 submitButton = it.findViewById(R.id.submitButton)
                 submitButton?.setOnClickListener {
                     sharedViewModel.onSuccessResult()
-                    activity?.finish()
                 }
                 customizeUI()
             }

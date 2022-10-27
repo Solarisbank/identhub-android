@@ -2,7 +2,6 @@ package de.solarisbank.sdk.fourthline.data.kyc.storage
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.location.Location
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.core.Gender
@@ -12,6 +11,7 @@ import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.data.dto.PersonDataDto
+import de.solarisbank.sdk.fourthline.data.dto.Location
 import de.solarisbank.sdk.fourthline.parseDateFromString
 import de.solarisbank.sdk.fourthline.streetNumber
 import de.solarisbank.sdk.fourthline.streetSuffix
@@ -71,7 +71,7 @@ class KycInfoInMemoryDataSource {
 
     suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
         mutex.lock()
-        Timber.d("updateWithPersonDataDto : ${personDataDto}")
+        Timber.d("updateWithPersonDataDto : $personDataDto")
         try {
             _personDataDto = personDataDto
             kycInfo.provider = Provider(
@@ -100,9 +100,9 @@ class KycInfoInMemoryDataSource {
             kycInfo.person.also {
                 it.firstName = _personDataDto?.firstName
                 it.lastName = _personDataDto?.lastName
-                it.gender = when (_personDataDto?.gender?.toLowerCase()) {
-                    Gender.MALE.name.toLowerCase() -> Gender.MALE
-                    Gender.FEMALE.name.toLowerCase() -> Gender.FEMALE
+                it.gender = when (_personDataDto?.gender?.lowercase(Locale.US)) {
+                    Gender.MALE.name.lowercase(Locale.US) -> Gender.MALE
+                    Gender.FEMALE.name.lowercase(Locale.US) -> Gender.FEMALE
                     else -> Gender.UNKNOWN
                 }
                 it.birthDate = _personDataDto?.birthDate?.parseDateFromString()
@@ -137,7 +137,7 @@ class KycInfoInMemoryDataSource {
     suspend fun updateIpAddress(ipAddress: String) {
         mutex.lock()
         try {
-            kycInfo.metadata!!.ipAddress = ipAddress
+            kycInfo.metadata.ipAddress = ipAddress
         } finally {
             mutex.unlock()
         }

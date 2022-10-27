@@ -7,24 +7,23 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.view.isVisible
-import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SELFIE_RETAKE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_MESSAGE
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class SelfieInstructionsFragment : FourthlineFragment() {
+class SelfieInstructionsFragment : NewBaseFragment() {
 
     private var startbutton: Button? = null
     private var imageView: ImageView? = null
 
-    private val sharedViewModel: FourthlineViewModel by lazy { activityViewModels() }
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
+    private val sharedViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_selfie_instructions, container, false)
@@ -57,27 +56,36 @@ class SelfieInstructionsFragment : FourthlineFragment() {
     }
 
     private fun showSelfieScanner() {
-        sharedViewModel.navigateFromSelfieInstructionsToSelfie()
+        sharedViewModel.onSelfieInstructionsOutcome(SelfieInstructionsOutcome.Success)
     }
 
     private fun handleErrors(saved: Bundle?) {
-        val code = arguments?.getString(FourthlineActivity.KEY_CODE)
-        val message = arguments?.getString(FourthlineActivity.KEY_MESSAGE)
+        val code = arguments?.getString(KEY_CODE)
+        val message = arguments?.getString(KEY_MESSAGE)
         if (saved != null) {
             return
         }
-        if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
+        if (code == FOURTHLINE_SCAN_FAILED) {
             showAlertFragment(
                 getString(R.string.identhub_scanner_error_title),
                 message ?: getString(R.string.identhub_scanner_error_unknown),
                 getString(R.string.identhub_scanner_error_scan_button_retry),
                 getString(R.string.identhub_scanner_error_scan_button_quit),
                 { showSelfieScanner() },
-                { sharedViewModel.setFourthlineIdentificationFailure() }
+                { sharedViewModel.onSelfieInstructionsOutcome(
+                    SelfieInstructionsOutcome.Failed(
+                        "User could not take a selfie and aborted the flow"
+                    )
+                ) }
             )
-        } else if (code == FourthlineActivity.FOURTHLINE_SELFIE_RETAKE) {
+        } else if (code == FOURTHLINE_SELFIE_RETAKE) {
             showSelfieScanner()
         }
     }
+}
+
+sealed class SelfieInstructionsOutcome {
+    object Success: SelfieInstructionsOutcome()
+    data class Failed(val message: String): SelfieInstructionsOutcome()
 }
 

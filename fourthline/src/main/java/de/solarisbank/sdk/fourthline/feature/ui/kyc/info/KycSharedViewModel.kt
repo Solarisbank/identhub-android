@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
@@ -13,7 +12,7 @@ import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
-import de.solarisbank.sdk.fourthline.data.dto.LocationDto
+import de.solarisbank.sdk.fourthline.data.dto.LocationResult
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
@@ -31,20 +30,16 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
-import java.net.URI
 import java.util.*
 
 
 class KycSharedViewModel(
-    private val savedStateHandle: SavedStateHandle,
     private val personDataUseCase: PersonDataUseCase,
     private val kycInfoUseCase: KycInfoUseCase,
     private val locationUseCase: LocationUseCase,
     private val ipObtainingUseCase: IpObtainingUseCase,
     private val deleteKycInfoUseCase: DeleteKycInfoUseCase
-        ): ViewModel() {
-
-    var kycURI: URI? = null
+): ViewModel() {
 
     private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
     val passingPossibilityLiveData = _personDataStateLiveData as LiveData<PersonDataStateDto>
@@ -66,13 +61,13 @@ class KycSharedViewModel(
         deleteKycInfoUseCase.clearPersonDataCaches()
     }
 
-    fun fetchPersonDataAndIp(sessionId: String) {
+    fun fetchPersonDataAndIp() {
         Timber.d("fetchPersonDataAndIp() 0")
         deleteKycInfoUseCase.clearPersonDataCaches()
         _supportedDocLiveData.value = PersonDataStateDto.UPLOADING
         compositeDisposable.add(
                 Single.zip(
-                    personDataUseCase.execute(sessionId).subscribeOn(Schedulers.io()),
+                    personDataUseCase.execute(Unit).subscribeOn(Schedulers.io()),
                     ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io())
                 ) { personData, ip -> personData to ip }
                     .doOnSuccess { pair ->
@@ -124,7 +119,7 @@ class KycSharedViewModel(
                     .doOnNext {
                         Timber.d("subscribeLocationStates() 0, doOnNext")
                         when (it) {
-                            is LocationDto.SUCCESS -> {
+                            is LocationResult.Success -> {
                                 Timber.d("fetchPersonDataAndLocation() 1")
                                 IdLogger.info("Fetching location success")
                                 runBlocking { kycInfoUseCase.updateKycLocation(it.location) }

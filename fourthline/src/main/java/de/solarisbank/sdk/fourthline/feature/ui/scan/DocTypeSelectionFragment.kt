@@ -14,25 +14,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import de.solarisbank.sdk.core.activityViewModels
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
+import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.logger.IdLogger
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import timber.log.Timber
 
-class DocTypeSelectionFragment: FourthlineFragment() {
+class DocTypeSelectionFragment: NewBaseFragment() {
 
     private var docTypeAdapter: DocTypeAdapter? = null
     private var documentTypeList: RecyclerView? = null
@@ -40,13 +41,22 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     private var confirmButton: Button? = null
     private var imageView: ImageView? = null
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy { activityViewModels() }
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
-    private val activityViewModel: FourthlineViewModel by lazy { activityViewModels() }
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
+    private val requestPermission =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+                permissions ->
+            permissions.forEach { (permission, isGranted) ->
+                if (!isGranted) {
+                    showRationale(permission)
+                    return@registerForActivityResult
+                }
+            }
+            fetchData()
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Timber.d("onCreateView")
@@ -68,17 +78,8 @@ class DocTypeSelectionFragment: FourthlineFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initViewModel()
         handleErrors(savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         kycSharedViewModel.supportedDocLiveData.observe(viewLifecycleOwner) { processState(it) }
-    }
-
-    override fun initViewModel() {
-        viewModelFactory = assistedViewModelFactory.create(this, arguments)
     }
 
     private fun initRecyclerView() {
@@ -110,7 +111,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         getString(R.string.identhub_fourthline_doc_type_country_not_supported_headline),
                         getString(R.string.identhub_fourthline_doc_type_country_not_supported_message),
                         getString(R.string.identhub_fourthline_doc_type_country_not_supported_button),
-                        positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                        positiveAction = { identificationFailed(
+                            "Id document was not supported and we aborted the flow"
+                        ) },
                         tag = "DocScanError"
                 )
             }
@@ -127,7 +130,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         fetchData()
                     },
                     negativeAction = {
-                        activityViewModel.setFourthlineIdentificationFailure()
+                        identificationFailed(
+                            "We could not obtain the location and the user choose to abort"
+                        )
                     }
 
                 )
@@ -145,7 +150,9 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         }, 1000)
                     },
                     positiveAction = {
-                        activityViewModel.setFourthlineIdentificationFailure()
+                        identificationFailed(
+                            "User did not enable their location and chose to abort"
+                        )
                     }
 
                 )
@@ -158,53 +165,66 @@ class DocTypeSelectionFragment: FourthlineFragment() {
                         message = getString(R.string.identhub_generic_error_message),
                         positiveLabel = getString(R.string.identhub_quit_location_button),
                         positiveAction = {
-                            activityViewModel.setFourthlineIdentificationFailure()
+                            identificationFailed(
+                                "Unknown error happened doc type selection screen"
+                            )
                         }
                 )
             }
+            else -> { /* Ignore */ }
         }
     }
 
     private fun moveToDocScanFragment() {
-        activityViewModel.navigateFromDocTypeSelectionToDocScan(Bundle()
-                .apply { putSerializable(
-                            DocScanFragment.DOC_TYPE_KEY,
-                            docTypeAdapter!!.getSelectedDocType()
-                ) })
+        activityViewModel.onDocTypeSelectionOutcome(
+            DocTypeSelectionOutcome.Success(docTypeAdapter!!.getSelectedDocType())
+        )
+    }
+
+    private fun identificationFailed(message: String) {
+        activityViewModel.onDocTypeSelectionOutcome(DocTypeSelectionOutcome.Failed(message))
     }
 
     override fun onStart() {
         super.onStart()
-        requestLocationPermission(askedBefore = false, rationalize = false)
+        proceedWithPermissions()
     }
 
-    private fun requestLocationPermission(askedBefore: Boolean = false, rationalize: Boolean = true) {
-        val permission = Manifest.permission.ACCESS_FINE_LOCATION
-        IdLogger.info("Requesting location permission")
-        if (ContextCompat.checkSelfPermission(requireContext(), permission) != PermissionChecker.PERMISSION_GRANTED) {
-            Timber.d("requestLocationPermission() 1")
-            if (shouldShowRequestPermissionRationale(permission)) {
-                if (rationalize) {
-                    showLocationPermissionRationale(alwaysDenied = false)
+    private fun proceedWithPermissions() {
+        requestPermission.launch(
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.FOREGROUND_SERVICE
+            )
+        )
+    }
+
+    private fun showRationale(permission: String) {
+        showAlertFragment(
+            title = getString(R.string.identhub_fourthline_permission_rationale_title),
+            message = getString(R.string.identhub_fourthline_permission_rationale_message),
+            negativeLabel = getString(R.string.identhub_fourthline_permission_rationale_ok),
+            positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
+            negativeAction = {
+                if (!shouldShowRequestPermissionRationale(permission)) {
+                    Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", requireContext().packageName, null)
+                    }.also {
+                        IdLogger.warn("Going for settings for permission: $permission")
+                        startActivity(it)
+                    }
                 } else {
-                    requestPermissions(arrayOf(permission), LOCATION_PERMISSION_CODE)
+                    IdLogger.warn("Requesting permission again: $permission")
+                    proceedWithPermissions()
                 }
-            } else if (askedBefore) {
-                showLocationPermissionRationale(alwaysDenied = true)
-            } else {
-                requestPermissions(arrayOf(permission), LOCATION_PERMISSION_CODE)
+            },
+            positiveAction = {
+                IdLogger.error("The user did not give the permission: $permission")
+                identificationFailed("User did not grant the required permissions")
             }
-        } else {
-            Timber.d("requestLocationPermission() 2")
-            fetchData()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        Timber.d("onRequestPermissionsResult")
-        if (requestCode == LOCATION_PERMISSION_CODE) {
-            requestLocationPermission(askedBefore = true, rationalize = true)
-        }
+        )
     }
 
     private fun fetchData() {
@@ -221,53 +241,29 @@ class DocTypeSelectionFragment: FourthlineFragment() {
         super.onDestroyView()
     }
 
-    private fun `handleErrors`(saved: Bundle?) {
-        val code = arguments?.getString(FourthlineActivity.KEY_CODE)
+    private fun handleErrors(saved: Bundle?) {
+        val code = arguments?.getString(KEY_CODE)
         val message = arguments?.getString(KEY_MESSAGE)
         if (saved != null) {
             return
         }
-        if (code == FourthlineActivity.FOURTHLINE_SCAN_FAILED) {
+        if (code == FOURTHLINE_SCAN_FAILED) {
             showAlertFragment(
                 getString(R.string.identhub_scanner_error_title),
                 message ?: getString(R.string.identhub_scanner_error_unknown),
                 getString(R.string.identhub_scanner_error_scan_button_quit),
                 getString(R.string.identhub_scanner_error_scan_button_retry),
-                positiveAction = { activityViewModel.setFourthlineIdentificationFailure() },
+                positiveAction = { identificationFailed(
+                        "User could not take a scan of their document and aborted the flow"
+                )},
                 negativeAction = {},
                 tag = "DocScanError"
             )
         }
     }
+}
 
-    private fun showLocationPermissionRationale(alwaysDenied: Boolean) {
-        showAlertFragment(
-            title = getString(R.string.identhub_fourthline_permission_rationale_title),
-            message = getString(R.string.identhub_fourthline_location_permission_rationale_message),
-            negativeLabel = getString(R.string.identhub_fourthline_permission_rationale_ok),
-            negativeAction = {
-                if (alwaysDenied) {
-                    Intent().apply {
-                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                        data = Uri.fromParts("package", requireContext().packageName, null)
-                    }.also {
-                        IdLogger.warn("Going for settings for location permission")
-                        startActivity(it)
-                    }
-                } else {
-                    IdLogger.warn("Requesting location permission again")
-                    requestLocationPermission(askedBefore = true, rationalize = false)
-                }
-            },
-            positiveLabel = getString(R.string.identhub_fourthline_permission_rationale_quit),
-            positiveAction = {
-                IdLogger.error("The user did not give the location permission")
-                activityViewModel.setFourthlineIdentificationFailure()
-            }
-        )
-    }
-
-    companion object {
-        const val LOCATION_PERMISSION_CODE = 42
-    }
+sealed class DocTypeSelectionOutcome {
+    data class Success(val docType: AppliedDocument): DocTypeSelectionOutcome()
+    data class Failed(val message: String): DocTypeSelectionOutcome()
 }

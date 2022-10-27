@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline
 
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.view.ViewTreeObserver
 import com.fourthline.core.DocumentFileSide
@@ -12,12 +11,6 @@ import com.fourthline.vision.document.DocumentScannerStepWarning
 import com.fourthline.vision.selfie.SelfieScannerError
 import com.fourthline.vision.selfie.SelfieScannerStep
 import com.fourthline.vision.selfie.SelfieScannerWarning
-import de.solarisbank.identhub.session.feature.navigation.router.CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY
-import de.solarisbank.identhub.session.feature.navigation.router.IS_FOURTHLINE_SIGNING
-import de.solarisbank.identhub.session.feature.navigation.router.SHOW_STEP_INDICATOR
-import de.solarisbank.identhub.session.feature.utils.SHOW_UPLOADING_SCREEN
-import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
-import kotlinx.coroutines.*
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -63,16 +56,6 @@ fun SelfieScannerError.asString(context: Context) = when (this) {
     SelfieScannerError.CAMERA_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
     SelfieScannerError.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE -> context.resources.getString(R.string.identhub_scanner_error_unknown)
     SelfieScannerError.MULTIPLE_FACES_DETECTED -> context.resources.getString(R.string.identhub_scanner_error_multiple_faces_detected)
-}
-
-private var cleanupJob: Job? = null
-
-fun CoroutineScope.scheduleCleanup(block: () -> Unit) {
-    cleanupJob?.cancel()
-    cleanupJob = launch(Dispatchers.Main) {
-        delay(500)
-        block()
-    }
 }
 
 fun DocumentScannerStep.prettify() =
@@ -183,14 +166,4 @@ fun String.streetSuffix(): String? {
         Timber.e(e, "String.streetSuffix()")
     }
     return answer
-}
-
-fun Intent.toFourthlineStepParametersDto(): FourthlineStepParametersDto {
-    return FourthlineStepParametersDto(
-        isFourthlineSigning = getBooleanExtra(IS_FOURTHLINE_SIGNING, false),
-        createIdentificationOnRetry =
-            this.getBooleanExtra(CREATE_FOURTHLINE_IDENTIFICATION_ON_RETRY, true),
-        showUploadingScreen = this.getBooleanExtra(SHOW_UPLOADING_SCREEN, true),
-        showStepIndicator = this.getBooleanExtra(SHOW_STEP_INDICATOR, true)
-    )
 }

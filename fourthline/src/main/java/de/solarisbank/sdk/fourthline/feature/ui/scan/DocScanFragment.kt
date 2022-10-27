@@ -16,48 +16,40 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.document.*
-import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.view.BulletListLayout
-import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.toDocumentType
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.FOURTHLINE_SCAN_FAILED
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_CODE
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity.Companion.KEY_MESSAGE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_CODE
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_MESSAGE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_DOC_TYPE
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.navigation.koinNavGraphViewModel
+import org.koin.core.component.inject
 import timber.log.Timber
 
-class DocScanFragment : DocumentScannerFragment() {
+class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-            .get(FourthlineViewModel::class.java)
-    }
-
-    private val kycSharedViewModel: KycSharedViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)
-            .get(KycSharedViewModel::class.java)
-    }
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     private var documentMask: AppCompatImageView? = null
     private var takeSnapshot: Button? = null
@@ -73,9 +65,7 @@ class DocScanFragment : DocumentScannerFragment() {
     private var docImageView: ImageView? = null
     private var bulletList: BulletListLayout? = null
 
-    internal lateinit var assistedViewModelFactory: AssistedViewModelFactory
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var customizationRepository: CustomizationRepository
+    private val customizationRepository: CustomizationRepository by inject()
     private lateinit var currentDocumentType: DocumentType
     private val customization: Customization by lazy { customizationRepository.get() }
 
@@ -84,17 +74,10 @@ class DocScanFragment : DocumentScannerFragment() {
     private var animator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
-        inject(activityComponent.fragmentComponent().create())
-        (arguments?.getSerializable(DOC_TYPE_KEY) as? AppliedDocument)?.let {
+        (arguments?.getSerializable(KEY_DOC_TYPE) as? AppliedDocument)?.let {
             currentDocumentType = it.toDocumentType()
         }
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViewModel()
     }
 
     override fun onDestroyView() {
@@ -114,14 +97,6 @@ class DocScanFragment : DocumentScannerFragment() {
         bulletList = null
         docImageView = null
         super.onDestroyView()
-    }
-
-    fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
-
-    private fun initViewModel() {
-        viewModelFactory = assistedViewModelFactory.create(this, arguments)
     }
 
     override fun getConfig(): DocumentScannerConfig {
@@ -306,7 +281,7 @@ class DocScanFragment : DocumentScannerFragment() {
                 putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
                 putString(KEY_MESSAGE, error.asString(requireContext()))
             }
-            activityViewModel.navigateFromDocScanToDocTypeSelection(args)
+            activityViewModel.onDocScanOutcome(DocScanResult.ScanFailed(args))
         }
     }
 
@@ -314,7 +289,7 @@ class DocScanFragment : DocumentScannerFragment() {
         Timber.d("onSuccess")
         lifecycleScope.launch(Dispatchers.Main) {
             kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, result)
-            activityViewModel.navigateFromDocScanToDocResult()
+            activityViewModel.onDocScanOutcome(DocScanResult.Success)
         }
     }
 
@@ -410,9 +385,9 @@ class DocScanFragment : DocumentScannerFragment() {
         val dm = context.resources.displayMetrics
         return dm.heightPixels.toFloat() / dm.density < 700.0
     }
+}
 
-    companion object {
-        const val DOC_TYPE_KEY = "DOC_TYPE_KEY"
-    }
-
+sealed class DocScanResult {
+    object Success: DocScanResult()
+    data class ScanFailed(val bundle: Bundle): DocScanResult()
 }

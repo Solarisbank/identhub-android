@@ -1,6 +1,6 @@
 package de.solarisbank.identhub.phone.feature
 
-import de.solarisbank.identhub.phone.domain.GetMobileNumberUseCase
+import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data

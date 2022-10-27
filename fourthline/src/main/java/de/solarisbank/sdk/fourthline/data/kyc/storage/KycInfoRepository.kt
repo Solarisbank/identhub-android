@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
 import android.graphics.Bitmap
-import android.location.Location
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
 import com.fourthline.kyc.KycInfo
@@ -9,6 +8,7 @@ import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.data.dto.PersonDataDto
+import de.solarisbank.sdk.fourthline.data.dto.Location
 import java.util.*
 
 class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDataSource) {

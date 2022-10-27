@@ -10,10 +10,6 @@ android {
     buildToolsVersion buildConfig.buildTools
     resourcePrefix libConfig.resourcePrefix
 
-    sourceSets {
-        test.java.srcDirs += ["${project(':core').projectDir}/src/test/java"]
-    }
-
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk

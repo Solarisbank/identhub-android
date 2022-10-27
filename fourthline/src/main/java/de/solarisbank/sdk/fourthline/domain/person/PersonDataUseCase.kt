@@ -2,31 +2,27 @@ package de.solarisbank.sdk.fourthline.domain.person
 
 import android.annotation.SuppressLint
 import de.solarisbank.identhub.session.feature.navigation.router.isIdentificationIdCreationRequired
-import de.solarisbank.sdk.data.datasource.SessionUrlLocalDataSource
 import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
+import de.solarisbank.identhub.session.main.resolver.config.FourthlineIdentificationConfig
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
-import de.solarisbank.sdk.fourthline.data.step.parameters.FourthlineStepParametersRepository
 import io.reactivex.Single
 import timber.log.Timber
 
 class PersonDataUseCase(
         private val fourthlineIdentificationRepository: FourthlineIdentificationRepository,
-        private val sessionUrlLocalDataSource: SessionUrlLocalDataSource,
-        private val fourthlineStepParametersRepository: FourthlineStepParametersRepository
-) : SingleUseCase<String, PersonDataDto>() {
-
+        private val fourthlineIdentificationConfig: FourthlineIdentificationConfig
+) : SingleUseCase<Unit, PersonDataDto>() {
 
     /**
      * Obtains identificationId, saves it and obtain personal data
      */
-    override fun invoke(sessionUrl: String): Single<NavigationalResult<PersonDataDto>> {
-        sessionUrlLocalDataSource.store(sessionUrl.formatSessionUrl())
+    override fun invoke(param: Unit): Single<NavigationalResult<PersonDataDto>> {
 
         return fourthlineIdentificationRepository.getLastSavedLocalIdentification()
             .map { entity ->
-                if (!fourthlineStepParametersRepository.getFourthlineStepParameters()!!.isFourthlineSigning) {
+                if (!fourthlineIdentificationConfig.isFourthlineSigning) {
                     if (isIdentificationIdCreationRequired(entity)) {
                         return@map passFourthlineIdentificationCreation().blockingGet()
                     } else {
@@ -38,17 +34,13 @@ class PersonDataUseCase(
             }
             .onErrorResumeNext { passFourthlineIdentificationCreation() }
             .flatMap { fourthlineIdentificationRepository.getPersonData(it) }
-            .map { NavigationalResult<PersonDataDto>(it) }
-    }
-
-    private fun String.formatSessionUrl(): String {
-        return if (!this.endsWith("/", true)) "$this/" else this
+            .map { NavigationalResult(it) }
     }
 
     @SuppressLint("CheckResult")
     private fun passFourthlineIdentificationCreation(): Single<String> {
         Timber.d("passFourthlineIdentificationCreation()")
-        return if (!fourthlineStepParametersRepository.getFourthlineStepParameters()!!.isFourthlineSigning) {
+        return if (!fourthlineIdentificationConfig.isFourthlineSigning) {
             fourthlineIdentificationRepository.postFourthlineSimplifiedIdentication()
         } else {
             fourthlineIdentificationRepository.postFourthlineSigningIdentication()
@@ -60,6 +52,4 @@ class PersonDataUseCase(
                     return@map identificationDto.id
                 }
     }
-
-
 }

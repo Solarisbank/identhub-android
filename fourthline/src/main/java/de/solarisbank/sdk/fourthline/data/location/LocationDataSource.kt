@@ -1,8 +1,8 @@
 package de.solarisbank.sdk.fourthline.data.location
 
-import de.solarisbank.sdk.fourthline.data.dto.LocationDto
+import de.solarisbank.sdk.fourthline.data.dto.LocationResult
 import io.reactivex.Single
 
 interface LocationDataSource {
-    fun getLocation(): Single<LocationDto>
+    fun getLocation(): Single<LocationResult>
 }

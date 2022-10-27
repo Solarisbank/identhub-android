@@ -1,139 +1,157 @@
 package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.os.Bundle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.session.feature.navigation.NaviDirection
-import de.solarisbank.identhub.session.feature.navigation.router.COMPLETED_STEP
-import de.solarisbank.sdk.domain.model.result.Event
+import de.solarisbank.identhub.session.main.ModuleOutcome
+import de.solarisbank.identhub.session.main.Navigator
+import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.data.dto.FourthlineStepParametersDto
-import de.solarisbank.sdk.fourthline.domain.step.parameters.FourthlineStepParametersUseCase
-import de.solarisbank.sdk.fourthline.feature.ui.webview.WebViewFragment.Companion.WEB_VIEW_URL_KEY
-import de.solarisbank.sdk.logger.IdLogger
-import timber.log.Timber
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResult
+import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsOutcome
 
-class FourthlineViewModel (
-    private val savedStateHandle: SavedStateHandle,
-    private val fourthlineStepParametersUseCase: FourthlineStepParametersUseCase
-    ) : ViewModel() {
+class FourthlineViewModel : ViewModel() {
 
-    private val _navigationActionId = MutableLiveData<Event<NaviDirection>>()
-    val navigationActionId = _navigationActionId as LiveData<Event<NaviDirection>>
+    var navigator: Navigator? = null
 
-    fun saveFourthlineStepParameters(fourthlineStepParametersDto: FourthlineStepParametersDto) {
-        fourthlineStepParametersUseCase.saveParameters(fourthlineStepParametersDto)
+    fun onPassingPossibilityOutcome(outcome: PassingPossibilityOutcome) {
+        when (outcome) {
+            is PassingPossibilityOutcome.Success -> {
+                navigateTo(R.id.action_passingPossibilityFragment_to_termsAndConditionsFragment)
+            }
+            is PassingPossibilityOutcome.Failed -> {
+                setFourthlineIdentificationFailure(outcome.message)
+            }
+        }
     }
 
-    fun navigateFromPassingPossibilityToTc() {
-        navigateTo(R.id.action_passingPossibilityFragment_to_termsAndConditionsFragment)
-    }
-
-    fun navigateFromTcToDocTypeSelection() {
+    fun onTermsOutcome() {
         navigateTo(R.id.action_termsAndConditionsFragment_to_documentTypeSelectionFragment)
     }
 
-    fun navigateFromSelfieInstructionsToSelfie() {
-        navigateTo(R.id.action_selfieInstructionsFragment_to_selfieFragment)
+    fun onSelfieInstructionsOutcome(outcome: SelfieInstructionsOutcome) {
+        when(outcome) {
+            is SelfieInstructionsOutcome.Success -> {
+                navigateTo(R.id.action_selfieInstructionsFragment_to_selfieFragment)
+            }
+            is SelfieInstructionsOutcome.Failed -> {
+                setFourthlineIdentificationFailure(outcome.message)
+            }
+        }
     }
 
-    fun navigateFromSelfieToSelfieResult() {
-        navigateTo(R.id.action_selfieFragment_to_selfieResultFragment)
+    fun onSelfieOutcome(outcome: SelfieOutcome) {
+        when (outcome) {
+            is SelfieOutcome.Success -> {
+                navigateTo(R.id.action_selfieFragment_to_selfieResultFragment)
+            }
+            is SelfieOutcome.Failed -> {
+                val args = Bundle().apply {
+                    putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
+                    putString(KEY_MESSAGE, outcome.errorMessage)
+                }
+                resetFlowToSelfieInstructions(args)
+            }
+        }
     }
 
-    fun navigateFromSelfieResultToKycUploadFragment() {
-        navigateTo(R.id.action_selfieResultFragment_to_kycUploadFragment)
+    fun onSelfieResultOutcome(outcome: SelfieResultOutcome) {
+        when (outcome) {
+            is SelfieResultOutcome.Success -> {
+                navigateTo(R.id.action_selfieResultFragment_to_kycUploadFragment)
+            }
+            is SelfieResultOutcome.Failed -> {
+                resetFlowToSelfieInstructions(bundleOf(KEY_CODE to FOURTHLINE_SELFIE_RETAKE))
+            }
+        }
+
     }
 
-    fun navigateFromDocScanToDocTypeSelection(args: Bundle) {
-        navigateTo(R.id.action_documentScanFragment_to_documentTypeSelectionFragment, args)
+    fun onDocScanOutcome(result: DocScanResult) {
+        when (result) {
+            is DocScanResult.Success -> {
+                navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
+            }
+            is DocScanResult.ScanFailed -> {
+                navigateTo(
+                    R.id.action_documentScanFragment_to_documentTypeSelectionFragment,
+                    result.bundle
+                )
+            }
+        }
     }
 
-    fun navigateFromDocTypeSelectionToDocScan(bundle: Bundle) {
-        navigateTo(R.id.action_documentTypeSelectionFragment_to_documentScanFragment, bundle)
+    fun onDocTypeSelectionOutcome(outcome: DocTypeSelectionOutcome) {
+        when (outcome) {
+            is DocTypeSelectionOutcome.Success -> {
+                navigateTo(
+                    R.id.action_documentTypeSelectionFragment_to_documentScanFragment,
+                    bundleOf(KEY_DOC_TYPE to outcome.docType)
+                )
+            }
+            is DocTypeSelectionOutcome.Failed -> setFourthlineIdentificationFailure(outcome.message)
+        }
     }
 
-    fun navigateFromDocScanToDocResult() {
-        navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
-    }
-
-    fun navigateFromDocResultToSelfieInstructions() {
+    fun onDocResultOutcome() {
         navigateTo(R.id.action_documentResultFragment_to_selfieInstructionsFragment)
     }
 
-    fun navigateFromKycUploadToUploadResult(nextStep: String? = null, identificationId: String? = null) {
-        navigateTo(
-            R.id.action_kycUploadFragment_to_uploadResultFragment,
-            Bundle().apply {
-                putString(NEXT_STEP_ARG, nextStep)
-                putString(IDENTIFICATION_ID, identificationId)
+    fun onKycUploadOutcome(outcome: KycUploadOutcome) {
+        when(outcome) {
+            is KycUploadOutcome.Success -> {
+                navigateTo(
+                    R.id.action_kycUploadFragment_to_uploadResultFragment,
+                    Bundle().apply {
+                        putString(NEXT_STEP_ARG, outcome.nextStep)
+                        putString(IDENTIFICATION_ID, outcome.identificationId)
+                    }
+                )
             }
-        )
-    }
-
-    fun navigateFromSelfieResultToSelfieInstructions() {
-        val args = Bundle().apply {
-            putString(
-                FourthlineActivity.KEY_CODE,
-                FourthlineActivity.FOURTHLINE_SELFIE_RETAKE
-            )
+            is KycUploadOutcome.RestartFlow -> restartFlow()
+            is KycUploadOutcome.Failed -> setFourthlineIdentificationFailure(outcome.message)
         }
-        resetFlowToSelfieInstructions(args)
+
     }
 
-    fun navigateFromSelfieToSelfieInstructions(scanErrorMessage: String) {
-        val args = Bundle().apply {
-            putString(FourthlineActivity.KEY_CODE, FourthlineActivity.FOURTHLINE_SCAN_FAILED)
-            putString(FourthlineActivity.KEY_MESSAGE, scanErrorMessage)
+    fun onUploadResultOutcome(outcome: UploadResultOutcome) {
+        if (outcome.nextStep != null) {
+            navigator?.onOutcome(ModuleOutcome.NextStepOutcome(outcome.nextStep))
+        } else if (outcome.identificationId != null) {
+            navigator?.onOutcome(ModuleOutcome.Finished(outcome.identificationId, Status.SUCCESSFUL.label))
         }
-        resetFlowToSelfieInstructions(args)
     }
 
-    fun navigateFromKycUploadToPassingPossibility() {
+    fun restartFlow() {
         navigateTo(R.id.action_reset_to_passingPossibilityFragment)
-    }
-
-    fun navigateToWebViewFragment(url: String) {
-        val bundle = Bundle().apply { putString(WEB_VIEW_URL_KEY, url) }
-        navigateTo(R.id.action_termsAndConditionsFragment_to_webViewFragment, bundle)
     }
 
     private fun resetFlowToSelfieInstructions(args: Bundle? = null) {
         navigateTo(R.id.action_reset_to_selfie_instructions, args)
     }
 
-    fun setFourthlineIdentificationSuccessful(identificationId: String) {
-        Timber.d("setFourthlineIdentificationSuccessful, identificationId : $identificationId")
-        _navigationActionId.value = Event(NaviDirection.VerificationSuccessfulStepResult(identificationId, COMPLETED_STEP.VERIFICATION_BANK.index))
-    }
-
-    fun setFourthlineIdentificationFailure() {
-        _navigationActionId.value = Event(NaviDirection.VerificationFailureStepResult())
+    private fun setFourthlineIdentificationFailure(errorMessage: String) {
+        navigator?.onOutcome(ModuleOutcome.Failure(errorMessage))
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle? = null) {
-        _navigationActionId.value = Event(NaviDirection.FragmentDirection(actionId, bundle))
-    }
-
-    fun postDynamicNavigationNextStep(nextStep: String) {
-        Timber.d("postDynamicNavigationNextStep. nextStep : $nextStep")
-        _navigationActionId.value =
-            Event<NaviDirection>(NaviDirection.NextStepStepResult(
-                nextStep,
-                COMPLETED_STEP.VERIFICATION_BANK.index
-            )
-            )
+        navigator?.navigate(actionId, bundle)
     }
 
     companion object {
         const val NEXT_STEP_ARG = "nextStepArg"
         const val IDENTIFICATION_ID = "identificationId"
-    }
-
-    override fun onCleared() {
-        super.onCleared()
+        const val KEY_CODE = "key_code"
+        const val KEY_MESSAGE = "key_message"
+        const val KEY_DOC_TYPE = "key_doc_type"
+        const val FOURTHLINE_SELFIE_RETAKE = "fourthline_selfie_retake"
+        const val FOURTHLINE_SCAN_FAILED = "fourthline_scan_failed"
     }
 
 }

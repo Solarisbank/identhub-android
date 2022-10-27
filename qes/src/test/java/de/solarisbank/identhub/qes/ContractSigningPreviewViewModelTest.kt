@@ -37,7 +37,7 @@ class ContractSigningPreviewViewModelTest: StringSpec({
         val getIdentificationUseCase = mockk<GetIdentificationUseCase>()
         every { getDocumentUseCase.execute(Unit) } returns
                 Single.just(Result.Success(listOf(testDocument)))
-        every { getIdentificationUseCase.getInitializationDto() } returns
+        every { getIdentificationUseCase.getInitialConfig() } returns
                 InitializationDto("", "", 0, "", null)
         every { getIdentificationUseCase.execute(Unit) } returns
                 Single.just(

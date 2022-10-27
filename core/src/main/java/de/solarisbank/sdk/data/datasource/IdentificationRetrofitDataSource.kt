@@ -1,10 +1,14 @@
 package de.solarisbank.sdk.data.datasource
 
+import de.solarisbank.sdk.data.api.IdentificationApi
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import io.reactivex.Single
 
-interface IdentificationRetrofitDataSource {
+class IdentificationRetrofitDataSource(private val identificationApi: IdentificationApi) :
+    IdentificationRemoteDataSource {
 
-    fun getIdentification(identification_id: String): Single<IdentificationDto>
+    override fun getIdentification(identificationId: String): Single<IdentificationDto> {
+        return identificationApi.getIdentification(identificationId)
+    }
 
 }

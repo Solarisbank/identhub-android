@@ -7,26 +7,23 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.IDENTIFICATION_ID
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.NEXT_STEP_ARG
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import timber.log.Timber
 
-class UploadResultFragment : FourthlineFragment() {
+class UploadResultFragment : NewBaseFragment() {
 
     private var quitButton: Button? = null
     private var imageView: ImageView? = null
     private var indicator: ImageView? = null
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
-    }
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,22 +46,16 @@ class UploadResultFragment : FourthlineFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quitButton?.setOnClickListener {
-            arguments?.getString(NEXT_STEP_ARG)?.let { moveToNextStep(it) }?:run{
-                arguments?.getString(IDENTIFICATION_ID)?.let {
-                    activityViewModel.setFourthlineIdentificationSuccessful(it)
-                }
-            }
-        }
+        quitButton?.setOnClickListener { sendOutcome() }
     }
 
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
-
-    private fun moveToNextStep(nextStep: String) {
-        Timber.d("moveToNextStep : $nextStep")
-        activityViewModel.postDynamicNavigationNextStep(nextStep)
+    private fun sendOutcome() {
+        activityViewModel.onUploadResultOutcome(
+            UploadResultOutcome(
+                nextStep = arguments?.getString(NEXT_STEP_ARG),
+                identificationId = arguments?.getString(IDENTIFICATION_ID)
+            )
+        )
     }
 
     override fun onDestroyView() {
@@ -73,5 +64,6 @@ class UploadResultFragment : FourthlineFragment() {
         indicator = null
         super.onDestroyView()
     }
-
 }
+
+data class UploadResultOutcome(val identificationId: String?, val nextStep: String?)

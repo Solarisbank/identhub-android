@@ -2,7 +2,7 @@ package de.solarisbank.identhub.qes.domain
 
 import de.solarisbank.identhub.data.contract.ContractSignRepository
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
-import de.solarisbank.identhub.session.feature.navigation.router.NEXT_STEP_DIRECTION.FOURTHLINE_SIGNING
+import de.solarisbank.identhub.session.main.resolver.config.QesConfig
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
@@ -16,9 +16,8 @@ import io.reactivex.Single
 class ConfirmContractSignUseCase(
     private val contractSignRepository: ContractSignRepository,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
+    private val qesConfig: QesConfig
 ) : SingleUseCase<String, ContractSigningResult>() {
-
-    private var isConfirmAcceptable = false
 
     override fun invoke(confirmToken: String): Single<NavigationalResult<ContractSigningResult>> {
         return contractSignRepository.getIdentification()
@@ -29,14 +28,13 @@ class ConfirmContractSignUseCase(
                 )
             }
             .flatMapCompletable { identificationDto: IdentificationDto ->
-                isConfirmAcceptable = identificationDto.method?.contains(FOURTHLINE_SIGNING.destination) == true
                 contractSignRepository.save(
                     identificationDto
                 )
             }.andThen(
-                identificationPollingStatusUseCase.execute(
-                    PollingParametersDto(isConfirmAcceptable)
-                )
+                identificationPollingStatusUseCase.execute(PollingParametersDto(
+                    qesConfig.isConfirmAcceptable
+                ))
             )
             .map { result ->
                 return@map if (

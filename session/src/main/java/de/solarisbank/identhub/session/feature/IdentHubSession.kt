@@ -4,19 +4,15 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.session.feature.di.IdentHubActivityComponent
 import de.solarisbank.identhub.session.feature.navigation.NaviDirection
 import de.solarisbank.identhub.session.feature.navigation.SessionStepResult
 import de.solarisbank.identhub.session.feature.navigation.router.*
-import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
 import de.solarisbank.identhub.session.main.MainKoin
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.logger.LoggerUseCase
-import org.koin.core.context.loadKoinModules
 import timber.log.Timber
 
 /**
@@ -25,7 +21,7 @@ import timber.log.Timber
  *
  * This class has lifecycle as sdk initialization activity
  */
-class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
+class IdentHubSession : IdenthubKoinComponent {
 
     private var identificationSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null
     private var identificationErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
@@ -38,9 +34,6 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
 
     private lateinit var activity: FragmentActivity
 
-    private lateinit var activityComponent: IdentHubActivityComponent
-    override lateinit var viewModelFactory: (FragmentActivity) -> ViewModelProvider.Factory
-    private lateinit var viewModel: IdentHubSessionViewModel
     private var loggerUseCase: LoggerUseCase? = null
 
     private val isPaymentProcessAvailable: Boolean
@@ -77,16 +70,11 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
         Timber.d("initMainProcess, fragmentActivity : $activity, this : $this")
         this.activity = activity
         IdentHubKoinContext.setUpKoinApp(activity.applicationContext, sessionUrl)
-        getKoin().loadModules(listOf(MainKoin.module))
-        activityComponent = IdentHubActivityComponent(this.activity)
-        activityComponent.inject(this)
-        viewModel = viewModelFactory.invoke(activity).create(IdentHubSessionViewModel::class.java)
-        IdentHubSessionViewModel.INSTANCE!!.saveSessionId(sessionUrl)
-        loggerUseCase = viewModel.getLoggerUseCase()
-        IdLogger.inject(loggerUseCase)
-        viewModel.initializationStateLiveData
-            .observe(activity) { processInitializationStateResult(it) }
-        viewModel.sessionStepResultLiveData.observe(activity) { processSessionResult(it) }
+        loadModules(listOf(MainKoin.module))
+        // TODO Save SessionUrl
+        // TODO Set up Logger
+        //loggerUseCase = viewModel.getLoggerUseCase()
+        //IdLogger.inject(loggerUseCase)
     }
 
     private fun processInitializationStateResult(result: Result<NavigationalResult<String>>) {
@@ -183,18 +171,6 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
         }
     }
 
-    /**
-     * Sets successfull and faile callbacks for optional intermediate step
-     * for partners that use payment checking
-     */
-    fun onPaymentCallback(
-        paymentSuccessCallback: ((IdentHubSessionResult) -> Unit)? = null,
-        paymentErrorCallback: ((IdentHubSessionFailure) -> Unit)? = null
-    ) {
-        this.paymentErrorCallback = paymentErrorCallback
-        this.paymentSuccessCallback = paymentSuccessCallback
-    }
-
     private fun onResultSuccess(sessionStepResult: SessionStepResult) {
         Timber.d("onResultSuccess, sessionStepResult : $sessionStepResult")
 
@@ -262,17 +238,8 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
      */
     fun start() {
         Timber.d("start, paymentSuccessCallback != null : ${ paymentSuccessCallback != null }")
-        viewModel.startIdentificationProcess(paymentSuccessCallback != null)
+        // TODO Start process
         IdLogger.debug("SDK started")
-    }
-
-    /**
-     * Uses for resuming identification process in case
-     * of optional payment checking for some partners
-     */
-    fun resume() {
-        Timber.d("resume")
-        viewModel.resumeIdentificationProcess()
     }
 
     /**
@@ -280,7 +247,7 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
      */
     internal fun reset() {
         Timber.d("reset(), this $this")
-        viewModel.resetIdentificationProcess()
+        // TODO Reset process
         IdLogger.clearLogger()
     }
 
@@ -300,11 +267,6 @@ class IdentHubSession : ViewModelFactoryContainer, IdenthubKoinComponent {
     }
 
     companion object {
-        //todo move to a repository
-        @kotlin.jvm.JvmField
-        var hasPhoneVerification: Boolean = true
-
-        @kotlin.jvm.JvmField
         var appName: String = "Unknown"
     }
 }

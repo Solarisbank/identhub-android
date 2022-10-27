@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.domain
 
 import android.annotation.SuppressLint
-import de.solarisbank.sdk.data.repository.IdentityInitializationRepository
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import timber.log.Timber
 
 /**
@@ -10,14 +10,14 @@ import timber.log.Timber
 
 interface NextStepSelector {
 
-    val identityInitializationRepository: IdentityInitializationRepository
+    val initialConfigStorage: InitialConfigStorage
 
     @SuppressLint("BinaryOperationInTimber")
     fun selectNextStep(nextStep: String?, fallbackStep: String?): String? {
         val defaultToFallbackStep =
-            identityInitializationRepository
-                .getInitializationDto()
-                ?.partnerSettings
+            initialConfigStorage
+                .get()
+                .partnerSettings
                 ?.defaultToFallbackStep
         Timber.d(
             "selectNextStep, nextStep : $nextStep," +

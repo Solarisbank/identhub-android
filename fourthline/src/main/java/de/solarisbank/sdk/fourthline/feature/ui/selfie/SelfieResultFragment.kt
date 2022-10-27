@@ -7,33 +7,25 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.base.FourthlineFragment
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class SelfieResultFragment : FourthlineFragment() {
+class SelfieResultFragment : NewBaseFragment() {
 
     private var imageResult: ImageView? = null
     private var submitButton: Button? = null
     private var retryButton: Button? = null
     private var successImageView: ImageView? = null
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)
-                .get(FourthlineViewModel::class.java)
-    }
-
-    private val kycSharedViewModel: KycSharedViewModel by lazy<KycSharedViewModel> {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
-    }
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_selfie_result, container, false)
@@ -63,13 +55,11 @@ class SelfieResultFragment : FourthlineFragment() {
         }
 
         retryButton!!.setOnClickListener {
-            activityViewModel.navigateFromSelfieResultToSelfieInstructions()
+            activityViewModel.onSelfieResultOutcome(SelfieResultOutcome.Failed)
         }
-        submitButton!!.setOnClickListener { activityViewModel.navigateFromSelfieResultToKycUploadFragment() }
-    }
-
-    override fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
+        submitButton!!.setOnClickListener {
+            activityViewModel.onSelfieResultOutcome(SelfieResultOutcome.Success)
+        }
     }
 
     override fun onDestroyView() {
@@ -79,11 +69,9 @@ class SelfieResultFragment : FourthlineFragment() {
         successImageView = null
         super.onDestroyView()
     }
+}
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): Fragment {
-            return SelfieResultFragment()
-        }
-    }
+sealed class SelfieResultOutcome {
+    object Success: SelfieResultOutcome()
+    object Failed: SelfieResultOutcome()
 }

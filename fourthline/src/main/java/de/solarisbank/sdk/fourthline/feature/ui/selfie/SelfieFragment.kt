@@ -8,18 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.selfie.*
-import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.customization.CustomizationRepository
-import de.solarisbank.sdk.feature.base.BaseActivity
+import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.feature.viewmodel.AssistedViewModelFactory
 import de.solarisbank.sdk.fourthline.*
-import de.solarisbank.sdk.fourthline.di.FourthlineFragmentComponent
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineActivity
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -27,10 +23,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.navigation.koinNavGraphViewModel
+import org.koin.core.component.inject
 import timber.log.Timber
 
 
-class SelfieFragment : SelfieScannerFragment() {
+class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
 
     private var punchhole: PunchholeView? = null
     private var selfieMask: ImageView? = null
@@ -41,19 +39,10 @@ class SelfieFragment : SelfieScannerFragment() {
     private var livenessMask: ImageView? = null
     private var progressBar: ProgressBar? = null
 
-    private val activityViewModel: FourthlineViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as BaseActivity).viewModelFactory)[FourthlineViewModel::class.java]
-    }
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
-    private val kycSharedViewModel: KycSharedViewModel by lazy {
-        ViewModelProvider(requireActivity(), (requireActivity() as FourthlineActivity).viewModelFactory)[KycSharedViewModel::class.java]
-    }
-
-    lateinit var assistedViewModelFactory: AssistedViewModelFactory
-
-    lateinit var customizationRepository: CustomizationRepository
-
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val customizationRepository: CustomizationRepository by inject()
 
     private var cleanupJob: Job? = null
 
@@ -61,20 +50,9 @@ class SelfieFragment : SelfieScannerFragment() {
         customizationRepository.get()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val activityComponent = (requireActivity() as FourthlineActivity).activitySubcomponent
-        inject(activityComponent.fragmentComponent().create())
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
         initView()
-    }
-
-    private fun initViewModel() {
-        viewModelFactory = assistedViewModelFactory.create(this, arguments)
     }
 
     private fun initView() {
@@ -124,7 +102,7 @@ class SelfieFragment : SelfieScannerFragment() {
     override fun onFail(error: SelfieScannerError) {
         Timber.d("onFail: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
-            activityViewModel.navigateFromSelfieToSelfieInstructions(error.asString(requireContext()))
+            activityViewModel.onSelfieOutcome(SelfieOutcome.Failed(error.asString(requireContext())))
         }
     }
 
@@ -158,7 +136,7 @@ class SelfieFragment : SelfieScannerFragment() {
             stepName?.setText(R.string.identhub_selfie_scanner_scan_successful)
             stepName?.show()
             kycSharedViewModel.updateKycWithSelfieScannerResult(result)
-            activityViewModel.navigateFromSelfieToSelfieResult()
+            activityViewModel.onSelfieOutcome(SelfieOutcome.Success)
         }
     }
 
@@ -186,9 +164,9 @@ class SelfieFragment : SelfieScannerFragment() {
         cleanupJob?.cancel()
         super.onDestroyView()
     }
+}
 
-    fun inject(component: FourthlineFragmentComponent) {
-        component.inject(this)
-    }
-
+sealed class SelfieOutcome {
+    object Success: SelfieOutcome()
+    data class Failed(val errorMessage: String): SelfieOutcome()
 }

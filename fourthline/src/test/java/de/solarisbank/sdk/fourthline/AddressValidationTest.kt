@@ -4,26 +4,26 @@ import io.kotest.matchers.shouldBe
 
 class AddressValidationTest : StringSpec ({
 
-    val TEST_ADDRESS_EXPANDED = "76c/5"
-    val TEST_ADDRESS = "76"
+    val testAddressExpanded = "76c/5"
+    val testAddress = "76"
 
     "parseStreetNumberSuffix" {
-        val result = TEST_ADDRESS_EXPANDED.streetSuffix()
+        val result = testAddressExpanded.streetSuffix()
         result shouldBe "c"
     }
 
     "parseStreetNumberSuffix2" {
-        val result = TEST_ADDRESS.streetSuffix()
+        val result = testAddress.streetSuffix()
         result shouldBe null
     }
 
     "parseStreetNumber" {
-        val result: Int? = TEST_ADDRESS_EXPANDED.streetNumber()
+        val result: Int? = testAddressExpanded.streetNumber()
         result shouldBe 76
     }
 
     "parseStreetNumber2" {
-        val result: Int? = TEST_ADDRESS.streetNumber()
+        val result: Int? = testAddress.streetNumber()
         result shouldBe 76
     }
 })

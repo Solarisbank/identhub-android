@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.session.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -9,9 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.identhub.session.R
-import de.solarisbank.identhub.session.feature.navigation.NaviDirection
-import de.solarisbank.identhub.session.feature.navigation.router.MODULE_NAME
-import de.solarisbank.identhub.session.feature.viewmodel.IdentHubSessionViewModel
+import de.solarisbank.identhub.session.feature.utils.buildApiUrl
+import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
@@ -19,11 +19,13 @@ import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.alert.showAlertFragment
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.get
 
 class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
-    private val viewModel: MainViewModel by viewModel()
+    private var currentNavigationId: Int? = null
+
+    private val viewModel: MainViewModel by lazy { getViewModel() }
     private val alertViewModel: AlertViewModel by lazy {
         ViewModelProvider(this, object: ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -44,9 +46,17 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setUpKoin()
+        restoreState(savedInstanceState)
         setContentView(R.layout.identhub_activity_main)
         setUpView()
         observeViewModel()
+    }
+
+    private fun setUpKoin() {
+        val sessionUrl = intent.getStringExtra("session_url")
+        IdentHubKoinContext.setUpKoinApp(this, buildApiUrl(sessionUrl!!))
+        loadModules(listOf(MainKoin.module))
     }
 
     private fun setUpView() {
@@ -61,7 +71,6 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             setCurrentModule(it.currentModule)
         }
         viewModel.events().observe(this, ::handleEvent)
-        viewModel.setModule(intent.extras?.getString(MODULE_NAME))
     }
 
     private fun setCurrentModule(module: IdenthubModule) {
@@ -69,6 +78,8 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     }
 
     private fun updateNavigationGraph(navigationId: Int) {
+        if (currentNavigationId == navigationId) return
+        currentNavigationId = navigationId
         navController.graph = navController.navInflater.inflate(navigationId)
     }
 
@@ -79,7 +90,10 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             is MainViewEvent.Navigate -> {
                 navController.navigate(content.navigationId, args = content.bundle)
             }
-            is MainViewEvent.Close -> finish()
+            is MainViewEvent.Close -> {
+                setResult(RESULT_OK, Intent().putExtra(KEY_RESULT, content.result.toBundle()))
+                finish()
+            }
         }
     }
 
@@ -116,12 +130,25 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             negativeLabel = getString(R.string.identhub_identity_dialog_quit_process_negative_button),
             positiveAction = {
                 IdLogger.info("User quits the SDK")
-                IdentHubSessionViewModel.INSTANCE?.setSessionResult(
-                    NaviDirection.VerificationFailureStepResult("User closed the SDK")
-                )
-                finish()
+                viewModel.onAction(MainAction.CloseTapped)
             },
             tag = "BackButtonAlert")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        currentNavigationId?.let {
+            outState.putInt(KEY_NAVIGATION_ID, it)
+        }
+    }
+
+    private fun restoreState(saved: Bundle?) {
+        saved ?: return
+        currentNavigationId = saved.getInt(KEY_NAVIGATION_ID)
+
+        currentNavigationId?.let {
+            updateNavigationGraph(it)
+        }
     }
 
     override fun onDestroy() {
@@ -129,5 +156,10 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null
         IdLogger.nav("Activity OnDestroy ${this::class.java}")
+    }
+
+    companion object {
+        const val KEY_NAVIGATION_ID = "key_navigation_id"
+        const val KEY_RESULT = "key_result"
     }
 }

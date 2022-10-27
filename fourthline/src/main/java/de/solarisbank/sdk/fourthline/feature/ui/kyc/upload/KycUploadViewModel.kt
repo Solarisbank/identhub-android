@@ -12,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.io.File
+import java.net.URI
 
 class KycUploadViewModel(
     private val kycUploadUseCase: KycUploadUseCase
@@ -22,11 +23,11 @@ class KycUploadViewModel(
     private val _uploadingStatus = MutableLiveData<Event<KycUploadStatusDto>>()
     val uploadingStatus = _uploadingStatus as LiveData<Event<KycUploadStatusDto>>
 
-    fun uploadKyc(uploadableFile: File) {
+    fun uploadKyc(fileUri: URI) {
         Timber.d("uploadKyc()")
         compositeDisposable.add(
                 kycUploadUseCase
-                        .uploadKyc(uploadableFile)
+                        .uploadKyc(fileUri)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ t1 ->

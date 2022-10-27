@@ -6,17 +6,20 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityExampleIdenthubBinding
-import de.solarisbank.identhub.session.IdentHub
-import de.solarisbank.identhub.session.feature.IdentHubSession
-import de.solarisbank.identhub.session.feature.IdentHubSessionFailure
-import de.solarisbank.identhub.session.feature.IdentHubSessionResult
-import de.solarisbank.sdk.logger.IdLogger
+import de.solarisbank.identhub.session.IdenthubContract
+import de.solarisbank.sdk.data.IdenthubResult
 import timber.log.Timber
 
 class ExampleIdentHubActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExampleIdenthubBinding
-    private lateinit var session: IdentHubSession
 
+    private val identhub = registerForActivityResult(IdenthubContract()) {
+        when (it) {
+            is IdenthubResult.Success -> onSuccess(it.identificationId)
+            is IdenthubResult.Confirmed -> onConfirmationSuccess(it.identificationId)
+            is IdenthubResult.Failed -> onFailure(it.message)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +29,10 @@ class ExampleIdentHubActivity : AppCompatActivity() {
 
         prefillSessionUrl()
 
-        session = IdentHub().sessionWithUrl(binding.sessionInputField.text.toString().trim())
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    setLocalLoggingLevel(IdLogger.LogLevel.DEBUG)
-                }
-                onCompletionCallback(
-                    fragmentActivity = this@ExampleIdentHubActivity,
-                    successCallback = this@ExampleIdentHubActivity::onSuccess,
-                    errorCallback = this@ExampleIdentHubActivity::onFailure,
-                    confirmationSuccessCallback = this@ExampleIdentHubActivity::onConfirmationSuccess
-                )
-            }
-
         binding.startButton.setOnClickListener {
             setLoadingState()
-            session.start()
+            val sessionUrl = binding.sessionInputField.text.toString().trim()
+            identhub.launch(sessionUrl)
         }
     }
 
@@ -55,24 +46,22 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    private fun onSuccess(result: IdentHubSessionResult) {
+    private fun onSuccess(identificationId: String) {
         setResultState()
-        val identificationId = result.identificationId
         Timber.d("onSuccess; IdentHubSessionResult identification id: $identificationId")
-        binding.callbackResult.text = "onSuccess called"
+        binding.callbackResult.text = "onSuccess called, identificationId: $identificationId"
         binding.callbackResult.setTextColor(Color.GREEN)
     }
 
-    private fun onConfirmationSuccess(result: IdentHubSessionResult) {
+    private fun onConfirmationSuccess(identificationId: String) {
         setResultState()
         Timber.d("onConfirmationSuccess")
-        binding.callbackResult.text = "onConfirmationSuccess called,  identification id: ${result.identificationId}"
+        binding.callbackResult.text = "onConfirmationSuccess called,  identification id: $identificationId"
         binding.callbackResult.setTextColor(Color.BLUE)
     }
 
-    private fun onFailure(failure: IdentHubSessionFailure) {
+    private fun onFailure(message: String?) {
         setResultState()
-        val message = failure.message
         Timber.d("onFailure; IdentHubSessionFailure identification has not completed: $message")
         binding.callbackResult.text = "onFailure called: $message"
         binding.callbackResult.setTextColor(Color.RED)

@@ -7,8 +7,8 @@ import de.solarisbank.identhub.bank.data.IbanVerificationModel
 import de.solarisbank.identhub.bank.domain.BankIdPostUseCase
 import de.solarisbank.identhub.bank.domain.VerifyIBanUseCase
 import de.solarisbank.identhub.feature.util.toVerificationState
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.domain.model.result.data
-import de.solarisbank.sdk.feature.config.InitializationInfoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,7 +17,7 @@ import timber.log.Timber
 class VerificationBankIbanViewModel(
     private val verifyIBanUseCase: VerifyIBanUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
-    initializationInfoRepository: InitializationInfoRepository
+    private val initialConfigStorage: InitialConfigStorage
 ) : ViewModel() {
 
     private val verifyResultLiveData: MutableLiveData<VerificationState> = MutableLiveData()
@@ -27,7 +27,7 @@ class VerificationBankIbanViewModel(
     private var ibanAttempts = 0
 
     init {
-        termsAgreedLiveData.value = initializationInfoRepository.isTermsAgreed()
+        termsAgreedLiveData.value = initialConfigStorage.get().isTermsPreAccepted
     }
 
     fun getVerificationStateLiveData(): LiveData<VerificationState> {
