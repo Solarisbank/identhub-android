@@ -8,11 +8,14 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.identhub.session.R
 import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.data.utils.parcelable
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
@@ -36,11 +39,14 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     }
 
     private var alertDialogFragment: DialogFragment? = null
-    private val navController: NavController
-        get() {
+    private val navController: NavController by lazy {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
                     as NavHostFragment
-            return navHostFragment.navController
+            val controller = navHostFragment.navController
+            controller.addOnDestinationChangedListener { _, destination, _ ->
+                IdLogger.nav("Destination changed: ${destination.label}")
+            }
+            controller
         }
 
     private var closeButton: AppCompatImageView? = null
@@ -48,6 +54,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpKoin()
+        IdLogger.nav("Activity onCreate: ${this::class.java.simpleName}")
         restoreState(savedInstanceState)
         setContentView(R.layout.identhub_activity_main)
         setUpView()
@@ -55,8 +62,8 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     }
 
     private fun setUpKoin() {
-        val sessionUrl = intent.getStringExtra(StartIdenthubContract.SessionUrlKey)
-        IdentHubKoinContext.setUpKoinApp(this, sessionUrl!!)
+        val startConfig: StartIdenthubConfig? = intent.parcelable(StartIdenthubContract.ConfigKey)
+        IdentHubKoinContext.setUpKoinApp(this, startConfig!!)
         loadModules(listOf(MainKoin.module))
     }
 
@@ -159,7 +166,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         super.onDestroy()
         alertDialogFragment?.dismissAllowingStateLoss()
         alertDialogFragment = null
-        IdLogger.nav("Activity OnDestroy ${this::class.java}")
+        IdLogger.nav("Activity onDestroy: ${this::class.java.simpleName}")
     }
 
     companion object {

@@ -43,10 +43,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     private var termsLayout: View? = null
     private var noticeBulletList: BulletListLayout? = null
 
-    private var defaultToBankId: Boolean = false
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        initDefaultToBankId()
         return inflater.inflate(R.layout.identhub_fragment_verification_bank_iban, container, false)
                 .also {
                     ibanNumber = it.findViewById(R.id.ibanNumber)
@@ -82,14 +79,6 @@ class VerificationBankIbanFragment : NewBaseFragment() {
             )
         } else {
             noticeBulletList?.isVisible = false
-        }
-    }
-
-    private fun initDefaultToBankId() {
-        requireActivity().intent.getStringExtra(FIRST_STEP_KEY)?.let {
-            if (it == IdentificationStep.BANK_ID_IBAN.destination) {
-                defaultToBankId = true
-            }
         }
     }
 
@@ -187,7 +176,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
                             Timber.d("submitButton success")
                             sharedViewModel.iban = iBan
                             hideKeyboard()
-                            ibanViewModel.onSubmitButtonClicked(iBan, defaultToBankId)
+                            ibanViewModel.onSubmitButtonClicked(iBan)
                         },
                         { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
         )

@@ -80,12 +80,15 @@ val identhub = registerForActivityResult(StartIdenthubContract()) {
 }
 
 // You need to pass the sessionUrl that you obtained from Solaris API here:
-identhub.launch(sessionUrl)
+identhub.launch(StartIdenthubConfig(sessionUrl = sessionUrl))
 ```
 ### I hate the new API show me the good ol' way:
 You can still use the `startActivityForResult` to start the SDK:
 ```kotlin
-val intent = StartIdenthubContract().createIntent(context = this, sessionUrl)
+val intent = StartIdenthubContract().createIntent(
+    context = this,
+    StartIdenthubConfig(sessionUrl = sessionUrl)
+)
 startActivityForResult(intent, RequestCode)
 
 ...
@@ -101,6 +104,9 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
 ```
 
-
 ## Example
 You can find the example app in `example` directory.
+
+## Other configurations
+### Change log levels
+The log levels for both local and remote loggers can be changed by passing the respective options in `StartIdenthubConfig` when starting the SDK.

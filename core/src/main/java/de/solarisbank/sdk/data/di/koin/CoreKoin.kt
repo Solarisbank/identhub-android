@@ -2,6 +2,7 @@ package de.solarisbank.sdk.data.di.koin
 
 import android.content.Context
 import de.solarisbank.sdk.core.BuildConfig
+import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.sdk.logger.IdLogger
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.Koin
@@ -9,23 +10,29 @@ import org.koin.core.KoinApplication
 import org.koin.core.component.KoinComponent
 import org.koin.core.module.Module
 import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 import kotlin.reflect.full.createInstance
 
 object IdentHubKoinContext {
     private var app: KoinApplication? = null
     internal var mockro: MockroInterface? = null
 
-    fun setUpKoinApp(context: Context, sessionUrl: String, mockroEnabled: Boolean = false) {
+    fun setUpKoinApp(context: Context, config: StartIdenthubConfig, mockroEnabled: Boolean = false) {
         if (app != null) return
+
+        val startConfigModule = module { single { config } }
         app = koinApplication {
             androidContext(context)
             modules(
-                networkModule, SessionModule.get(sessionUrl), customizationModule, loggerModule,
-                initialConfigModule, sharedUtilsModule
+                startConfigModule, networkModule, SessionModule.get(config.sessionUrl),
+                customizationModule, loggerModule, initialConfigModule, sharedUtilsModule
             )
         }
         if (mockroEnabled)
             setUpMockro()
+
+        // Inject IdLogger with the now available LoggerUseCase
+        IdLogger.inject(getKoin().get(), getKoin().get())
     }
 
     private fun setUpMockro() {

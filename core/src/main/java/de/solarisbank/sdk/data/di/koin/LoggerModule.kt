@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.data.di.koin
 
+import de.solarisbank.sdk.logger.LoggerUseCase
 import de.solarisbank.sdk.logger.config.LoggerRepository
 import de.solarisbank.sdk.logger.config.LoggerRepositoryImpl
 import de.solarisbank.sdk.logger.data.LoggerAPI
@@ -11,4 +12,5 @@ internal val loggerModule = module {
     single { get<Retrofit>().create(LoggerAPI::class.java) }
     factory { LoggerRetrofitDataSource(get()) }
     single<LoggerRepository> { LoggerRepositoryImpl(get()) }
+    factory { LoggerUseCase(get()) }
 }

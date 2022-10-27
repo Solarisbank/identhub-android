@@ -7,6 +7,7 @@ import de.solarisbank.identhub.bank.data.IbanVerificationModel
 import de.solarisbank.identhub.bank.domain.BankIdPostUseCase
 import de.solarisbank.identhub.bank.domain.VerifyIBanUseCase
 import de.solarisbank.identhub.feature.util.toVerificationState
+import de.solarisbank.identhub.session.module.config.BankConfig
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.domain.model.result.data
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +18,8 @@ import timber.log.Timber
 class VerificationBankIbanViewModel(
     private val verifyIBanUseCase: VerifyIBanUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
-    private val initialConfigStorage: InitialConfigStorage
+    private val initialConfigStorage: InitialConfigStorage,
+    private val bankConfig: BankConfig
 ) : ViewModel() {
 
     private val verifyResultLiveData: MutableLiveData<VerificationState> = MutableLiveData()
@@ -38,8 +40,8 @@ class VerificationBankIbanViewModel(
         return termsAgreedLiveData
     }
 
-    fun onSubmitButtonClicked(iBan: String, useBankId: Boolean) {
-        if (useBankId) {
+    fun onSubmitButtonClicked(iBan: String) {
+        if (bankConfig.isBankId) {
             createBankIdIdentification(iBan)
         } else {
             verifyIbanAndCreateBankIdentification(iBan)

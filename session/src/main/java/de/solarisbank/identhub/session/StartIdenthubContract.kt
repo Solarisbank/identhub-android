@@ -5,11 +5,12 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import de.solarisbank.identhub.session.main.MainActivity
 import de.solarisbank.sdk.data.IdenthubResult
+import de.solarisbank.sdk.data.StartIdenthubConfig
 
-class StartIdenthubContract: ActivityResultContract<String, IdenthubResult>() {
-    override fun createIntent(context: Context, input: String): Intent {
+class StartIdenthubContract: ActivityResultContract<StartIdenthubConfig, IdenthubResult>() {
+    override fun createIntent(context: Context, input: StartIdenthubConfig): Intent {
         return Intent(context, MainActivity::class.java)
-            .putExtra(SessionUrlKey, input)
+            .putExtra(ConfigKey, input)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): IdenthubResult {
@@ -19,7 +20,7 @@ class StartIdenthubContract: ActivityResultContract<String, IdenthubResult>() {
     }
 
     companion object {
-        const val SessionUrlKey = "session_url_key"
+        const val ConfigKey = "config_key"
         const val ResultKey = "result_key"
     }
 }

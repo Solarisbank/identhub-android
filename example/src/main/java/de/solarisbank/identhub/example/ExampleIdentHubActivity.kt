@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import de.solarisbank.identhub.example.databinding.ActivityExampleIdenthubBinding
 import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.IdenthubResult
+import de.solarisbank.sdk.data.StartIdenthubConfig
 import timber.log.Timber
 
 class ExampleIdentHubActivity : AppCompatActivity() {
@@ -32,7 +33,7 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         binding.startButton.setOnClickListener {
             setLoadingState()
             val sessionUrl = binding.sessionInputField.text.toString().trim()
-            identhub.launch(sessionUrl)
+            identhub.launch(StartIdenthubConfig(sessionUrl = sessionUrl))
         }
     }
 

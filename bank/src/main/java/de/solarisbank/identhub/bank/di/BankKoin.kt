@@ -27,7 +27,7 @@ private val bankModule = module {
     factory { FetchingAuthorizedIBanStatusUseCase(get()) }
     factory { ProcessingVerificationUseCase(get(), get(), get()) }
     viewModel { VerificationBankViewModel() }
-    viewModel { VerificationBankIbanViewModel(get(), get(), get()) }
+    viewModel { VerificationBankIbanViewModel(get(), get(), get(), get()) }
     viewModel { params -> VerificationBankExternalGateViewModel(get(), get(), params.get()) }
     viewModel { ProcessingVerificationViewModel(get()) }
 }

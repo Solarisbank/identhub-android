@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.sdk.logger.domain.model.LogContent
 import de.solarisbank.sdk.logger.domain.model.LogJson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,7 +43,7 @@ class IdLogger private constructor(
         private val loggerDelayedHandler = Handler(Looper.getMainLooper())
         private var loggerRunnable: Runnable? = null
         private var localLogLevel = LogLevel.INFO
-        private var remoteLogLevel = LogLevel.WARN
+        private var remoteLogLevel = LogLevel.INFO
         // remoteLoggingEnabled will be `null` until we fetch the config from server
         private var remoteLoggingEnabled: Boolean? = null
         private val timeFormatter = SimpleDateFormat(TIME_FORMAT, Locale.US).apply {
@@ -227,10 +228,12 @@ class IdLogger private constructor(
                     "\n Date&Time: $dateTime"
         }
 
-        fun inject(loggerUseCase: LoggerUseCase?) {
+        fun inject(loggerUseCase: LoggerUseCase?, startConfig: StartIdenthubConfig) {
             if (loggerUseCase != null) {
                 this.loggerUseCaseInstance = loggerUseCase
             }
+            localLogLevel = startConfig.localLogLevel
+            remoteLogLevel = startConfig.remoteLogLevel
         }
     }
 }

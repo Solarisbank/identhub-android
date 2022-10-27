@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.session.module
 
+import de.solarisbank.identhub.session.module.config.BankConfig
 import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.module.config.FourthlineIdentificationConfig
 import de.solarisbank.identhub.session.module.config.QesConfig
@@ -24,6 +25,12 @@ class IdenthubModuleConfigurator: IdenthubKoinComponent {
                     nextStep.contains(IdentificationStep.FOURTHLINE_SIGNING.destination)
                 configModule = module {
                     single { QesConfig(isConfirmAcceptable) }
+                }
+            }
+            IdenthubModules.BankClassName -> {
+                val isBankId = nextStep == IdentificationStep.BANK_ID_IBAN.destination
+                configModule = module {
+                    single { BankConfig(isBankId) }
                 }
             }
         }

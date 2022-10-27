@@ -76,6 +76,7 @@ class MainViewModel(
                         ).apply {
                             start()
                         }
+                        IdLogger.setRemoteLoggingEnabled(config.get().isRemoteLoggingEnabled)
                     },
                     { throwable ->
                         throwable.message?.let { IdLogger.debug(it) }
