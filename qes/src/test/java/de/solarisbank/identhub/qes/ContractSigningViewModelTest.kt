@@ -6,10 +6,9 @@ import de.solarisbank.identhub.qes.contract.sign.ContractSigningViewModel
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
 import de.solarisbank.identhub.qes.domain.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.qes.domain.ConfirmContractSignUseCase
-import de.solarisbank.identhub.qes.domain.GetMobileNumberUseCase
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.domain.model.result.Result
-import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

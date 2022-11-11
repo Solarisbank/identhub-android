@@ -8,7 +8,7 @@ import de.solarisbank.identhub.qes.domain.GetDocumentsUseCase
 import de.solarisbank.identhub.qes.domain.GetIdentificationUseCase
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.data.dto.IdentificationDto
-import de.solarisbank.sdk.data.dto.InitializationDto
+import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.data
 import io.kotest.core.spec.style.StringSpec
@@ -35,10 +35,21 @@ class ContractSigningPreviewViewModelTest: StringSpec({
         val getDocumentUseCase = mockk<GetDocumentsUseCase>()
         val fetchPdfUseCase = mockk<FetchPdfUseCase>()
         val getIdentificationUseCase = mockk<GetIdentificationUseCase>()
+
         every { getDocumentUseCase.execute(Unit) } returns
                 Single.just(Result.Success(listOf(testDocument)))
         every { getIdentificationUseCase.getInitialConfig() } returns
-                InitializationDto("", "", 0, "", null)
+                IdenthubInitialConfig(
+                        isTermsPreAccepted = true,
+                        isPhoneNumberVerified = true,
+                        isRemoteLoggingEnabled = false,
+                        firstStep = "",
+                        defaultFallbackStep = "",
+                        allowedRetries = 1,
+                        fourthlineProvider = "",
+                        partnerSettings = null,
+                        style = null
+                )
         every { getIdentificationUseCase.execute(Unit) } returns
                 Single.just(
                     Result.Success(
