@@ -8,10 +8,10 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import de.solarisbank.sdk.core.BuildConfig
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
+import de.solarisbank.sdk.logger.LoggerHttpInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -39,8 +39,7 @@ internal val networkModule = module {
     }
 
     single<Interceptor>(named(LOGGING_INTERCEPTOR)) {
-        HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+        LoggerHttpInterceptor()
     }
 
     single<Interceptor>(named(USER_AGENT_INTERCEPTOR)) {
