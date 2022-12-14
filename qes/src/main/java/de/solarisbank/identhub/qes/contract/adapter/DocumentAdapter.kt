@@ -3,14 +3,14 @@ package de.solarisbank.identhub.contract.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jakewharton.rxrelay2.PublishRelay
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.sdk.data.dto.DocumentDto
 import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class DocumentAdapter : RecyclerView.Adapter<DocumentViewHolder>() {
     private val documents: MutableList<DocumentDto> = ArrayList()
-    private val actionClickRelay = PublishRelay.create<DocumentDto>()
+    private val actionClickRelay = PublishSubject.create<DocumentDto>()
     val actionOnClickObservable: Observable<DocumentDto>
         get() = actionClickRelay.hide()
 
@@ -22,7 +22,7 @@ class DocumentAdapter : RecyclerView.Adapter<DocumentViewHolder>() {
 
     override fun onBindViewHolder(holder: DocumentViewHolder, position: Int) {
         val document = documents[position]
-        holder.bind(document) { actionClickRelay.accept(document) }
+        holder.bind(document) { actionClickRelay.onNext(document) }
     }
 
     override fun getItemCount(): Int {

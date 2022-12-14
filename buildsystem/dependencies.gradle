@@ -62,7 +62,6 @@ ext {
                     "com.squareup.moshi:moshi-adapters:$moshi",
                     "com.squareup.moshi:moshi-kotlin:$moshi",
                     "com.squareup.okhttp3:okhttp:$okHttpVersion",
-                    "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
                     "com.squareup.retrofit2:retrofit:$retrofitVersion",
                     "com.squareup.retrofit2:converter-moshi:$retrofitVersion",],
             test: [
@@ -90,10 +89,7 @@ ext {
     rxJava = [
             "io.reactivex.rxjava2:rxjava:2.2.21",
             "io.reactivex.rxjava2:rxandroid:2.1.1",
-            "com.jakewharton.rxbinding2:rxbinding:2.2.0",
-            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
-            "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion",
-            "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     ]
 
     androidxTestVersion = "1.4.0"
@@ -129,9 +125,5 @@ ext {
             "androidx.test.espresso:espresso-core:$espressoVersion",
             "androidx.test.espresso:espresso-contrib:$espressoVersion",
             "androidx.test.espresso:espresso-intents:$espressoVersion",
-    ]
-
-    libs = [
-            preference: "androidx.preference:preference:$appCompatVersion"
     ]
 }

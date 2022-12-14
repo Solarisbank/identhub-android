@@ -9,13 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.isVisible
-import com.jakewharton.rxbinding2.view.RxView
 import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
-import de.solarisbank.sdk.data.FIRST_STEP_KEY
-import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
@@ -169,17 +166,12 @@ class VerificationBankIbanFragment : NewBaseFragment() {
         Timber.d("initViews()")
         setState(SealedVerificationState.IbanIput())
         ibanNumber!!.addTextChangedListener(ibanTextValidator)
-        compositeDisposable.add(RxView.clicks(submitButton!!)
-                .map { ibanNumber!!.text.toString().filter { !it.isWhitespace() } }
-                .subscribe(
-                        { iBan: String ->
-                            Timber.d("submitButton success")
-                            sharedViewModel.iban = iBan
-                            hideKeyboard()
-                            ibanViewModel.onSubmitButtonClicked(iBan)
-                        },
-                        { throwable: Throwable? -> Timber.e(throwable, "Cannot valid IBAN") })
-        )
+        submitButton?.setOnClickListener {
+            hideKeyboard()
+            val iban = ibanNumber!!.text.toString().filter { !it.isWhitespace() }
+            sharedViewModel.iban = iban
+            ibanViewModel.onSubmitButtonClicked(iban)
+        }
         setTermsText()
     }
 
