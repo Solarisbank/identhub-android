@@ -18,7 +18,6 @@ import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.io.File
 
 class KycUploadFragment : NewBaseFragment() {
 

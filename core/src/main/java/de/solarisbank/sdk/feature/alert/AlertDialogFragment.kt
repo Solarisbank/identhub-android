@@ -15,8 +15,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.solarisbank.sdk.core.R
-import de.solarisbank.sdk.feature.customization.ButtonStyle
-import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.domain.model.result.Event
 
 class AlertDialogFragment : BottomSheetDialogFragment() {
@@ -39,10 +37,10 @@ class AlertDialogFragment : BottomSheetDialogFragment() {
         return view
     }
 
-    fun initView(view: View) {
+    private fun initView(view: View) {
         val args = requireArguments()
         val tag = tag ?: TAG
-        val customization = alertViewModel.getCustomization()
+        alertViewModel.getCustomization()
 
         view.findViewById<TextView>(R.id.title).apply { text = args.getString(KEY_TITLE) }
         view.findViewById<TextView>(R.id.message).apply { text = args.getString(KEY_MESSAGE) }

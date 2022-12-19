@@ -2,13 +2,13 @@ package de.solarisbank.identhub.session.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.identhub.session.R
@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         setContentView(R.layout.identhub_activity_main)
         setUpView()
         observeViewModel()
+        addBackPressedCallback()
     }
 
     private fun setUpKoin() {
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private fun setUpView() {
         closeButton = findViewById(R.id.img_close)
         closeButton?.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -79,6 +80,15 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             setCurrentModule(it.currentModule)
         }
         viewModel.events().observe(this, ::handleEvent)
+    }
+
+    private fun addBackPressedCallback() {
+        onBackPressedDispatcher.addCallback(this,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    showQuitDialog()
+                }
+        })
     }
 
     private fun setCurrentModule(module: IdenthubModule) {
@@ -133,7 +143,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         )
     }
 
-    override fun onBackPressed() {
+    private fun showQuitDialog() {
         showAlertFragment(
             title = getString(R.string.identhub_identity_dialog_quit_process_title),
             message = getString(R.string.identhub_identity_dialog_quit_process_message),

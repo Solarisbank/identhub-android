@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.data.dto
 
 import com.squareup.moshi.Json
-import java.util.*
 
 data class IdentificationDto(
         var id: String,

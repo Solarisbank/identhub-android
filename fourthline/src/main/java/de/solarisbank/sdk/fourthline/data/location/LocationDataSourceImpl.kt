@@ -3,6 +3,7 @@ package de.solarisbank.sdk.fourthline.data.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
+import androidx.core.location.LocationCompat
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -26,8 +27,7 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
         LocationServices
             .getFusedLocationProviderClient(applicationContext).getCurrentLocation(PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token)
             .addOnSuccessListener {
-//                Timber.d("dispatchLocationRequest() 0: it.isFromMockProvider: ${ it?.isFromMockProvider }")
-                if (it != null && !it.isFromMockProvider) {
+                if (!LocationCompat.isMock(it)) {
                     Timber.d("dispatchLocationRequest() 1")
                     count = 0
                     locationResultSubject!!.onSuccess(LocationResult.Success(Location(it)))
@@ -48,8 +48,8 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
     @SuppressLint("MissingPermission")
     private fun obtainLocationDto() {
 
-        var isGpsEnabled: Boolean = false
-        var isNetworkEnabled: Boolean = false
+        var isGpsEnabled = false
+        var isNetworkEnabled = false
         Timber.d("obtainLocation() 0")
         try {
             Timber.d("obtainLocation() 1")
@@ -88,6 +88,6 @@ class LocationDataSourceImpl(private val applicationContext: Context) : Location
     }
 
     companion object {
-        private val FETCHING_LOCATION_AMOUNT = 2
+        private const val FETCHING_LOCATION_AMOUNT = 2
     }
 }

@@ -18,7 +18,7 @@ import timber.log.Timber
 class VerificationBankIbanViewModel(
     private val verifyIBanUseCase: VerifyIBanUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
-    private val initialConfigStorage: InitialConfigStorage,
+    initialConfigStorage: InitialConfigStorage,
     private val bankConfig: BankConfig
 ) : ViewModel() {
 
@@ -79,7 +79,7 @@ class VerificationBankIbanViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { it ->
+                {
                     Timber.d("Iban verification result 7")
                     verifyResultLiveData.value = it
 

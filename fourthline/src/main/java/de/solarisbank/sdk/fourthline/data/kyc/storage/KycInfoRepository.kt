@@ -48,14 +48,6 @@ class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDa
         kycInfoInMemoryDataSource.updateIpAddress(ipAddress)
     }
 
-    suspend fun getPersonData(): PersonDataDto? {
-        return kycInfoInMemoryDataSource.getPersonData()
-    }
-
-    suspend fun getSelfieFullImage(): Bitmap? {
-        return kycInfoInMemoryDataSource.getSelfieFullImage()
-    }
-
     suspend fun getKycDocument(): Document {
         return kycInfoInMemoryDataSource.getKycDocument()
     }

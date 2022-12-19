@@ -2,7 +2,6 @@ package de.solarisbank.identhub.bank.domain
 
 import de.solarisbank.identhub.bank.data.IbanVerificationModel
 import de.solarisbank.identhub.bank.data.Iban
-import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
@@ -26,11 +25,11 @@ class VerifyIBanUseCase(
 
     private var ibanAttemts = 0
 
-    override fun invoke(iBan: String): Single<NavigationalResult<IbanVerificationModel>> {
+    override fun invoke(param: String): Single<NavigationalResult<IbanVerificationModel>> {
         ibanAttemts++
         var code: String? = null
         return verificationBankRepository.postVerify(Iban(
-            iBan))
+            param))
                 .onErrorResumeNext { t ->
                     if (t is HttpException) {
                         code = t.parseErrorResponseDto()?.errors?.get(0)?.code.toString()
@@ -41,7 +40,7 @@ class VerifyIBanUseCase(
                             Timber.d("onErrorResumeNext 1")
                             val bankIdIdentification = verificationBankRepository.postBankIdIdentification(
                                 Iban(
-                                    iBan))
+                                    param))
                             Timber.d("onErrorResumeNext 2")
                             return@onErrorResumeNext bankIdIdentification
                         } else {
@@ -61,7 +60,7 @@ class VerifyIBanUseCase(
             }
             .transformResult()
             .map {
-                var ibanVerificationDto : IbanVerificationModel
+                val ibanVerificationDto : IbanVerificationModel
                 if (it.succeeded) {
                     Timber.d("Iban verification result 1 : ${it.data}, ${it.nextStep}")
                     ibanVerificationDto =  IbanVerificationModel.IbanVerificationSuccessful(it.data, it.nextStep)
@@ -71,8 +70,7 @@ class VerifyIBanUseCase(
                     val initializationDto = getInitializationDto()
                     if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto.defaultFallbackStep != null) {
                         ibanVerificationDto = if (
-                                initializationDto.allowedRetries != null &&
-                                ibanAttemts < getInitializationDto()!!.allowedRetries
+                            ibanAttemts < getInitializationDto().allowedRetries
                         ) {
                             Timber.d("Iban verification result 2")
                             IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, true)
@@ -101,21 +99,6 @@ class VerifyIBanUseCase(
             }
     }
 
-    private fun Result.Error.parseErrorCode() : String? {
-        return if (this.throwable is HttpException) {
-            Timber.d("parseErrorCode()")
-            try { (this.throwable as HttpException)
-                    .parseErrorResponseDto()?.errors?.get(0)
-                    ?.code.toString()
-            } catch (e: Exception) {
-                Timber.w(e,"Error during errorDto parsing")
-                null
-            }
-        } else {
-            null
-        }
-    }
-
     private fun getInitializationDto(): IdenthubInitialConfig {
         return initialConfigStorage.get()
     }
@@ -123,6 +106,5 @@ class VerifyIBanUseCase(
     companion object {
         private const val INVALID_IBAN = "invalid_iban"
         private const val IDENTIFICATION_ATTEMPTS_EXCEEDED = "identification_attempts_exceeded"
-
     }
 }

@@ -11,13 +11,13 @@ import timber.log.Timber
 
 class CustomizationRepositoryImpl(
     private val context: Context,
-    private val initialConfigStorage: InitialConfigStorage
+    private val initialConfigStorage: InitialConfigStorage?
     ): CustomizationRepository {
 
-    var cached: Customization? = null
+    private var cached: Customization? = null
 
     override fun get(): Customization {
-        return cached ?: createCustomization(initialConfigStorage.get().style).also {
+        return cached ?: createCustomization(initialConfigStorage?.get()?.style).also {
             cached = it
         }
     }

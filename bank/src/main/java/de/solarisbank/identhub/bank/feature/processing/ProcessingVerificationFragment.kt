@@ -74,12 +74,12 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
     sealed class ProcessingVerificationResult {
         class VerificationSuccessful(val id: String, val nextStep: String) : ProcessingVerificationResult()
 
-        class PaymentInitAuthPersonError(val nextStep: String, val retryAvailable: Boolean = false)
+        class PaymentInitAuthPersonError(val nextStep: String)
             : ProcessingVerificationResult(), ErrorState {// 8. payment init auth person
             override val dialogTitleId = R.string.identhub_payment_init_auth_person_title
             override val dialogMessageId = R.string.identhub_payment_init_auth_person_message
             override val dialogPositiveLabelId = R.string.identhub_ok_button
-            override val dialogNegativeLabelId = null
+            override val dialogNegativeLabelId: Nothing? = null
         }
 
         class PaymentInitFailedError(val nextStep: String)
@@ -102,7 +102,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
             override val dialogTitleId = R.string.identhub_generic_error_title
             override val dialogMessageId = R.string.identhub_generic_error_message
             override val dialogPositiveLabelId = R.string.identhub_ok_button
-            override val dialogNegativeLabelId = null
+            override val dialogNegativeLabelId: Nothing? = null
         }
     }
 }

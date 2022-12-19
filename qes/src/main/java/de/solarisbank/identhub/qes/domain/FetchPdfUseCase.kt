@@ -28,7 +28,7 @@ class FetchPdfUseCase(
                     }
             )
             .filter { result: NavigationalResult<File?> -> result.data != null }
-            .map { it: NavigationalResult<File?> ->
+            .map {
                 Timber.d("invoke 2, it.data!!.path: ${it.data!!.path}")
                 return@map it
             }

@@ -1,6 +1,5 @@
 package de.solarisbank.identhub.data.contract
 
-import de.solarisbank.identhub.qes.data.dto.TransactionAuthenticationNumber
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import io.reactivex.Single
 import okhttp3.ResponseBody

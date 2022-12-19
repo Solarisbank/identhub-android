@@ -7,6 +7,7 @@ import de.solarisbank.identhub.mockro.shared.IdentificationChange
 import de.solarisbank.identhub.mockro.shared.MockroIdentification
 import de.solarisbank.identhub.mockro.shared.baseFakeIdent
 import de.solarisbank.sdk.data.IdentificationMethod
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.sdk.data.di.koin.MockroPersona
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import io.reactivex.Single
@@ -32,6 +33,11 @@ class FakeVerificationBankNetworkDataSource: VerificationBankNetworkDataSource {
     }
 
     override fun getVerificationStatus(identificationId: String?): Single<IdentificationDto> {
-        return Single.just(baseFakeIdent.copy(status = "identification_data_required", nextStep = "bank_id/fourtline"))
+        return Single.just(
+            baseFakeIdent.copy(
+                status = "identification_data_required",
+                nextStep = IdentificationStep.BANK_ID_FOURTHLINE.destination
+            )
+        )
     }
 }

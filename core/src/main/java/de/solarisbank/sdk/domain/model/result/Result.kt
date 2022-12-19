@@ -17,12 +17,12 @@ sealed class Result<out R> {
     }
 
     companion object {
-        fun createUnknown(throwable: Throwable): Result.Error {
-            return Result.Error(Type.Unknown, throwable)
+        fun createUnknown(throwable: Throwable): Error {
+            return Error(Type.Unknown, throwable)
         }
 
-        fun createEmptySuccess(): Result.Success<Any> {
-            return Result.Success<Any>(Unit)
+        fun createEmptySuccess(): Success<Any> {
+            return Success<Any>(Unit)
         }
     }
 }
@@ -35,10 +35,6 @@ val <T> Result<T>.data: T?
 
 val <T> Result<T>.throwable: Throwable?
     get() = (this as? Result.Error)?.throwable
-
-fun <T> Result<T>.successOr(fallback: T): T {
-    return (this as? Result.Success<T>)?.data ?: fallback
-}
 
 
 

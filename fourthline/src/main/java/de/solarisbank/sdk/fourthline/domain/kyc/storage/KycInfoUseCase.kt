@@ -121,7 +121,7 @@ class KycInfoUseCaseImpl(
         val documentValidationError = kycInfo.document?.validate()
         val personValidationError = kycInfo.person.validate()
         val providerValidationError = kycInfo.provider.validate()
-        val metadataValidationError = kycInfo.metadata?.validate()
+        val metadataValidationError = kycInfo.metadata.validate()
         val selfieValidationError = kycInfo.selfie?.validate()
         val secondaryValidationError = kycInfo.secondaryDocuments
             .map { it.validate() }
@@ -151,12 +151,12 @@ class KycInfoUseCaseImpl(
                     "\n addressValidationError : $addressValidationError")
 
         return documentValidationError.isNullOrEmpty()
-                && personValidationError.isNullOrEmpty()
-                && providerValidationError.isNullOrEmpty()
-                && metadataValidationError.isNullOrEmpty()
+                && personValidationError.isEmpty()
+                && providerValidationError.isEmpty()
+                && metadataValidationError.isEmpty()
                 && selfieValidationError.isNullOrEmpty()
-                && secondaryValidationError.isNullOrEmpty()
-                && contactsValidationError.isNullOrEmpty()
+                && secondaryValidationError.isEmpty()
+                && contactsValidationError.isEmpty()
                 && addressValidationError.isNullOrEmpty()
     }
 

@@ -1,7 +1,5 @@
 package de.solarisbank.sdk.data
 
-const val FIRST_STEP_KEY = "FIRST_STEP_KEY"
-
 enum class IdentificationStep(val destination: String) {
     MOBILE_NUMBER("mobile_number"), //todo remove IdentityActivity and create MobileActivity
     BANK_IBAN("bank/iban"),

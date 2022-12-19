@@ -11,7 +11,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.io.File
 import java.net.URI
 
 class KycUploadViewModel(
@@ -42,11 +41,5 @@ class KycUploadViewModel(
                                         Event(KycUploadStatusDto.GenericError)
                         }}
         ))
-    }
-
-
-
-    companion object {
-        const val KYC_ZIPPER_URI = "KYC_ZIPPER_URI"
     }
 }

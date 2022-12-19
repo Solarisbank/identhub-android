@@ -53,7 +53,7 @@ class VerificationBankExternalGatewayFragment : NewBaseFragment() {
 
     private fun initWebView() {
         val bankVerificationUrl =
-            verificationBankExternalGateViewModel!!.verificationBankUrlLiveData.value!!
+            verificationBankExternalGateViewModel.verificationBankUrlLiveData.value!!
 
         webView!!.settings.javaScriptEnabled = true
         enableWebViewDarkModeSupport()
@@ -82,11 +82,11 @@ class VerificationBankExternalGatewayFragment : NewBaseFragment() {
                                 negativeLabel = getString(R.string.identhub_identity_dialog_fallback_process_negative_button),
                                 positiveAction = {
                                     Timber.d("Quit IdentHub SDK after abort button pressed")
-                                    sharedViewModel?.cancelIdentification()
+                                    sharedViewModel.cancelIdentification()
                                 },
                                 negativeAction = {
                                     Timber.d("Switch to Fourthline after abort button pressed")
-                                    sharedViewModel?.postDynamicNavigationNextStep(
+                                    sharedViewModel.postDynamicNavigationNextStep(
                                         IdentificationStep.FOURTHLINE_SIMPLIFIED.destination)
                                 }
                             )

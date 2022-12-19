@@ -57,10 +57,6 @@ class KycSharedViewModel(
         return runBlocking { kycInfoUseCase.getKycDocument() }
     }
 
-    fun clearPersonDataCaches() {
-        deleteKycInfoUseCase.clearPersonDataCaches()
-    }
-
     fun fetchPersonDataAndIp() {
         Timber.d("fetchPersonDataAndIp() 0")
         deleteKycInfoUseCase.clearPersonDataCaches()

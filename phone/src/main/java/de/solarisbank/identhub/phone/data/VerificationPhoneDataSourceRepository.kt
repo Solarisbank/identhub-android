@@ -1,6 +1,5 @@
 package de.solarisbank.identhub.phone.data
 
-import de.solarisbank.identhub.phone.data.VerificationPhoneNetworkDataSource
 import de.solarisbank.identhub.phone.domain.VerificationPhoneRepository
 import de.solarisbank.identhub.phone.model.TransactionAuthenticationNumber
 import de.solarisbank.identhub.phone.model.VerificationPhoneResponse

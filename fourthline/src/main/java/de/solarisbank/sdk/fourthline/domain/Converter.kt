@@ -17,7 +17,7 @@ fun PersonDataDto.appliedDocuments(): List<AppliedDocument>? {
 
 private fun String.appliedDocument(): AppliedDocument {
     return try {
-        valueOf(replace(" ", "_").toUpperCase())
+        valueOf(replace(" ", "_").uppercase())
     } catch (e: IllegalArgumentException) {
         NATIONAL_ID_CARD
     }

@@ -99,7 +99,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     }
 
     private fun setState(state: VerificationState) {
-        Timber.d("setState: ${state}")
+        Timber.d("setState: $state")
         if (state is SealedVerificationState.IbanVerificationSuccessful) {
             Timber.d("setState 1")
             sharedViewModel.moveToEstablishSecureConnection(bankIdentificationUrl = state.bankIdentificationUrl, nextStep = state.nextStep)

@@ -16,5 +16,4 @@ data class DocumentDto(
         @Json(name = "created_at")
         val createdAt: Date? = null,
         @Json(name = "deleted_at")
-        val deletedAt: Date? = null) {
-}
+        val deletedAt: Date? = null)

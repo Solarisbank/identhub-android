@@ -8,7 +8,6 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import de.solarisbank.sdk.core.R
 
 import androidx.core.view.updateLayoutParams
@@ -58,11 +57,4 @@ class StartImageTextView @JvmOverloads constructor(
         style.recycle()
     }
 
-    fun setText(charSequence: CharSequence?) {
-        textView.text = charSequence
-    }
-
-    fun setImage(@DrawableRes drawableRes: Int) {
-        imageView.setImageResource(drawableRes)
-    }
 }

@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.fourthline.feature.ui.scan
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class DocTypeAdapter(private val customization: Customization,
         return DocTypeViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.identhub_item_doc_type, parent, false))
     }
 
+    @SuppressLint("RecyclerView")
     override fun onBindViewHolder(holder: DocTypeViewHolder, position: Int) {
         val documentType: AppliedDocument = documentTypes[position]
         holder.textView.text = documentType.asString(holder.textView.context)

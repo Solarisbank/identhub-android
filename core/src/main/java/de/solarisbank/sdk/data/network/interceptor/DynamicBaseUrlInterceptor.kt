@@ -4,7 +4,6 @@ import de.solarisbank.sdk.data.repository.SessionUrlRepository
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
-import timber.log.Timber
 
 class DynamicBaseUrlInterceptor(
     private val sessionUrlRepository: SessionUrlRepository

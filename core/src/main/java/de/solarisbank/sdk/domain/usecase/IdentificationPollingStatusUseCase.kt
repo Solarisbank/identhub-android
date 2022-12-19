@@ -40,7 +40,7 @@ class IdentificationPollingStatusUseCase(
                             .takeUntil { count > 60}
                             .timeout(60, TimeUnit.SECONDS)
                             .flatMap {
-                                return@flatMap Observable.create<IdentificationDto> { emitter ->
+                                return@flatMap Observable.create { emitter ->
                                     emitter.onNext(identificationRepository.getRemoteIdentificationDto(identification.id).blockingGet())
                                     emitter.onComplete()
                                 }

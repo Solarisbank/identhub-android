@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.format.DateFormat
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import de.solarisbank.sdk.fourthline.R
 import timber.log.Timber
 import java.util.*
@@ -23,7 +24,7 @@ class DateInputTextView : AppCompatTextView {
 
     private var calendar: Calendar? = null
 
-    private val dateListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+    private val dateListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         calendar?.apply {
             set(Calendar.YEAR, year)
             set(Calendar.MONTH, month)
@@ -87,9 +88,9 @@ class DateInputTextView : AppCompatTextView {
             datePickerDialog.setCanceledOnTouchOutside(false)
             datePickerDialog.show()
             datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-                .setTextColor(resources.getColor(R.color.identhub_color_secondary))
+                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_secondary))
             datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
-                .setTextColor(resources.getColor(R.color.identhub_color_secondary))
+                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_secondary))
         }
     }
 

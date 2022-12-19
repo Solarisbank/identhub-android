@@ -1,13 +1,6 @@
 package de.solarisbank.sdk.logger.domain.model
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.*
-
 
 data class LogJson(
     @Json(name = "detail")

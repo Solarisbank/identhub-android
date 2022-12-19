@@ -19,11 +19,11 @@ class WebViewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_webview, container, false).also {
             webView = it.findViewById(R.id.webView)
-            webView!!.setWebViewClient(object : WebViewClient() {
+            webView!!.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                     return false
                 }
-            })
+            }
 
             closeButton = it.findViewById(R.id.closeButton)
             closeButton!!.setOnClickListener { requireActivity().onBackPressed() }

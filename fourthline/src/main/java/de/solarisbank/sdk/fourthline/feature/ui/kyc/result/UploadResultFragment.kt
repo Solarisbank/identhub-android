@@ -15,7 +15,6 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.IDENTIFICATION_ID
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.NEXT_STEP_ARG
 import org.koin.androidx.navigation.koinNavGraphViewModel
-import timber.log.Timber
 
 class UploadResultFragment : NewBaseFragment() {
 
