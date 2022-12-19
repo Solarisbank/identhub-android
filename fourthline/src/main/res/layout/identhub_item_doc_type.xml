@@ -5,9 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_marginTop="22dp"
-    >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="22dp">
 
         <RadioButton
             android:id="@+id/typeRadiobutton"
@@ -21,15 +20,13 @@
         <TextView
             android:id="@+id/textView"
             style="@style/IdentHubTextView.Small_15"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Some text"
             app:layout_constraintStart_toEndOf="@id/typeRadiobutton"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="25dp"
-            app:layout_constraintHorizontal_bias="0"
-            />
+            android:layout_marginStart="25dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
