@@ -138,7 +138,7 @@ class KycInfoUseCaseTest : StringSpec ({
     }
 
     "checkUpdateKycLocation" {
-        val metadataMockk = mockk<com.fourthline.kyc.DeviceMetadata> {
+        val metadataMockk = mockk<com.fourthline.core.DeviceMetadata> {
             every { location = any() } returns Unit
         }
         mockkConstructor(KycInfo::class)

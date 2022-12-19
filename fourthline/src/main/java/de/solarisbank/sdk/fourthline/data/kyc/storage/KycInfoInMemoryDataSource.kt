@@ -2,6 +2,7 @@ package de.solarisbank.sdk.fourthline.data.kyc.storage
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import com.fourthline.core.DeviceMetadata
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.core.Gender

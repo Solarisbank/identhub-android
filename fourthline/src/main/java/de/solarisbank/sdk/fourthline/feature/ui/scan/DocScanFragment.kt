@@ -99,6 +99,8 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
         super.onDestroyView()
     }
 
+    override val shouldStartAutomatically: Boolean = true
+
     override fun getConfig(): DocumentScannerConfig {
         Timber.d("getConfig()")
         return DocumentScannerConfig(
