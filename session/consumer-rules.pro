@@ -1,0 +1,1 @@
+-keep public class de.solarisbank.identhub.session.** { *; }

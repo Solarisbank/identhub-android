@@ -6,6 +6,7 @@ import de.solarisbank.identhub.session.module.IdenthubModules.BankClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.FourthlineClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.PhoneClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.QESClassName
+import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
 import kotlin.reflect.full.createInstance
 
@@ -16,6 +17,9 @@ class IdenthubModuleResolver {
             val kClass = Class.forName(className).kotlin
             kClass.createInstance() as? IdenthubModule
         } catch (throwable: Throwable) {
+            IdLogger.error(
+                "Module not found for class: $className, message: ${throwable.message}"
+            )
             null
         }
     }

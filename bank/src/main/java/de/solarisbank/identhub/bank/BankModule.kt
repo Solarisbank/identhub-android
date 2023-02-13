@@ -1,9 +1,10 @@
 package de.solarisbank.identhub.bank
 
+import androidx.annotation.Keep
 import de.solarisbank.identhub.bank.di.BankKoin
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
 
-class BankModule: IdenthubModule {
+class BankModule @Keep constructor(): IdenthubModule {
     companion object {
         val navigationId = R.id.identhub_bank_navigation
     }

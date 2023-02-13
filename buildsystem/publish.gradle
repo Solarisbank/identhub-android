@@ -1,0 +1,45 @@
+String getModuleArtifactId() {
+    if (project.name == 'session') {
+        return 'identhub-android'
+    } else {
+        return "identhub-android-$project.name"
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            def releaseVersion = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
+                    ?: System.getenv("LOCAL_PUBLISH_VERSION")
+            if (releaseVersion != null) {
+                maven(MavenPublication) {
+                    from components.release
+                    groupId = project.group
+                    artifactId = getModuleArtifactId()
+                    version = releaseVersion
+
+                    pom {
+                        name = 'IdentHub'
+                        description = 'Solaris IdentHub Android SDK'
+                        developers {
+                            developer {
+                                name = 'Solaris SE'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}"
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
+}

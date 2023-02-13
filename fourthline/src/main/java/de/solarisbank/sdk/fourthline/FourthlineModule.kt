@@ -1,9 +1,10 @@
 package de.solarisbank.sdk.fourthline
 
+import androidx.annotation.Keep
 import de.solarisbank.sdk.fourthline.di.FourthlineKoin
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
 
-class FourthlineModule: IdenthubModule {
+class FourthlineModule @Keep constructor(): IdenthubModule {
     companion object {
         val navigationId = R.id.identhub_fourthline_navigation
     }

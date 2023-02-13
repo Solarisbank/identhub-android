@@ -64,7 +64,6 @@ class DateInputTextView : AppCompatTextView {
             time = date
             resetToMidnight()
             add(Calendar.YEAR, offsetYears)
-            add(Calendar.DAY_OF_MONTH, 1)
         }
     }
 

@@ -5,9 +5,8 @@ import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.qes.di.core.QesKoin
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
 
-@Keep
 @Suppress("unused")
-class QESModule : IdenthubModule {
+class QESModule @Keep constructor(): IdenthubModule {
     companion object {
         val navigationId = R.id.identhub_qes_navigation
         val viewModelClass = ContractViewModel::class.java

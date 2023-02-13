@@ -52,24 +52,6 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun getSelfieFullImage(): Bitmap? {
-        mutex.lock()
-        try {
-            return kycInfo.selfie?.image
-        } finally {
-            mutex.unlock()
-        }
-    }
-
-    suspend fun getPersonData(): PersonDataDto? {
-        mutex.lock()
-        try {
-            return _personDataDto
-        } finally {
-            mutex.unlock()
-        }
-    }
-
     suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
         mutex.lock()
         Timber.d("updateWithPersonDataDto : $personDataDto")
@@ -247,11 +229,11 @@ class KycInfoInMemoryDataSource {
     }
 
     private fun obtainTaxInfo(result: DocumentScannerResult){
-        val mrtd = result.mrzInfo as? MrtdMrzInfo
-        if(mrtd!=null && mrtd.optionalData!!.isNotBlank()){
+        val mrzInfo = result.mrzInfo as? MrtdMrzInfo
+        if (mrzInfo?.optionalData?.isBlank() == false) {
             kycInfo.taxInfo?.apply {
-                taxpayerIdentificationNumber = mrtd.optionalData
-                taxationCountryCode = mrtd.issuingCountry
+                taxpayerIdentificationNumber = mrzInfo.optionalData
+                taxationCountryCode = mrzInfo.issuingCountry
             }
         }
     }

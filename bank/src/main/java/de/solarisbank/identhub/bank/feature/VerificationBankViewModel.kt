@@ -37,7 +37,7 @@ class VerificationBankViewModel : ViewModel() {
 
     fun callOnFailure() {
         Timber.d("callOnFailure")
-        navigator?.onOutcome(ModuleOutcome.Failure())
+        navigator?.onOutcome(ModuleOutcome.Failure("Error occurred after payment process"))
     }
 
     private fun navigateTo(actionId: Int, bundle: Bundle?, nextStep: String? = null) {

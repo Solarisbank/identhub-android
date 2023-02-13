@@ -48,46 +48,6 @@ android {
     }
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            def githubRef = System.getenv("GITHUB_REF")
-            if (githubRef != null) {
-                maven(MavenPublication) {
-                    from components.release
-                    groupId = project.group
-                    artifactId = 'identhub-android'
-                    // Version should match the release tag
-                    version = System.getenv("GITHUB_REF")?.split('/')?.getAt(2)
-
-
-                    pom {
-                        name = 'IdentHub'
-                        description = 'Solarisbank IdentHub Android SDK'
-                        developers {
-                            developer {
-                                name = 'Solarisbank AG'
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}"
-                credentials {
-                    username = System.getenv("GITHUB_ACTOR")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-            }
-        }
-    }
-}
-
 dependencies {
     implementation timber
     implementation lifecycle.libs
@@ -104,3 +64,5 @@ dependencies {
     testImplementation mockkTest
     androidTestImplementation espresso
 }
+
+apply from: '../buildsystem/publish.gradle'

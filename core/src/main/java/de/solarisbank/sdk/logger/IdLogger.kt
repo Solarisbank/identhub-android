@@ -31,6 +31,7 @@ class IdLogger private constructor(
         object Default: Category("")
         object Nav: Category("Nav")
         object Api: Category("API")
+        object Fourthline: Category("Fourthline")
         class Other(name: String) : Category(name)
     }
 

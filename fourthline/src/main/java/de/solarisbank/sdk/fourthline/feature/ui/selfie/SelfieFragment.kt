@@ -19,6 +19,8 @@ import de.solarisbank.sdk.fourthline.*
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.logger.IdLogger
+import de.solarisbank.sdk.logger.IdLogger.Category.Fourthline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -100,7 +102,7 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
     }
 
     override fun onFail(error: SelfieScannerError) {
-        Timber.d("onFail: ${error.name}")
+        IdLogger.error(category = Fourthline, message = "Selfie error: ${error.name}")
         lifecycleScope.launch(Dispatchers.Main) {
             activityViewModel.onSelfieOutcome(SelfieOutcome.Failed(error.asString(requireContext())))
         }
@@ -127,9 +129,8 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
     }
 
     override fun onSuccess(result: SelfieScannerResult) {
-        Timber.d("onSuccess()")
-
         lifecycleScope.launch(Dispatchers.Main) {
+            IdLogger.info(category = Fourthline, message = "Selfie Capture Successful")
             icon?.visibility = View.VISIBLE
             icon?.setImageLevel(1)
             warningsLabel?.hide()

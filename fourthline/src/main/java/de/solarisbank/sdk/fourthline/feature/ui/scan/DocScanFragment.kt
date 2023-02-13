@@ -38,6 +38,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_DOC_TYPE
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
+import de.solarisbank.sdk.logger.IdLogger
+import de.solarisbank.sdk.logger.IdLogger.Category.Fourthline
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -267,7 +269,10 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     }
 
     override fun onStepSuccess(result: DocumentScannerStepResult) {
-        Timber.d("onStepSuccess: ${step?.fileSide?.name}")
+        IdLogger.debug(
+            category = Fourthline,
+            message = "Document side captured: ${step?.fileSide?.name}"
+        )
 
         cleanupJob?.cancel()
         lifecycleScope.launch(Dispatchers.Main) {
@@ -277,8 +282,8 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     }
 
     override fun onFail(error: DocumentScannerError) {
-        Timber.d("onFail")
         lifecycleScope.launch(Dispatchers.Main) {
+            IdLogger.error(category = Fourthline, message = "Doc scan error: ${error.name}")
             val args = Bundle().apply {
                 putString(KEY_CODE, FOURTHLINE_SCAN_FAILED)
                 putString(KEY_MESSAGE, error.asString(requireContext()))
@@ -288,8 +293,8 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     }
 
     override fun onSuccess(result: DocumentScannerResult) {
-        Timber.d("onSuccess")
         lifecycleScope.launch(Dispatchers.Main) {
+            IdLogger.info(category = Fourthline, message = "Document Capture Successful")
             kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, result)
             activityViewModel.onDocScanOutcome(DocScanResult.Success)
         }
