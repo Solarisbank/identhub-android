@@ -35,6 +35,7 @@ class KycInfoUseCaseTest : StringSpec ({
                 isTermsPreAccepted = true,
                 isPhoneNumberVerified = true,
                 isRemoteLoggingEnabled = false,
+                isSecondaryDocScanRequired = false,
                 firstStep = "",
                 defaultFallbackStep = null,
                 allowedRetries = 5,

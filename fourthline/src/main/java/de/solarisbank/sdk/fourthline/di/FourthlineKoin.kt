@@ -62,7 +62,7 @@ private val fourthlineModule = module {
         KycSharedViewModel(get(), get(), get(), get(), get())
     }
     viewModel {
-        FourthlineViewModel()
+        FourthlineViewModel(get())
     }
     viewModel {
         KycUploadViewModel(get())

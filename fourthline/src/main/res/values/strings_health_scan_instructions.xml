@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="identhub_health_scan_title">Scan your health card</string>
+    <string name="identhub_health_scan_description">TaxID is mandatory for opening a bank account in Italy. Hence, in order to proceed with the process, you are required to scan your health card.
+     \n\nPlease keep your health card ready and then proceed to continue the next steps.</string>
+</resources>

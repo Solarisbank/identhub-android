@@ -55,6 +55,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/healthCardInstructionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.secondary.HealthCardInstructionsFragment"
+        android:label="HealthCardInstructionsFragment"
+        >
+<!--        <action-->
+<!--            android:id="@+id/action_selfieInstructionsFragment_to_secondaryCardScanFragment"-->
+<!--            app:destination="@id/secondaryCardScanFragment" />-->
+    </fragment>
+
+    <fragment
         android:id="@+id/selfieInstructionsFragment"
         android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragment"
         android:label="SelfieInstructionsFragment"
@@ -127,6 +137,10 @@
         android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResultFragment"
         android:label="DocumentResultFragment"
         >
+        <action
+            android:id="@+id/action_documentResultFragment_to_healthCardInstructionsFragment"
+            app:destination="@id/healthCardInstructionsFragment" />
+
         <action
             android:id="@+id/action_documentResultFragment_to_selfieInstructionsFragment"
             app:destination="@id/selfieInstructionsFragment" />

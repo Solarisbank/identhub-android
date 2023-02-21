@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
 import de.solarisbank.sdk.data.entity.Status
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadOutcome
@@ -16,7 +17,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsOutcome
 
-class FourthlineViewModel : ViewModel() {
+class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorage) : ViewModel() {
 
     var navigator: Navigator? = null
 
@@ -100,7 +101,10 @@ class FourthlineViewModel : ViewModel() {
     }
 
     fun onDocResultOutcome() {
-        navigateTo(R.id.action_documentResultFragment_to_selfieInstructionsFragment)
+        when (initialConfigStorage.get().isSecondaryDocScanRequired) {
+            true -> navigateTo(R.id.action_documentResultFragment_to_healthCardInstructionsFragment)
+            false -> navigateTo(R.id.action_documentResultFragment_to_selfieInstructionsFragment)
+        }
     }
 
     fun onKycUploadOutcome(outcome: KycUploadOutcome) {

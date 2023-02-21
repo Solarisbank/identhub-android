@@ -33,8 +33,14 @@
     </style>
 
     <style name="IdentHubTextView.Headline" parent="IdentHubTextView">
+        <item name="android:textSize">14sp</item>
         <item name="fontWeight">600</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="IdentHubTextView.Headline2" parent="IdentHubTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontWeight">600</item>
     </style>
 
     <style name="IdentHubTextView.Regular" parent="IdentHubTextView">
