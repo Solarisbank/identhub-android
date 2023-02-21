@@ -4,6 +4,20 @@
     android:id="@+id/identhub_fourthline_navigation"
     app:startDestination="@id/passingPossibilityFragment">
 
+    <fragment
+        android:id="@+id/secondaryDocScanFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragment"
+        android:label="DocumentScanFragment">
+        <argument
+            android:name="docType"
+            app:argType="de.solarisbank.sdk.fourthline.data.entity.AppliedDocument" />
+        <argument
+            android:name="isSecondaryScan"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/identhub_action_secondaryDocScanFragment_to_selfieInstructionsFragment"
+            app:destination="@id/selfieInstructionsFragment" />
+    </fragment>
     <action
         android:id="@+id/action_reset_to_selfie_instructions"
         app:destination="@id/selfieInstructionsFragment"
@@ -59,9 +73,9 @@
         android:name="de.solarisbank.sdk.fourthline.feature.ui.scan.secondary.HealthCardInstructionsFragment"
         android:label="HealthCardInstructionsFragment"
         >
-<!--        <action-->
-<!--            android:id="@+id/action_selfieInstructionsFragment_to_secondaryCardScanFragment"-->
-<!--            app:destination="@id/secondaryCardScanFragment" />-->
+        <action
+            android:id="@+id/identhub_action_healthCardInstructionsFragment_to_secondaryDocScanFragment"
+            app:destination="@id/secondaryDocScanFragment" />
     </fragment>
 
     <fragment
@@ -113,6 +127,11 @@
             android:name="docType"
             app:argType="de.solarisbank.sdk.fourthline.data.entity.AppliedDocument"
             />
+
+        <argument
+            android:name="isSecondaryScan"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_documentScanFragment_to_documentResultFragment"
             app:destination="@id/documentResultFragment" />

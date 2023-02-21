@@ -46,7 +46,7 @@ ext {
             "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     ]
 
-    navigationVersion = "2.5.3"
+    // navigationVersion: Specified in project level
     navigation = [
             "androidx.navigation:navigation-runtime:$navigationVersion",
             "androidx.navigation:navigation-fragment:$navigationVersion",

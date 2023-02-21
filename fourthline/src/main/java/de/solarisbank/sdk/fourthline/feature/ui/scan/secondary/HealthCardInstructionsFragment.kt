@@ -7,22 +7,27 @@ import android.view.ViewGroup
 import android.widget.Button
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class HealthCardInstructionsFragment : NewBaseFragment() {
 
-    private var startbutton: Button? = null
+    private var continueButton: Button? = null
+
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_health_card_scan_instructions, container, false)
             .also {
-                startbutton = it.findViewById(R.id.btnStartSecondaryScan)
+                continueButton = it.findViewById(R.id.btnStartSecondaryScan)
                 customizeUI()
             }
     }
 
     private fun customizeUI() {
-        startbutton?.customize(customization)
+        continueButton?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,11 +36,15 @@ class HealthCardInstructionsFragment : NewBaseFragment() {
     }
 
     private fun initView() {
-        startbutton!!.setOnClickListener {  }
+        continueButton!!.setOnClickListener { moveToDocScanFragment() }
+    }
+
+    private fun moveToDocScanFragment() {
+        activityViewModel.onHealthCardInstructionsOutcome()
     }
 
     override fun onDestroyView() {
-        startbutton = null
+        continueButton = null
         super.onDestroyView()
     }
 }

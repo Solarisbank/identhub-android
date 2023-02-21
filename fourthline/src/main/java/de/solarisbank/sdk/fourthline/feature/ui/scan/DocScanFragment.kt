@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.RecordingType
@@ -29,13 +30,11 @@ import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.fourthline.*
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.data.entity.toDocumentType
+import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_CODE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_MESSAGE
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_DOC_TYPE
 import de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.logger.IdLogger
@@ -68,6 +67,7 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     private var bulletList: BulletListLayout? = null
 
     private val customizationRepository: CustomizationRepository by inject()
+    private val docScanArgs: DocScanFragmentArgs by navArgs()
     private lateinit var currentDocumentType: DocumentType
     private val customization: Customization by lazy { customizationRepository.get() }
 
@@ -76,9 +76,8 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     private var animator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (arguments?.getSerializable(KEY_DOC_TYPE) as? AppliedDocument)?.let {
-            currentDocumentType = it.toDocumentType()
-        }
+        currentDocumentType = docScanArgs.docType.toDocumentType()
+
         super.onCreate(savedInstanceState)
     }
 
@@ -295,8 +294,16 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
     override fun onSuccess(result: DocumentScannerResult) {
         lifecycleScope.launch(Dispatchers.Main) {
             IdLogger.info(category = Fourthline, message = "Document Capture Successful")
-            kycSharedViewModel.updateKycInfoWithDocumentScannerResult(currentDocumentType, result)
-            activityViewModel.onDocScanOutcome(DocScanResult.Success)
+            // Put it in KYCInfo when the time comes
+            if (!docScanArgs.isSecondaryScan) {
+                kycSharedViewModel.updateKycInfoWithDocumentScannerResult(
+                    currentDocumentType,
+                    result
+                )
+            }
+            activityViewModel.onDocScanOutcome(
+                DocScanResult.Success(isSecondaryScan = docScanArgs.isSecondaryScan)
+            )
         }
     }
 
@@ -395,6 +402,6 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
 }
 
 sealed class DocScanResult {
-    object Success: DocScanResult()
+    data class Success(val isSecondaryScan: Boolean): DocScanResult()
     data class ScanFailed(val bundle: Bundle): DocScanResult()
 }

@@ -54,7 +54,7 @@ class InitialConfigUseCaseImpl(
                 isTermsPreAccepted = infoData.termsAccepted,
                 isPhoneNumberVerified = infoData.phoneVerified,
                 isRemoteLoggingEnabled = infoData.sdkLogging ?: false,
-                isSecondaryDocScanRequired = infoData.secondaryDocScanRequired == false,
+                isSecondaryDocScanRequired = infoData.secondaryDocScanRequired ?: false,
                 firstStep = initData.firstStep,
                 defaultFallbackStep = initData.fallbackStep,
                 allowedRetries = initData.allowedRetries,

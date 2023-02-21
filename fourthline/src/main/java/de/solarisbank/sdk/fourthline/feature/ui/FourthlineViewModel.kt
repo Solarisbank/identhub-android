@@ -3,14 +3,16 @@ package de.solarisbank.sdk.fourthline.feature.ui
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.main.Navigator
+import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanFragmentArgs
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResult
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
@@ -71,13 +73,16 @@ class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorag
                 resetFlowToSelfieInstructions(bundleOf(KEY_CODE to FOURTHLINE_SELFIE_RETAKE))
             }
         }
-
     }
 
     fun onDocScanOutcome(result: DocScanResult) {
         when (result) {
             is DocScanResult.Success -> {
-                navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
+                if (result.isSecondaryScan) {
+                    navigateTo(R.id.identhub_action_secondaryDocScanFragment_to_selfieInstructionsFragment)
+                } else {
+                    navigateTo(R.id.action_documentScanFragment_to_documentResultFragment)
+                }
             }
             is DocScanResult.ScanFailed -> {
                 navigateTo(
@@ -88,12 +93,19 @@ class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorag
         }
     }
 
+    fun onHealthCardInstructionsOutcome() {
+        navigateTo(
+            R.id.identhub_action_healthCardInstructionsFragment_to_secondaryDocScanFragment,
+            DocScanFragmentArgs(AppliedDocument.NATIONAL_ID_CARD, true).toBundle()
+        )
+    }
+
     fun onDocTypeSelectionOutcome(outcome: DocTypeSelectionOutcome) {
         when (outcome) {
             is DocTypeSelectionOutcome.Success -> {
                 navigateTo(
                     R.id.action_documentTypeSelectionFragment_to_documentScanFragment,
-                    bundleOf(KEY_DOC_TYPE to outcome.docType)
+                    DocScanFragmentArgs(outcome.docType, false).toBundle()
                 )
             }
             is DocTypeSelectionOutcome.Failed -> setFourthlineIdentificationFailure(outcome.message)
@@ -153,7 +165,6 @@ class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorag
         const val IDENTIFICATION_ID = "identificationId"
         const val KEY_CODE = "key_code"
         const val KEY_MESSAGE = "key_message"
-        const val KEY_DOC_TYPE = "key_doc_type"
         const val FOURTHLINE_SELFIE_RETAKE = "fourthline_selfie_retake"
         const val FOURTHLINE_SCAN_FAILED = "fourthline_scan_failed"
     }

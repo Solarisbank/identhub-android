@@ -29,7 +29,7 @@ class FakeInitializationDataSource: InitializationDataSource {
                 phoneVerified = true,
                 style = null,
                 sdkLogging = false,
-                secondaryDocScanRequired = true
+                secondaryDocScanRequired = null
             )
         )
     }
