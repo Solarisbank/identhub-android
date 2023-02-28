@@ -39,14 +39,10 @@ class CustomizationRepositoryImpl(
             buttonRadius = context.resources.getDimensionPixelSize(R.dimen.identhub_default_corner_radius)
                 .toFloat()
         )
-        val flags = Customization.Flags(
-            shouldShowLargeImages = context.resources.getBoolean(R.bool.identhub_show_large_images)
-        )
         return Customization(
             enabled = context.resources.getBoolean(R.bool.identhub_customization_enabled),
             colors = colors,
             dimens = dimens,
-            customFlags = flags
         )
     }
 

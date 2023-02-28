@@ -34,16 +34,6 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="24dp" />
 
-            <ImageView
-                android:id="@+id/scratch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/identhub_ic_termsofservice"
-                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <de.solarisbank.sdk.feature.view.PhoneVerificationView
                 android:id="@+id/phoneVerification"
                 android:layout_width="0dp"

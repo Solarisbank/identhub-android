@@ -34,7 +34,6 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
     private var submitButton: Button? = null
-    private var imageView: ImageView? = null
     private var termsCheckBox: CheckBox? = null
     private var termsDisclaimer: TextView? = null
     private var termsLayout: View? = null
@@ -47,7 +46,6 @@ class VerificationBankIbanFragment : NewBaseFragment() {
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
-                    imageView = it.findViewById(R.id.image)
                     termsCheckBox = it.findViewById(R.id.termsCheckBox)
                     termsCheckBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState() }
                     termsDisclaimer = it.findViewById(R.id.termsDisclaimer)
@@ -60,7 +58,6 @@ class VerificationBankIbanFragment : NewBaseFragment() {
 
     private fun customizeUI() {
         submitButton?.customize(customization, ButtonStyle.Primary)
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         termsCheckBox?.customize(customization)
         termsDisclaimer?.customizeLinks(customization)
     }
@@ -236,7 +233,6 @@ class VerificationBankIbanFragment : NewBaseFragment() {
         ibanInputErrorLabel = null
         progressBar = null
         submitButton = null
-        imageView = null
         termsCheckBox = null
         termsDisclaimer = null
         termsLayout = null

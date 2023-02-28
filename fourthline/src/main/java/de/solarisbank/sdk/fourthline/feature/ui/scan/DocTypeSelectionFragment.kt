@@ -12,10 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.session.main.NewBaseFragment
@@ -39,7 +37,6 @@ class DocTypeSelectionFragment: NewBaseFragment() {
     private var documentTypeList: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var confirmButton: Button? = null
-    private var imageView: ImageView? = null
 
     private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
@@ -64,13 +61,11 @@ class DocTypeSelectionFragment: NewBaseFragment() {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById(R.id.confirmButton)
             progressBar = it.findViewById(R.id.progress)
-            imageView = it.findViewById(R.id.scratch)
             customizeUI()
         }
     }
 
     private fun customizeUI() {
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         confirmButton?.customize(customization)
         progressBar?.customize(customization)
     }
@@ -237,7 +232,6 @@ class DocTypeSelectionFragment: NewBaseFragment() {
         docTypeAdapter = null
         documentTypeList = null
         progressBar = null
-        imageView = null
         super.onDestroyView()
     }
 

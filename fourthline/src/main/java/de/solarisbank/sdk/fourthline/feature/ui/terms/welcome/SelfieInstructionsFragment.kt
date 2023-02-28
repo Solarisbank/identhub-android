@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import androidx.core.view.isVisible
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineModule
@@ -21,7 +19,6 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 class SelfieInstructionsFragment : NewBaseFragment() {
 
     private var startbutton: Button? = null
-    private var imageView: ImageView? = null
 
     private val sharedViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
@@ -29,13 +26,11 @@ class SelfieInstructionsFragment : NewBaseFragment() {
         return inflater.inflate(R.layout.identhub_fragment_selfie_instructions, container, false)
                 .also {
                     startbutton = it.findViewById(R.id.startButton)
-                    imageView = it.findViewById(R.id.image)
                     customizeUI()
                 }
     }
 
     private fun customizeUI() {
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         startbutton?.customize(customization)
     }
 
@@ -51,7 +46,6 @@ class SelfieInstructionsFragment : NewBaseFragment() {
 
     override fun onDestroyView() {
         startbutton = null
-        imageView = null
         super.onDestroyView()
     }
 

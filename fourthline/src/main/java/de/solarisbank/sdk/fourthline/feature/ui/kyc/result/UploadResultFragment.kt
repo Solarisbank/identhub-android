@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineModule
@@ -19,7 +18,6 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 class UploadResultFragment : NewBaseFragment() {
 
     private var quitButton: Button? = null
-    private var imageView: ImageView? = null
     private var indicator: ImageView? = null
 
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
@@ -31,14 +29,12 @@ class UploadResultFragment : NewBaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.identhub_fragment_upload_result, container, false).also {
             quitButton = it.findViewById(R.id.quitButton)
-            imageView = it.findViewById(R.id.resultImageView)
             indicator = it.findViewById(R.id.indicator)
             customizeUI()
         }
     }
 
     private fun customizeUI() {
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         indicator?.customize(customization)
         quitButton?.customize(customization)
     }
@@ -59,7 +55,6 @@ class UploadResultFragment : NewBaseFragment() {
 
     override fun onDestroyView() {
         quitButton = null
-        imageView = null
         indicator = null
         super.onDestroyView()
     }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
@@ -20,7 +19,6 @@ class TermsAndConditionsFragment : NewBaseFragment() {
 
     private var bulletList: BulletListLayout? = null
     private var submitButton: Button? = null
-    private var imageView: ImageView? = null
     private var condition1ImageView: ImageView? = null
     private var condition2ImageView: ImageView? = null
 
@@ -31,7 +29,6 @@ class TermsAndConditionsFragment : NewBaseFragment() {
                 .also {
                     bulletList = it.findViewById(R.id.bulletList)
                     submitButton = it.findViewById(R.id.submitButton)
-                    imageView = it.findViewById(R.id.scratch)
                     condition1ImageView = it.findViewById(R.id.condition1ImageView)
                     condition2ImageView = it.findViewById(R.id.condition2ImageView)
                     customizeUI()
@@ -39,7 +36,6 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     }
 
     private fun customizeUI() {
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
         submitButton?.customize(customization)
         condition1ImageView?.customize(customization)
         condition2ImageView?.customize(customization)
@@ -67,7 +63,6 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     override fun onDestroyView() {
         bulletList = null
         submitButton = null
-        imageView = null
         condition1ImageView = null
         condition2ImageView = null
         super.onDestroyView()

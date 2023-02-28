@@ -7,7 +7,6 @@ data class Customization(
     val enabled: Boolean,
     val colors: Colors,
     val dimens: Dimens,
-    val customFlags: Flags,
 ) {
 
     data class Colors(
@@ -25,10 +24,6 @@ data class Customization(
 
     data class Dimens(
         val buttonRadius: Float
-    )
-
-    data class Flags(
-        val shouldShowLargeImages: Boolean
     )
 
 }

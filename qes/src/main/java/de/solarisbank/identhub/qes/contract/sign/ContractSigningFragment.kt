@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import de.solarisbank.identhub.qes.QESModule
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.contract.ContractViewModel
@@ -32,7 +30,6 @@ class ContractSigningFragment : NewBaseFragment() {
     private var phoneVerificationView: PhoneVerificationView? = null
     private var transactionDescription: TextView? = null
     private var submitButton: Button? = null
-    private var imageView: ImageView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +44,6 @@ class ContractSigningFragment : NewBaseFragment() {
                 }
                 transactionDescription = it.findViewById(R.id.transactionDescription)
                 submitButton = it.findViewById(R.id.submitButton)
-                imageView = it.findViewById(R.id.scratch)
                 customizeUI()
             }
     }
@@ -55,7 +51,6 @@ class ContractSigningFragment : NewBaseFragment() {
     private fun customizeUI() {
         submitButton?.customize(customization)
         phoneVerificationView?.customize(customization)
-        imageView?.isVisible = customization.customFlags.shouldShowLargeImages
     }
 
     private fun handlePhoneVerificationEvent(event: PhoneVerificationViewEvent) {
@@ -155,7 +150,6 @@ class ContractSigningFragment : NewBaseFragment() {
         phoneVerificationView = null
         transactionDescription = null
         submitButton = null
-        imageView = null
         super.onDestroyView()
     }
 

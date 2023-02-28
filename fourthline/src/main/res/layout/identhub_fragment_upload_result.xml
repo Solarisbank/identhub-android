@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
@@ -34,16 +33,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="16dp"/>
 
-    <ImageView
-        android:id="@+id/resultImageView"
-        android:layout_width="0dp"
-        android:layout_height="126dp"
-        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline"
-        tools:visibility="visible" />
-
     <TextView
         android:id="@+id/subtitle1"
         style="@style/IdentHubTextView.Regular"
@@ -53,7 +42,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@id/resultImageView"
+        app:layout_constraintTop_toBottomOf="@id/topGuideline"
         app:layout_constraintBottom_toTopOf="@id/indicator"
         android:text="@string/identhub_kyc_upload_success_title"
         app:layout_constraintVertical_bias="0.1"

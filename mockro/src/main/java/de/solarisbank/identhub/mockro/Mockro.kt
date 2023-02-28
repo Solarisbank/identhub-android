@@ -30,7 +30,7 @@ class Mockro: MockroInterface {
     }
 
     companion object {
-        var currentPersona: MockroPersona = MockroPersona.BankHappyPath
+        var currentPersona: MockroPersona = MockroPersona.FourthlineSigningHappyPath
     }
 }
 
