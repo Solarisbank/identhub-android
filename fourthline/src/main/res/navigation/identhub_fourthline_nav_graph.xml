@@ -10,7 +10,7 @@
         android:label="DocumentScanFragment">
         <argument
             android:name="docType"
-            app:argType="de.solarisbank.sdk.fourthline.data.entity.AppliedDocument" />
+            app:argType="de.solarisbank.sdk.fourthline.data.dto.AppliedDocument" />
         <argument
             android:name="isSecondaryScan"
             app:argType="boolean" />
@@ -125,7 +125,7 @@
         >
         <argument
             android:name="docType"
-            app:argType="de.solarisbank.sdk.fourthline.data.entity.AppliedDocument"
+            app:argType="de.solarisbank.sdk.fourthline.data.dto.AppliedDocument"
             />
 
         <argument

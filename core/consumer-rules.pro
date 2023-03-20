@@ -1,4 +1,5 @@
 -keep class de.solarisbank.sdk.data.dto.** { *; }
+-keep class de.solarisbank.sdk.logger.domain.model.** { *; }
 -keep class * extends de.solarisbank.sdk.module.abstraction.IdenthubModule
 -keepnames class * extends de.solarisbank.sdk.module.abstraction.IdenthubModule
 -keepattributes *Annotation*

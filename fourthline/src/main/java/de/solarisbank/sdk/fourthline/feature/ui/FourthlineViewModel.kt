@@ -8,7 +8,7 @@ import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.passing.possibility.PassingPossibilityOutcome

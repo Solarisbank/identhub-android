@@ -2,9 +2,9 @@ package de.solarisbank.sdk.fourthline.domain
 
 import de.solarisbank.sdk.data.dto.PersonDataDto
 import de.solarisbank.sdk.fourthline.data.dto.LocationResult
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.NATIONAL_ID_CARD
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument.valueOf
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument.NATIONAL_ID_CARD
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument.valueOf
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 
 fun PersonDataDto.appliedDocuments(): List<AppliedDocument>? {

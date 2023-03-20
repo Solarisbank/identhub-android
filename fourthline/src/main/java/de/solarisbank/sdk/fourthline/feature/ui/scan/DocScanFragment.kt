@@ -30,7 +30,7 @@ import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.fourthline.*
-import de.solarisbank.sdk.fourthline.data.entity.toDocumentType
+import de.solarisbank.sdk.fourthline.data.dto.toDocumentType
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_CODE

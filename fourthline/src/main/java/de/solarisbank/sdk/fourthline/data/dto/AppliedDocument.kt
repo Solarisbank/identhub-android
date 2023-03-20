@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.data.entity
+package de.solarisbank.sdk.fourthline.data.dto
 
 import android.content.Context
 import com.fourthline.core.DocumentType

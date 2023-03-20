@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.R
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
-import de.solarisbank.sdk.fourthline.data.entity.asString
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
+import de.solarisbank.sdk.fourthline.data.dto.asString
 
 class DocTypeAdapter(private val customization: Customization,
                      private val isDocTypeDelectedCallback: ((AppliedDocument?) -> Unit)) : RecyclerView.Adapter<DocTypeAdapter.DocTypeViewHolder>() {

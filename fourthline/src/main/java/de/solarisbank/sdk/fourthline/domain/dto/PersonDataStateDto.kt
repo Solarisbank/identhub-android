@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.fourthline.domain.dto
 
 import de.solarisbank.sdk.fourthline.data.dto.Location
-import de.solarisbank.sdk.fourthline.data.entity.AppliedDocument
+import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
 
 sealed class PersonDataStateDto {
     object UPLOADING : PersonDataStateDto()
