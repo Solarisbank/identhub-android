@@ -117,30 +117,46 @@
                     />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/selectAll"
-                style="@style/IdentHubTextView.Regular"
-                android:layout_marginTop="@dimen/identhub_margin_24"
-                app:layout_constraintStart_toEndOf="@id/start_guideline"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@id/condition2Layout"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/namirialTermsLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_fourthline_terms_description_end"
-                />
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/fourthlinePrivacyDescription"
+                app:layout_constraintStart_toStartOf="@id/start_guideline">
 
-            <de.solarisbank.sdk.feature.view.BulletListLayout
-                android:id="@+id/bulletList"
-                android:layout_width="0dp"
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/namirialTermsCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/namirialTermsDescription"
+                    style="@style/IdentHubTextView.Small_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/identhub_margin_4"
+                    android:text="@string/identhub_namirial_terms_and_conditions" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fourthlinePrivacyDescription"
+                style="@style/IdentHubTextView.Small_12"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/start_guideline"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@+id/selectAll"
-                android:layout_marginTop="@dimen/identhub_margin_32"/>
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="@dimen/identhub_margin_8"
+                android:text="@string/identhub_fourthline_privacy_statement"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/start_guideline" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_alignParentBottom="true"
@@ -151,7 +167,7 @@
             android:id="@+id/submitButton"
             style="@style/IdentHubPrimaryButton"
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
             android:layout_marginTop="@dimen/identhub_margin_4"
             android:layout_marginBottom="@dimen/identhub_margin_16"

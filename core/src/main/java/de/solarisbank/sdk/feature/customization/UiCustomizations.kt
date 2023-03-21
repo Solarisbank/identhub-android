@@ -28,7 +28,7 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
     val textColorStateList: ColorStateList
 
     when(style) {
-        is ButtonStyle.Alternative -> return
+        is ButtonStyle.Alternative -> return //This style is static, handled in styles.xml
         is ButtonStyle.Primary -> {
             backgroundColor = customization.colors.themePrimary(context)
             textColorStateList = context.getColorStateList(R.color.identhub_button_textcolor_selector)
@@ -42,7 +42,6 @@ fun Button.customize(customization: Customization, style: ButtonStyle = ButtonSt
     val cornerRadii = Array(8) { customization.dimens.buttonRadius }
     val shape = RoundRectShape(cornerRadii.toFloatArray(), null, null)
     val mask = ShapeDrawable(shape)
-
 
     mask.paint.color = backgroundColor
 
@@ -79,7 +78,7 @@ fun CheckBox.customize(customization: Customization) {
         return
     }
 
-    buttonTintList = ColorStateList.valueOf(customization.colors.themeSecondary(context))
+    buttonTintList = ColorStateList.valueOf(customization.colors.themePrimary(context))
 }
 
 fun TextView.customizeLinks(customization: Customization) {

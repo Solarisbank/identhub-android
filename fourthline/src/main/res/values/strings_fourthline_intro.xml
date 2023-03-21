@@ -5,9 +5,7 @@
     <string name="identhub_fourthline_terms_description_start">Take a selfie and scan your ID or Passport to verify your identity. No VideoIdent or PostIdent required. \n\nPlease allow access to:</string>
     <string name="identhub_fourthline_terms_description_list_item1">Your location</string>
     <string name="identhub_fourthline_terms_description_list_item2">Your camera</string>
-    <string name="identhub_fourthline_terms_description_end">in order to perform the identification.</string>
     <string name="identhub_fourthline_terms_notice_title">Notice</string>
-    <string name="identhub_fourthline_terms_conditions_apply">I acknowledge SAFENED Fourthline\'s privacy statement.</string>
-    <string name="identhub_fourthline_terms_conditions_apply_link_section">SAFENED Fourthline\'s privacy statement</string>
-    <string name="identhub_fourthline_terms_conditions_link" translatable="false">https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf</string>
+    <string name="identhub_namirial_terms_and_conditions">I agree to Namirial\'s <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/Namirial_TAndC_CA01D_CA22D_1.0.pdf">Terms &amp; Conditions</a></string>
+    <string name="identhub_fourthline_privacy_statement">I acknowledge SafeNed-Fourthline\'s <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">Privacy Statement</a></string>
 </resources>

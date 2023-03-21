@@ -1,15 +1,17 @@
 package de.solarisbank.sdk.fourthline.feature.ui.terms
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckBox
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
-import de.solarisbank.sdk.feature.view.BulletListLayout
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -17,8 +19,10 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class TermsAndConditionsFragment : NewBaseFragment() {
 
-    private var bulletList: BulletListLayout? = null
     private var submitButton: Button? = null
+    private var checkBox: AppCompatCheckBox? = null
+    private var termsAndConditionsTextView: TextView? = null
+    private var privacyStatementTextView: TextView? = null
     private var condition1ImageView: ImageView? = null
     private var condition2ImageView: ImageView? = null
 
@@ -27,42 +31,42 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
                 .also {
-                    bulletList = it.findViewById(R.id.bulletList)
                     submitButton = it.findViewById(R.id.submitButton)
+                    checkBox = it.findViewById(R.id.namirialTermsCheckBox)
+                    checkBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState()}
+                    termsAndConditionsTextView = it.findViewById(R.id.namirialTermsDescription)
+                    termsAndConditionsTextView?.movementMethod = LinkMovementMethod.getInstance()
+                    privacyStatementTextView = it.findViewById(R.id.fourthlinePrivacyDescription)
+                    privacyStatementTextView?.movementMethod = LinkMovementMethod.getInstance()
                     condition1ImageView = it.findViewById(R.id.condition1ImageView)
                     condition2ImageView = it.findViewById(R.id.condition2ImageView)
                     customizeUI()
+                    initView()
                 }
     }
 
     private fun customizeUI() {
-        submitButton?.customize(customization)
         condition1ImageView?.customize(customization)
         condition2ImageView?.customize(customization)
+        submitButton?.customize(customization)
+        checkBox?.customize(customization)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
+    private fun updateSubmitButtonState() {
+        submitButton!!.isEnabled = checkBox!!.isChecked
+        submitButton?.buttonDisabled(!submitButton!!.isEnabled)
     }
 
     private fun initView() {
-        val terms = getString(R.string.identhub_fourthline_terms_conditions_apply)
-        val termsLinkSection = getString(R.string.identhub_fourthline_terms_conditions_apply_link_section)
-        val link = getString(R.string.identhub_fourthline_terms_conditions_link)
-        val termsSpanned = terms.linkOccurrenceOf(termsLinkSection, link, linkAllIfNotFound = true)
-        bulletList?.updateItems(
-            title = getString(R.string.identhub_fourthline_terms_notice_title),
-            items = listOf(termsSpanned),
-            titleStyle = BulletListLayout.TitleStyle.Notice,
-            customization = customization
-        )
+        updateSubmitButtonState()
         submitButton?.setOnClickListener { activityViewModel.onTermsOutcome() }
     }
 
     override fun onDestroyView() {
-        bulletList = null
         submitButton = null
+        checkBox = null
+        termsAndConditionsTextView = null
+        privacyStatementTextView = null
         condition1ImageView = null
         condition2ImageView = null
         super.onDestroyView()

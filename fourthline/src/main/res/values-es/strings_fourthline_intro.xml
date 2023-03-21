@@ -5,8 +5,6 @@
     <string name="identhub_fourthline_terms_description_start">Hazte un selfie y escanea tu DNI o pasaporte para verificar tu identidad. No se requiere VideoIdent o PostIdent.\n\nPermite el acceso a:</string>
     <string name="identhub_fourthline_terms_description_list_item1">Tu ubicación</string>
     <string name="identhub_fourthline_terms_description_list_item2">Tu cámara</string>
-    <string name="identhub_fourthline_terms_description_end">para poder realizar la identificación.</string>
     <string name="identhub_fourthline_terms_notice_title">Aviso</string>
-    <string name="identhub_fourthline_terms_conditions_apply">Reconozco la declaración de privacidad de SAFENED Fourthline.</string>
-    <string name="identhub_fourthline_terms_conditions_apply_link_section">Declaración de privacidad de SAFENED Fourthline.</string>
+    <string name="identhub_fourthline_privacy_statement">Reconozco la <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">declaración de privacidad de SAFENED Fourthline</a></string>
 </resources>
