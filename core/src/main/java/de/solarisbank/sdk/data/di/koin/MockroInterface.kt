@@ -11,4 +11,5 @@ sealed class MockroPersona {
     object BankHappyPath: MockroPersona()
     object FourthlineSigningHappyPath: MockroPersona()
     object BankIdHappyPath: MockroPersona()
+    object FourthlineHappyPath: MockroPersona()
 }

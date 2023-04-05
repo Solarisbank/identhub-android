@@ -1,5 +1,6 @@
 package de.solarisbank.identhub.mockro.shared
 
+import android.app.Person
 import de.solarisbank.identhub.mockro.Mockro
 import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.sdk.data.di.koin.MockroPersona
@@ -26,6 +27,11 @@ data class PersonaConfig(
                     firstStep = IdentificationStep.BANK_ID_IBAN.destination,
                     fourthlineStep = IdentificationStep.BANK_ID_FOURTHLINE.destination,
                     qesStep = IdentificationStep.BANK_ID_QES.destination
+                )
+                is MockroPersona.FourthlineHappyPath -> PersonaConfig(
+                    firstStep = IdentificationStep.FOURTHLINE_SIMPLIFIED.destination,
+                    fourthlineStep = IdentificationStep.FOURTHLINE_SIMPLIFIED.destination,
+                    qesStep = null
                 )
             }
     }

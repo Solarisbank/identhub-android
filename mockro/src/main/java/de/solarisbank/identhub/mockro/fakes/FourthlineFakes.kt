@@ -33,7 +33,7 @@ import java.util.*
 
 class FakeFourthlineIdentificationDataSource: FourthlineIdentificationDataSource {
     override fun postFourthlineIdentification(): Single<IdentificationDto> {
-        TODO("Not yet implemented")
+        return Single.just(baseFakeIdent)
     }
 
     override fun postFourthlineSigningIdentification(): Single<IdentificationDto> {

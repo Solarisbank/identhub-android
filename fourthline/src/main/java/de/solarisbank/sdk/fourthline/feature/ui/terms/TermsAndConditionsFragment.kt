@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.core.view.isVisible
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
@@ -16,6 +17,7 @@ import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TermsAndConditionsFragment : NewBaseFragment() {
 
@@ -25,8 +27,10 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     private var privacyStatementTextView: TextView? = null
     private var condition1ImageView: ImageView? = null
     private var condition2ImageView: ImageView? = null
+    private var namirialLayout: View? = null
 
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val viewModel: TermsAndConditionsViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
@@ -40,6 +44,7 @@ class TermsAndConditionsFragment : NewBaseFragment() {
                     privacyStatementTextView?.movementMethod = LinkMovementMethod.getInstance()
                     condition1ImageView = it.findViewById(R.id.condition1ImageView)
                     condition2ImageView = it.findViewById(R.id.condition2ImageView)
+                    namirialLayout = it.findViewById(R.id.namirialTermsLayout)
                     customizeUI()
                     initView()
                 }
@@ -60,6 +65,12 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     private fun initView() {
         updateSubmitButtonState()
         submitButton?.setOnClickListener { activityViewModel.onTermsOutcome() }
+        viewModel.state().observe(viewLifecycleOwner) {
+            namirialLayout?.isVisible = it.shouldShowNamirialTerms
+            if (!it.shouldShowNamirialTerms) {
+                submitButton?.buttonDisabled(false)
+            }
+        }
     }
 
     override fun onDestroyView() {

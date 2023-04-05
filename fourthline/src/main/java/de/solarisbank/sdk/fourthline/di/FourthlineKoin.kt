@@ -32,6 +32,7 @@ import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -66,6 +67,9 @@ private val fourthlineModule = module {
     }
     viewModel {
         KycUploadViewModel(get())
+    }
+    viewModel {
+        TermsAndConditionsViewModel(get())
     }
 }
 

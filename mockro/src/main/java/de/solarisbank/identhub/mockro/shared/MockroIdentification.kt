@@ -31,20 +31,24 @@ object MockroIdentification {
                     nextStep = PersonaConfig.current.fourthlineStep
                 )
             is IdentificationChange.GoToQes ->
-                current = current.copy(
-                    status = "authorization_required",
-                    nextStep = PersonaConfig.current.qesStep,
-                    documents = listOf(
-                        DocumentDto(
-                            id = "documentId",
-                            name = "TestDocument.pdf",
-                            contentType = "file/pdf",
-                            documentType = "",
-                            size = 10000,
-                            isCustomerAccessible = true
+                if (PersonaConfig.current.qesStep == null) {
+                    current = change(IdentificationChange.Success)
+                } else {
+                    current = current.copy(
+                        status = "authorization_required",
+                        nextStep = PersonaConfig.current.qesStep,
+                        documents = listOf(
+                            DocumentDto(
+                                id = "documentId",
+                                name = "TestDocument.pdf",
+                                contentType = "file/pdf",
+                                documentType = "",
+                                size = 10000,
+                                isCustomerAccessible = true
+                            )
                         )
                     )
-                )
+                }
             is IdentificationChange.Confirmed ->
                 current = current.copy(
                     status = Status.CONFIRMED.label,

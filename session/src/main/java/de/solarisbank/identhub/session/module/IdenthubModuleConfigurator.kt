@@ -16,8 +16,14 @@ class IdenthubModuleConfigurator: IdenthubKoinComponent {
             IdenthubModules.FourthlineClassName -> {
                 val isFourthlineSigning =
                     nextStep.contains(IdentificationStep.FOURTHLINE_SIGNING.destination)
+                val shouldShowNamirialTerms = shouldShowNamirialTerms(nextStep)
                 configModule = module {
-                    single { FourthlineIdentificationConfig(isFourthlineSigning) }
+                    single {
+                        FourthlineIdentificationConfig(
+                            isFourthlineSigning,
+                            shouldShowNamirialTerms
+                        )
+                    }
                 }
             }
             IdenthubModules.QESClassName -> {
@@ -37,5 +43,13 @@ class IdenthubModuleConfigurator: IdenthubKoinComponent {
         configModule?.let {
             loadModules(listOf(it))
         }
+    }
+}
+
+private fun shouldShowNamirialTerms(method: String): Boolean {
+    return when (method) {
+        IdentificationStep.FOURTHLINE_SIGNING.destination,
+        IdentificationStep.BANK_ID_FOURTHLINE.destination -> true
+        else -> false
     }
 }
