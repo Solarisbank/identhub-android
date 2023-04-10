@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.identhub.session.R
@@ -28,6 +30,8 @@ import org.koin.core.component.get
 class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private var currentNavigationId: Int? = null
 
+    private val backButtonFragments = listOf("DocumentScanFragment", "SelfieFragment")
+
     private val viewModel: MainViewModel by lazy { getViewModel() }
     private val alertViewModel: AlertViewModel by lazy {
         ViewModelProvider(this, object: ViewModelProvider.Factory {
@@ -45,11 +49,17 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             val controller = navHostFragment.navController
             controller.addOnDestinationChangedListener { _, destination, _ ->
                 IdLogger.nav("Destination changed: ${destination.label}")
+                backButton?.isVisible = shouldShowBackButton(destination)
+                onBackPressedCallback.isEnabled = !shouldShowBackButton(destination)
             }
             controller
         }
 
+    private fun shouldShowBackButton(destination: NavDestination?) =
+        backButtonFragments.contains(destination?.label)
+
     private var closeButton: AppCompatImageView? = null
+    private var backButton: AppCompatImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +81,10 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private fun setUpView() {
         closeButton = findViewById(R.id.img_close)
         closeButton?.setOnClickListener {
+            showQuitDialog()
+        }
+        backButton = findViewById(R.id.img_back)
+        backButton?.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -82,13 +96,16 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         viewModel.events().observe(this, ::handleEvent)
     }
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            showQuitDialog()
+        }
+    }
+
     private fun addBackPressedCallback() {
         onBackPressedDispatcher.addCallback(this,
-            object: OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    showQuitDialog()
-                }
-        })
+            onBackPressedCallback
+        )
     }
 
     private fun setCurrentModule(module: IdenthubModule) {
