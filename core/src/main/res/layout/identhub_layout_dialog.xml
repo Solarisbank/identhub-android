@@ -48,7 +48,7 @@
                 android:id="@+id/buttomSeparator"
                 android:layout_width="1dp"
                 android:layout_height="16dp"
-                android:background="@drawable/identhub_separator_background"/>
+                android:background="@color/identhub_color_separator"/>
 
             <Button
                 android:id="@+id/negativeButton"

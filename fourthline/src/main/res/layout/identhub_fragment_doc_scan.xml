@@ -116,7 +116,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="9dp"
             android:layout_marginBottom="9dp"
-            android:background="@drawable/identhub_separator_background"
+            android:background="@color/identhub_color_separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,6 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/identhub_document_scanner_confirm"
-            android:textColor="@color/identhub_color_light_button_text_enabled"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/separator" />
     </androidx.constraintlayout.widget.ConstraintLayout>

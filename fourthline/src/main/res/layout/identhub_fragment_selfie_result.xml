@@ -94,7 +94,7 @@
         android:id="@+id/separator"
         android:layout_width="1dp"
         android:layout_height="16dp"
-        android:background="@drawable/identhub_separator_background"
+        android:background="@color/identhub_color_separator"
         app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"

@@ -8,7 +8,6 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/identhub_color_secondary</item>
         <item name="bottomSheetDialogTheme">@style/IdentHubBottomSheet</item>
-        <item name="IdentHubStepIndicatorStyle">@style/IdentHubStepIndicatorStyleCommon</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
