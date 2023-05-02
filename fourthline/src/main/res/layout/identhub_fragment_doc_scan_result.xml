@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/docNumberInputLayout"
-                style="@style/IdentHubTextView.Regular"
+                style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_32"
@@ -92,7 +92,7 @@
 
             <TextView
                 android:id="@+id/issueDateInputLayout"
-                style="@style/IdentHubTextView.Regular"
+                style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_32"
@@ -120,7 +120,7 @@
 
             <TextView
                 android:id="@+id/issueDateError"
-                style="@style/IdentHubTextView.Regular"
+                style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_8"
@@ -134,7 +134,7 @@
 
             <TextView
                 android:id="@+id/expireDateInputLayout"
-                style="@style/IdentHubTextView.Regular"
+                style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_24"
@@ -162,7 +162,7 @@
 
             <TextView
                 android:id="@+id/expireDateError"
-                style="@style/IdentHubTextView.Regular"
+                style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_8"

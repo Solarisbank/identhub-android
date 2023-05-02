@@ -173,7 +173,7 @@
         android:background="@drawable/identhub_button_secondary_background"
         android:text="@string/identhub_document_scanner_take_picture"
         android:textAllCaps="false"
-        android:textColor="@color/identhub_color_white"
+        android:textColor="@color/identhub_color_onPrimary"
         android:textSize="15sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

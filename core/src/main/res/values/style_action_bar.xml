@@ -7,7 +7,7 @@
     </style>
 
     <style name="IdentHubActionBarTitleStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/identhub_color_dark_grey</item>
+        <item name="android:textColor">@color/identhub_color_text</item>
         <item name="android:textSize">19sp</item>
     </style>
 </resources>

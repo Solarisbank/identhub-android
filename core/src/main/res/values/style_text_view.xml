@@ -47,6 +47,11 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="IdentHubTextView.InputLabel" parent="IdentHubTextView">
+        <item name="android:textColor">@color/identhub_color_label_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="IdentHubColoredTextView" parent="IdentHubTextView">
         <item name="android:textSize">13sp</item>
     </style>

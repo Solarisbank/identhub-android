@@ -92,7 +92,6 @@
             <EditText
                 android:id="@+id/ibanNumber"
                 style="@style/IdentHubTextBox"
-                android:textSize="18dp"
                 android:inputType="textCapCharacters|textNoSuggestions|textVisiblePassword"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
