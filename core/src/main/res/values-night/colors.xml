@@ -22,12 +22,6 @@
     <color name="identhub_color_hint_text">#7E8794</color>
     <color name="identhub_color_label_text">#E9EDF2</color>
 
-    <!--date picker-->
-    <color name="identhub_date_picker_color_background">#252525</color>
-    <color name="identhub_date_picker_text_color_primary">#FFFAFAFA</color>
-    <color name="identhub_date_picker_text_color_secondary">#FFFAFAFA</color>
-    <color name="identhub_date_picker_text_color_calendar">#3284FF</color>
-
     <color name="identhub_h1_text_color">#F7F8FA</color>
     <color name="identhub_paragraph_text_color">#E9EDF2</color>
     <color name="identhub_color_qes_doc_background">#0F1926</color>

@@ -87,9 +87,9 @@ class DateInputTextView : AppCompatTextView {
             datePickerDialog.setCanceledOnTouchOutside(false)
             datePickerDialog.show()
             datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_secondary))
+                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_text))
             datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_secondary))
+                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_primary))
         }
     }
 
