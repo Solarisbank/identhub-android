@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
@@ -112,6 +113,7 @@ class DocScanResultFragment : NewBaseFragment() {
                 showGenericAlertFragment {  }
             }
         }
+        continueButton!!.buttonDisabled(true)
     }
 
     override fun onDestroyView() {
@@ -130,6 +132,7 @@ class DocScanResultFragment : NewBaseFragment() {
 
     private fun updateContinueButtonState() {
         continueButton?.isEnabled = validateDateInputs()
+        continueButton!!.buttonDisabled(!validateDateInputs())
     }
 
     private fun validateDateInputs(): Boolean {

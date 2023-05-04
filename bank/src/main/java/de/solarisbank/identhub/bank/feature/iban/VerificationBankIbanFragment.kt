@@ -17,6 +17,7 @@ import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.feature.view.hideKeyboard
@@ -154,9 +155,13 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     }
 
     private fun updateSubmitButtonState() {
-        submitButton!!.isEnabled =
-            ibanNumber!!.text.toString().replace(" ", "").length >= MIN_IBAN_LENGTH
-                    && termsCheckBox!!.isChecked
+        submitButton!!.isEnabled = isInputFilled() && termsCheckBox!!.isChecked
+        //TODO checkbox logic will be moved to new screen once implemented, lets leave it as it is now
+        submitButton!!.buttonDisabled(!submitButton!!.isEnabled)
+    }
+
+    private fun isInputFilled(): Boolean {
+        return ibanNumber!!.text.toString().replace(" ", "").length >= MIN_IBAN_LENGTH
     }
 
     private fun initViews() {

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
@@ -59,7 +60,7 @@ class DocTypeSelectionFragment: NewBaseFragment() {
         Timber.d("onCreateView")
         return inflater.inflate(R.layout.identhub_fragment_doc_type_selection, container, false).also {
             documentTypeList = it.findViewById(R.id.documentTypeList)
-            confirmButton = it.findViewById(R.id.confirmButton)
+            confirmButton = it.findViewById<Button?>(R.id.confirmButton).apply { buttonDisabled(true) }
             progressBar = it.findViewById(R.id.progress)
             customizeUI()
         }
@@ -80,9 +81,14 @@ class DocTypeSelectionFragment: NewBaseFragment() {
     private fun initRecyclerView() {
         documentTypeList!!.layoutManager = LinearLayoutManager(requireContext())
         documentTypeList!!.setHasFixedSize(true)
-        docTypeAdapter = DocTypeAdapter(customization) { type -> confirmButton!!.isEnabled = (type != null) }
+        docTypeAdapter = DocTypeAdapter(customization) { setConfirmButtonEnabled() }
         documentTypeList!!.adapter = docTypeAdapter
         confirmButton!!.setOnClickListener { moveToDocScanFragment() }
+    }
+
+    private fun setConfirmButtonEnabled(): Boolean {
+        confirmButton!!.buttonDisabled(false)
+        return true
     }
 
     @SuppressLint("NotifyDataSetChanged")

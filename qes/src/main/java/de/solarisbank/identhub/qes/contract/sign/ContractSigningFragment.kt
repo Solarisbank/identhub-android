@@ -15,6 +15,7 @@ import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.view.PhoneVerificationView
 import de.solarisbank.sdk.feature.view.PhoneVerificationViewEvent
 import de.solarisbank.sdk.feature.view.PhoneVerificationViewState
@@ -56,7 +57,7 @@ class ContractSigningFragment : NewBaseFragment() {
     private fun handlePhoneVerificationEvent(event: PhoneVerificationViewEvent) {
         when (event) {
             is PhoneVerificationViewEvent.ResendTapped -> { viewModel.onAction(ContractSigningAction.ResendCode) }
-            is PhoneVerificationViewEvent.CodeChanged -> { submitButton?.isEnabled = isSubmitButtonEnabled() }
+            is PhoneVerificationViewEvent.CodeChanged -> { updateSubmitButtonState() }
             is PhoneVerificationViewEvent.TimerExpired -> { viewModel.onAction(ContractSigningAction.TimerExpired)}
         }
     }
@@ -83,7 +84,7 @@ class ContractSigningFragment : NewBaseFragment() {
         submitButton?.setOnClickListener {
             viewModel.onAction(ContractSigningAction.Submit(code = phoneVerificationView!!.code))
         }
-        submitButton?.isEnabled = isSubmitButtonEnabled()
+        updateSubmitButtonState()
     }
 
     private fun stateUpdated(state: ContractSigningState) {
@@ -137,6 +138,11 @@ class ContractSigningFragment : NewBaseFragment() {
             getString(R.string.identhub_contract_signing_preview_transaction_info),
             identificationId
         )
+    }
+
+    private fun updateSubmitButtonState() {
+        submitButton!!.isEnabled = isSubmitButtonEnabled()
+        submitButton!!.buttonDisabled(!submitButton!!.isEnabled)
     }
 
     private fun isSubmitButtonEnabled(): Boolean {
