@@ -18,5 +18,9 @@
 
     <dimen name="identhub_default_page_padding">16dp</dimen>
     <dimen name="identhub_top_header_title_size">20sp</dimen>
+    <dimen name="identhub_button_text_size">18sp</dimen>
+    <dimen name="identhub_important_label_text_size">16sp</dimen>
     <dimen name="identhub_paragraph_text_size">14sp</dimen>
+    <dimen name="identhub_sub_paragraph_text_size">12sp</dimen>
+    <dimen name="identhub_input_bottom_label_size">11sp</dimen>
 </resources>

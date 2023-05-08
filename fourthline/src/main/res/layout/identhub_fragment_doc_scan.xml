@@ -50,7 +50,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/stepName"
-        style="@style/IdentHubActionBarTitleStyle"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
@@ -80,7 +80,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/resultLabel"
-            style="@style/IdentHubTextView.Small_16"
+            style="@style/IdentHubTextView.ImportantTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"

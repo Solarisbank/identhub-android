@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/healthScanTitle"
-                style="@style/IdentHubTextView.Headline2"
+                style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_16"
@@ -51,7 +51,6 @@
 
             <TextView
                 android:id="@+id/description"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_16"

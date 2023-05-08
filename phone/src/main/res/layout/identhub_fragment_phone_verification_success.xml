@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/IdentHubTopHeaderTitle"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/identhub_margin_8"
@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/descriptionDetail"
-        style="@style/IdentHubTextView.Small_15"
+        style="@style/IdentHubTextView.ParagraphText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/identhub_contract_phone_verification_next_step"

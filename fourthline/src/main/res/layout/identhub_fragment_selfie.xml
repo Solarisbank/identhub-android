@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/hintTextView"
-        style="@style/IdentHubActionBarTitleStyle"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/stepName"
-        style="@style/IdentHubTextView.Small_16"
+        style="@style/IdentHubTextView.ImportantTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
 
     <TextView
         android:id="@+id/warningsLabel"
-        style="@style/IdentHubTextView.Small_16"
+        style="@style/IdentHubTextView.ImportantTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

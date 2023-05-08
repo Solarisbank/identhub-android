@@ -4,7 +4,7 @@
         <item name="android:background">@drawable/identhub_textbox_drawable_selector</item>
         <item name="android:textColor">@color/identhub_color_edit_text</item>
         <item name="android:textColorHint">@color/identhub_color_hint_text</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
     </style>
 
     <style name="IdentHubEditText" parent="Widget.AppCompat.EditText">

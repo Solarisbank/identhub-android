@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/title"
-                style="@style/IdentHubTextView.Headline"
+                style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -50,7 +50,6 @@
 
             <TextView
                 android:id="@+id/subtitle"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_24"
@@ -81,7 +80,6 @@
 
                 <TextView
                     android:id="@+id/condition1"
-                    style="@style/IdentHubTextView.Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
@@ -109,7 +107,6 @@
 
                 <TextView
                     android:id="@+id/condition2"
-                    style="@style/IdentHubTextView.Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
@@ -134,7 +131,7 @@
 
                 <TextView
                     android:id="@+id/namirialTermsDescription"
-                    style="@style/IdentHubTextView.Small_12"
+                    style="@style/IdentHubTextView.SubParagraphText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/identhub_margin_4"
@@ -144,7 +141,7 @@
 
             <TextView
                 android:id="@+id/fourthlinePrivacyDescription"
-                style="@style/IdentHubTextView.Small_12"
+                style="@style/IdentHubTextView.SubParagraphText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"

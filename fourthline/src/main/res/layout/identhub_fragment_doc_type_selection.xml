@@ -13,8 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideline"
@@ -47,7 +46,7 @@
 
             <TextView
                 android:id="@+id/title"
-                style="@style/IdentHubTextView.Headline"
+                style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -58,7 +57,6 @@
 
             <TextView
                 android:id="@+id/subtitle"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_24"

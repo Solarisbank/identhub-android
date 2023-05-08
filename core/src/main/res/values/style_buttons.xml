@@ -5,8 +5,7 @@
         <item name="android:background">@drawable/identhub_button_primary_background</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@fontFamily/roboto_medium</item>
+        <item name="android:textSize">@dimen/identhub_button_text_size</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginEnd">24dp</item>
     </style>
@@ -16,8 +15,7 @@
         <item name="android:background">@drawable/identhub_button_alternative_background</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@fontFamily/roboto_medium</item>
+        <item name="android:textSize">@dimen/identhub_button_text_size</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginEnd">24dp</item>
     </style>
@@ -27,14 +25,13 @@
         <item name="android:background">@drawable/identhub_button_alternative_background</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@fontFamily/roboto_medium</item>
+        <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
     </style>
 
     <style name="IdentHubDialogButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/identhub_button_dialog_background</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/identhub_button_text_size</item>
     </style>
 </resources>

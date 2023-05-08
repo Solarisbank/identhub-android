@@ -68,7 +68,7 @@
             android:src="@drawable/identhub_ic_done_round_blue" />
 
         <TextView
-            style="@style/IdentHubTextView.Small_16"
+            style="@style/IdentHubTextView.ImportantTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/identhub_margin_8"

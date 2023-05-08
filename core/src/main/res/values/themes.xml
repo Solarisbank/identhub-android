@@ -10,6 +10,9 @@
         <item name="bottomSheetDialogTheme">@style/IdentHubBottomSheet</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <!-- Default text view style -->
+        <item name="android:textViewStyle">@style/IdentHubTextView</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="IdentHubTheme" parent="@style/IdentHubBaseTheme">

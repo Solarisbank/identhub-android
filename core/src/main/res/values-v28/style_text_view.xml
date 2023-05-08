@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="IdentHubTextView.TopHeaderTitle" parent="IdentHubTextView">
+        <item name="android:textSize">@dimen/identhub_top_header_title_size</item>
+        <item name="android:textColor">@color/identhub_header_text_color</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+</resources>

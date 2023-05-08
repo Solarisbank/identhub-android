@@ -57,6 +57,9 @@ captures/
 .idea/jarRepositories.xml
 .idea/deploymentTargetDropDown.xml
 .idea/compiler.xml
+.idea/codeStyles/
+.idea/kotlinc.xml
+.idea/render.experimental.xml
 gradle.xml
 *.iml
 

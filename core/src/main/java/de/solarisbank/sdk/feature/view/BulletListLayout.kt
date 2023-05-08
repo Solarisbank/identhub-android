@@ -37,9 +37,9 @@ class BulletListLayout @JvmOverloads constructor(
 
     private fun addTitle(title: CharSequence, style: TitleStyle) {
         val titleView: TextView = when (style) {
-            is TitleStyle.SimpleBold -> TextView(context, null, 0, R.style.IdentHubTextView_HeadLine3)
+            is TitleStyle.SimpleBold -> TextView(context, null, 0, R.style.IdentHubTextView_ImportantTextLabel)
             is TitleStyle.Notice -> {
-                TextView(context, null, 0, R.style.IdentHubTextView_Small_13).apply {
+                TextView(context, null, 0, R.style.IdentHubTextView_SubParagraphText).apply {
                     val drawable = ContextCompat.getDrawable(context, R.drawable.identhub_ic_info)
                     setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
                     compoundDrawablePadding = (8f * resources.displayMetrics.density).toInt()
@@ -59,7 +59,7 @@ class BulletListLayout @JvmOverloads constructor(
         val layout = LinearLayout(context)
         layout.orientation = HORIZONTAL
 
-        val bulletView = TextView(context, null, 0, R.style.IdentHubTextView_Regular)
+        val bulletView = TextView(context, null, 0)
         bulletView.text = "\u2022"
         bulletView.textAlignment = TEXT_ALIGNMENT_CENTER
         layout.addView(bulletView)
@@ -69,7 +69,7 @@ class BulletListLayout @JvmOverloads constructor(
             marginEnd = margin
         }
 
-        val titleView = TextView(context, null, 0, R.style.IdentHubTextView_Regular)
+        val titleView = TextView(context, null, 0)
         titleView.text = title
         titleView.movementMethod = LinkMovementMethod.getInstance()
         customization?.let {

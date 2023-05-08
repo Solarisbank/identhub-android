@@ -33,7 +33,6 @@
 
     <TextView
         android:id="@+id/guideTitle"
-        style="@style/IdentHubTextView.HeadLine3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/identhub_margin_8"
@@ -54,7 +53,6 @@
 
     <TextView
         android:id="@+id/guide"
-        style="@style/IdentHubTextView.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"

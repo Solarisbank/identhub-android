@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/title"
-                style="@style/IdentHubTopHeaderTitle"
+                style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/identhub_contract_signing_preview_title"
@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/subtitle"
-                style="@style/IdentHubParagraphText"
+                style="@style/IdentHubTextView.ParagraphText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
@@ -77,7 +77,7 @@
 
     <TextView
         android:id="@+id/contractSignTermsCondition"
-        style="@style/IdentHubParagraphText"
+        style="@style/IdentHubTextView.SubParagraphText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/identhub_margin_24"

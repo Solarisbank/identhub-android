@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/welcomeTitle"
-                style="@style/IdentHubTextView.Headline"
+                style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_16"
@@ -71,7 +71,6 @@
 
             <TextView
                 android:id="@+id/description"
-                style="@style/IdentHubTextView.Regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_16"
@@ -100,7 +99,7 @@
 
                 <TextView
                     android:id="@+id/noticeTitle"
-                    style="@style/IdentHubTextView.Small_13"
+                    style="@style/IdentHubTextView.ParagraphText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/identhub_margin_4"
@@ -111,7 +110,7 @@
 
                 <TextView
                     android:id="@+id/noticeDot"
-                    style="@style/IdentHubTextView.Small_12"
+                    style="@style/IdentHubTextView.SubParagraphText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/identhub_margin_8"
@@ -123,7 +122,7 @@
 
                 <TextView
                     android:id="@+id/termsText"
-                    style="@style/IdentHubTextView.Small_12"
+                    style="@style/IdentHubTextView.SubParagraphText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/identhub_fourthline_welcome_container_notice"

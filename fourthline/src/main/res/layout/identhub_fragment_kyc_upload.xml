@@ -60,21 +60,19 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/IdentHubTextView.Regular"
-        android:gravity="center_horizontal"
         android:layout_width="0dp"
-        android:maxLines="4"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
         android:layout_marginTop="20dp"
-        android:text ="@string/identhub_kyc_upload_verification_subtitle_1"
-        />
+        android:gravity="center_horizontal"
+        android:maxLines="4"
+        android:text="@string/identhub_kyc_upload_verification_subtitle_1"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <TextView
         android:id="@+id/subtitle"
-        style="@style/IdentHubTextView.Regular"
         android:layout_marginTop="@dimen/identhub_margin_16"
         android:gravity="center_horizontal"
         android:layout_width="0dp"

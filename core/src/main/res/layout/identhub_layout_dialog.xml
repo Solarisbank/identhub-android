@@ -12,14 +12,13 @@
         android:layout_marginBottom="16dp">
 
         <TextView
-            style="@style/IdentHubTextView.HeadLine2"
+            style="@style/IdentHubTextView.TopHeaderTitle"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="This is the title"/>
 
         <TextView
-            style="@style/IdentHubTextView.Regular"
             android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

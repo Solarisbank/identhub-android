@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="de.solarisbank.sdk.fourthline"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -8,11 +7,4 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <application tools:node="merge">
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/identhub_preloaded_fonts" />
-
-    </application>
 </manifest>

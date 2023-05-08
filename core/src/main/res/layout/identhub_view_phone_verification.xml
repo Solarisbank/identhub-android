@@ -7,22 +7,19 @@
     android:gravity="center"
     tools:parentTag="android.widget.LinearLayout">
 
-
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Confirm Phone"
         android:text="@string/identhub_contract_signing_confirm_phone"
-        style="@style/IdentHubTextView.HeadLine1"
-        android:textSize="18sp"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_gravity="start"
         android:layout_marginBottom="24dp"
         />
 
     <TextView
         android:id="@+id/description"
-        style="@style/IdentHubTextView.Regular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/identhub_contract_phone_description" />
@@ -57,13 +54,14 @@
 
         <TextView
             android:id="@+id/errorMessage"
-            style="@style/IdentHubTextView.Tiny.Error"
+            style="@style/IdentHubTextView.InputBottomLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="42dp"
             android:layout_marginTop="@dimen/identhub_margin_8"
             android:gravity="center"
             android:text="@string/identhub_contract_signing_code_request_new"
+            android:textColor="@color/identhub_color_error"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -71,7 +69,7 @@
 
     <TextView
         android:id="@+id/resendTimer"
-        style="@style/IdentHubTextView.Small_14"
+        style="@style/IdentHubTextView.ParagraphText"
         android:layout_marginTop="@dimen/identhub_margin_16"
         android:layout_width="match_parent"
         android:layout_height="@dimen/identhub_default_button_height"

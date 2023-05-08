@@ -3,110 +3,38 @@
 
     <style name="IdentHubTextView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/identhub_color_text</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
         <item name="android:letterSpacing">0</item>
-        <item name="fontFamily">sans-serif</item>
     </style>
 
-    <style name="IdentHubTextView.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <!-- Headlines -->
-
-    <style name="IdentHubTextView.HeadLine1" parent="IdentHubTextView">
-        <item name="android:textSize">26sp</item>
-    </style>
-
-    <style name="IdentHubTextView.HeadLine2" parent="IdentHubTextView">
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="IdentHubTextView.HeadLine3" parent="IdentHubTextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="IdentHubTextView.HeadLine4">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="IdentHubTextView.Headline" parent="IdentHubTextView">
-        <item name="android:textSize">14sp</item>
-        <item name="fontWeight">600</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="IdentHubTextView.Headline2" parent="IdentHubTextView">
-        <item name="android:textSize">20sp</item>
-        <item name="fontWeight">600</item>
-    </style>
-
-    <style name="IdentHubTextView.Regular" parent="IdentHubTextView">
-        <item name="fontWeight">400</item>
-    </style>
-
-    <style name="IdentHubTextView.InputLabel" parent="IdentHubTextView">
-        <item name="android:textColor">@color/identhub_color_label_text</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="IdentHubColoredTextView" parent="IdentHubTextView">
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="IdentHubColoredTextView.Green">
-        <item name="android:textColor">@color/identhub_color_dark_green</item>
-    </style>
-
-    <!-- small -->
-
-    <style name="IdentHubTextView.Small_16">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="IdentHubTextView.Small_15">
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="IdentHubTextView.Small_14" parent="IdentHubTextView">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="IdentHubTextView.Small_13" parent="IdentHubTextView">
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="IdentHubTextView.Small_12" parent="IdentHubTextView">
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="IdentHubTextView.Small">
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <!-- tiny -->
-
-    <style name="IdentHubTextView.Tiny">
-        <item name="android:textSize">11sp</item>
-    </style>
-
-
-    <!-- error message -->
-    <style name="IdentHubTextView.Tiny.Error">
-        <item name="android:textColor">@color/identhub_color_error</item>
-    </style>
-
-    <style name="IdentHubTopHeaderTitle" parent="IdentHubTextView">
+    <style name="IdentHubTextView.TopHeaderTitle" parent="IdentHubTextView">
         <item name="android:textSize">@dimen/identhub_top_header_title_size</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/identhub_h1_text_color</item>
+        <item name="android:textColor">@color/identhub_header_text_color</item>
     </style>
 
-    <style name="IdentHubParagraphText" parent="IdentHubTextView">
+    <style name="IdentHubTextView.ParagraphText" parent="IdentHubTextView">
         <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/identhub_paragraph_text_color</item>
     </style>
+
+    <style name="IdentHubTextView.SubParagraphText" parent="IdentHubTextView">
+        <item name="android:textSize">@dimen/identhub_sub_paragraph_text_size</item>
+        <item name="android:textColor">@color/identhub_sub_paragraph_text_color</item>
+    </style>
+
+    <style name="IdentHubTextView.ImportantTextLabel">
+        <item name="android:textSize">@dimen/identhub_important_label_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="IdentHubTextView.InputLabel" parent="IdentHubTextView">
+        <item name="android:textColor">@color/identhub_color_label_text</item>
+        <item name="android:textSize">@dimen/identhub_paragraph_text_size</item>
+    </style>
+
+    <style name="IdentHubTextView.InputBottomLabel">
+        <item name="android:textSize">@dimen/identhub_input_bottom_label_size</item>
+    </style>
+
 </resources>

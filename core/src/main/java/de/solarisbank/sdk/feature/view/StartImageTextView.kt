@@ -22,7 +22,7 @@ class StartImageTextView @JvmOverloads constructor(
 
     init {
         imageView = ImageView(context)
-        textView = TextView(context, null, R.style.IdentHubTextView_Regular)
+        textView = TextView(context, null)
         addView(imageView)
         addView(textView)
         imageView.layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)

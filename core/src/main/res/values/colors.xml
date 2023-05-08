@@ -28,9 +28,10 @@
 
     <color name="identhub_color_dark_green">#1C894E</color>
 
-    <color name="identhub_h1_text_color">#0F1926</color>
+    <color name="identhub_header_text_color">#0F1926</color>
     <color name="identhub_paragraph_text_color">#414D5D</color>
+    <color name="identhub_sub_paragraph_text_color">#909090</color>
 
-    <color name="identhub_color_qes_doc_background">#F2F2F2</color>
+    <color name="identhub_message_background_color">#E9EDF2</color>
 
 </resources>
