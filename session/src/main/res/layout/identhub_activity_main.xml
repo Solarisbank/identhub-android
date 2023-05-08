@@ -27,21 +27,27 @@
         android:id="@+id/img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_margin_12"
+        android:padding="@dimen/identhub_margin_12"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:srcCompat="@drawable/identhub_ic_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/startGuideline"
-        android:layout_marginTop="@dimen/identhub_margin_12"
-        android:padding="@dimen/identhub_margin_12"/>
+        app:layout_constraintStart_toEndOf="@+id/startGuideline"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_margin_12"
+        android:padding="@dimen/identhub_margin_12"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:srcCompat="@drawable/ic_cross"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        android:layout_marginTop="@dimen/identhub_margin_12"
-        android:padding="@dimen/identhub_margin_12"/>
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
