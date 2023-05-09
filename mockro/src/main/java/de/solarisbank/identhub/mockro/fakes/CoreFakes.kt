@@ -3,9 +3,11 @@ package de.solarisbank.identhub.mockro.fakes
 import de.solarisbank.identhub.mockro.shared.MockroIdentification
 import de.solarisbank.identhub.mockro.shared.PersonaConfig
 import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
+import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.dto.InitializationInfoDto
+import de.solarisbank.sdk.data.dto.MobileNumberDto
 import de.solarisbank.sdk.data.initial.InitializationDataSource
 import io.reactivex.Single
 
@@ -39,4 +41,11 @@ class FakeIdentificationRemoteDataSource: IdentificationRemoteDataSource {
     override fun getIdentification(identificationId: String): Single<IdentificationDto> {
         return Single.just(MockroIdentification.get())
     }
+}
+
+class FakeMobileNumberNetworkSource: MobileNumberNetworkDataSource {
+    override fun getMobileNumber(): Single<MobileNumberDto> {
+        return Single.just(MobileNumberDto("+123456789"))
+    }
+
 }

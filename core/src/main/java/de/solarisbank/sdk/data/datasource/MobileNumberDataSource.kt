@@ -4,9 +4,14 @@ import de.solarisbank.sdk.data.api.MobileNumberApi
 import de.solarisbank.sdk.data.dto.MobileNumberDto
 import io.reactivex.Single
 
-class MobileNumberDataSource(private val mobileNumberApi: MobileNumberApi) {
+interface MobileNumberNetworkDataSource {
+    fun getMobileNumber(): Single<MobileNumberDto>
+}
 
-    fun getMobileNumber(): Single<MobileNumberDto> {
+class MobileNumberDataSource(private val mobileNumberApi: MobileNumberApi) :
+    MobileNumberNetworkDataSource {
+
+    override fun getMobileNumber(): Single<MobileNumberDto> {
         return mobileNumberApi.getMobileNumber()
     }
 

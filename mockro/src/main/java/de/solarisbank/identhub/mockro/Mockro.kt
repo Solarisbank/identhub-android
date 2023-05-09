@@ -4,7 +4,9 @@ import androidx.annotation.Keep
 import de.solarisbank.identhub.bank.domain.api.VerificationBankNetworkDataSource
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
 import de.solarisbank.identhub.mockro.fakes.*
+import de.solarisbank.identhub.phone.data.VerificationPhoneNetworkDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
+import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.di.koin.MockroInterface
 import de.solarisbank.sdk.data.di.koin.MockroPersona
 import de.solarisbank.sdk.data.initial.InitializationDataSource
@@ -21,7 +23,7 @@ import org.koin.dsl.module
 class Mockro: MockroInterface {
     override fun loadModules(koin: Koin) {
         koin.loadModules(
-            listOf(coreMockroModule, bankMockroModule, fourthlineMockroModule, qesMockroModule)
+            listOf(coreMockroModule, bankMockroModule, phoneMockroModule, fourthlineMockroModule, qesMockroModule)
         )
     }
 
@@ -37,10 +39,15 @@ class Mockro: MockroInterface {
 private val coreMockroModule = module {
     factory<InitializationDataSource> { FakeInitializationDataSource() }
     factory<IdentificationRemoteDataSource> { FakeIdentificationRemoteDataSource() }
+    factory<MobileNumberNetworkDataSource> { FakeMobileNumberNetworkSource() }
 }
 
 private val bankMockroModule = module {
     factory<VerificationBankNetworkDataSource> { FakeVerificationBankNetworkDataSource() }
+}
+
+private val phoneMockroModule = module {
+    factory<VerificationPhoneNetworkDataSource> { FakeVerificationPhoneNetworkDataSource() }
 }
 
 private val fourthlineMockroModule = module {
