@@ -45,17 +45,25 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/IdentHubTextView.TopHeaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/identhub_fourthline_doc_scan_result_title"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+
+            <TextView
+                android:id="@+id/subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_24"
-                android:layout_marginBottom="@dimen/identhub_margin_32"
-                android:gravity="start"
-                android:text="@string/identhub_fourthline_doc_scan_result_title"
-                app:layout_constraintBottom_toTopOf="@id/docNumberInputLayout"
+                android:text="@string/identhub_fourthline_doc_scan_result_subtitle"
+                app:layout_constraintStart_toEndOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toTopOf="@id/topGuideline" />
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <TextView
                 android:id="@+id/docNumberInputLayout"
@@ -67,7 +75,7 @@
                 android:text="@string/identhub_fourthline_doc_scan_document_number"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/subtitle" />
 
             <EditText
                 android:id="@+id/docNumberTextInput"

@@ -42,7 +42,7 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:layout_marginTop="40dp"
                 android:text="@string/identhub_fourthline_welcome_container_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0"
@@ -54,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/identhub_fourthline_welcome_container_first_tick"
-                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_marginTop="@dimen/identhub_margin_24"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/welcomeTitle"/>

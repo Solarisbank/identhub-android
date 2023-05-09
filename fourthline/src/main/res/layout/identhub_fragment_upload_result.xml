@@ -34,17 +34,16 @@
         app:layout_constraintGuide_end="16dp"/>
 
     <TextView
-        android:id="@+id/subtitle1"
+        android:id="@+id/title"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:gravity="center_horizontal"
-        android:maxLines="4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/topGuideline"
-        app:layout_constraintBottom_toTopOf="@id/indicator"
         android:text="@string/identhub_kyc_upload_success_title"
-        app:layout_constraintVertical_bias="0.1"
         />
 
     <ImageView
@@ -60,16 +59,16 @@
         />
 
     <TextView
-        android:id="@+id/subtitle2"
+        android:id="@+id/subtitle"
+        style="@style/IdentHubTextView.ImportantTextLabel"
         android:layout_width="0dp"
         android:maxLines="4"
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:text="@string/identhub_kyc_upload_success_subtitle"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/indicator"
-        android:text="@string/identhub_kyc_upload_success_subtitle"
-        app:layout_constraintVertical_bias="0.1"
         />
 
     <Button

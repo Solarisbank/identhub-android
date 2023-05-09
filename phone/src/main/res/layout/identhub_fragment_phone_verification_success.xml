@@ -22,7 +22,7 @@
         android:id="@+id/done1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/identhub_margin_24"
+        android:layout_marginTop="40dp"
         android:src="@drawable/identhub_ic_done_pure"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toTopOf="parent" />

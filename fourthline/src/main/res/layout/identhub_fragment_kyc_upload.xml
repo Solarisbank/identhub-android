@@ -33,6 +33,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="30dp"/>
 
+    <TextView
+        android:id="@+id/title"
+        style="@style/IdentHubTextView.TopHeaderTitle"
+        android:gravity="center_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="@+id/startGuideline"
+        app:layout_constraintTop_toBottomOf="@id/topGuideline"
+        android:text="@string/identhub_kyc_upload_verification_title" />
 
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"
@@ -59,7 +69,7 @@
         />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -81,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/description"
         app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
         app:layout_constraintVertical_bias="0.1"
         android:text="@string/identhub_kyc_upload_verification_subtitle_2"

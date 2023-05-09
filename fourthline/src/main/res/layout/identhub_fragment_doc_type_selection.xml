@@ -11,7 +11,7 @@
         android:fillViewport="true"
         android:layout_above="@+id/buttonLayout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -82,7 +82,6 @@
                 android:id="@+id/documentTypeList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintTop_toBottomOf="@id/subtitle"

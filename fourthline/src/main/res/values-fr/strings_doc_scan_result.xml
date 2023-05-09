@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_scan_result_title">Veuillez confirmer que les informations sur votre document sont correctes</string>
+    <string name="identhub_fourthline_doc_scan_result_title">Informations du document</string>
+    <string name="identhub_fourthline_doc_scan_result_subtitle">Veuillez confirmer que les informations sur votre document sont correctes</string>
     <string name="identhub_fourthline_doc_scan_document_number">N° de document</string>
     <string name="identhub_fourthline_doc_scan_date_of_issue">Date de délivrance</string>
     <string name="identhub_fourthline_doc_scan_expiry_date">Date d’expiration du document</string>

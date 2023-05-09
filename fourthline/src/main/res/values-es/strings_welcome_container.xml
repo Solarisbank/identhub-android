@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_welcome_container_title">A continuación, hazte un selfie.</string>
+    <string name="identhub_fourthline_welcome_container_title">Hazte un selfie</string>
     <string name="identhub_fourthline_welcome_container_first_tick">La aplicación reconocerá su cara.</string>
     <string name="identhub_fourthline_welcome_container_second_tick">Prueba la viveza siguiendo las instrucciones que aparecen en la pantalla.</string>
     <string name="identhub_fourthline_welcome_container_description">Asegúrate de que hay suficiente luz para el selfie. Si llevas gafas, asegúrate de que no hay reflejos.</string>

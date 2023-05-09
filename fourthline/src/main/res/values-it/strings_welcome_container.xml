@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_welcome_container_title">Successivamente, scatta un selfie (foto).</string>
+    <string name="identhub_fourthline_welcome_container_title">Scatta un selfie (foto)</string>
     <string name="identhub_fourthline_welcome_container_first_tick">L\'app riconoscerà il tuo viso.</string>
     <string name="identhub_fourthline_welcome_container_second_tick">Dimostra di non essere un robot seguendo le istruzioni sullo schermo.</string>
     <string name="identhub_fourthline_welcome_container_description">Assicurati di avere abbastanza luce. Se indossi gli occhiali, assicurati che non siano riflettenti.</string>

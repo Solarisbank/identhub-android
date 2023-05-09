@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="identhub_kyc_upload_verification_title">Verification</string>
     <string name="identhub_failure_fraud_headline">Identification failed</string>
     <string name="identhub_failure_fraud_message">Unfortunately we could not identify you successfully.</string>
     <string name="identhub_failure_fraud_button">OK</string>

@@ -9,19 +9,19 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         tools:text="Confirm Phone"
         android:text="@string/identhub_contract_signing_confirm_phone"
-        style="@style/IdentHubTextView.TopHeaderTitle"
-        android:layout_gravity="start"
-        android:layout_marginBottom="24dp"
-        />
+        android:layout_gravity="start" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_margin_24"
         android:text="@string/identhub_contract_phone_description" />
 
     <EditText

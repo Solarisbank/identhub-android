@@ -29,7 +29,6 @@ class DocScanResultFragment : NewBaseFragment() {
     private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
-    private var title: TextView? = null
     private var docNumberTextInput: EditText? = null
     private var issueDateTextInput: DateInputTextView? = null
     private var issueDateError: TextView? = null
@@ -43,7 +42,6 @@ class DocScanResultFragment : NewBaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.identhub_fragment_doc_scan_result, container, false)
             .also {
-                title = it.findViewById(R.id.title)
                 docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
                 issueDateTextInput = it.findViewById(R.id.issueDateTextInput)
                 issueDateError = it.findViewById(R.id.issueDateError)
@@ -120,7 +118,6 @@ class DocScanResultFragment : NewBaseFragment() {
         issueDateTextInput?.removeTextChangedListener(issueDateWatcher)
         expireDateTextInput?.removeTextChangedListener(expireDateWatcher)
         docNumberTextInput?.removeTextChangedListener(docNumberWatcher)
-        title = null
         docNumberTextInput = null
         issueDateTextInput = null
         expireDateTextInput = null
