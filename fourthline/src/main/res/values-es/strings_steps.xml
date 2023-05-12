@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_fourthline_activity_intro_step_label">Verificar identidad</string>
-    <string name="identhub_fourthline_activity_selfie_step_label">Hazte un selfie</string>
-    <string name="identhub_fourthline_activity_select_id_step_label">Tu documento de identidad</string>
-    <string name="identhub_fourthline_activity_confirm_information_step_label">Confirma la información</string>
-    <string name="identhub_fourthline_activity_verifying_step_label">Verificación</string>
-</resources>

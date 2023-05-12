@@ -27,4 +27,6 @@
     <color name="identhub_sub_paragraph_text_color">#E9EDF2</color>
     <color name="identhub_message_background_color">#0F1926</color>
 
+    <color name="identhub_selfie_background">#72242A32</color>
+
 </resources>

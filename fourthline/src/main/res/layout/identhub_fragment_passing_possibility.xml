@@ -6,8 +6,8 @@
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"
         android:id="@+id/progressBar"
-        android:layout_width="@dimen/identhub_kyc_upload_progress_size"
-        android:layout_height="@dimen/identhub_kyc_upload_progress_size"
+        android:layout_width="@dimen/identhub_progress_circle_size"
+        android:layout_height="@dimen/identhub_progress_circle_size"
         android:layout_gravity="center" />
 
 </FrameLayout>

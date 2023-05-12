@@ -8,104 +8,83 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_above="@+id/buttonLayout">
+        android:layout_above="@+id/buttonLayout"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="24dp"
-                />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="24dp"/>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="20dp"/>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/bottomGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_end="16dp"/>
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/identhub_fourthline_doc_type_selection_title"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_fourthline_toc_type_selection_choose_title"
-                app:layout_constraintStart_toStartOf="@+id/startGuideline"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintHorizontal_bias="0.0"
-                />
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <ProgressBar
-                style="@style/IdentHubProgressBarStyle"
                 android:id="@+id/progress"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="@dimen/identhub_margin_32"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/subtitle"
-                />
+                style="@style/IdentHubProgressBarStyle"
+                android:layout_width="@dimen/identhub_progress_circle_size"
+                android:layout_height="@dimen/identhub_progress_circle_size"
+                app:layout_constraintVertical_bias="0.2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/documentTypeList"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/documentTypeList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/subtitle"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/subtitle" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/buttonLayout"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/confirmButton"
             style="@style/IdentHubPrimaryButton"
-            android:enabled="false"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
-            android:layout_marginTop="@dimen/identhub_margin_4"
-            android:layout_marginBottom="@dimen/identhub_margin_16"
-            android:text="@string/identhub_fourthline_doc_type_selection_next_button"
-            />
+            android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
+            android:layout_weight="1"
+            android:text="@string/identhub_fourthline_doc_type_selection_next_button" />
 
     </LinearLayout>
 </RelativeLayout>

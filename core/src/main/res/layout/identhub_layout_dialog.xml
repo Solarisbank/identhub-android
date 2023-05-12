@@ -4,12 +4,12 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:layout_marginBottom="16dp">
+        android:padding="@dimen/identhub_dialog_padding"
+        android:layout_marginBottom="@dimen/identhub_margin_16">
 
         <TextView
             style="@style/IdentHubTextView.TopHeaderTitle"
@@ -22,31 +22,27 @@
             android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
             tools:text="This should be lorem ipsum or something but it's not. Deal with it. Ain't nothing you can do about it. Except of course chaning this text... Wait..."/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="@dimen/identhub_default_button_height"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/identhub_bottom_footer_margin">
 
             <Button
                 android:id="@+id/positiveButton"
                 style="@style/IdentHubDialogButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/identhub_default_button_height"
-                android:layout_weight="1"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="@dimen/identhub_margin_4"
-                android:layout_marginBottom="@dimen/identhub_margin_4" />
+                android:layout_weight="1" />
 
             <View
                 android:id="@+id/buttomSeparator"
                 android:layout_width="1dp"
-                android:layout_height="16dp"
+                android:layout_height="@dimen/identhub_margin_16"
                 android:background="@color/identhub_color_separator"/>
 
             <Button
@@ -55,10 +51,6 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/identhub_default_button_height"
                 android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginTop="@dimen/identhub_margin_4"
-                android:layout_marginBottom="@dimen/identhub_margin_4"
                 android:textColor="@color/identhub_color_primary" />
         </LinearLayout>
     </LinearLayout>

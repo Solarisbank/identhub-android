@@ -10,6 +10,7 @@ import de.solarisbank.identhub.phone.R
 import de.solarisbank.identhub.session.main.NewBaseFragment
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.view.PhoneVerificationView
 import de.solarisbank.sdk.feature.view.PhoneVerificationViewEvent
 import de.solarisbank.sdk.feature.view.PhoneVerificationViewState
@@ -46,7 +47,10 @@ class PhoneVerificationFragment: NewBaseFragment() {
                 verifyResult = it.verifyResult,
                 resendButtonVisible = it.shouldShowResend
             ))
-            submitButton?.isEnabled = it.submitEnabled
+            submitButton?.apply {
+                isEnabled = it.submitEnabled
+                buttonDisabled(!isEnabled)
+            }
         }
         viewModel.events().observe(viewLifecycleOwner) {
             it.content?.let { event ->

@@ -141,8 +141,10 @@ class ContractSigningFragment : NewBaseFragment() {
     }
 
     private fun updateSubmitButtonState() {
-        submitButton!!.isEnabled = isSubmitButtonEnabled()
-        submitButton!!.buttonDisabled(!submitButton!!.isEnabled)
+        submitButton?.apply {
+            isEnabled = isSubmitButtonEnabled()
+            buttonDisabled(!isEnabled)
+        }
     }
 
     private fun isSubmitButtonEnabled(): Boolean {

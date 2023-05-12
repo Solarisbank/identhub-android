@@ -21,39 +21,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/healthScanTitle"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/identhub_health_scan_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_health_scan_description"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
@@ -73,8 +64,7 @@
             style="@style/IdentHubPrimaryButton"
             android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
-            android:layout_marginTop="@dimen/identhub_margin_4"
-            android:layout_marginBottom="@dimen/identhub_margin_16"
+            android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
             android:layout_weight="1"
             android:text="@string/identhub_fourthline_welcome_container_continue_button" />
 

@@ -10,28 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/identhub_default_page_padding"/>
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/identhub_default_page_padding"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="@dimen/identhub_default_page_padding"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="@dimen/identhub_margin_24"/>
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin"/>
 
     <ScrollView
         android:id="@+id/scroll"
@@ -39,8 +25,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:fillViewport="true"
-        android:paddingBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
         app:layout_constraintBottom_toTopOf="@+id/contractSignTermsCondition">
@@ -55,22 +40,20 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_contract_signing_preview_title"
-                android:layout_marginTop="40dp"/>
-
+                android:text="@string/identhub_contract_signing_preview_title" />
             <TextView
                 android:id="@+id/subtitle"
                 style="@style/IdentHubTextView.ParagraphText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_contract_signing_preview_subtitle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/documentsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="67dp" />
+                android:layout_marginTop="@dimen/identhub_margin_12"/>
 
         </LinearLayout>
     </ScrollView>
@@ -80,7 +63,7 @@
         style="@style/IdentHubTextView.SubParagraphText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/identhub_margin_24"
+        android:layout_marginBottom="@dimen/identhub_bottom_footer_margin"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
         app:layout_constraintBottom_toTopOf="@+id/submitButton"
@@ -90,12 +73,11 @@
     <Button
         android:id="@+id/submitButton"
         style="@style/IdentHubPrimaryButton"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/identhub_default_button_height"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         android:text="@string/identhub_next"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline" />
 

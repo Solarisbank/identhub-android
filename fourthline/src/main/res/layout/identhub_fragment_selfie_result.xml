@@ -9,21 +9,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/end_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="@dimen/identhub_margin_18" />
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
     <ImageView
         android:id="@+id/imageResult"
@@ -32,24 +25,22 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/selfieMask"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="@drawable/identhub_ic_selfie_frame_filled"
-        android:padding="50dp"
-        android:src="@drawable/identhub_ic_selfie_frame_grey"
+        android:src="@drawable/identhub_ic_selfie_result_frame"
         app:layout_constraintBottom_toBottomOf="@id/imageResult"
         app:layout_constraintEnd_toEndOf="@id/imageResult"
         app:layout_constraintStart_toStartOf="@id/imageResult"
-        app:layout_constraintTop_toTopOf="@id/imageResult"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="@id/imageResult" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,53 +54,57 @@
 
         <ImageView
             android:id="@+id/successImageView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/identhub_success_drawable_size"
+            android:layout_height="@dimen/identhub_success_drawable_size"
             android:src="@drawable/identhub_ic_done_round_blue" />
 
         <TextView
             style="@style/IdentHubTextView.ImportantTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/identhub_margin_8"
+            android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
             android:text="@string/identhub_selfie_result_successful" />
 
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/retryButton"
-        style="@style/IdentHubAlternativeButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/resultButtonsRoot"
         android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginStart="@dimen/identhub_margin_16"
-        android:layout_marginTop="@dimen/identhub_margin_8"
-        android:layout_marginEnd="@dimen/identhub_margin_16"
-        android:text="@string/identhub_selfie_scanner_retake"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
-        app:layout_constraintEnd_toStartOf="@id/separator"
-        app:layout_constraintStart_toStartOf="@id/start_guideline" />
-
-    <View
-        android:id="@+id/separator"
-        android:layout_width="1dp"
-        android:layout_height="16dp"
-        android:background="@color/identhub_color_separator"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toTopOf="@id/retryButton" />
+        app:layout_constraintStart_toStartOf="@id/start_guideline">
 
-    <Button
-        android:id="@+id/submitButton"
-        style="@style/IdentHubPrimaryButton"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginStart="@dimen/identhub_margin_16"
-        android:layout_marginEnd="@dimen/identhub_margin_16"
-        android:text="@string/identhub_selfie_scanner_confirm"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toEndOf="@id/separator" />
+        <View
+            android:id="@+id/separator"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/identhub_margin_16"
+            android:background="@color/identhub_color_separator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/retryButton"
+            style="@style/IdentHubAlternativeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/identhub_document_scanner_retake"
+            app:layout_constraintEnd_toStartOf="@id/separator"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/IdentHubPrimaryButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/identhub_document_scanner_confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/separator" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

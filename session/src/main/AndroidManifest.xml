@@ -8,7 +8,7 @@
     <application tools:node="merge">
         <activity
             android:name="de.solarisbank.identhub.session.main.MainActivity"
-            android:theme="@style/IdentHubTheme"
+            android:theme="@style/IdentHubBaseTheme"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>

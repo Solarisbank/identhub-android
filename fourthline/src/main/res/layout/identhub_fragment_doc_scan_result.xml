@@ -20,57 +20,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/bottomGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_end="16dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/identhub_fourthline_doc_scan_result_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_fourthline_doc_scan_result_subtitle"
                 app:layout_constraintStart_toEndOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <TextView
                 android:id="@+id/docNumberInputLayout"
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_scan_document_number"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
@@ -81,46 +65,58 @@
                 android:id="@+id/docNumberTextInput"
                 style="@style/IdentHubTextBox"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/identhub_margin_4"
+                android:layout_height="@dimen/identhub_text_box_height"
+                android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:background="@drawable/identhub_textbox_drawable_selector"
                 android:baselineAligned="false"
                 android:hint="@string/identhub_fourthline_doc_scan_document_number"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:maxLength="17"
                 android:maxLines="1"
-                android:paddingStart="@dimen/identhub_margin_8"
-                android:paddingEnd="@dimen/identhub_margin_8"
+                android:paddingStart="@dimen/identhub_text_box_message_label_margin"
+                android:paddingEnd="@dimen/identhub_text_box_message_label_margin"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/docNumberInputLayout" />
+
+            <TextView
+                android:id="@+id/docNumberErrorText"
+                style="@style/IdentHubTextView.InputLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
+                android:orientation="vertical"
+                android:textColor="@color/identhub_color_error"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/docNumberTextInput" />
 
             <TextView
                 android:id="@+id/issueDateInputLayout"
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:layout_marginTop="@dimen/identhub_margin_44"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_scan_date_of_issue"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/docNumberTextInput" />
+                app:layout_constraintTop_toBottomOf="@id/docNumberErrorText" />
 
             <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
                 android:id="@+id/issueDateTextInput"
                 style="@style/IdentHubDateField"
                 android:focusable="false"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/identhub_margin_4"
+                android:layout_height="@dimen/identhub_text_box_height"
+                android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:cursorVisible="false"
                 android:hint="@string/identhub_fourthline_doc_scan_date_placeholder"
                 android:maxLines="1"
-                android:paddingStart="@dimen/identhub_margin_8"
-                android:paddingEnd="@dimen/identhub_margin_8"
+                android:paddingStart="@dimen/identhub_text_box_message_label_margin"
+                android:paddingEnd="@dimen/identhub_text_box_message_label_margin"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/issueDateInputLayout" />
@@ -130,11 +126,11 @@
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_scan_date_past_error"
                 android:textColor="@color/identhub_color_error"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/issueDateTextInput" />
@@ -144,25 +140,25 @@
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_margin_44"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_scan_expiry_date"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/issueDateError" />
+                app:layout_constraintTop_toBottomOf="@id/issueDateTextInput" />
 
             <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
                 android:id="@+id/expireDateTextInput"
                 style="@style/IdentHubDateField"
                 android:focusable="false"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/identhub_margin_4"
+                android:layout_height="@dimen/identhub_text_box_height"
+                android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:cursorVisible="false"
                 android:hint="@string/identhub_fourthline_doc_scan_date_placeholder"
                 android:maxLines="1"
-                android:paddingStart="@dimen/identhub_margin_8"
-                android:paddingEnd="@dimen/identhub_margin_8"
+                android:paddingStart="@dimen/identhub_text_box_message_label_margin"
+                android:paddingEnd="@dimen/identhub_text_box_message_label_margin"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/expireDateInputLayout" />
@@ -172,11 +168,11 @@
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_scan_expiry_past_error"
                 android:textColor="@color/identhub_color_error"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/expireDateTextInput" />
@@ -195,8 +191,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
-            android:layout_marginTop="@dimen/identhub_margin_4"
-            android:layout_marginBottom="@dimen/identhub_margin_16"
+            android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
             android:text="@string/identhub_fourthline_doc_scan_continue_button"
             />
 

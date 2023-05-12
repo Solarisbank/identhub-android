@@ -21,50 +21,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/end_guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/identhub_fourthline_terms_verify_title"
                 app:layout_constraintStart_toEndOf="@id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_fourthline_terms_description_start"
                 app:layout_constraintStart_toEndOf="@id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintHorizontal_bias="0.0"
-                />
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <LinearLayout
                 android:id="@+id/condition1Layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
                 app:layout_constraintStart_toEndOf="@id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/subtitle"
@@ -74,24 +64,25 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/condition1ImageView"
                     android:src="@drawable/identhub_ic_perm_group_location"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/identhub_default_drawable_size"
+                    android:layout_height="@dimen/identhub_default_drawable_size"
                     />
 
                 <TextView
                     android:id="@+id/condition1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:text="@string/identhub_fourthline_terms_description_list_item1"
-                    />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/identhub_drawable_start_margin"
+                    android:text="@string/identhub_fourthline_terms_description_list_item1" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/condition2Layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
                 app:layout_constraintStart_toStartOf="@id/start_guideline"
                 app:layout_constraintEnd_toEndOf="@+id/end_guideline"
                 app:layout_constraintTop_toBottomOf="@id/condition1Layout"
@@ -101,15 +92,16 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/condition2ImageView"
                     android:src="@drawable/identhub_ic_perm_group_camera"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/identhub_default_drawable_size"
+                    android:layout_height="@dimen/identhub_default_drawable_size"
                     />
 
                 <TextView
                     android:id="@+id/condition2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/identhub_drawable_start_margin"
                     android:text="@string/identhub_fourthline_terms_description_list_item2"
                     />
             </LinearLayout>
@@ -118,7 +110,7 @@
                 android:id="@+id/namirialTermsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/identhub_terms_and_conditions_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@id/fourthlinePrivacyDescription"
@@ -134,7 +126,7 @@
                     style="@style/IdentHubTextView.SubParagraphText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/identhub_margin_4"
+                    android:layout_marginStart="@dimen/identhub_text_box_label_margin"
                     android:text="@string/identhub_namirial_terms_and_conditions" />
 
             </LinearLayout>
@@ -144,8 +136,8 @@
                 style="@style/IdentHubTextView.SubParagraphText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginStart="@dimen/identhub_margin_8"
+                android:layout_marginBottom="@dimen/identhub_bottom_footer_margin"
+                android:layout_marginStart="@dimen/identhub_text_box_message_label_margin"
                 android:text="@string/identhub_fourthline_privacy_statement"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/start_guideline" />
@@ -166,10 +158,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
-            android:layout_marginTop="@dimen/identhub_margin_4"
-            android:layout_marginBottom="@dimen/identhub_margin_16"
-            android:text="@string/identhub_fourthline_terms_button_submit"
-            />
+            android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
+            android:text="@string/identhub_fourthline_terms_button_submit" />
 
     </LinearLayout>
 </RelativeLayout>

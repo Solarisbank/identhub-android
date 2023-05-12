@@ -118,10 +118,12 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
                 SelfieScannerStep.TURN_HEAD_LEFT -> {
                     stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
                     livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_left_direction)
+                    selfieMask!!.visibility = View.INVISIBLE
                 }
                 SelfieScannerStep.TURN_HEAD_RIGHT -> {
                     stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
                     livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_right_direction)
+                    selfieMask!!.visibility = View.INVISIBLE
                 }
             }
             hintTextView!!.text = step.asString(requireContext())

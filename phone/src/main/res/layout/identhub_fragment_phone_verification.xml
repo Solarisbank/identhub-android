@@ -9,20 +9,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp"/>
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="24dp"/>
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin"/>
 
     <de.solarisbank.sdk.feature.view.PhoneVerificationView
         android:id="@+id/phoneVerification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline" />
@@ -32,10 +31,10 @@
         style="@style/IdentHubPrimaryButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         android:text="@string/identhub_verification_phone_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/phoneVerification"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

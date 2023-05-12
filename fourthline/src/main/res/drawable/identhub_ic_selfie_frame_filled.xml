@@ -8,7 +8,7 @@
     <shape android:shape="rectangle">
       <stroke
           android:width="20dp"
-          android:color="#FCFCFC" />
+          android:color="@color/identhub_selfie_background" />
       <corners android:radius="30dp" />
     </shape>
   </item>

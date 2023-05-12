@@ -21,53 +21,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="16dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/welcomeTitle"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/identhub_fourthline_welcome_container_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <de.solarisbank.sdk.feature.view.StartImageTextView
+            <TextView
                 android:id="@+id/firstTickInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/identhub_fourthline_welcome_container_first_tick"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
+                android:drawablePadding="@dimen/identhub_margin_8"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/welcomeTitle"/>
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle"
+                app:drawableStartCompat="@drawable/identhub_ic_tick_green" />
 
-            <de.solarisbank.sdk.feature.view.StartImageTextView
+            <TextView
                 android:id="@+id/secondTickInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/identhub_fourthline_welcome_container_second_tick"
                 android:layout_marginTop="@dimen/identhub_margin_4"
+                android:drawablePadding="@dimen/identhub_margin_8"
                 app:layout_constraintEnd_toStartOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/firstTickInfo"/>
+                app:layout_constraintTop_toBottomOf="@id/firstTickInfo"
+                app:drawableStartCompat="@drawable/identhub_ic_tick_green"/>
 
             <TextView
                 android:id="@+id/description"
@@ -83,15 +79,15 @@
                 android:id="@+id/noticeRoot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/description">
 
                 <ImageView
                     android:id="@+id/noticeImage"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="@dimen/identhub_notice_drawable_size"
+                    android:layout_height="@dimen/identhub_notice_drawable_size"
                     android:contentDescription="@string/identhub_fourthline_terms_notice_title"
                     android:src="@drawable/identhub_ic_info"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +98,7 @@
                     style="@style/IdentHubTextView.ParagraphText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/identhub_margin_4"
+                    android:layout_marginStart="@dimen/identhub_margin_8"
                     android:text="@string/identhub_fourthline_terms_notice_title"
                     app:layout_constraintBottom_toBottomOf="@+id/noticeImage"
                     app:layout_constraintStart_toEndOf="@+id/noticeImage"
@@ -113,7 +109,7 @@
                     style="@style/IdentHubTextView.SubParagraphText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/identhub_margin_8"
+                    android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
                     android:text="\u2022"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="@+id/noticeImage"
@@ -145,8 +141,7 @@
             style="@style/IdentHubPrimaryButton"
             android:layout_width="0dp"
             android:layout_height="@dimen/identhub_default_button_height"
-            android:layout_marginTop="@dimen/identhub_margin_4"
-            android:layout_marginBottom="@dimen/identhub_margin_16"
+            android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
             android:layout_weight="1"
             android:text="@string/identhub_fourthline_welcome_container_continue_button" />
 

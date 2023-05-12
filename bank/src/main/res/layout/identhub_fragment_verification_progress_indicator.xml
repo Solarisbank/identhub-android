@@ -3,28 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/startGuideline"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp" />
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="24dp" />
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"
         android:id="@+id/icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/identhub_progress_circle_size"
+        android:layout_height="@dimen/identhub_progress_circle_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,13 +33,12 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
         android:gravity="center"
         android:text="@string/identhub_progress_indicator_precessing_application_title"
         app:layout_constraintTop_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintHorizontal_bias="0.0"
         />
 
     <TextView
@@ -49,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/identhub_margin_16"
         android:layout_marginEnd="@dimen/identhub_margin_16"
-        android:layout_marginTop="@dimen/identhub_margin_24"
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
         android:text="@string/identhub_progress_indicator_precessing_application_message"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"

@@ -12,7 +12,6 @@
         style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         tools:text="Confirm Phone"
         android:text="@string/identhub_contract_signing_confirm_phone"
         android:layout_gravity="start" />
@@ -21,7 +20,7 @@
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/identhub_margin_24"
+        android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
         android:text="@string/identhub_contract_phone_description" />
 
     <EditText
@@ -36,6 +35,18 @@
         android:inputType="number"
         android:gravity="center" />
 
+    <TextView
+        android:id="@+id/errorMessage"
+        style="@style/IdentHubTextView.InputBottomLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
+        android:gravity="center"
+        android:text="@string/identhub_contract_signing_code_request_new"
+        android:textColor="@color/identhub_color_error"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/progressRoot"
         android:layout_width="match_parent"
@@ -46,22 +57,9 @@
         <ProgressBar
             style="@style/IdentHubProgressBarStyle"
             android:id="@+id/codeProgress"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="@dimen/identhub_margin_8"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/errorMessage"
-            style="@style/IdentHubTextView.InputBottomLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="42dp"
-            android:layout_marginTop="@dimen/identhub_margin_8"
-            android:gravity="center"
-            android:text="@string/identhub_contract_signing_code_request_new"
-            android:textColor="@color/identhub_color_error"
+            android:layout_width="@dimen/identhub_progress_circle_size"
+            android:layout_height="@dimen/identhub_progress_circle_size"
+            android:layout_marginTop="@dimen/identhub_margin_32"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -79,10 +77,10 @@
     <Button
         android:id="@+id/resendButton"
         style="@style/IdentHubSecondaryNoBackgroundButton"
-        android:layout_width="162dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/identhub_default_button_height"
         android:text="@string/identhub_contract_signing_code_request_new_button"
-        android:layout_marginTop="@dimen/identhub_margin_16"
-        android:visibility="gone" />
+        android:layout_marginTop="@dimen/identhub_button_bottom_margin"
+        android:visibility="visible" />
 
 </merge>

@@ -14,8 +14,4 @@
         <item name="android:textViewStyle">@style/IdentHubTextView</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
-
-    <style name="IdentHubTheme" parent="@style/IdentHubBaseTheme">
-        <item name="IdentHubStartImageTextViewStyle">@style/IdentHubDefaultStartImageTextViewStyle</item>
-    </style>
 </resources>

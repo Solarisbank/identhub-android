@@ -34,4 +34,6 @@
 
     <color name="identhub_message_background_color">#E9EDF2</color>
 
+    <color name="identhub_selfie_background">#72FFFFFF</color>
+
 </resources>

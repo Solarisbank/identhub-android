@@ -9,34 +9,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/identhub_margin_24" />
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/identhub_margin_24" />
-
-    <ImageView
-        android:id="@+id/done1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/identhub_ic_done_pure"
-        app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
     <TextView
         android:id="@+id/description"
         style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/identhub_margin_8"
         android:text="@string/identhub_contract_phone_verification_successful"
+        android:drawablePadding="@dimen/identhub_margin_8"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintStart_toEndOf="@id/done1"
-        app:layout_constraintTop_toTopOf="@+id/done1" />
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:drawableStartCompat="@drawable/identhub_ic_tick_green" />
 
     <TextView
         android:id="@+id/descriptionDetail"
@@ -47,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/description"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
-        android:layout_marginTop="@dimen/identhub_margin_24" />
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin" />
 
     <Button
         android:id="@+id/submitButton"
@@ -55,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
         android:text="@string/identhub_next"
-        android:layout_marginBottom="@dimen/identhub_margin_24"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

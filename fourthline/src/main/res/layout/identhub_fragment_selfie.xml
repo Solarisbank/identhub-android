@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/identhub_color_surface">
+    android:background="@color/identhub_selfie_background">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
     <de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
         android:id="@+id/punchhole"
@@ -17,22 +31,21 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="@drawable/identhub_ic_selfie_frame_filled"
-        android:padding="50dp"
         android:src="@drawable/identhub_ic_selfie_frame_grey"
+        android:padding="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="invisible"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/livenessMask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="@dimen/identhub_selfie_liveness_mask_margin"
         android:adjustViewBounds="true"
-        android:paddingStart="60dp"
-        android:paddingEnd="60dp"
+        android:paddingStart="@dimen/identhub_selfie_liveness_mask_margin"
+        android:paddingEnd="@dimen/identhub_selfie_liveness_mask_margin"
         app:layout_constraintBottom_toBottomOf="@+id/selfieMask"
         app:layout_constraintEnd_toEndOf="@id/selfieMask"
         app:layout_constraintStart_toStartOf="@id/selfieMask" />
@@ -42,12 +55,9 @@
         style="@style/IdentHubTextView.TopHeaderTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/selfieMask"
         tools:text="@string/identhub_selfie_intro" />
@@ -55,8 +65,8 @@
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"
         android:id="@+id/progressBar"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/identhub_progress_circle_size"
+        android:layout_height="@dimen/identhub_progress_circle_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/punchhole"
         app:layout_constraintStart_toStartOf="@+id/punchhole"
@@ -64,8 +74,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/identhub_success_drawable_size"
+        android:layout_height="@dimen/identhub_success_drawable_size"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,8 +87,8 @@
         style="@style/IdentHubTextView.ImportantTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="Step Label" />
 
@@ -87,10 +97,9 @@
         style="@style/IdentHubTextView.ImportantTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        android:layout_marginTop="8dp"
         tools:text="Warnings Label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

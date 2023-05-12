@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -17,57 +16,47 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="24dp" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="24dp" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/topGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="24dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_16"
                 android:text="@string/identhub_verification_bank_title"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/topGuideline" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:text="@string/identhub_verification_bank_description"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
             <ImageView
                 android:id="@+id/lock_image"
                 android:layout_width="@dimen/identhub_margin_16"
-                android:layout_height="@dimen/identhub_margin_16"
-                android:layout_marginTop="@dimen/identhub_margin_16"
+                android:layout_height="@dimen/identhub_margin_24"
+                android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
                 android:src="@drawable/identhub_ic_baseline_lock_24"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -77,12 +66,11 @@
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/identhub_margin_8"
+                android:layout_marginStart="@dimen/identhub_text_box_message_label_margin"
                 android:textStyle="bold"
                 android:textColor="@color/identhub_color_dark_green"
                 android:text="@string/identhub_verification_bank_encrypted_label"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/lock_image"
                 app:layout_constraintBottom_toBottomOf="@id/lock_image"
                 app:layout_constraintTop_toTopOf="@id/lock_image" />
@@ -90,12 +78,10 @@
             <EditText
                 android:id="@+id/ibanNumber"
                 style="@style/IdentHubTextBox"
-                android:inputType="textCapCharacters|textNoSuggestions|textVisiblePassword"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_height="@dimen/identhub_text_box_height"
+                android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:hint="@string/identhub_verification_bank_input_hint"
-                android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:padding="@dimen/identhub_margin_12"
                 android:singleLine="true"
@@ -108,12 +94,11 @@
                 style="@style/IdentHubTextView.InputBottomLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_8"
+                android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
                 android:text="@string/identhub_verification_bank_input_not_valid_message"
                 android:textColor="@color/identhub_color_error"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/ibanNumber"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/ibanNumber"
                 app:layout_constraintTop_toBottomOf="@+id/ibanNumber"
                 tools:visibility="visible" />
@@ -122,11 +107,11 @@
                 android:id="@+id/termsLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/identhub_terms_and_conditions_margin"
                 app:layout_constraintTop_toBottomOf="@+id/errorMessage"
                 app:layout_constraintStart_toStartOf="@+id/errorMessage"
                 app:layout_constraintEnd_toEndOf="@+id/errorMessage"
                 android:orientation="horizontal"
-                android:paddingBottom="8dp"
                 android:clipToPadding="false">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
@@ -148,7 +133,7 @@
                 android:id="@+id/noticeBulletList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/identhub_terms_and_conditions_margin"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintTop_toBottomOf="@id/termsLayout"/>
@@ -162,12 +147,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         style="@style/IdentHubPrimaryButton"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/identhub_margin_4"
-        android:layout_marginBottom="@dimen/identhub_margin_4"
         android:text="@string/identhub_next"
         />
 

@@ -145,13 +145,13 @@ class DocScanResultFragment : NewBaseFragment() {
             issueDateError!!.visibility = View.VISIBLE
             valid = false
         } else {
-            issueDateError!!.visibility = View.INVISIBLE
+            issueDateError!!.visibility = View.GONE
         }
         if (expiryDate <= Date()) {
             expiryDateError!!.visibility = View.VISIBLE
             valid = false
         } else {
-            expiryDateError!!.visibility = View.INVISIBLE
+            expiryDateError!!.visibility = View.GONE
         }
         return !issueDateTextInput!!.text.isNullOrEmpty()
                 && !expireDateTextInput!!.text.isNullOrEmpty()

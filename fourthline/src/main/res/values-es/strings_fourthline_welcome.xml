@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_welcome_page_1_guide_title">Sonríe a la cámara</string>
-    <string name="identhub_welcome_page_1_guide">"Tu selfie será comparado con el de tu documento de identidad. No te preocupes, nunca saldrá a la luz, ¡lprometido!"</string>
-    <string name="identhub_welcome_page_2_guide_title">Escanea tu documento de identidad</string>
-    <string name="identhub_welcome_page_2_guide">"Con esto podemos asegurarnos de que eres realmente quien dices ser y evitar la suplantación de identidad."</string>
-    <string name="identhub_welcome_page_3_guide_title">Enviar tu caso</string>
-    <string name="identhub_welcome_page_3_guide">Lo último que tienes que hacer es habilitar tu ubicación\ny enviar tu caso.\nQué fácil, ¿verdad?</string>
-</resources>

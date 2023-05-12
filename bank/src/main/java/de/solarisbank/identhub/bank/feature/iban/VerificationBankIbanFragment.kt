@@ -2,6 +2,7 @@ package de.solarisbank.identhub.bank.feature.iban
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class VerificationBankIbanFragment : NewBaseFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -155,9 +157,11 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     }
 
     private fun updateSubmitButtonState() {
-        submitButton!!.isEnabled = isInputFilled() && termsCheckBox!!.isChecked
         //TODO checkbox logic will be moved to new screen once implemented, lets leave it as it is now
-        submitButton!!.buttonDisabled(!submitButton!!.isEnabled)
+        submitButton?.apply {
+            isEnabled = isInputFilled() && termsCheckBox!!.isChecked
+            buttonDisabled(!isEnabled)
+        }
     }
 
     private fun isInputFilled(): Boolean {
@@ -168,6 +172,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
         Timber.d("initViews()")
         setState(SealedVerificationState.IbanIput())
         ibanNumber!!.addTextChangedListener(ibanTextValidator)
+        ibanNumber!!.filters = arrayOf<InputFilter>(InputFilter.AllCaps())
         submitButton?.setOnClickListener {
             hideKeyboard()
             val iban = ibanNumber!!.text.toString().filter { !it.isWhitespace() }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -17,21 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="20dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="40dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="30dp"/>
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin"/>
 
     <TextView
         android:id="@+id/title"
@@ -39,21 +25,19 @@
         android:gravity="center_horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintTop_toBottomOf="@id/topGuideline"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="@string/identhub_kyc_upload_verification_title" />
 
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"
         android:id="@+id/progressBar"
-        android:layout_width="@dimen/identhub_kyc_upload_progress_size"
-        android:layout_height="@dimen/identhub_kyc_upload_progress_size"
+        android:layout_width="@dimen/identhub_progress_circle_size"
+        android:layout_height="@dimen/identhub_progress_circle_size"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/topGuideline"
-        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <ImageView
@@ -72,12 +56,11 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
         android:gravity="center_horizontal"
         android:maxLines="4"
         android:text="@string/identhub_kyc_upload_verification_subtitle_1"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
@@ -89,11 +72,8 @@
         android:maxLines="4"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/description"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomGuideline"
-        app:layout_constraintVertical_bias="0.1"
         android:text="@string/identhub_kyc_upload_verification_subtitle_2"
         />
 

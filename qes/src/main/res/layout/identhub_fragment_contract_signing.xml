@@ -11,8 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/submitButton"
         android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingBottom="70dp">
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,14 +23,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="24dp" />
+                app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/endGuideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="24dp" />
+                app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
             <de.solarisbank.sdk.feature.view.PhoneVerificationView
                 android:id="@+id/phoneVerification"
@@ -46,16 +45,16 @@
                 style="@style/IdentHubTextView.ParagraphText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_32"
+                android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
                 android:background="@drawable/identhub_textbox_without_border_drawable"
-                android:drawableStart="@drawable/ic_info"
-                android:drawablePadding="@dimen/identhub_margin_4"
+                android:drawablePadding="@dimen/identhub_drawable_start_margin"
                 android:padding="@dimen/identhub_margin_12"
                 android:text="@string/identhub_contract_signing_preview_transaction_info"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/phoneVerification" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneVerification"
+                app:drawableStartCompat="@drawable/identhub_ic_info" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -66,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/identhub_default_button_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/identhub_default_page_padding"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         android:enabled="false"
         android:text="@string/identhub_contract_signing_confirm" />
 </RelativeLayout>

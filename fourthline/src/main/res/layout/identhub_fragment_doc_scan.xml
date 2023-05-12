@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp" />
+        app:layout_constraintGuide_begin="@dimen/identhub_layout_margin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/endGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="24dp" />
+        app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
     <de.solarisbank.sdk.fourthline.feature.ui.custom.PunchholeView
         android:id="@+id/punchhole"
@@ -40,13 +41,12 @@
         android:id="@+id/documentMask"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/identhub_margin_12"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.35"/>
+        app:layout_constraintVertical_bias="0.25"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/stepName"
@@ -74,8 +74,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/resultImageView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/identhub_success_drawable_size"
+            android:layout_height="@dimen/identhub_success_drawable_size"
             android:src="@drawable/identhub_ic_done_round_blue" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -83,7 +83,7 @@
             style="@style/IdentHubTextView.ImportantTextLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_margin="@dimen/identhub_margin_12"
             android:text="@string/identhub_document_scanner_scan_success"
             tools:text="Success!" />
 
@@ -93,17 +93,17 @@
         android:id="@+id/bulletList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/endGuideline"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
+        app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toTopOf="@id/resultButtonsRoot"
         android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/resultButtonsRoot"
         android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginBottom="@dimen/identhub_margin_16"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
@@ -113,9 +113,7 @@
         <View
             android:id="@+id/separator"
             android:layout_width="1dp"
-            android:layout_height="16dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="9dp"
+            android:layout_height="@dimen/identhub_margin_16"
             android:background="@color/identhub_color_separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -145,13 +143,11 @@
 
     <ImageView
         android:id="@+id/tiltingCard"
-        android:layout_width="140dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/documentMask"
-        app:layout_constraintBottom_toTopOf="@+id/takeSnapshot"
-        android:padding="20dp"
         android:cropToPadding="false"
         android:visibility="gone"/>
 
@@ -159,22 +155,18 @@
         android:id="@+id/docImage"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintEnd_toEndOf="@id/endGuideline"
         app:layout_constraintTop_toBottomOf="@id/documentMask"
-        app:layout_constraintBottom_toTopOf="@+id/takeSnapshot"
         android:visibility="gone"/>
 
     <Button
         android:id="@+id/takeSnapshot"
-        android:layout_width="216dp"
+        style="@style/IdentHubPrimaryButton"
+        android:layout_width="0dp"
         android:layout_height="@dimen/identhub_default_button_height"
-        android:layout_marginBottom="@dimen/identhub_margin_16"
-        android:background="@drawable/identhub_button_secondary_background"
+        android:layout_marginBottom="@dimen/identhub_button_bottom_margin"
         android:text="@string/identhub_document_scanner_take_picture"
-        android:textAllCaps="false"
-        android:textColor="@color/identhub_color_onPrimary"
-        android:textSize="15sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
