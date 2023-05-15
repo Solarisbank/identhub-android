@@ -12,10 +12,7 @@ import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.identhub.mockro.shared.IdentificationChange
 import de.solarisbank.identhub.mockro.shared.MockroIdentification
 import de.solarisbank.identhub.mockro.shared.baseFakeIdent
-import de.solarisbank.sdk.data.dto.Address
-import de.solarisbank.sdk.data.dto.IdentificationDto
-import de.solarisbank.sdk.data.dto.PersonDataDto
-import de.solarisbank.sdk.data.dto.SupportedDocument
+import de.solarisbank.sdk.data.dto.*
 import de.solarisbank.sdk.fourthline.data.dto.IpDto
 import de.solarisbank.sdk.fourthline.data.dto.KycUploadResponseDto
 import de.solarisbank.sdk.fourthline.data.dto.Location
@@ -59,7 +56,8 @@ class FakePersonDataSource: PersonDataSource {
                 supportedDocuments = listOf(
                     SupportedDocument("Passport", issuingCountries = listOf("GB")),
                     SupportedDocument("National ID Card", issuingCountries = listOf("GB"))
-                )
+                ),
+                taxIdentification = TaxIdentification("ITA", "1234567890")
             )
         )
     }
@@ -97,7 +95,7 @@ class FakeKycInfoUseCase: KycInfoUseCase {
 
     override suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {}
 
-    override suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {}
+    override suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult, isSecondaryDocument: Boolean) {}
 
     override suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult){}
 

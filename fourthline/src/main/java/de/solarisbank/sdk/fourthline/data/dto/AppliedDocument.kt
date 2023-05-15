@@ -14,7 +14,8 @@ enum class AppliedDocument(val isSupported: Boolean = true) : Serializable {
     FRENCH_ID_CARD(false),
     RESIDENCE_PERMIT(false),
     DRIVING_LICENSE(false),
-    DUTCH_DRIVERS_LICENCE(false)
+    DUTCH_DRIVERS_LICENCE(false),
+    TIN_DOCUMENT(false)
 }
 
 fun AppliedDocument.toDocumentType(): DocumentType {
@@ -26,6 +27,7 @@ fun AppliedDocument.toDocumentType(): DocumentType {
         AppliedDocument.RESIDENCE_PERMIT -> DocumentType.RESIDENCE_PERMIT
         AppliedDocument.DRIVING_LICENSE -> DocumentType.DRIVERS_LICENSE
         AppliedDocument.DUTCH_DRIVERS_LICENCE -> DocumentType.DUTCH_DRIVERS_LICENSE
+        AppliedDocument.TIN_DOCUMENT -> DocumentType.TIN_REFERENCE_DOCUMENT
     }
 }
 
@@ -37,4 +39,5 @@ fun AppliedDocument.asString(context: Context) = when (this) {
     AppliedDocument.RESIDENCE_PERMIT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_residence_permit)
     AppliedDocument.DRIVING_LICENSE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_driving_licence)
     AppliedDocument.DUTCH_DRIVERS_LICENCE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_drivers_licence)
+    AppliedDocument.TIN_DOCUMENT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_id_card)
 }

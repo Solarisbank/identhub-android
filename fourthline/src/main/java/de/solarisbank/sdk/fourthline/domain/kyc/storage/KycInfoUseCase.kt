@@ -26,7 +26,7 @@ interface KycInfoUseCase {
     val selfieResultCroppedBitmapLiveData: LiveData<Bitmap>
     suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto)
     suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult)
-    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult)
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult, isSecondaryDocument: Boolean)
     suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult)
     suspend fun updateIssueDate(issueDate: Date)
     suspend fun updateExpireDate(expireDate: Date)
@@ -68,14 +68,10 @@ class KycInfoUseCaseImpl(
     @SuppressLint("BinaryOperationInTimber")
     override suspend fun updateKycInfoWithDocumentScannerStepResult(
         docType: DocumentType,
-        result: DocumentScannerStepResult
+        result: DocumentScannerStepResult,
+        isSecondaryDocument: Boolean
     ) {
-        Timber.d("updateKycInfoWithDocumentScannerStepResult : " +
-                "\ntimestamp:${result.metadata.timestamp}" +
-                "\nlocation?.first: ${result.metadata.location?.first}" +
-                "\nlocation?.second: ${result.metadata.location?.second}"
-        )
-        kycInfoRepository.updateKycInfoWithDocumentScannerStepResult(docType, result)
+        kycInfoRepository.updateKycInfoWithDocumentScannerStepResult(docType, result, isSecondaryDocument)
     }
 
 
@@ -161,7 +157,7 @@ class KycInfoUseCaseImpl(
     }
 
     override suspend fun createKycZip(applicationContext: Context): ZipCreationStateDto {
-        val kycInfo = kycInfoRepository.getKycInfo()
+        val kycInfo = kycInfoRepository.finalizeAndGetKycInfo()
         Timber.d("getKycUriZip : $kycInfo")
         IdLogger.info("Zipping of Kyc info started")
         var zipCreationStateDto: ZipCreationStateDto = ZipCreationStateDto.ERROR

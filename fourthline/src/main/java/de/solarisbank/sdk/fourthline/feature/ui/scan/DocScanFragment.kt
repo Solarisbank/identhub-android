@@ -276,7 +276,9 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
         cleanupJob?.cancel()
         lifecycleScope.launch(Dispatchers.Main) {
             showIntermediateResult(result.image.cropped)
-            kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(currentDocumentType, result)
+            kycSharedViewModel.updateKycInfoWithDocumentScannerStepResult(
+                currentDocumentType, result, docScanArgs.isSecondaryScan
+            )
         }
     }
 

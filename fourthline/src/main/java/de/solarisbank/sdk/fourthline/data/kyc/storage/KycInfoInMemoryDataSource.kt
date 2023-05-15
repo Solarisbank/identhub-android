@@ -1,7 +1,6 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import com.fourthline.core.DeviceMetadata
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
@@ -19,7 +18,6 @@ import de.solarisbank.sdk.fourthline.streetSuffix
 import kotlinx.coroutines.sync.Mutex
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class KycInfoInMemoryDataSource {
 
@@ -29,11 +27,13 @@ class KycInfoInMemoryDataSource {
         it.metadata = DeviceMetadata()
     }
     private val docPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
+    private val secondaryPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _personDataDto: PersonDataDto? = null
 
-    suspend fun getKycInfo(): KycInfo {
+    suspend fun finalizeAndGetKycInfo(): KycInfo {
         mutex.lock()
         try {
+            finalizeSecondaryDocuments()
             return kycInfo
         } finally {
             mutex.unlock()
@@ -91,6 +91,13 @@ class KycInfoInMemoryDataSource {
                 it.birthDate = _personDataDto?.birthDate?.parseDateFromString()
                 it.nationalityCode = personDataDto.nationality
                 it.birthPlace = personDataDto.birthPlace
+            }
+
+            personDataDto.taxIdentification?.let {
+                kycInfo.taxInfo = TaxInfo(
+                    taxpayerIdentificationNumber = it.number,
+                    taxationCountryCode = it.country
+                )
             }
         } finally {
             mutex.unlock()
@@ -162,6 +169,21 @@ class KycInfoInMemoryDataSource {
         }
     }
 
+    suspend fun updateKycInfoWithDocumentSecondaryScan(docType: DocumentType, result: DocumentScannerStepResult) {
+        mutex.lock()
+        try {
+            secondaryPagesMap[DocPageKey(docType, result.metadata.fileSide, result.metadata.isAngled)] = Attachment.Document(
+                image = result.image.full,
+                fileSide = result.metadata.fileSide,
+                isAngled = result.metadata.isAngled,
+                timestamp = result.metadata.timestamp.time,
+                location = result.metadata.location
+            )
+        } finally {
+            mutex.unlock()
+        }
+    }
+
 
     /**
      * Retains recognized String data of the documents
@@ -171,7 +193,6 @@ class KycInfoInMemoryDataSource {
         try {
             obtainDocument(docType, result)
             updateKycPerson(result)
-            obtainTaxInfo(result)
         } finally {
             mutex.unlock()
         }
@@ -185,6 +206,18 @@ class KycInfoInMemoryDataSource {
                 number = mrtd?.documentNumber,
                 expirationDate = mrtd?.expirationDate,
                 type = docType
+        )
+    }
+
+    private fun finalizeSecondaryDocuments() {
+        if (secondaryPagesMap.isEmpty())
+            return
+
+        kycInfo.secondaryDocuments = listOf(
+            SecondaryDocument(
+                type = secondaryPagesMap.entries.first().key.docType,
+                images = secondaryPagesMap.values.toList()
+            )
         )
     }
 
@@ -223,17 +256,6 @@ class KycInfoInMemoryDataSource {
             }
             if (birthDate == null && recognizedBirthDate != null) {
                 birthDate = recognizedBirthDate
-            }
-        }
-
-    }
-
-    private fun obtainTaxInfo(result: DocumentScannerResult){
-        val mrzInfo = result.mrzInfo as? MrtdMrzInfo
-        if (mrzInfo?.optionalData?.isBlank() == false) {
-            kycInfo.taxInfo?.apply {
-                taxpayerIdentificationNumber = mrzInfo.optionalData
-                taxationCountryCode = mrzInfo.issuingCountry
             }
         }
     }

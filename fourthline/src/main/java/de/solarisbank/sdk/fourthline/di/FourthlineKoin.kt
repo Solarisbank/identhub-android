@@ -1,6 +1,9 @@
 package de.solarisbank.sdk.fourthline.di
 
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.feature.storage.PersistentStorage
+import de.solarisbank.sdk.feature.storage.SharedPrefsStorage
+import de.solarisbank.sdk.fourthline.data.FourthlineStorage
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationDataSource
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
@@ -34,8 +37,11 @@ import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
+
+private const val FourthlineStorageName = "identhub_fourthline_storage"
 
 private val fourthlineModule = module {
     factory { get<Retrofit>().create(FourthlineIdentificationApi::class.java) }
@@ -59,11 +65,15 @@ private val fourthlineModule = module {
     factory<KycUploadDataSource> { KycUploadRetrofitDataSource(get()) }
     single { KycUploadRepository(get(), get()) }
     factory { KycUploadUseCase(get(), get(), get(), get()) }
-    viewModel {
-        KycSharedViewModel(get(), get(), get(), get(), get())
+    single { FourthlineStorage(get(named(FourthlineStorageName))) }
+    single<PersistentStorage>(named(FourthlineStorageName)) {
+        SharedPrefsStorage(get(), FourthlineStorageName)
     }
     viewModel {
-        FourthlineViewModel(get())
+        KycSharedViewModel(get(), get(), get(), get(), get(), get())
+    }
+    viewModel {
+        FourthlineViewModel(get(), get())
     }
     viewModel {
         KycUploadViewModel(get())

@@ -7,11 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
+import com.fourthline.kyc.SecondaryDocument
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
 import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.fourthline.data.FourthlineStorage
 import de.solarisbank.sdk.fourthline.data.dto.LocationResult
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
@@ -38,7 +40,8 @@ class KycSharedViewModel(
     private val kycInfoUseCase: KycInfoUseCase,
     private val locationUseCase: LocationUseCase,
     private val ipObtainingUseCase: IpObtainingUseCase,
-    private val deleteKycInfoUseCase: DeleteKycInfoUseCase
+    private val deleteKycInfoUseCase: DeleteKycInfoUseCase,
+    private val fourthlineStorage: FourthlineStorage,
 ): ViewModel() {
 
     private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
@@ -154,8 +157,15 @@ class KycSharedViewModel(
         return kycInfoUseCase.selfieResultCroppedBitmapLiveData
     }
 
-    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
-        kycInfoUseCase.updateKycInfoWithDocumentScannerStepResult(docType, result)
+    suspend fun updateKycInfoWithDocumentScannerStepResult(
+            docType: DocumentType,
+            result: DocumentScannerStepResult,
+            isSecondaryDocument: Boolean
+    ) {
+        if (!isSecondaryDocument) {
+            fourthlineStorage.isIdCardSelected = docType == DocumentType.ID_CARD
+        }
+        kycInfoUseCase.updateKycInfoWithDocumentScannerStepResult(docType, result, isSecondaryDocument)
     }
 
     suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {

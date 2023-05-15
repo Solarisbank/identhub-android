@@ -8,6 +8,7 @@ import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.sdk.fourthline.data.FourthlineStorage
 import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadOutcome
@@ -19,7 +20,10 @@ import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsOutcome
 
-class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorage) : ViewModel() {
+class FourthlineViewModel (
+        private val initialConfigStorage: InitialConfigStorage,
+        private val fourthlineStorage: FourthlineStorage,
+    ) : ViewModel() {
 
     var navigator: Navigator? = null
 
@@ -96,7 +100,7 @@ class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorag
     fun onHealthCardInstructionsOutcome() {
         navigateTo(
             R.id.identhub_action_healthCardInstructionsFragment_to_secondaryDocScanFragment,
-            DocScanFragmentArgs(AppliedDocument.NATIONAL_ID_CARD, true).toBundle()
+            DocScanFragmentArgs(AppliedDocument.TIN_DOCUMENT, true).toBundle()
         )
     }
 
@@ -113,7 +117,9 @@ class FourthlineViewModel (private val initialConfigStorage: InitialConfigStorag
     }
 
     fun onDocResultOutcome() {
-        when (initialConfigStorage.get().isSecondaryDocScanRequired) {
+        val shouldScanSecondaryDocument = initialConfigStorage.get().isSecondaryDocScanRequired
+                && !fourthlineStorage.isIdCardSelected
+        when (shouldScanSecondaryDocument) {
             true -> navigateTo(R.id.action_documentResultFragment_to_healthCardInstructionsFragment)
             false -> navigateTo(R.id.action_documentResultFragment_to_selfieInstructionsFragment)
         }

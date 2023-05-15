@@ -14,7 +14,9 @@ data class PersonDataDto(
     @Json(name = "place_of_birth") var birthPlace: String?,
     @Json(name = "person_uid") var personUid: String?,
     @Json(name = "supported_documents") var supportedDocuments: List<SupportedDocument?>?,
-    var gender: String?
+    var gender: String?,
+    @Json(name = "tax_identification")
+    var taxIdentification: TaxIdentification?
 )
 
 @JsonClass(generateAdapter = true)

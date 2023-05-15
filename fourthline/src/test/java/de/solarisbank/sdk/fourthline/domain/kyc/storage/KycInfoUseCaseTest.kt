@@ -72,6 +72,7 @@ class KycInfoUseCaseTest : StringSpec ({
                 every { supportedDocuments } returns
                         listOf(SupportedDocument("docType", listOf("DE")) )
                 every { gender } returns "male"
+                every { taxIdentification } returns null
             }
 
         val kycInfoUseCase = initKycInfoUseCase()
@@ -130,7 +131,8 @@ class KycInfoUseCaseTest : StringSpec ({
         val kycInfoUseCase = initKycInfoUseCase()
         kycInfoUseCase.updateKycInfoWithDocumentScannerStepResult(
             DocumentType.PASSPORT,
-            documentScannerStepResultMockk
+            documentScannerStepResultMockk,
+            false
         )
 
         verify { metadataMockk.timestamp }

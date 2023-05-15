@@ -1,6 +1,5 @@
 package de.solarisbank.sdk.fourthline.data.kyc.storage
 
-import android.graphics.Bitmap
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
 import com.fourthline.kyc.KycInfo
@@ -20,8 +19,12 @@ class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDa
         kycInfoInMemoryDataSource.updateKycWithSelfieScannerResult(result)
     }
 
-    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
-        kycInfoInMemoryDataSource.updateKycInfoWithDocumentScannerStepResult(docType, result)
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult, isSecondaryDocument: Boolean) {
+        if (isSecondaryDocument) {
+            kycInfoInMemoryDataSource.updateKycInfoWithDocumentSecondaryScan(docType, result)
+        } else {
+            kycInfoInMemoryDataSource.updateKycInfoWithDocumentScannerStepResult(docType, result)
+        }
     }
 
     suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
@@ -52,8 +55,8 @@ class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDa
         return kycInfoInMemoryDataSource.getKycDocument()
     }
 
-    suspend fun getKycInfo(): KycInfo {
-        return kycInfoInMemoryDataSource.getKycInfo()
+    suspend fun finalizeAndGetKycInfo(): KycInfo {
+        return kycInfoInMemoryDataSource.finalizeAndGetKycInfo()
     }
 
 }
