@@ -2,6 +2,7 @@ package de.solarisbank.identhub.session.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -30,7 +31,13 @@ import org.koin.core.component.get
 class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private var currentNavigationId: Int? = null
 
-    private val backButtonFragments = listOf("DocumentScanFragment", "SelfieFragment")
+    private val hideBackButtonFragments = listOf("DocumentScanFragment", "SelfieFragment")
+    private val hideCloseButtonFragments = listOf(
+        "VerificationPhoneSuccessMessageFragment",
+        "DocumentScanFragment",
+        "SelfieFragment",
+        "SelfieResultFragment",
+        "UploadResultFragment")
 
     private val viewModel: MainViewModel by lazy { getViewModel() }
     private val alertViewModel: AlertViewModel by lazy {
@@ -50,13 +57,18 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             controller.addOnDestinationChangedListener { _, destination, _ ->
                 IdLogger.nav("Destination changed: ${destination.label}")
                 backButton?.isVisible = shouldShowBackButton(destination)
+                closeButton?.visibility =
+                    if (shouldHideCloseButton(destination)) View.INVISIBLE else View.VISIBLE
                 onBackPressedCallback.isEnabled = !shouldShowBackButton(destination)
             }
             controller
         }
 
     private fun shouldShowBackButton(destination: NavDestination?) =
-        backButtonFragments.contains(destination?.label)
+        hideBackButtonFragments.contains(destination?.label)
+
+    private fun shouldHideCloseButton(destination: NavDestination?) =
+        hideCloseButtonFragments.contains(destination?.label)
 
     private var closeButton: AppCompatImageView? = null
     private var backButton: AppCompatImageView? = null
