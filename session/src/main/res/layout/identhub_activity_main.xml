@@ -29,7 +29,6 @@
         android:layout_marginEnd="@dimen/identhub_margin_12"
         android:paddingVertical="@dimen/identhub_margin_12"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline">
 
