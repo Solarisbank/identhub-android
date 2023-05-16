@@ -1,0 +1,1 @@
+-keep class de.solarisbank.identhub.bank.data.** { *; }
