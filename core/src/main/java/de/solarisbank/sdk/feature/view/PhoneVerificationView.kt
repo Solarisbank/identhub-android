@@ -6,7 +6,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import de.solarisbank.sdk.core.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.entity.formatMinutesAndSeconds
@@ -21,11 +20,11 @@ class PhoneVerificationView @JvmOverloads constructor(
 
     private val titleTextView: TextView
     private val descriptionTextView: TextView
-    private val codeInput: EditText
     private val codeProgress: ProgressBar
     private val resendTimerTextView: TextView
     private val resendButton: Button
     private val errorTextView: TextView
+    private var pinView = PinView(context)
 
     private val countDownTimer = DefaultCountDownTimer(
         TimeUnit.SECONDS.toMillis(TIMER_DURATION_SECONDS),
@@ -40,9 +39,11 @@ class PhoneVerificationView @JvmOverloads constructor(
         titleTextView = findViewById(R.id.title)
         descriptionTextView = findViewById(R.id.description)
         descriptionTextView.visibility = INVISIBLE
-        codeInput = findViewById(R.id.codeInput)
-        codeInput.addTextChangedListener(onTextChanged = { text, _, _, _ ->
-            eventListener?.invoke(PhoneVerificationViewEvent.CodeChanged(code = text.toString()))
+        pinView = findViewById(R.id.tanInput)
+        pinView.setPinViewEventListener(object : PinView.PinViewEventListener {
+            override fun onDataEntered(pinview: PinView?, fromUser: Boolean) {
+                eventListener?.invoke(PhoneVerificationViewEvent.CodeChanged(code = pinview!!.value))
+            }
         })
         resendTimerTextView = findViewById(R.id.resendTimer)
         resendButton = findViewById(R.id.resendButton)
@@ -66,7 +67,7 @@ class PhoneVerificationView @JvmOverloads constructor(
     }
 
     val code: String
-        get() = codeInput.text.toString()
+        get() = pinView.value
 
     var eventListener: ((PhoneVerificationViewEvent) -> Unit)? = null
 
