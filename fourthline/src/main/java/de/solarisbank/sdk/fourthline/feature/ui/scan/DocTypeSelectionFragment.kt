@@ -196,7 +196,6 @@ class DocTypeSelectionFragment: NewBaseFragment() {
             arrayOf(
                 Manifest.permission.CAMERA,
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.FOREGROUND_SERVICE
             )
         )
     }
