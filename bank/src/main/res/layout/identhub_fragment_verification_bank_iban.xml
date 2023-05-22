@@ -127,8 +127,9 @@
                     style="@style/IdentHubTextView.ParagraphText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/identhub_margin_4"
                     android:layout_marginStart="@dimen/identhub_margin_8"
-                    android:text="I’ve read and accept the Terms and Conditions" />
+                    tools:text="I’ve read and accept the Terms and Conditions" />
 
             </LinearLayout>
 
