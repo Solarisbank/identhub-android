@@ -75,13 +75,16 @@
                 app:layout_constraintBottom_toBottomOf="@id/lock_image"
                 app:layout_constraintTop_toTopOf="@id/lock_image" />
 
+            <!-- inputType here prevents keyboard suggestions that mess up out IBAN mask -->
             <EditText
                 android:id="@+id/ibanNumber"
                 style="@style/IdentHubTextBox"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/identhub_text_box_height"
                 android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:hint="@string/identhub_verification_bank_input_hint"
+                android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:padding="@dimen/identhub_margin_12"
                 android:singleLine="true"

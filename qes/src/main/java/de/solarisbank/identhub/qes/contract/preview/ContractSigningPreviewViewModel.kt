@@ -34,8 +34,8 @@ class ContractSigningPreviewViewModel(
     fun events(): LiveData<Event<ContractSigningPreviewEvent>> = viewEvents
 
     init {
-        val shouldShowTerms = getIdentificationUseCase.getInitialConfig()
-            .firstStep == IdentificationStep.BANK_IBAN.destination
+        val nextStep = getIdentificationUseCase.execute(Unit).blockingGet().nextStep
+        val shouldShowTerms = nextStep?.contains(IdentificationStep.BANK_QES.destination) == true
         viewState.value = ContractSigningPreviewState(
             documents = Result.Loading,
             shouldShowTerms = shouldShowTerms

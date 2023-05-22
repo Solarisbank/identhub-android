@@ -49,7 +49,7 @@ private val fourthlineModule = module {
     factory<PersonDataSource> { PersonDataSourceImpl(get()) }
     factory { get<Retrofit>().create(PersonDataApi::class.java) }
     single { FourthlineIdentificationRepository(get(), get(), get()) }
-    factory { PersonDataUseCase(get(), get()) }
+    factory { PersonDataUseCase(get(), get(), get()) }
     factory { DeleteKycInfoUseCase(get()) }
     single { KycInfoInMemoryDataSource() }
     single { KycInfoRepository(get()) }

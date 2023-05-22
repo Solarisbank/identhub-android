@@ -88,12 +88,13 @@ class FakeKycUploadDataSource: KycUploadDataSource {
 }
 
 class FakeKycInfoUseCase: KycInfoUseCase {
-    override val selfieResultCroppedBitmapLiveData: LiveData<Bitmap>
-        get() = MutableLiveData(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+    override val selfieResultCroppedBitmapLiveData = MutableLiveData<Bitmap>()
 
     override suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto) {}
 
-    override suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {}
+    override suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+        selfieResultCroppedBitmapLiveData.value = result.image.cropped
+    }
 
     override suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult, isSecondaryDocument: Boolean) {}
 
