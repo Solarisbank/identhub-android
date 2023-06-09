@@ -40,4 +40,8 @@
     <dimen name="identhub_margin_32">32dp</dimen>
     <dimen name="identhub_margin_44">44dp</dimen>
 
+    <!-- Intro slides -->
+    <dimen name="identhub_slide_indicator_dot_size">8dp</dimen>
+    <dimen name="identhub_slide_indicator_dot_margin">4dp</dimen>
+
 </resources>

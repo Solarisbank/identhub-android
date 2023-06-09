@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/selfieInstructionsFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieInstructionsFragment"
         android:label="SelfieInstructionsFragment"
         >
         <action

@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.feature.ui.terms.welcome
+package de.solarisbank.sdk.fourthline.feature.ui.selfie
 
 import android.os.Bundle
 import android.view.LayoutInflater

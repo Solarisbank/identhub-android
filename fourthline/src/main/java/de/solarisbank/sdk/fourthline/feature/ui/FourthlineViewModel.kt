@@ -18,7 +18,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.scan.DocScanResult
 import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
-import de.solarisbank.sdk.fourthline.feature.ui.terms.welcome.SelfieInstructionsOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieInstructionsOutcome
 
 class FourthlineViewModel (
         private val initialConfigStorage: InitialConfigStorage,

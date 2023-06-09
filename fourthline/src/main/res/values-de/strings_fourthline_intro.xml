@@ -7,4 +7,11 @@
     <string name="identhub_fourthline_terms_description_list_item2">Ihre Kamera</string>
     <string name="identhub_fourthline_terms_notice_title">Hinweis</string>
     <string name="identhub_fourthline_privacy_statement">Ich habe die Hinweise zum <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">Datenschutz von SAFENED Fourthline</a> zur Kenntnis genommen.</string>
+    <string name="identhub_fourthline_intro_title">Willkommen</string>
+    <string name="identhub_fourthline_intro_slide_title_one">Scannen Sie Ihr Ausweisdokument</string>
+    <string name="identhub_fourthline_intro_slide_description_one">Damit stellen wir sicher, dass Sie es wirklich sind, und können damit Identitätsdiebstahl verhindern.</string>
+    <string name="identhub_fourthline_intro_slide_title_two">Bitte schauen Sie direkt in die Kamera</string>
+    <string name="identhub_fourthline_intro_slide_description_two">Ihr Selfie wird mit dem Foto auf Ihrem Ausweisdokument verglichen. Keine Sorge, es wird nie das Licht der Welt erblicken, versprochen!</string>
+    <string name="identhub_fourthline_intro_slide_title_three">Standort aktivieren und hochladen</string>
+    <string name="identhub_fourthline_intro_slide_description_three">Als Letztes müssen Sie Ihren Standort aktivieren und Ihre Daten hochladen! Wie einfach ist das?</string>
 </resources>
