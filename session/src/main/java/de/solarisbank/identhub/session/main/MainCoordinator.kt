@@ -7,6 +7,7 @@ import de.solarisbank.identhub.session.module.IdenthubModuleResolver
 import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.module.ResolvedModule
 import de.solarisbank.sdk.data.IdenthubResult
+import de.solarisbank.sdk.data.di.koin.initialConfigModule
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 
@@ -17,8 +18,10 @@ class MainCoordinator(
 ) : Navigator {
 
     private var phoneVerified = false
+    private var firstStep: String? = null
 
-    fun start() {
+    fun start(firstStep: String) {
+        this.firstStep = firstStep
         if (!phoneVerified)
             phoneVerified = configStorage.get().isPhoneNumberVerified
 
@@ -29,7 +32,7 @@ class MainCoordinator(
         }
     }
 
-    private fun goToFirstStep() = handleStep(configStorage.get().firstStep)
+    private fun goToFirstStep() = handleStep(firstStep ?: configStorage.get().firstStep)
 
     private fun handleStep(step: String) {
         handleNextStepOutcome(ModuleOutcome.NextStepOutcome(step))

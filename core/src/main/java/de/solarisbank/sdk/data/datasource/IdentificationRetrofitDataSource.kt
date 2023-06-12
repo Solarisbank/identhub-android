@@ -11,4 +11,8 @@ class IdentificationRetrofitDataSource(private val identificationApi: Identifica
         return identificationApi.getIdentification(identificationId)
     }
 
+    override suspend fun fetchIdentification(identificationId: String): IdentificationDto {
+        return identificationApi.fetchIdentification(identificationId)
+    }
+
 }

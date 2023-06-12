@@ -10,4 +10,7 @@ interface IdentificationApi {
     @GET("/identifications/{identification_uid}")
     fun getIdentification(@Path("identification_uid") identificationId: String): Single<IdentificationDto>
 
+    @GET("/identifications/{identification_uid}")
+    suspend fun fetchIdentification(@Path("identification_uid") identificationId: String): IdentificationDto
+
 }

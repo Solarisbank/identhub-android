@@ -4,7 +4,7 @@ import org.koin.core.Koin
 
 interface MockroInterface {
     fun loadModules(koin: Koin)
-    fun setPersona(persona: MockroPersona)
+    fun setPersona(persona: MockroPersona, options: MockroOptions? = null)
 }
 
 sealed class MockroPersona {
@@ -13,3 +13,7 @@ sealed class MockroPersona {
     object BankIdHappyPath: MockroPersona()
     object FourthlineHappyPath: MockroPersona()
 }
+
+data class MockroOptions(
+    val numberOfStartUpFailures: Int = 0
+)

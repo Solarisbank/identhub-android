@@ -18,6 +18,10 @@ class IdentificationRepository(
                 return identificationRoomDataSource.obtainIdentificationDto()
         }
 
+        suspend fun getRemoteIdentification(identificationId: String): IdentificationDto {
+            return identificationRetrofitDataSource.fetchIdentification(identificationId)
+        }
+
         fun getRemoteIdentificationDto(identificatioId: String): Single<IdentificationDto> {
                 return identificationRetrofitDataSource.getIdentification(identificatioId)
         }

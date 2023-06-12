@@ -13,6 +13,6 @@ object MainKoin {
         single { IdenthubModuleConfigurator() }
         single<IdentificationLocalDataSource> { IdentificationInMemoryDataSource() }
 
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
     }
 }

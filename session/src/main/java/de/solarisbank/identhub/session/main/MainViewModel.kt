@@ -4,28 +4,33 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.solarisbank.identhub.session.module.IdenthubModuleConfigurator
 import de.solarisbank.identhub.session.module.IdenthubModuleResolver
 import de.solarisbank.identhub.session.module.ResolvedModule
 import de.solarisbank.sdk.data.IdenthubResult
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.data.initial.FirstStepUseCase
+import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
+import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.data.initial.InitialConfigUseCase
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.dsl.module
 
 class MainViewModel(
     private val initialConfigUseCase: InitialConfigUseCase,
     private val moduleResolver: IdenthubModuleResolver,
-    private val moduleConfigurator: IdenthubModuleConfigurator
+    private val moduleConfigurator: IdenthubModuleConfigurator,
+    private val firstStepUseCase: FirstStepUseCase
 ): ViewModel(), IdenthubKoinComponent {
+
     private val viewState = MutableLiveData<MainViewState>()
     private val viewEvent = MutableLiveData<Event<MainViewEvent>>()
-    private val disposables = CompositeDisposable()
 
     fun state(): LiveData<MainViewState> = viewState
     fun events(): LiveData<Event<MainViewEvent>> = viewEvent
@@ -41,6 +46,10 @@ class MainViewModel(
                 viewEvent.postValue(
                     Event(MainViewEvent.Close(IdenthubResult.Failed("User closed the SDK")))
                 )
+            }
+            is MainAction.RetryTapped -> {
+                IdLogger.info("Retrying the fetch of initial config")
+                fetchInitialConfig()
             }
         }
     }
@@ -59,30 +68,41 @@ class MainViewModel(
     }
 
     private fun fetchInitialConfig() {
-        disposables.add(
-            initialConfigUseCase
-                .createInitialConfigStorage()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { config ->
-                        getKoin().loadModules(listOf(module {
-                            single { config }
-                        }))
-                        mainCoordinator = MainCoordinator(
-                            config,
-                            moduleResolver,
-                            ::handleMainCoordinatorEvent
-                        ).apply {
-                            start()
-                        }
-                        IdLogger.setRemoteLoggingEnabled(config.get().isRemoteLoggingEnabled)
-                    },
-                    { throwable ->
-                        throwable.message?.let { IdLogger.debug(it) }
-                    }
-                )
+        viewModelScope.launch {
+            val storage: InitialConfigStorage
+            try {
+                storage = withContext(Dispatchers.IO) {
+                    initialConfigUseCase.createInitialConfigStorage()
+                }
+            } catch(t: Throwable) {
+                IdLogger.error("Initial config fetch failed: ${t.message}")
+                viewState.value = MainViewState(null)
+                return@launch
+            }
+            setUpWithConfig(storage)
+        }
+    }
+
+    private fun setUpWithConfig(storage: InitialConfigStorage) {
+        getKoin().loadModules(listOf(module {
+            single { storage }
+        }))
+        mainCoordinator = MainCoordinator(
+            storage,
+            moduleResolver,
+            ::handleMainCoordinatorEvent
         )
+        val config = storage.get()
+        IdLogger.setRemoteLoggingEnabled(config.isRemoteLoggingEnabled)
+        initiateFirstStep(config)
+    }
+
+    private fun initiateFirstStep(initialConfig: IdenthubInitialConfig) {
+        viewModelScope.launch {
+            val firstStep = withContext(Dispatchers.IO) { firstStepUseCase.determineFirstStep(initialConfig) }
+            mainCoordinator?.start(firstStep)
+        }
+
     }
 
     private fun handleMainCoordinatorEvent(event: MainCoordinatorEvent) {
@@ -102,14 +122,9 @@ class MainViewModel(
     private fun sendResult(result: IdenthubResult) {
         viewEvent.postValue(Event(MainViewEvent.Close(result)))
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-    }
 }
 
-data class MainViewState(val currentModule: IdenthubModule)
+data class MainViewState(val currentModule: IdenthubModule?)
 
 sealed class MainViewEvent {
     data class Navigate(val navigationId: Int, val bundle: Bundle?): MainViewEvent()
@@ -118,4 +133,5 @@ sealed class MainViewEvent {
 
 sealed class MainAction {
     object CloseTapped: MainAction()
+    object RetryTapped: MainAction()
 }

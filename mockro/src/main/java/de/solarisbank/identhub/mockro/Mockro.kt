@@ -9,6 +9,7 @@ import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.di.koin.MockroInterface
 import de.solarisbank.sdk.data.di.koin.MockroPersona
+import de.solarisbank.sdk.data.di.koin.MockroOptions
 import de.solarisbank.sdk.data.initial.InitializationDataSource
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationDataSource
 import de.solarisbank.sdk.fourthline.data.ip.IpDataSource
@@ -27,12 +28,14 @@ class Mockro: MockroInterface {
         )
     }
 
-    override fun setPersona(persona: MockroPersona) {
+    override fun setPersona(persona: MockroPersona, options: MockroOptions?) {
         currentPersona = persona
+        flowOptions = options
     }
 
     companion object {
         var currentPersona: MockroPersona = MockroPersona.FourthlineSigningHappyPath
+        var flowOptions: MockroOptions? = null
     }
 }
 

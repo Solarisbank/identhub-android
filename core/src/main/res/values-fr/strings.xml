@@ -7,6 +7,7 @@
     <string name="identhub_ok_button">OK</string>
     <string name="identhub_generic_error_title">Erreur inconnue</string>
     <string name="identhub_generic_error_message">La vérification n’a pas pu être effectuée</string>
+    <string name="identhub_generic_retry_button">Réessayer</string>
 
     <string name="identhub_stepindicator_verification_bank_label">Vérification de la banque</string>
     <string name="identhub_stepindicator_verification_bank_next_label">Ensuite: signature du contrat</string>

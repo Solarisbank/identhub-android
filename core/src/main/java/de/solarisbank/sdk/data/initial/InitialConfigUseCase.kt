@@ -4,7 +4,8 @@ import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.dto.InitializationInfoDto
 import de.solarisbank.sdk.data.dto.PartnerSettingsDto
 import de.solarisbank.sdk.data.dto.StyleDto
-import io.reactivex.Single
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import retrofit2.http.GET
 
 data class IdenthubInitialConfig(
@@ -18,7 +19,20 @@ data class IdenthubInitialConfig(
     val fourthlineProvider: String?,
     val partnerSettings: PartnerSettingsDto?,
     val style: StyleDto?
-)
+) {
+    constructor(initData: InitializationDto, infoData: InitializationInfoDto) : this(
+        isTermsPreAccepted = infoData.termsAccepted,
+        isPhoneNumberVerified = infoData.phoneVerified,
+        isRemoteLoggingEnabled = infoData.sdkLogging ?: false,
+        isSecondaryDocScanRequired = infoData.secondaryDocScanRequired ?: false,
+        firstStep = initData.firstStep,
+        defaultFallbackStep = initData.fallbackStep,
+        allowedRetries = initData.allowedRetries,
+        fourthlineProvider = initData.fourthlineProvider,
+        partnerSettings = initData.partnerSettings,
+        style = infoData.style
+    )
+}
 
 interface ReadOnlyStorage<T> {
     fun get(): T
@@ -31,7 +45,7 @@ abstract class InMemoryReadOnlyStorage<T>(private val data: T): ReadOnlyStorage<
 }
 
 interface InitialConfigUseCase {
-    fun createInitialConfigStorage(): Single<InitialConfigStorage>
+    suspend fun createInitialConfigStorage(): InitialConfigStorage
 }
 
 class InitialConfigStorage(data: IdenthubInitialConfig):
@@ -40,51 +54,38 @@ class InitialConfigStorage(data: IdenthubInitialConfig):
 class InitialConfigUseCaseImpl(
     private val dataSource: InitializationDataSource
 ): InitialConfigUseCase {
-    override fun createInitialConfigStorage(): Single<InitialConfigStorage> {
-        return fetchConfig()
-            .map { InitialConfigStorage(it) }
+    override suspend fun createInitialConfigStorage(): InitialConfigStorage {
+        return InitialConfigStorage(fetchConfig())
     }
 
-    private fun fetchConfig(): Single<IdenthubInitialConfig> {
-        return Single.zip(
-            dataSource.fetchInitialization(),
-            dataSource.fetchInitializationInfo()
-        ) { initData, infoData ->
-            IdenthubInitialConfig(
-                isTermsPreAccepted = infoData.termsAccepted,
-                isPhoneNumberVerified = infoData.phoneVerified,
-                isRemoteLoggingEnabled = infoData.sdkLogging ?: false,
-                isSecondaryDocScanRequired = infoData.secondaryDocScanRequired ?: false,
-                firstStep = initData.firstStep,
-                defaultFallbackStep = initData.fallbackStep,
-                allowedRetries = initData.allowedRetries,
-                fourthlineProvider = initData.fourthlineProvider,
-                partnerSettings = initData.partnerSettings,
-                style = infoData.style
-            )
+    private suspend fun fetchConfig(): IdenthubInitialConfig {
+        return coroutineScope {
+            val initDataCall = async { dataSource.fetchInitialization() }
+            val infoDataCall = async { dataSource.fetchInitializationInfo() }
+            IdenthubInitialConfig(initDataCall.await(), infoDataCall.await())
         }
     }
 }
 
 interface InitializationDataSource {
-    fun fetchInitialization(): Single<InitializationDto>
-    fun fetchInitializationInfo(): Single<InitializationInfoDto>
+    suspend fun fetchInitialization(): InitializationDto
+    suspend fun fetchInitializationInfo(): InitializationInfoDto
 }
 
 interface InitializationApi {
     @GET("/info")
-    fun getInitializationInfo(): Single<InitializationInfoDto>
+    suspend fun getInitializationInfo(): InitializationInfoDto
 
     @GET(".")
-    fun getInitialization(): Single<InitializationDto>
+    suspend fun getInitialization(): InitializationDto
 }
 
 class InitialConfigRetrofitDataSource(
     private val api: InitializationApi
 ): InitializationDataSource {
 
-    override fun fetchInitialization() = api.getInitialization()
+    override suspend fun fetchInitialization() = api.getInitialization()
 
-    override fun fetchInitializationInfo() = api.getInitializationInfo()
+    override suspend fun fetchInitializationInfo() = api.getInitializationInfo()
 
 }

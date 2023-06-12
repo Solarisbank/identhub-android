@@ -8,4 +8,5 @@ val initialConfigModule = module {
     factory { get<Retrofit>().create(InitializationApi::class.java) }
     factory<InitializationDataSource> { InitialConfigRetrofitDataSource(get()) }
     factory<InitialConfigUseCase> { InitialConfigUseCaseImpl(get()) }
+    factory<FirstStepUseCase> { FirstStepUseCaseImpl(get(), get())}
 }

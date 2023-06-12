@@ -120,8 +120,23 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         )
     }
 
-    private fun setCurrentModule(module: IdenthubModule) {
+    private fun setCurrentModule(module: IdenthubModule?) {
+        if (module == null) {
+            showGenericError()
+            return
+        }
         updateNavigationGraph(module.navigationResId)
+    }
+
+    private fun showGenericError() {
+        showAlertFragment(
+            title = getString(R.string.identhub_generic_error_title),
+            message = getString(R.string.identhub_generic_error_message),
+            negativeLabel = getString(R.string.identhub_generic_retry_button),
+            negativeAction = { viewModel.onAction(MainAction.RetryTapped) },
+            positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
+            positiveAction = ::close
+        )
     }
 
     private fun updateNavigationGraph(navigationId: Int) {
@@ -178,11 +193,13 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
             message = getString(R.string.identhub_identity_dialog_quit_process_message),
             positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
             negativeLabel = getString(R.string.identhub_identity_dialog_quit_process_negative_button),
-            positiveAction = {
-                IdLogger.info("User quits the SDK")
-                viewModel.onAction(MainAction.CloseTapped)
-            },
+            positiveAction = ::close,
             tag = "BackButtonAlert")
+    }
+
+    private fun close() {
+        IdLogger.info("User quits the SDK")
+        viewModel.onAction(MainAction.CloseTapped)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
