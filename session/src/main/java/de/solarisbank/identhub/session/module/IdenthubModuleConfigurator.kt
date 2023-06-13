@@ -5,14 +5,14 @@ import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.module.config.FourthlineIdentificationConfig
 import de.solarisbank.identhub.session.module.config.QesConfig
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-class IdenthubModuleConfigurator: IdenthubKoinComponent {
-    fun configure(module: ResolvedModule.Module) {
-        val nextStep = module.nextStep
+class IdenthubModuleConfigurator: GeneralModuleLoader, IdenthubKoinComponent {
+    override fun loadBefore(moduleName: String, nextStep: String) {
         var configModule: Module? = null
-        when (module.className) {
+        when (moduleName) {
             IdenthubModules.FourthlineClassName -> {
                 val isFourthlineSigning =
                     nextStep.contains(IdentificationStep.FOURTHLINE_SIGNING.destination)
@@ -43,6 +43,9 @@ class IdenthubModuleConfigurator: IdenthubKoinComponent {
         configModule?.let {
             loadModules(listOf(it))
         }
+    }
+    fun configure(module: ResolvedModule.Module) {
+
     }
 }
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import de.solarisbank.identhub.phone.PhoneModule
 import de.solarisbank.identhub.phone.R
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
@@ -17,7 +17,7 @@ import de.solarisbank.sdk.feature.view.PhoneVerificationViewState
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PhoneVerificationFragment: NewBaseFragment() {
+class PhoneVerificationFragment: BaseFragment() {
 
     private var phoneVerificationView: PhoneVerificationView? = null
     private var submitButton: Button? = null
@@ -25,7 +25,7 @@ class PhoneVerificationFragment: NewBaseFragment() {
     private val viewModel: PhoneVerificationViewModel by viewModel()
     private val sharedViewModel: PhoneViewModel by koinNavGraphViewModel(PhoneModule.navigationId)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_phone_verification, container, false)
             .also {
                 phoneVerificationView = it.findViewById(R.id.phoneVerification)
@@ -34,7 +34,6 @@ class PhoneVerificationFragment: NewBaseFragment() {
                 submitButton?.setOnClickListener {
                     viewModel.onAction(PhoneVerificationAction.Submit(phoneVerificationView?.code))
                 }
-                customizeUI()
             }
     }
 
@@ -62,7 +61,7 @@ class PhoneVerificationFragment: NewBaseFragment() {
         sharedViewModel.navigator = navigator
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization)
         phoneVerificationView?.customize(customization)
     }

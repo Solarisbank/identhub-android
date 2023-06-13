@@ -1,5 +1,6 @@
 package de.solarisbank.sdk.data.di.koin
 
+import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
 import org.koin.core.Koin
 
 interface MockroInterface {
@@ -17,3 +18,9 @@ sealed class MockroPersona {
 data class MockroOptions(
     val numberOfStartUpFailures: Int = 0
 )
+
+class MockroLoader: GeneralModuleLoader, IdenthubKoinComponent {
+    override fun loadAfter(moduleName: String, nextStep: String) {
+        IdentHubKoinContext.mockro?.loadModules(getKoin())
+    }
+}

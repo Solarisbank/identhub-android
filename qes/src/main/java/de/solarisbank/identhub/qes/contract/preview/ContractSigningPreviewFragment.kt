@@ -15,7 +15,7 @@ import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.qes.QESModule
 import de.solarisbank.identhub.qes.R
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.domain.model.result.*
 import de.solarisbank.sdk.feature.PdfIntent
@@ -29,7 +29,7 @@ import timber.log.Timber
 import java.io.File
 
 
-class ContractSigningPreviewFragment : NewBaseFragment() {
+class ContractSigningPreviewFragment : BaseFragment() {
     private val adapter = DocumentAdapter()
     private var clickDisposable = Disposables.disposed()
     private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)
@@ -41,7 +41,7 @@ class ContractSigningPreviewFragment : NewBaseFragment() {
     private var submitButton: Button? = null
     private var contractSignTermsCondition:TextView?=null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_contract_signing_preview, container, false)
                 .also {
                     titleView = it.findViewById(R.id.title)
@@ -49,11 +49,10 @@ class ContractSigningPreviewFragment : NewBaseFragment() {
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
                     contractSignTermsCondition = it.findViewById(R.id.contractSignTermsCondition)
-                    customizeUI()
                 }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization)
         contractSignTermsCondition?.customizeLinks(customization)
     }

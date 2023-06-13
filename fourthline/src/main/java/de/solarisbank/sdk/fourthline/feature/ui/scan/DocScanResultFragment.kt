@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.view.hideKeyboard
@@ -24,7 +24,7 @@ import timber.log.Timber
 import java.util.*
 
 
-class DocScanResultFragment : NewBaseFragment() {
+class DocScanResultFragment : BaseFragment() {
 
     private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
@@ -39,7 +39,7 @@ class DocScanResultFragment : NewBaseFragment() {
     private var expireDateWatcher: TextWatcher? = null
     private var docNumberWatcher: TextWatcher? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_doc_scan_result, container, false)
             .also {
                 docNumberTextInput = it.findViewById(R.id.docNumberTextInput)
@@ -48,11 +48,10 @@ class DocScanResultFragment : NewBaseFragment() {
                 expireDateTextInput = it.findViewById(R.id.expireDateTextInput)
                 expiryDateError = it.findViewById(R.id.expireDateError)
                 continueButton = it.findViewById(R.id.continueButton)
-                customizeUI()
             }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         continueButton?.customize(customization)
     }
 

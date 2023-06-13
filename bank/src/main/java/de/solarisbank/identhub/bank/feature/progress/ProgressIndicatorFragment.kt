@@ -12,11 +12,11 @@ import androidx.navigation.navGraphViewModels
 import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 
 
-abstract class ProgressIndicatorFragment : NewBaseFragment() {
+abstract class ProgressIndicatorFragment : BaseFragment() {
 
     private val NO_RESOURCE = -1
 
@@ -26,11 +26,11 @@ abstract class ProgressIndicatorFragment : NewBaseFragment() {
     protected var title: TextView? = null
     protected var description: TextView? = null
 
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root: View = inflater.inflate(
             R.layout.identhub_fragment_verification_progress_indicator,
             container,
@@ -39,12 +39,8 @@ abstract class ProgressIndicatorFragment : NewBaseFragment() {
         progressBar = root.findViewById(R.id.icon)
         title = root.findViewById(R.id.title)
         description = root.findViewById(R.id.description)
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         initViews()
+        return root
     }
 
     protected open fun initViews() {
@@ -54,10 +50,9 @@ abstract class ProgressIndicatorFragment : NewBaseFragment() {
             description!!.setText(messageResource)
             description!!.visibility = View.VISIBLE
         }
-        customizeUI()
     }
 
-    protected fun customizeUI() {
+    override fun customizeView(view: View) {
         progressBar!!.customize(customization)
     }
 

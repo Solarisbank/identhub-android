@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineModule
@@ -23,7 +23,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.terms.adapter.SlideAdapter
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TermsAndConditionsFragment : NewBaseFragment() {
+class TermsAndConditionsFragment : BaseFragment() {
 
     private var introSlider: ViewPager2? = null
     private var slideIndicator: LinearLayout? = null
@@ -38,7 +38,7 @@ class TermsAndConditionsFragment : NewBaseFragment() {
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val viewModel: TermsAndConditionsViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
                 .also {
                     submitButton = it.findViewById(R.id.submitButton)
@@ -51,12 +51,11 @@ class TermsAndConditionsFragment : NewBaseFragment() {
                     namirialLayout = it.findViewById(R.id.namirialTermsLayout)
                     introSlider = it.findViewById(R.id.introViewPager)
                     slideIndicator = it.findViewById(R.id.slideIndicator)
-                    customizeUI()
                     initView()
                 }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization)
         checkBox?.customize(customization)
     }

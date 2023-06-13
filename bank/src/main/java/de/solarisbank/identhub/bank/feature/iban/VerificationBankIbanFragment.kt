@@ -14,7 +14,7 @@ import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
@@ -28,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
-class VerificationBankIbanFragment : NewBaseFragment() {
+class VerificationBankIbanFragment : BaseFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankModule.navigationId)
     private val ibanViewModel: VerificationBankIbanViewModel by viewModel()
@@ -42,7 +42,7 @@ class VerificationBankIbanFragment : NewBaseFragment() {
     private var termsLayout: View? = null
     private var noticeBulletList: BulletListLayout? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_verification_bank_iban, container, false)
                 .also {
                     ibanNumber = it.findViewById(R.id.ibanNumber)
@@ -55,11 +55,10 @@ class VerificationBankIbanFragment : NewBaseFragment() {
                     termsLayout = it.findViewById(R.id.termsLayout)
                     noticeBulletList = it.findViewById(R.id.noticeBulletList)
                     updateBulletList()
-                    customizeUI()
                 }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization, ButtonStyle.Primary)
         termsCheckBox?.customize(customization)
         termsDisclaimer?.customizeLinks(customization)

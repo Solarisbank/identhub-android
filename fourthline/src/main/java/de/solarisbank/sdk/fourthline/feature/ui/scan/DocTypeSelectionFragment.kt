@@ -16,7 +16,7 @@ import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineModule
@@ -32,7 +32,7 @@ import de.solarisbank.sdk.logger.IdLogger
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import timber.log.Timber
 
-class DocTypeSelectionFragment: NewBaseFragment() {
+class DocTypeSelectionFragment: BaseFragment() {
 
     private var docTypeAdapter: DocTypeAdapter? = null
     private var documentTypeList: RecyclerView? = null
@@ -56,17 +56,16 @@ class DocTypeSelectionFragment: NewBaseFragment() {
             fetchData()
         }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Timber.d("onCreateView")
         return inflater.inflate(R.layout.identhub_fragment_doc_type_selection, container, false).also {
             documentTypeList = it.findViewById(R.id.documentTypeList)
             confirmButton = it.findViewById<Button?>(R.id.confirmButton).apply { buttonDisabled(true) }
             progressBar = it.findViewById(R.id.progress)
-            customizeUI()
         }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         confirmButton?.customize(customization)
         progressBar?.customize(customization)
     }

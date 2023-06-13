@@ -93,11 +93,11 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
                     hintTextView = it.findViewById(R.id.hintTextView)
                     livenessMask = it.findViewById(R.id.livenessMask)
                     progressBar = it.findViewById(R.id.progressBar)
-                    customizeUI()
+                    customizeView()
                 }
     }
 
-    private fun customizeUI() {
+    private fun customizeView() {
         progressBar?.customize(customization)
     }
 

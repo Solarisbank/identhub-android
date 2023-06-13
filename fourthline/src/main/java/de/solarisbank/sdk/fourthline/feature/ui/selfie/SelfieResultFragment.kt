@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
@@ -16,7 +16,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class SelfieResultFragment : NewBaseFragment() {
+class SelfieResultFragment : BaseFragment() {
 
     private var imageResult: ImageView? = null
     private var submitButton: Button? = null
@@ -26,18 +26,17 @@ class SelfieResultFragment : NewBaseFragment() {
     private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_selfie_result, container, false)
                 .also {
                     imageResult = it.findViewById(R.id.imageResult)
                     submitButton = it.findViewById(R.id.submitButton)
                     retryButton = it.findViewById(R.id.retryButton)
                     successImageView = it.findViewById(R.id.successImageView)
-                    customizeUI()
                 }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization)
         retryButton?.customize(customization, ButtonStyle.Alternative)
         successImageView?.customize(customization, ImageViewTint.Secondary)

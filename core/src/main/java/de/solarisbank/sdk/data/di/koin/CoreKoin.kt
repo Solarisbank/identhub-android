@@ -41,6 +41,7 @@ object IdentHubKoinContext {
                 val kClass = Class.forName("de.solarisbank.identhub.mockro.Mockro").kotlin
                 mockro = kClass.createInstance() as? MockroInterface
                 mockro?.loadModules(getKoin())
+                mockro?.setPersona(MockroPersona.BankHappyPath)
             } catch (throwable: Throwable) {
                 IdLogger.debug("Mockro isn't available")
             }
@@ -57,7 +58,6 @@ interface IdenthubKoinComponent: KoinComponent {
 
     fun loadModules(moduleList: List<Module>) {
         getKoin().loadModules(moduleList)
-        IdentHubKoinContext.mockro?.loadModules(getKoin())
     }
 
     fun unloadModules(moduleList: List<Module>) {

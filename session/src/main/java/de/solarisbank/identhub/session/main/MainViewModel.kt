@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.solarisbank.identhub.session.module.IdenthubModuleConfigurator
+import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
 import de.solarisbank.identhub.session.module.IdenthubModuleResolver
 import de.solarisbank.identhub.session.module.ResolvedModule
 import de.solarisbank.sdk.data.IdenthubResult
@@ -25,7 +25,6 @@ import org.koin.dsl.module
 class MainViewModel(
     private val initialConfigUseCase: InitialConfigUseCase,
     private val moduleResolver: IdenthubModuleResolver,
-    private val moduleConfigurator: IdenthubModuleConfigurator,
     private val firstStepUseCase: FirstStepUseCase
 ): ViewModel(), IdenthubKoinComponent {
 
@@ -57,9 +56,11 @@ class MainViewModel(
     private fun setModule(module: ResolvedModule.Module?) {
         module ?: return
         moduleResolver.makeModule(module.className)?.let {
-            moduleConfigurator.configure(module)
+            val generalLoaders = getKoin().getAll<GeneralModuleLoader>()
             viewState.value = MainViewState(currentModule = it)
+            generalLoaders.forEach { loader -> loader.loadBefore(module.className, module.nextStep) }
             it.load()
+            generalLoaders.forEach { loader -> loader.loadAfter(module.className, module.nextStep) }
         } ?: sendResult(
             IdenthubResult.Failed(
                 "Module not found: ${module.className.substringAfterLast(".")}"

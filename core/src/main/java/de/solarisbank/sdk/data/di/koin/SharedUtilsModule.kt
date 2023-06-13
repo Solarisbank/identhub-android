@@ -9,6 +9,8 @@ import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.repository.IdentificationRepository
 import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
+import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -20,4 +22,5 @@ val sharedUtilsModule = module {
     single { IdentificationRepository(get(), get(), get()) }
     factory { GetMobileNumberUseCase(get()) }
     factory { IdentificationPollingStatusUseCase(get(), get()) }
+    single { MockroLoader() } bind GeneralModuleLoader::class
 }

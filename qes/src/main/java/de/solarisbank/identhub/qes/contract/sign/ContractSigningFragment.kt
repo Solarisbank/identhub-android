@@ -9,7 +9,7 @@ import android.widget.TextView
 import de.solarisbank.identhub.qes.QESModule
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.contract.ContractViewModel
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
 import de.solarisbank.sdk.feature.view.hideKeyboard
 import de.solarisbank.sdk.domain.model.result.Event
@@ -24,7 +24,7 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class ContractSigningFragment : NewBaseFragment() {
+class ContractSigningFragment : BaseFragment() {
     private var disposable = Disposables.disposed()
     private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)
     private val viewModel: ContractSigningViewModel by viewModel()
@@ -32,11 +32,11 @@ class ContractSigningFragment : NewBaseFragment() {
     private var transactionDescription: TextView? = null
     private var submitButton: Button? = null
 
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.identhub_fragment_contract_signing, container, false)
             .also {
                 phoneVerificationView = it.findViewById(R.id.phoneVerification)
@@ -45,11 +45,10 @@ class ContractSigningFragment : NewBaseFragment() {
                 }
                 transactionDescription = it.findViewById(R.id.transactionDescription)
                 submitButton = it.findViewById(R.id.submitButton)
-                customizeUI()
             }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         submitButton?.customize(customization)
         phoneVerificationView?.customize(customization)
     }

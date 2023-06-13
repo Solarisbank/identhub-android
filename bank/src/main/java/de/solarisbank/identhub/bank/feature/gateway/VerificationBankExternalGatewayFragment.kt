@@ -18,7 +18,7 @@ import androidx.webkit.WebViewFeature
 import de.solarisbank.identhub.bank.BankModule
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.sdk.data.IdentificationStep
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel.Companion.VERIFICATION_BANK_URL_KEY
 import de.solarisbank.sdk.domain.model.result.Result
@@ -27,18 +27,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
-class VerificationBankExternalGatewayFragment : NewBaseFragment() {
+class VerificationBankExternalGatewayFragment : BaseFragment() {
     private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankModule.navigationId)
     private val verificationBankExternalGateViewModel: VerificationBankExternalGateViewModel by viewModel {
         parametersOf(arguments?.getString(VERIFICATION_BANK_URL_KEY))
     }
     private var webView: WebView? = null
 
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root =
             inflater.inflate(R.layout.identhub_fragment_verification_bank_external_gateway, container, false)
         webView = root.findViewById(R.id.webView)

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
@@ -19,7 +19,7 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class KycUploadFragment : NewBaseFragment() {
+class KycUploadFragment : BaseFragment() {
 
     private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
@@ -31,14 +31,13 @@ class KycUploadFragment : NewBaseFragment() {
     private var progressBar: ProgressBar? = null
     private var errorImage: ImageView? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_kyc_upload, container, false)
             .also {
                 title = it.findViewById(R.id.title)
                 subtitle = it.findViewById(R.id.subtitle)
                 progressBar = it.findViewById(R.id.progressBar)
                 errorImage = it.findViewById(R.id.errorImage)
-                customizeUI()
             }
     }
 
@@ -54,7 +53,7 @@ class KycUploadFragment : NewBaseFragment() {
         }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         progressBar?.customize(customization)
     }
 

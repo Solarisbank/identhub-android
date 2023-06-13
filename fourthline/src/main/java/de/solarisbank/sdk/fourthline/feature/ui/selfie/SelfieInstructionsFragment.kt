@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import de.solarisbank.identhub.session.main.NewBaseFragment
+import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
@@ -16,21 +16,20 @@ import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KE
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.KEY_MESSAGE
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
-class SelfieInstructionsFragment : NewBaseFragment() {
+class SelfieInstructionsFragment : BaseFragment() {
 
     private var startbutton: Button? = null
 
     private val sharedViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_selfie_instructions, container, false)
                 .also {
                     startbutton = it.findViewById(R.id.startButton)
-                    customizeUI()
                 }
     }
 
-    private fun customizeUI() {
+    override fun customizeView(view: View) {
         startbutton?.customize(customization)
     }
 

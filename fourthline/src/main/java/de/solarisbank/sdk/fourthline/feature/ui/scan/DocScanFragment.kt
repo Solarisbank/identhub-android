@@ -151,11 +151,11 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
                 punchhole?.punchholeRect = getDocumentDetectionArea()
                 punchhole?.postInvalidate()
             }
-            customizeUI()
+            customizeView()
         }
     }
 
-    private fun customizeUI() {
+    private fun customizeView() {
         confirmButton?.customize(customization)
         takeSnapshot?.customize(customization)
         retakeButton?.customize(customization, ButtonStyle.Alternative)
