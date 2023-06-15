@@ -5,42 +5,48 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fourthline.core.DocumentType
 import com.fourthline.kyc.Document
 import com.fourthline.vision.document.DocumentScannerResult
 import com.fourthline.vision.document.DocumentScannerStepResult
 import com.fourthline.vision.selfie.SelfieScannerResult
-import de.solarisbank.sdk.domain.model.result.data
-import de.solarisbank.sdk.domain.model.result.succeeded
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.fourthline.data.FourthlineStorage
+import de.solarisbank.sdk.fourthline.data.dto.FourthlineInitialData
 import de.solarisbank.sdk.fourthline.data.dto.LocationResult
+import de.solarisbank.sdk.fourthline.data.terms.TermsAndConditionsUseCase
 import de.solarisbank.sdk.fourthline.domain.appliedDocuments
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
+import de.solarisbank.sdk.fourthline.domain.identification.FourthlineIdentificationUseCase
 import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
-import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.domain.toPersonDataStateDto
 import de.solarisbank.sdk.logger.IdLogger
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
 
 class KycSharedViewModel(
-    private val personDataUseCase: PersonDataUseCase,
+    private val fourthlineIdentificationUseCase: FourthlineIdentificationUseCase,
     private val kycInfoUseCase: KycInfoUseCase,
     private val locationUseCase: LocationUseCase,
     private val ipObtainingUseCase: IpObtainingUseCase,
     private val deleteKycInfoUseCase: DeleteKycInfoUseCase,
     private val fourthlineStorage: FourthlineStorage,
+    private val termsAndConditionsUseCase: TermsAndConditionsUseCase,
+    private val dispatchers: IdenthubDispatchers
 ): ViewModel() {
 
     private val _personDataStateLiveData = MutableLiveData<PersonDataStateDto>()
@@ -63,51 +69,40 @@ class KycSharedViewModel(
         Timber.d("fetchPersonDataAndIp() 0")
         deleteKycInfoUseCase.clearPersonDataCaches()
         _supportedDocLiveData.value = PersonDataStateDto.UPLOADING
-        compositeDisposable.add(
-                Single.zip(
-                    personDataUseCase.execute(Unit).subscribeOn(Schedulers.io()),
-                    ipObtainingUseCase.execute(Unit).subscribeOn(Schedulers.io())
-                ) { personData, ip -> personData to ip }
-                    .doOnSuccess { pair ->
-                            Timber.d("fetchPersonDataAndIp() 1, pair : $pair")
-                            IdLogger.info("Person data and IP fetched.")
-                            if(
-                                    pair.first.succeeded
-                                    && pair.second.succeeded
-                                    && pair.first.data != null
-                                    && pair.second.data != null
-                            ) {
-
-                                    val supportedDocs = pair.first.data!!.appliedDocuments()
-                                    if (!supportedDocs.isNullOrEmpty()) {
-                                        Timber.d("fetchPersonDataAndIp() 2")
-                                        runBlocking { kycInfoUseCase.updateWithPersonDataDto(pair.first.data!!) }
-                                        runBlocking { kycInfoUseCase.updateIpAddress(pair.second.data!!) }
-                                        _personDataStateLiveData.postValue(
-                                                PersonDataStateDto.SUCCEEDED(supportedDocs)
-                                        )
-                                    } else {
-                                        Timber.d("fetchPersonDataAndIp() 3")
-                                        _personDataStateLiveData.postValue(
-                                                PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
-                                        )
-                                    }
-                            } else {
-                                Timber.d("fetchPersonDataAndIp() 4")
-                                _personDataStateLiveData.postValue(
-                                        PersonDataStateDto.GENERIC_ERROR
-                                )
-                            }
-                        }
-                        .doOnError {
-                            Timber.e(it, "fetchPersonDataAndIp() 5")
-                            IdLogger.error("Fetching Person data and IP Failed: $it")
-                            _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
-        )
+        viewModelScope.launch {
+            try {
+                val initialData = withContext(dispatchers.IO) {
+                    val identificationCall =
+                        async { fourthlineIdentificationUseCase.createIdentification() }
+                    val termsCall = async { termsAndConditionsUseCase.getNamirialTerms() }
+                    val ipCall = async { ipObtainingUseCase.getMyIp() }
+                    FourthlineInitialData(
+                        identificationCall.await(),
+                        termsCall.await(),
+                        ipCall.await()
+                    )
+                }
+                val personData = withContext(dispatchers.IO) {
+                    fourthlineIdentificationUseCase.getPersonData(initialData.identification.id)
+                }
+                val supportedDocuments = personData.appliedDocuments()
+                if (supportedDocuments.isNullOrEmpty()) {
+                    _personDataStateLiveData.value = PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
+                } else {
+                    runBlocking { kycInfoUseCase.updateWithPersonDataDto(personData) }
+                    runBlocking { kycInfoUseCase.updateIpAddress(initialData.ip.ip) }
+                    fourthlineStorage.namirialTerms = initialData.terms
+                    _personDataStateLiveData.postValue(
+                        PersonDataStateDto.SUCCEEDED(
+                            supportedDocuments
+                        )
+                    )
+                }
+            } catch (throwable: Throwable) {
+                IdLogger.error("Error fetching initial fourthline data", throwable)
+                _personDataStateLiveData.value = PersonDataStateDto.GENERIC_ERROR
+            }
+        }
     }
 
     private fun subscribeLocationStates() {

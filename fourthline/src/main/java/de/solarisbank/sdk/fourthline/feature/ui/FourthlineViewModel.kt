@@ -19,6 +19,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieInstructionsOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsOutcome
 
 class FourthlineViewModel (
         private val initialConfigStorage: InitialConfigStorage,
@@ -38,8 +39,15 @@ class FourthlineViewModel (
         }
     }
 
-    fun onTermsOutcome() {
-        navigateTo(R.id.action_termsAndConditionsFragment_to_documentTypeSelectionFragment)
+    fun onTermsOutcome(outcome: TermsOutcome) {
+        when (outcome) {
+            is TermsOutcome.Success -> {
+                navigateTo(R.id.action_termsAndConditionsFragment_to_documentTypeSelectionFragment)
+            }
+            is TermsOutcome.Failure -> {
+                setFourthlineIdentificationFailure(outcome.message)
+            }
+        }
     }
 
     fun onSelfieInstructionsOutcome(outcome: SelfieInstructionsOutcome) {

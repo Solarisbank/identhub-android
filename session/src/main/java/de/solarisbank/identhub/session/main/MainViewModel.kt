@@ -14,10 +14,10 @@ import de.solarisbank.sdk.data.initial.FirstStepUseCase
 import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.data.initial.InitialConfigUseCase
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.module.abstraction.IdenthubModule
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.dsl.module
@@ -25,7 +25,8 @@ import org.koin.dsl.module
 class MainViewModel(
     private val initialConfigUseCase: InitialConfigUseCase,
     private val moduleResolver: IdenthubModuleResolver,
-    private val firstStepUseCase: FirstStepUseCase
+    private val firstStepUseCase: FirstStepUseCase,
+    private val dispatchers: IdenthubDispatchers
 ): ViewModel(), IdenthubKoinComponent {
 
     private val viewState = MutableLiveData<MainViewState>()
@@ -72,7 +73,7 @@ class MainViewModel(
         viewModelScope.launch {
             val storage: InitialConfigStorage
             try {
-                storage = withContext(Dispatchers.IO) {
+                storage = withContext(dispatchers.IO) {
                     initialConfigUseCase.createInitialConfigStorage()
                 }
             } catch(t: Throwable) {
@@ -100,7 +101,7 @@ class MainViewModel(
 
     private fun initiateFirstStep(initialConfig: IdenthubInitialConfig) {
         viewModelScope.launch {
-            val firstStep = withContext(Dispatchers.IO) { firstStepUseCase.determineFirstStep(initialConfig) }
+            val firstStep = withContext(dispatchers.IO) { firstStepUseCase.determineFirstStep(initialConfig) }
             mainCoordinator?.start(firstStep)
         }
 

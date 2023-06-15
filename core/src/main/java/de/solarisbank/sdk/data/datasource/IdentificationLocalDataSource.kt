@@ -6,6 +6,9 @@ import io.reactivex.Single
 
 interface IdentificationLocalDataSource {
 
+    suspend fun getIdentification(): IdentificationDto?
+    suspend fun storeIdentification(identification: IdentificationDto)
+
     fun obtainIdentificationDto(): Single<IdentificationDto>
 
     fun saveIdentification(identificationDto: IdentificationDto): Completable

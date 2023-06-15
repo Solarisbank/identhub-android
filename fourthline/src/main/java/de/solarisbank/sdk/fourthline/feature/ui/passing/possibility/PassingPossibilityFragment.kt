@@ -64,17 +64,15 @@ class PassingPossibilityFragment : BaseFragment() {
             }
             is PersonDataStateDto.GENERIC_ERROR -> {
                 progressBar!!.visibility = View.INVISIBLE
-                showAlertFragment(
-                        title = getString(R.string.identhub_generic_error_title),
-                        message = getString(R.string.identhub_generic_error_message),
-                        positiveLabel = getString(R.string.identhub_ok_button),
-                        positiveAction = {
-                            activityViewModel.onPassingPossibilityOutcome(
-                                PassingPossibilityOutcome.Failed(
-                                    "Generic error happened when loading initial info of Fourthline identification"
-                                )
+                showGenericErrorWithRetry(
+                    retryAction = { kycSharedViewModel.fetchPersonDataAndIp() },
+                    quitAction = {
+                        activityViewModel.onPassingPossibilityOutcome(
+                            PassingPossibilityOutcome.Failed(
+                                "Generic error happened when loading initial info of Fourthline identification"
                             )
-                        }
+                        )
+                    }
                 )
             }
             else -> { /* Ignore */ }

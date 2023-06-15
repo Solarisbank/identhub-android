@@ -9,6 +9,25 @@ class IdentificationInMemoryDataSource : IdentificationLocalDataSource {
 
     private val lock: ReentrantReadWriteLock = ReentrantReadWriteLock()
     private var identificationDto: IdentificationDto? = null
+    override suspend fun getIdentification(): IdentificationDto? {
+        lock.readLock().lock()
+        try {
+            return identificationDto
+        } finally {
+            lock.readLock().unlock()
+        }
+    }
+
+    override suspend fun storeIdentification(identification: IdentificationDto) {
+        lock.writeLock().lock()
+        try {
+            this.identificationDto = identification
+        } finally {
+            lock.writeLock().unlock()
+        }
+    }
+
+
 
     override fun obtainIdentificationDto(): Single<IdentificationDto> {
         lock.readLock().lock()

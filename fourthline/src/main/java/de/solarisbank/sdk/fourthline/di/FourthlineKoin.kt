@@ -6,12 +6,8 @@ import de.solarisbank.sdk.feature.storage.SharedPrefsStorage
 import de.solarisbank.sdk.fourthline.data.FourthlineStorage
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationApi
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationDataSource
-import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRepository
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
 import de.solarisbank.sdk.fourthline.data.ip.IpApi
-import de.solarisbank.sdk.fourthline.data.ip.IpDataSource
-import de.solarisbank.sdk.fourthline.data.ip.IpDataSourceImpl
-import de.solarisbank.sdk.fourthline.data.ip.IpRepository
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadApi
@@ -25,13 +21,17 @@ import de.solarisbank.sdk.fourthline.data.location.LocationRepositoryImpl
 import de.solarisbank.sdk.fourthline.data.person.PersonDataApi
 import de.solarisbank.sdk.fourthline.data.person.PersonDataSource
 import de.solarisbank.sdk.fourthline.data.person.PersonDataSourceImpl
+import de.solarisbank.sdk.fourthline.data.terms.TermsAndConditionsApi
+import de.solarisbank.sdk.fourthline.data.terms.TermsAndConditionsUseCase
+import de.solarisbank.sdk.fourthline.data.terms.TermsAndConditionsUseCaseImpl
+import de.solarisbank.sdk.fourthline.domain.identification.FourthlineIdentificationUseCase
 import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
+import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCaseImpl
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseImpl
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
-import de.solarisbank.sdk.fourthline.domain.person.PersonDataUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
@@ -48,8 +48,7 @@ private val fourthlineModule = module {
     factory<FourthlineIdentificationDataSource> { FourthlineIdentificationRetrofitDataSource(get()) }
     factory<PersonDataSource> { PersonDataSourceImpl(get()) }
     factory { get<Retrofit>().create(PersonDataApi::class.java) }
-    single { FourthlineIdentificationRepository(get(), get(), get()) }
-    factory { PersonDataUseCase(get(), get(), get()) }
+    factory { FourthlineIdentificationUseCase(get(), get(), get(), get(), get()) }
     factory { DeleteKycInfoUseCase(get()) }
     single { KycInfoInMemoryDataSource() }
     single { KycInfoRepository(get()) }
@@ -57,20 +56,21 @@ private val fourthlineModule = module {
     single<LocationDataSource> { LocationDataSourceImpl(get()) }
     single<LocationRepository> { LocationRepositoryImpl(get()) }
     factory { get<Retrofit>().create(IpApi::class.java) }
-    factory<IpDataSource> { IpDataSourceImpl(get()) }
-    single { IpRepository(get()) }
     factory { LocationUseCase(get()) }
-    factory { IpObtainingUseCase(get()) }
+    factory<IpObtainingUseCase> { IpObtainingUseCaseImpl(get()) }
     factory { get<Retrofit>().create(KycUploadApi::class.java) }
     factory<KycUploadDataSource> { KycUploadRetrofitDataSource(get()) }
     single { KycUploadRepository(get(), get()) }
     factory { KycUploadUseCase(get(), get(), get(), get()) }
     single { FourthlineStorage(get(named(FourthlineStorageName))) }
     single<PersistentStorage>(named(FourthlineStorageName)) {
-        SharedPrefsStorage(get(), FourthlineStorageName)
+        SharedPrefsStorage(get(), FourthlineStorageName, get())
     }
+    factory { get<Retrofit>().create(TermsAndConditionsApi::class.java) }
+    factory<TermsAndConditionsUseCase> { TermsAndConditionsUseCaseImpl(get(), get()) }
+
     viewModel {
-        KycSharedViewModel(get(), get(), get(), get(), get(), get())
+        KycSharedViewModel(get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
         FourthlineViewModel(get(), get())
@@ -79,7 +79,7 @@ private val fourthlineModule = module {
         KycUploadViewModel(get())
     }
     viewModel {
-        TermsAndConditionsViewModel(get())
+        TermsAndConditionsViewModel(get(), get(), get())
     }
 }
 

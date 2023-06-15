@@ -7,14 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import de.solarisbank.identhub.session.main.BaseFragment
+import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
+import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -31,9 +34,10 @@ class TermsAndConditionsFragment : BaseFragment() {
 
     private var submitButton: Button? = null
     private var checkBox: AppCompatCheckBox? = null
-    private var termsAndConditionsTextView: TextView? = null
+    private var namirialTermsDescription: TextView? = null
     private var privacyStatementTextView: TextView? = null
     private var namirialLayout: View? = null
+    private var progressBar: ProgressBar? = null
 
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
     private val viewModel: TermsAndConditionsViewModel by viewModel()
@@ -44,13 +48,14 @@ class TermsAndConditionsFragment : BaseFragment() {
                     submitButton = it.findViewById(R.id.submitButton)
                     checkBox = it.findViewById(R.id.namirialTermsCheckBox)
                     checkBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState()}
-                    termsAndConditionsTextView = it.findViewById(R.id.namirialTermsDescription)
-                    termsAndConditionsTextView?.movementMethod = LinkMovementMethod.getInstance()
+                    namirialTermsDescription = it.findViewById(R.id.namirialTermsDescription)
+                    namirialTermsDescription?.movementMethod = LinkMovementMethod.getInstance()
                     privacyStatementTextView = it.findViewById(R.id.fourthlinePrivacyDescription)
                     privacyStatementTextView?.movementMethod = LinkMovementMethod.getInstance()
                     namirialLayout = it.findViewById(R.id.namirialTermsLayout)
                     introSlider = it.findViewById(R.id.introViewPager)
                     slideIndicator = it.findViewById(R.id.slideIndicator)
+                    progressBar = it.findViewById(R.id.progressBar)
                     initView()
                 }
     }
@@ -58,6 +63,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     override fun customizeView(view: View) {
         submitButton?.customize(customization)
         checkBox?.customize(customization)
+        progressBar?.customize(customization)
     }
 
     private fun updateSubmitButtonState() {
@@ -67,12 +73,18 @@ class TermsAndConditionsFragment : BaseFragment() {
 
     private fun initView() {
         updateSubmitButtonState()
-        submitButton?.setOnClickListener { activityViewModel.onTermsOutcome() }
+        submitButton?.setOnClickListener { viewModel.onAction(TermsAndConditionsAction.NextTapped) }
         viewModel.state().observe(viewLifecycleOwner) {
-            namirialLayout?.isVisible = it.shouldShowNamirialTerms
-            if (!it.shouldShowNamirialTerms) {
+            if (it.namirialTerms != null) {
+                submitButton?.buttonDisabled(true)
+                createNamirialLinks(it.namirialTerms.url)
+                namirialLayout?.isVisible = true
+            } else {
+                namirialLayout?.isVisible = false
                 submitButton?.buttonDisabled(false)
             }
+
+            handleAcceptState(it.acceptState)
         }
 
         slideAdapter = SlideAdapter(requireContext(), getSlides(), customization)
@@ -87,6 +99,36 @@ class TermsAndConditionsFragment : BaseFragment() {
             }
         })
     }
+
+    private fun createNamirialLinks(url: String) {
+        val description = getString(R.string.identhub_namirial_terms_and_conditions)
+        val linkPart = getString(R.string.identhub_namirial_terms_link_part)
+        val spanned = description.linkOccurrenceOf(linkPart, url, true)
+        namirialTermsDescription?.text = spanned
+    }
+
+    private fun handleAcceptState(state: ResultState<Unit>) {
+        when (state) {
+            is ResultState.Success -> activityViewModel.onTermsOutcome(TermsOutcome.Success)
+            is ResultState.Loading -> {
+                submitButton?.visibility = View.INVISIBLE
+                progressBar?.visibility = View.VISIBLE
+            }
+            is ResultState.Failure -> {
+                showGenericErrorWithRetry(
+                    retryAction = { viewModel.onAction(TermsAndConditionsAction.NextTapped) },
+                    quitAction = {
+                        activityViewModel.onTermsOutcome(
+                            TermsOutcome.Failure("Could not accept Namirial terms")
+                        )
+                    }
+                )
+            }
+            is ResultState.Unknown -> { /* Ignore */ }
+        }
+    }
+
+
 
     private fun getSlides(): List<Slide> {
         return listOf(
@@ -129,11 +171,18 @@ class TermsAndConditionsFragment : BaseFragment() {
     override fun onDestroyView() {
         submitButton = null
         checkBox = null
-        termsAndConditionsTextView = null
+        namirialTermsDescription = null
         privacyStatementTextView = null
         slideAdapter = null
         introSlider = null
         slideIndicator = null
+        namirialLayout = null
+        progressBar = null
         super.onDestroyView()
     }
+}
+
+sealed class TermsOutcome {
+    object Success: TermsOutcome()
+    data class Failure(val message: String): TermsOutcome()
 }

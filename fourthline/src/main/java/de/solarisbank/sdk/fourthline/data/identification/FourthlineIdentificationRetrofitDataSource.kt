@@ -1,23 +1,21 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
 import de.solarisbank.sdk.data.dto.IdentificationDto
-import io.reactivex.Single
 
 interface FourthlineIdentificationDataSource {
-    fun postFourthlineIdentification(): Single<IdentificationDto>
-    fun postFourthlineSigningIdentification(): Single<IdentificationDto>
+    suspend fun createFourthlineIdentification(): IdentificationDto
+    suspend fun createFourthlineSigningIdentification(): IdentificationDto
 }
 
 class FourthlineIdentificationRetrofitDataSource(
-        private val fourthlineIdentificationApi: FourthlineIdentificationApi
-        ): FourthlineIdentificationDataSource {
-
-    override fun postFourthlineIdentification(): Single<IdentificationDto> {
-        return fourthlineIdentificationApi.postFourthlineIdentication()
+    private val api: FourthlineIdentificationApi,
+) : FourthlineIdentificationDataSource {
+    override suspend fun createFourthlineIdentification(): IdentificationDto {
+        return api.createFourthlineIdentification()
     }
 
-    override fun postFourthlineSigningIdentification(): Single<IdentificationDto> {
-        return fourthlineIdentificationApi.postFourthlineSigningIdentication()
+    override suspend fun createFourthlineSigningIdentification(): IdentificationDto {
+        return api.createFourthlineSigningIdentification()
     }
 
 }

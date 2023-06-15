@@ -1,15 +1,14 @@
 package de.solarisbank.sdk.fourthline.data.identification
 
 import de.solarisbank.sdk.data.dto.IdentificationDto
-import io.reactivex.Single
 import retrofit2.http.POST
 
 interface FourthlineIdentificationApi {
 
     @POST("/fourthline_identification")
-    fun postFourthlineIdentication(): Single<IdentificationDto>
+    suspend fun createFourthlineIdentification(): IdentificationDto
 
     @POST("/fourthline_signing")
-    fun postFourthlineSigningIdentication(): Single<IdentificationDto>
+    suspend fun createFourthlineSigningIdentification(): IdentificationDto
 
 }

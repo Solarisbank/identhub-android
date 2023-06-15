@@ -64,4 +64,15 @@ abstract class BaseFragment: Fragment(), IdenthubKoinComponent {
             positiveAction = action
         )
     }
+
+    fun showGenericErrorWithRetry(retryAction: (() -> Unit), quitAction: (() -> Unit)) {
+        showAlertFragment(
+            title = getString(de.solarisbank.identhub.session.R.string.identhub_generic_error_title),
+            message = getString(de.solarisbank.identhub.session.R.string.identhub_generic_error_message),
+            negativeLabel = getString(de.solarisbank.identhub.session.R.string.identhub_generic_retry_button),
+            negativeAction = retryAction,
+            positiveLabel = getString(de.solarisbank.identhub.session.R.string.identhub_identity_dialog_quit_process_positive_button),
+            positiveAction = quitAction
+        )
+    }
 }

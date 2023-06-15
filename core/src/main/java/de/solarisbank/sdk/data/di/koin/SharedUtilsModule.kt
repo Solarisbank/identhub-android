@@ -7,6 +7,7 @@ import de.solarisbank.sdk.data.datasource.IdentificationRetrofitDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.repository.IdentificationRepository
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
 import de.solarisbank.sdk.domain.usecase.IdentificationPollingStatusUseCase
 import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
@@ -23,4 +24,5 @@ val sharedUtilsModule = module {
     factory { GetMobileNumberUseCase(get()) }
     factory { IdentificationPollingStatusUseCase(get(), get()) }
     single { MockroLoader() } bind GeneralModuleLoader::class
+    single { IdenthubDispatchers() }
 }

@@ -26,12 +26,15 @@ private const val LOGGING_INTERCEPTOR = "LoggingInterceptor"
 private const val USER_AGENT_INTERCEPTOR = "UserAgentInterceptor"
 
 internal val networkModule = module {
+    single<Moshi> {
+        Moshi.Builder()
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
     single {
-        MoshiConverterFactory.create(
-            Moshi.Builder()
-                .add(Date::class.java, Rfc3339DateJsonAdapter())
-                .add(KotlinJsonAdapterFactory())
-                .build())
+        MoshiConverterFactory.create(get())
     }
 
     single<Interceptor>(named(DYNAMIC_URL_INTERCEPTOR)) {

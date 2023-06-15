@@ -15,6 +15,6 @@ object MainKoin {
         single { IdenthubModuleConfigurator() } bind GeneralModuleLoader::class
         single<IdentificationLocalDataSource> { IdentificationInMemoryDataSource() }
 
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
     }
 }

@@ -201,6 +201,10 @@ class IdLogger private constructor(
             logEvent(LogLevel.ERROR, message, category)
         }
 
+        fun error(message: String, throwable: Throwable, category: Category = Category.Default) {
+            logEvent(LogLevel.ERROR, "$message: ${throwable.message}", category)
+        }
+
         /**
          * @param message of type String
          * Log method for Information
