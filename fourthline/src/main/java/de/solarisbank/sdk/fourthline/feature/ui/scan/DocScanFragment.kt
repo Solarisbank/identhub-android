@@ -49,8 +49,8 @@ import timber.log.Timber
 
 class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
 
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
-    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     private var documentMask: AppCompatImageView? = null
     private var takeSnapshot: Button? = null

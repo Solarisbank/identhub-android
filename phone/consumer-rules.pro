@@ -1,2 +1,0 @@
--keepnames class de.solarisbank.identhub.phone.PhoneModule
--keep class de.solarisbank.identhub.phone.model.** { *; }

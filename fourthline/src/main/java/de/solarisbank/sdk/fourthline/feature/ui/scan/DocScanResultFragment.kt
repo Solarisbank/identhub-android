@@ -13,7 +13,7 @@ import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.view.hideKeyboard
-import de.solarisbank.sdk.fourthline.FourthlineModule
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
@@ -26,8 +26,8 @@ import java.util.*
 
 class DocScanResultFragment : BaseFragment() {
 
-    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     private var docNumberTextInput: EditText? = null
     private var issueDateTextInput: DateInputTextView? = null

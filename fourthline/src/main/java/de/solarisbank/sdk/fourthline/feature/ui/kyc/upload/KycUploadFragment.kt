@@ -9,7 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.fourthline.FourthlineModule
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
@@ -21,8 +21,8 @@ import timber.log.Timber
 
 class KycUploadFragment : BaseFragment() {
 
-    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     private val kycUploadViewModel: KycUploadViewModel by viewModel()
 

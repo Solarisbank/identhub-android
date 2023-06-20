@@ -41,7 +41,7 @@ dependencies {
     implementation project(path: ':bank')
     implementation project(path: ':fourthline')
     implementation project(path: ':qes')
-    implementation project(path: ':phone')
+    implementation project(path: ':startup')
     implementation project(path: ':session')
     implementation project(path: ':core')
     implementation fourthline

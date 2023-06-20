@@ -24,7 +24,7 @@ import de.solarisbank.sdk.feature.alert.AlertDialogFragment
 import de.solarisbank.sdk.feature.alert.AlertViewModel
 import de.solarisbank.sdk.feature.alert.showAlertFragment
 import de.solarisbank.sdk.logger.IdLogger
-import de.solarisbank.sdk.module.abstraction.IdenthubModule
+import de.solarisbank.sdk.module.abstraction.IdenthubFlow
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.get
 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
         )
     }
 
-    private fun setCurrentModule(module: IdenthubModule?) {
+    private fun setCurrentModule(module: IdenthubFlow?) {
         if (module == null) {
             showGenericError()
             return

@@ -7,15 +7,15 @@ import de.solarisbank.identhub.session.module.IdenthubModules.FourthlineClassNam
 import de.solarisbank.identhub.session.module.IdenthubModules.PhoneClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.QESClassName
 import de.solarisbank.sdk.logger.IdLogger
-import de.solarisbank.sdk.module.abstraction.IdenthubModule
+import de.solarisbank.sdk.module.abstraction.IdenthubFlow
 import kotlin.reflect.full.createInstance
 
 class IdenthubModuleResolver {
     @Suppress("UNCHECKED_CAST")
-    fun makeModule(className: String): IdenthubModule? {
+    fun makeModule(className: String): IdenthubFlow? {
         return try {
             val kClass = Class.forName(className).kotlin
-            kClass.createInstance() as? IdenthubModule
+            kClass.createInstance() as? IdenthubFlow
         } catch (throwable: Throwable) {
             IdLogger.error(
                 "Module not found for class: $className, message: ${throwable.message}"

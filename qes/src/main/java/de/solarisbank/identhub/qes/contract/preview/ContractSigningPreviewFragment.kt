@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
-import de.solarisbank.identhub.qes.QESModule
+import de.solarisbank.identhub.qes.QESFlow
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.data.dto.DocumentDto
@@ -32,7 +32,7 @@ import java.io.File
 class ContractSigningPreviewFragment : BaseFragment() {
     private val adapter = DocumentAdapter()
     private var clickDisposable = Disposables.disposed()
-    private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)
+    private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESFlow.navigationId)
     private val viewModel: ContractSigningPreviewViewModel by viewModel()
 
     private var titleView: TextView? = null

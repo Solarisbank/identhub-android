@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.navigation.navGraphViewModels
-import de.solarisbank.identhub.bank.BankModule
+import de.solarisbank.identhub.bank.BankFlow
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.session.main.BaseFragment
@@ -20,7 +20,7 @@ abstract class ProgressIndicatorFragment : BaseFragment() {
 
     private val NO_RESOURCE = -1
 
-    protected val sharedViewModel: VerificationBankViewModel by navGraphViewModels(BankModule.navigationId)
+    protected val sharedViewModel: VerificationBankViewModel by navGraphViewModels(BankFlow.navigationId)
 
     protected var progressBar: ProgressBar? = null
     protected var title: TextView? = null

@@ -17,8 +17,8 @@ import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
-import de.solarisbank.sdk.fourthline.FourthlineModule
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.terms.adapter.Slide
@@ -39,7 +39,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     private var namirialLayout: View? = null
     private var progressBar: ProgressBar? = null
 
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
     private val viewModel: TermsAndConditionsViewModel by viewModel()
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

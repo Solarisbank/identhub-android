@@ -41,8 +41,8 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
     private var livenessMask: ImageView? = null
     private var progressBar: ProgressBar? = null
 
-    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     private val customizationRepository: CustomizationRepository by inject()
 

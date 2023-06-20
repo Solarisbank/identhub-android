@@ -40,7 +40,7 @@ And here are the optional dependencies that can be added alongside the required 
     // QES (Document Signing)
     implementation "de.solarisbank.identhub:identhub-android-qes:$latest_version"
     // Phone verification
-    implementation "de.solarisbank.identhub:identhub-android-phone:$latest_version"
+    implementation "de.solarisbank.identhub:identhub-android-startup:$latest_version"
 ```
 
 #### Optional dependency to Fourthline SDK

@@ -15,7 +15,7 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat.createWebMessageChannel
 import androidx.webkit.WebViewCompat.postWebMessage
 import androidx.webkit.WebViewFeature
-import de.solarisbank.identhub.bank.BankModule
+import de.solarisbank.identhub.bank.BankFlow
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.main.BaseFragment
@@ -28,7 +28,7 @@ import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class VerificationBankExternalGatewayFragment : BaseFragment() {
-    private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankModule.navigationId)
+    private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankFlow.navigationId)
     private val verificationBankExternalGateViewModel: VerificationBankExternalGateViewModel by viewModel {
         parametersOf(arguments?.getString(VERIFICATION_BANK_URL_KEY))
     }

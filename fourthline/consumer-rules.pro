@@ -1,4 +1,4 @@
--keepnames class de.solarisbank.sdk.fourthline.FourthlineModule
+-keepnames class de.solarisbank.sdk.fourthline.FourthlineFlow
 -keep class de.solarisbank.sdk.fourthline.data.dto.** { *; }
 
 # Fourthline

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.fourthline.FourthlineModule
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -17,8 +17,8 @@ import org.koin.androidx.navigation.koinNavGraphViewModel
 class PassingPossibilityFragment : BaseFragment() {
 
     private var progressBar: ProgressBar? = null
-    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
-    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val kycSharedViewModel: KycSharedViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
+    private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_passing_possibility, container, false)

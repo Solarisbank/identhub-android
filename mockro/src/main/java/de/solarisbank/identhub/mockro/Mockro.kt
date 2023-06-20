@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import de.solarisbank.identhub.bank.domain.api.VerificationBankNetworkDataSource
 import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
 import de.solarisbank.identhub.mockro.fakes.*
-import de.solarisbank.identhub.phone.data.VerificationPhoneNetworkDataSource
+import de.solarisbank.identhub.startup.data.VerificationPhoneNetworkDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
 import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
 import de.solarisbank.sdk.data.di.koin.MockroInterface

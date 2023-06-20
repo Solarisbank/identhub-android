@@ -17,7 +17,7 @@ import de.solarisbank.sdk.data.initial.InitialConfigUseCase
 import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.logger.IdLogger
-import de.solarisbank.sdk.module.abstraction.IdenthubModule
+import de.solarisbank.sdk.module.abstraction.IdenthubFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.dsl.module
@@ -126,7 +126,7 @@ class MainViewModel(
     }
 }
 
-data class MainViewState(val currentModule: IdenthubModule?)
+data class MainViewState(val currentModule: IdenthubFlow?)
 
 sealed class MainViewEvent {
     data class Navigate(val navigationId: Int, val bundle: Bundle?): MainViewEvent()

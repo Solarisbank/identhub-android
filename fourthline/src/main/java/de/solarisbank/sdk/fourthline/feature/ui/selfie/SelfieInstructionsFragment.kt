@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.fourthline.FourthlineModule
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel.Companion.FOURTHLINE_SCAN_FAILED
@@ -20,7 +20,7 @@ class SelfieInstructionsFragment : BaseFragment() {
 
     private var startbutton: Button? = null
 
-    private val sharedViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineModule.navigationId)
+    private val sharedViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_selfie_instructions, container, false)

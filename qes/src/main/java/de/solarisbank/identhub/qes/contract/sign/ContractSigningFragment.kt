@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import de.solarisbank.identhub.qes.QESModule
+import de.solarisbank.identhub.qes.QESFlow
 import de.solarisbank.identhub.qes.R
 import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.session.main.BaseFragment
@@ -26,7 +26,7 @@ import timber.log.Timber
 
 class ContractSigningFragment : BaseFragment() {
     private var disposable = Disposables.disposed()
-    private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESModule.navigationId)
+    private val sharedViewModel: ContractViewModel by koinNavGraphViewModel(QESFlow.navigationId)
     private val viewModel: ContractSigningViewModel by viewModel()
     private var phoneVerificationView: PhoneVerificationView? = null
     private var transactionDescription: TextView? = null

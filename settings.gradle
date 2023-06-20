@@ -5,5 +5,5 @@ include ':example'
 include ':session'
 rootProject.name = "identhub-android"
 include ':qes'
-include ':phone'
+include ':startup'
 include ':mockro'

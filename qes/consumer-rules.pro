@@ -1,1 +1,2 @@
--keepnames class de.solarisbank.identhub.qes.QESModule
+-keepnames class de.solarisbank.identhub.qes.QESFlow
+-keep class de.solarisbank.identhub.qes.data.dto.** { *; }

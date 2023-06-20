@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/identhub_phone_navigation"
+    app:startDestination="@id/phoneVerificationFragment">
+
+    <fragment
+        android:id="@+id/phoneVerificationFragment"
+        android:name="de.solarisbank.identhub.startup.feature.PhoneVerificationFragment"
+        android:label="phoneVerificationFragment">
+        <action
+            android:id="@+id/action_phoneVerificationFragment_to_verificationPhoneSuccessMessageFragment"
+            app:destination="@id/verificationPhoneSuccessMessageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verificationPhoneSuccessMessageFragment"
+        android:name="de.solarisbank.identhub.startup.feature.PhoneVerificationSuccessFragment"
+        android:label="VerificationPhoneSuccessMessageFragment" />
+
+</navigation>

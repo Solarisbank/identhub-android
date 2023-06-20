@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.isVisible
-import de.solarisbank.identhub.bank.BankModule
+import de.solarisbank.identhub.bank.BankFlow
 import de.solarisbank.identhub.bank.R
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
@@ -30,7 +30,7 @@ import timber.log.Timber
 
 class VerificationBankIbanFragment : BaseFragment() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankModule.navigationId)
+    private val sharedViewModel: VerificationBankViewModel by koinNavGraphViewModel(BankFlow.navigationId)
     private val ibanViewModel: VerificationBankIbanViewModel by viewModel()
 
     private var ibanNumber: EditText? = null
