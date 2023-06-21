@@ -1,0 +1,17 @@
+phrase:
+  access_token: ${PHRASE_ACCESS_TOKEN}
+  project_id: ${PHRASE_PROJECT_ID}
+  pull:
+    targets:
+    - file: ./qes/src/main/res/values-<locale_code>/strings.xml
+      params:
+        file_format: xml
+        tags: qes
+    - file: ./fourthline/src/main/res/values-<locale_code>/strings.xml
+      params:
+        file_format: xml
+        tags: fourthline
+    - file: ./bank/src/main/res/values-<locale_code>/strings.xml
+      params:
+        file_format: xml
+        tags: bank
