@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
+        android:text="@string/identhub_fourthline_terms_description_start" />
+
+    <LinearLayout
+        android:id="@+id/condition1Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
+        android:gravity="top">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/condition1ImageView"
+            android:src="@drawable/identhub_ic_perm_group_location"
+            android:layout_width="@dimen/identhub_default_drawable_size"
+            android:layout_height="@dimen/identhub_default_drawable_size" />
+
+        <TextView
+            android:id="@+id/condition1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/identhub_drawable_start_margin"
+            android:text="@string/identhub_fourthline_terms_description_list_item1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/condition2Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
+        android:gravity="top">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/condition2ImageView"
+            android:src="@drawable/identhub_ic_perm_group_camera"
+            android:layout_width="@dimen/identhub_default_drawable_size"
+            android:layout_height="@dimen/identhub_default_drawable_size" />
+
+        <TextView
+            android:id="@+id/condition2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/identhub_drawable_start_margin"
+            android:text="@string/identhub_fourthline_terms_description_list_item2" />
+    </LinearLayout>
+</merge>

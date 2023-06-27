@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        app:layout_constraintBottom_toTopOf="@+id/contractSignTermsCondition">
+        app:layout_constraintBottom_toTopOf="@+id/termsLayout">
 
         <LinearLayout
             android:id="@+id/contentLayout"
@@ -59,17 +59,32 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/contractSignTermsCondition"
-        style="@style/IdentHubTextView.SubParagraphText"
+    <LinearLayout
+        android:id="@+id/termsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/identhub_bottom_footer_margin"
+        android:layout_marginBottom="@dimen/identhub_terms_and_conditions_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="@+id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
         app:layout_constraintBottom_toTopOf="@+id/submitButton"
-        android:visibility="gone"
-        android:text="@string/identhub_contract_signing_preview_terms_condition" />
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/termsCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/termsDescription"
+            style="@style/IdentHubTextView.SubParagraphText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/identhub_text_box_label_margin"
+            android:text="@string/identhub_contract_signing_preview_terms_condition" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/submitButton"

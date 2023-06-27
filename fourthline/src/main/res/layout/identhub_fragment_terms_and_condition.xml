@@ -50,6 +50,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
+            <de.solarisbank.sdk.fourthline.feature.ui.terms.ClassicWelcomeView
+                android:id="@+id/classicWelcomeView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/namirialTermsLayout"
+                app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
             <LinearLayout
                 android:id="@+id/slideIndicator"
                 android:layout_width="wrap_content"

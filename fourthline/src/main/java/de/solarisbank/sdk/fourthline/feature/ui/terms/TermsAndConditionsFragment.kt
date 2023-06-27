@@ -38,6 +38,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     private var privacyStatementTextView: TextView? = null
     private var namirialLayout: View? = null
     private var progressBar: ProgressBar? = null
+    private var classicWelcomeView: View? = null
 
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
     private val viewModel: TermsAndConditionsViewModel by viewModel()
@@ -56,6 +57,7 @@ class TermsAndConditionsFragment : BaseFragment() {
                     introSlider = it.findViewById(R.id.introViewPager)
                     slideIndicator = it.findViewById(R.id.slideIndicator)
                     progressBar = it.findViewById(R.id.progressBar)
+                    classicWelcomeView = it.findViewById(R.id.classicWelcomeView)
                     initView()
                 }
     }
@@ -87,6 +89,19 @@ class TermsAndConditionsFragment : BaseFragment() {
             handleAcceptState(it.acceptState)
         }
 
+        setUpInfoViews()
+
+    }
+
+    private fun setUpInfoViews() {
+        if (resources.getBoolean(R.bool.identhub_use_old_welcome)) {
+            classicWelcomeView?.isVisible = true
+        } else {
+            setUpSlides()
+        }
+    }
+
+    private fun setUpSlides() {
         slideAdapter = SlideAdapter(requireContext(), getSlides(), customization)
         introSlider?.adapter = slideAdapter
 
@@ -98,6 +113,7 @@ class TermsAndConditionsFragment : BaseFragment() {
                 setSlideIndicator(position)
             }
         })
+        introSlider?.isVisible = true
     }
 
     private fun createNamirialLinks(url: String) {
@@ -178,6 +194,7 @@ class TermsAndConditionsFragment : BaseFragment() {
         slideIndicator = null
         namirialLayout = null
         progressBar = null
+        classicWelcomeView = null
         super.onDestroyView()
     }
 }

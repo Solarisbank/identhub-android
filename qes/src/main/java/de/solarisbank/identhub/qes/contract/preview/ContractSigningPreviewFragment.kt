@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import de.solarisbank.sdk.domain.model.result.*
 import de.solarisbank.sdk.feature.PdfIntent
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
+import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import io.reactivex.disposables.Disposables
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -39,7 +41,9 @@ class ContractSigningPreviewFragment : BaseFragment() {
     private var subtitleView: TextView? = null
     private var documentsList: RecyclerView? = null
     private var submitButton: Button? = null
-    private var contractSignTermsCondition:TextView?=null
+    private var termsLayout: View? = null
+    private var termsCheckBox: CheckBox? = null
+    private var termsDescription: TextView? = null
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_contract_signing_preview, container, false)
@@ -48,13 +52,15 @@ class ContractSigningPreviewFragment : BaseFragment() {
                     subtitleView = it.findViewById(R.id.subtitle)
                     documentsList = it.findViewById(R.id.documentsList)
                     submitButton = it.findViewById(R.id.submitButton)
-                    contractSignTermsCondition = it.findViewById(R.id.contractSignTermsCondition)
+                    termsLayout = it.findViewById(R.id.termsLayout)
+                    termsCheckBox = it.findViewById(R.id.termsCheckBox)
+                    termsDescription = it.findViewById(R.id.termsDescription)
                 }
     }
 
     override fun customizeView(view: View) {
         submitButton?.customize(customization)
-        contractSignTermsCondition?.customizeLinks(customization)
+        termsDescription?.customizeLinks(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,6 +96,13 @@ class ContractSigningPreviewFragment : BaseFragment() {
                 *   Before showing this screen and resume that here */
             }
         }
+        termsCheckBox?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                submitButton?.buttonDisabled(false)
+            } else {
+                submitButton?.buttonDisabled(true)
+            }
+        }
     }
 
     private fun initViewModels() {
@@ -103,8 +116,8 @@ class ContractSigningPreviewFragment : BaseFragment() {
         val termsPartText = getString(R.string.identhub_contract_signing_preview_terms_condition_part)
         val termsText = getString(R.string.identhub_contract_signing_preview_terms_condition, termsPartText)
         val spanned = termsText.linkOccurrenceOf(termsPartText, termsLink)
-        contractSignTermsCondition?.text = spanned
-        contractSignTermsCondition?.movementMethod = LinkMovementMethod.getInstance()
+        termsDescription?.text = spanned
+        termsDescription?.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun observeDownloadingPdfFiles() {
@@ -115,10 +128,11 @@ class ContractSigningPreviewFragment : BaseFragment() {
 
     private fun stateUpdated(state: ContractSigningPreviewState) {
         if (state.shouldShowTerms) {
-            contractSignTermsCondition?.visibility = View.VISIBLE
+            termsLayout?.visibility = View.VISIBLE
             setTermsConditionSpan()
+            submitButton?.buttonDisabled(true)
         } else {
-            contractSignTermsCondition?.visibility = View.GONE
+            termsLayout?.visibility = View.GONE
         }
         onDocumentResultChanged(state.documents)
     }
@@ -155,6 +169,7 @@ class ContractSigningPreviewFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun onDocumentResultChanged(result: Result<List<DocumentDto>>) {
         if (result.succeeded) {
             adapter.clear()

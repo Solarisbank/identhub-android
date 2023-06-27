@@ -151,6 +151,7 @@
         />
 
     <ProgressBar
+        style="@style/IdentHubProgressBarStyle"
         android:id="@+id/progressBar"
         android:layout_height="0dp"
         android:layout_width="0dp"
