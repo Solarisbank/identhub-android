@@ -3,23 +3,28 @@ package de.solarisbank.identhub.qes.contract.sign
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.solarisbank.identhub.qes.domain.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.qes.domain.ConfirmContractSignUseCase
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.data.utils.update
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
-import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
-import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
+import de.solarisbank.sdk.domain.usecase.MobileNumberUseCase
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ContractSigningViewModel(
     private val authorizeContractSignUseCase: AuthorizeContractSignUseCase,
     private val confirmContractSignUseCase: ConfirmContractSignUseCase,
-    private val getMobileNumberUseCase: GetMobileNumberUseCase
+    private val mobileNumberUseCase: MobileNumberUseCase,
+    private val dispatchers: IdenthubDispatchers
 ) : ViewModel() {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val viewState = MutableLiveData<ContractSigningState>()
@@ -46,21 +51,19 @@ class ContractSigningViewModel(
     }
 
     private fun fetchPhoneNumber() {
-        compositeDisposable.add(
-            getMobileNumberUseCase
-                .execute(Unit)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        Timber.d("getMobileNumberUseCase.execute: succeeded: ${ it.succeeded }")
-                        viewState.update { copy(phoneNumber = it.data?.number) }
-                    },
-                    {
-                        Timber.e(it, "Error fetching phone number")
-                    }
-                )
-        )
+        viewModelScope.launch {
+            withContext(dispatchers.IO) {
+                try {
+                    val number = mobileNumberUseCase.fetchMobileNumber()
+                    mobileNumberUseCase.maskPhoneNumber(number)
+                } catch (throwable: Throwable) {
+                    IdLogger.error("Failed to fetch phone number", throwable)
+                    null
+                }
+            }?.let {
+                viewState.update { copy(phoneNumber = it) }
+            }
+        }
     }
 
     fun onAction(action: ContractSigningAction) {

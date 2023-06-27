@@ -8,15 +8,6 @@
     tools:parentTag="android.widget.LinearLayout">
 
     <TextView
-        android:id="@+id/title"
-        style="@style/IdentHubTextView.TopHeaderTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Confirm Phone"
-        android:text="@string/identhub_contract_signing_confirm_phone"
-        android:layout_gravity="start" />
-
-    <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

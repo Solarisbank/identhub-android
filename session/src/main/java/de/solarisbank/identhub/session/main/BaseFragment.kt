@@ -32,7 +32,7 @@ abstract class BaseFragment: Fragment(), IdenthubKoinComponent {
         val view = createView(inflater, container, savedInstanceState)
         customizeView(view)
         getKoin().getAll<GeneralCustomizer>().forEach {
-            it.customize(javaClass.name, view, viewLifecycleOwner)
+            it.customize(javaClass.name, view, this)
         }
         return view
     }

@@ -12,9 +12,12 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/submitButton"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/identhub_bottom_footer_margin"
+        android:clipToPadding="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -35,10 +38,9 @@
             <TextView
                 android:id="@+id/title"
                 style="@style/IdentHubTextView.TopHeaderTitle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/identhub_verification_bank_title"
-                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,7 +79,7 @@
 
             <!-- inputType here prevents keyboard suggestions that mess up out IBAN mask -->
             <EditText
-                android:id="@+id/ibanNumber"
+                android:id="@+id/ibanInputView"
                 style="@style/IdentHubTextBox"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:layout_width="0dp"
@@ -101,9 +103,9 @@
                 android:text="@string/identhub_verification_bank_input_not_valid_message"
                 android:textColor="@color/identhub_color_error"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="@+id/ibanNumber"
-                app:layout_constraintStart_toStartOf="@+id/ibanNumber"
-                app:layout_constraintTop_toBottomOf="@+id/ibanNumber"
+                app:layout_constraintEnd_toEndOf="@+id/ibanInputView"
+                app:layout_constraintStart_toStartOf="@+id/ibanInputView"
+                app:layout_constraintTop_toBottomOf="@+id/ibanInputView"
                 tools:visibility="visible" />
 
             <LinearLayout
@@ -132,15 +134,6 @@
                     tools:text="I’ve read and accept the Terms and Conditions" />
 
             </LinearLayout>
-
-            <de.solarisbank.sdk.feature.view.BulletListLayout
-                android:id="@+id/noticeBulletList"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_terms_and_conditions_margin"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintTop_toBottomOf="@id/termsLayout"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

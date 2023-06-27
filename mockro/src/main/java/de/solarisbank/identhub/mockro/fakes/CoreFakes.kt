@@ -4,7 +4,7 @@ import de.solarisbank.identhub.mockro.Mockro
 import de.solarisbank.identhub.mockro.shared.MockroIdentification
 import de.solarisbank.identhub.mockro.shared.PersonaConfig
 import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
-import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
+import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.dto.InitializationDto
 import de.solarisbank.sdk.data.dto.InitializationInfoDto
@@ -50,9 +50,9 @@ class FakeIdentificationRemoteDataSource: IdentificationRemoteDataSource {
     }
 }
 
-class FakeMobileNumberNetworkSource: MobileNumberNetworkDataSource {
-    override fun getMobileNumber(): Single<MobileNumberDto> {
-        return Single.just(MobileNumberDto("+123456789"))
+class FakeMobileNumberSource: MobileNumberDataSource {
+    override suspend fun getMobileNumber(): MobileNumberDto {
+        return MobileNumberDto("+123456789")
     }
 
 }

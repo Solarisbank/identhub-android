@@ -13,6 +13,7 @@ import de.solarisbank.sdk.domain.model.result.data
 import de.solarisbank.sdk.domain.model.result.succeeded
 import de.solarisbank.sdk.domain.usecase.SingleUseCase
 import de.solarisbank.sdk.domain.usecase.transformResult
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.Single
 import retrofit2.HttpException
 import timber.log.Timber
@@ -23,10 +24,10 @@ class VerifyIBanUseCase(
     override val initialConfigStorage: InitialConfigStorage
 ) : SingleUseCase<String, IbanVerificationModel>(), NextStepSelector {
 
-    private var ibanAttemts = 0
+    private var ibanAttempts = 0
 
     override fun invoke(param: String): Single<NavigationalResult<IbanVerificationModel>> {
-        ibanAttemts++
+        ibanAttempts++
         var code: String? = null
         return verificationBankRepository.postVerify(Iban(
             param))
@@ -55,44 +56,40 @@ class VerifyIBanUseCase(
             .map { identificationDto ->
                 verificationBankRepository.save(identificationDto).blockingGet()
                 val nextStep = selectNextStep(identificationDto.nextStep, identificationDto.fallbackStep)
-                Timber.d("map, nextStep = $nextStep")
                 return@map NavigationalResult(identificationDto.url, nextStep)
             }
             .transformResult()
             .map {
                 val ibanVerificationDto : IbanVerificationModel
                 if (it.succeeded) {
-                    Timber.d("Iban verification result 1 : ${it.data}, ${it.nextStep}")
+                    IdLogger.info("Verifying of IBAN is successful. NextStep: ${it.nextStep}")
                     ibanVerificationDto =  IbanVerificationModel.IbanVerificationSuccessful(it.data, it.nextStep)
                 } else if (it is Result.Error){
                     val type = it.type
-                    Timber.d("Iban verification result $it, code : $code")
-                    val initializationDto = getInitializationDto()
-                    if (type is Type.BadRequest && (code == INVALID_IBAN) && initializationDto.defaultFallbackStep != null) {
+                    if (type is Type.BadRequest && (code == INVALID_IBAN)) {
+                        IdLogger.warn("Invalid IBAN. Retries: $ibanAttempts")
                         ibanVerificationDto = if (
-                            ibanAttemts < getInitializationDto().allowedRetries
+                            ibanAttempts < getInitializationDto().allowedRetries
                         ) {
-                            Timber.d("Iban verification result 2")
-                            IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, true)
+                            IbanVerificationModel.InvalidBankIdError(true)
                         } else {
-                            Timber.d("Iban verification result 3")
-                            IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, false)
+                            IbanVerificationModel.InvalidBankIdError(false)
                         }
                     } else if (type is Type.UnprocessableEntity) {
-                        Timber.d("Iban verification result 4")
+                        IdLogger.warn("Received 422 when verifying IBAN")
                         ibanVerificationDto = IbanVerificationModel.AlreadyIdentifiedSuccessfullyError
                     } else if(type is Type.PreconditionFailed && code == IDENTIFICATION_ATTEMPTS_EXCEEDED) {
-                        Timber.d("Iban verification result 5")
+                        IdLogger.warn("412 - Number of attempts exceeded")
                         ibanVerificationDto = IbanVerificationModel.ExceedMaximumAttemptsError
                     } else if(type is Type.PreconditionFailed) {
-                        Timber.d("Iban verification result 5.1")
-                        ibanVerificationDto = IbanVerificationModel.InvalidBankIdError(initializationDto.defaultFallbackStep!!, false)
+                        IdLogger.warn("Received 412")
+                        ibanVerificationDto = IbanVerificationModel.InvalidBankIdError(false)
                     } else {
-                        Timber.d("Iban verification result 6")
+                        IdLogger.warn("Generic error when verifying IBAN")
                         ibanVerificationDto = IbanVerificationModel.GenericError
                     }
                 } else {
-                    Timber.d("Iban verification result 7")
+                    IdLogger.warn("Unknown error when verifying IBAN")
                     ibanVerificationDto = IbanVerificationModel.GenericError
                 }
                 NavigationalResult(ibanVerificationDto)

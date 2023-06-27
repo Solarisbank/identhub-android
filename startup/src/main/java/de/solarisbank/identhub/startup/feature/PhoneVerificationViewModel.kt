@@ -3,18 +3,25 @@ package de.solarisbank.identhub.startup.feature
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.data.utils.update
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.domain.model.result.Result
 import de.solarisbank.sdk.domain.model.result.Type
-import de.solarisbank.sdk.domain.model.result.data
+import de.solarisbank.sdk.domain.usecase.MobileNumberUseCase
+import de.solarisbank.sdk.logger.IdLogger
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class PhoneVerificationViewModel(
-    private val phoneVerificationUseCase: PhoneVerificationUseCase
+    private val phoneVerificationUseCase: PhoneVerificationUseCase,
+    private val mobileNumberUseCase: MobileNumberUseCase,
+    private val dispatchers: IdenthubDispatchers
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData(PhoneVerificationState())
@@ -71,18 +78,19 @@ class PhoneVerificationViewModel(
     }
 
     private fun fetchPhoneNumber() {
-        disposables.add(
-            phoneVerificationUseCase.fetchPhoneNumber()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    stateLiveData.update {
-                        copy(phoneNumber = result.data?.number)
-                    }
-                }, {
-                    Timber.d(it)
-                })
-        )
+        viewModelScope.launch {
+            withContext(dispatchers.IO) {
+                try {
+                    val number = mobileNumberUseCase.fetchMobileNumber()
+                    mobileNumberUseCase.maskPhoneNumber(number)
+                } catch (throwable: Throwable) {
+                    IdLogger.error("Failed to fetch phone number", throwable)
+                    null
+                }
+            }?.let {
+                stateLiveData.update { copy(phoneNumber = it) }
+            }
+        }
     }
 
     private fun authorize() {

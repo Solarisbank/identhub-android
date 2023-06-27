@@ -20,7 +20,6 @@ import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
-import de.solarisbank.sdk.feature.view.BulletListLayout
 import de.solarisbank.sdk.feature.view.hideKeyboard
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -40,12 +39,11 @@ class VerificationBankIbanFragment : BaseFragment() {
     private var termsCheckBox: CheckBox? = null
     private var termsDisclaimer: TextView? = null
     private var termsLayout: View? = null
-    private var noticeBulletList: BulletListLayout? = null
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_verification_bank_iban, container, false)
                 .also {
-                    ibanNumber = it.findViewById(R.id.ibanNumber)
+                    ibanNumber = it.findViewById(R.id.ibanInputView)
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
@@ -53,8 +51,6 @@ class VerificationBankIbanFragment : BaseFragment() {
                     termsCheckBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState() }
                     termsDisclaimer = it.findViewById(R.id.termsDisclaimer)
                     termsLayout = it.findViewById(R.id.termsLayout)
-                    noticeBulletList = it.findViewById(R.id.noticeBulletList)
-                    updateBulletList()
                 }
     }
 
@@ -62,20 +58,6 @@ class VerificationBankIbanFragment : BaseFragment() {
         submitButton?.customize(customization, ButtonStyle.Primary)
         termsCheckBox?.customize(customization)
         termsDisclaimer?.customizeLinks(customization)
-    }
-
-    private fun updateBulletList() {
-        val notice = getString(R.string.identhub_verification_bank_notice_value)
-        if (notice.isNotBlank()) {
-            noticeBulletList?.isVisible = true
-            noticeBulletList?.updateItems(
-                title = getString(R.string.identhub_verification_bank_notice_label),
-                titleStyle = BulletListLayout.TitleStyle.Notice,
-                items = listOf(notice)
-            )
-        } else {
-            noticeBulletList?.isVisible = false
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,13 +106,10 @@ class VerificationBankIbanFragment : BaseFragment() {
                 showAlertFragment(
                         title = getString(state.dialogTitleId),
                         message = getString(state.dialogTitleId),
-                        positiveLabel = getString(R.string.identhub_iban_verification_invalid_iban_ok_button),
-                        positiveAction = { sharedViewModel.postDynamicNavigationNextStep(state.nextStep) },
+                        positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
+                        positiveAction = { sharedViewModel.cancelIdentification() },
                         negativeLabel = if (state.retryAllowed) getString(state.dialogNegativeLabelId) else null,
-                        negativeAction = if (state.retryAllowed) ({ retryInputIBan() }) else null,
-                        cancelAction =
-                        if (state.retryAllowed) ({ retryInputIBan() })
-                        else ({ sharedViewModel.postDynamicNavigationNextStep(state.nextStep) })
+                        negativeAction = if (state.retryAllowed) ({ retryInputIBan() }) else null
                 )
             }
             is SealedVerificationState.AlreadyIdentifiedSuccessfullyError,
@@ -245,7 +224,6 @@ class VerificationBankIbanFragment : BaseFragment() {
         termsCheckBox = null
         termsDisclaimer = null
         termsLayout = null
-        noticeBulletList = null
         super.onDestroyView()
     }
 
@@ -305,7 +283,7 @@ sealed class SealedVerificationState : VerificationState {
         override val dialogNegativeLabelId = null
     }
 
-    class InvalidBankIdError(val nextStep: String, val retryAllowed: Boolean) :
+    class InvalidBankIdError(val retryAllowed: Boolean) :
             SealedVerificationState(), ErrorState {
         override val isIbanNumberEnabled = false
         override val ibanBackgroundItem = 2

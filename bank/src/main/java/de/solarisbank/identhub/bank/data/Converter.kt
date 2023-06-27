@@ -14,7 +14,7 @@ fun IbanVerificationModel.toVerificationState(): VerificationState {
         is IbanVerificationModel.IbanVerificationSuccessful ->
             SealedVerificationState.IbanVerificationSuccessful(this.bankIdentificationUrl, this.nextStep)
         is IbanVerificationModel.InvalidBankIdError ->
-            SealedVerificationState.InvalidBankIdError(this.nextStep, this.retryAllowed)
+            SealedVerificationState.InvalidBankIdError(this.retryAllowed)
         is IbanVerificationModel.AlreadyIdentifiedSuccessfullyError ->
             SealedVerificationState.AlreadyIdentifiedSuccessfullyError()
         is IbanVerificationModel.GenericError -> SealedVerificationState.GenericError()
@@ -35,15 +35,4 @@ fun ProcessingVerificationDto.toProcessingVerificationState(): ProcessingVerific
         is ProcessingVerificationDto.GenericError ->
             ProcessingVerificationFragment.ProcessingVerificationResult.GenericError
     }
-}
-
-fun IdentificationDto.toIdentificationUiModel(): IdentificationUiModel {
-    return IdentificationUiModel(
-            id = this.id,
-            status = this.status,
-            failureReason = this.failureReason,
-            nextStep = this.nextStep,
-            fallbackStep = this.fallbackStep,
-            method = this.method
-    )
 }

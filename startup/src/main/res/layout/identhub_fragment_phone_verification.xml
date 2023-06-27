@@ -31,13 +31,23 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="@dimen/identhub_layout_margin" />
 
+            <TextView
+                android:id="@+id/title"
+                style="@style/IdentHubTextView.TopHeaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/startGuideline"
+                app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/identhub_contract_signing_confirm_phone" />
+
             <de.solarisbank.sdk.feature.view.PhoneVerificationView
                 android:id="@+id/phoneVerification"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

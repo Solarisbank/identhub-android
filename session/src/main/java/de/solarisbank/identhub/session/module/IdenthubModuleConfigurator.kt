@@ -44,9 +44,6 @@ class IdenthubModuleConfigurator: GeneralModuleLoader, IdenthubKoinComponent {
             loadModules(listOf(it))
         }
     }
-    fun configure(module: ResolvedModule.Module) {
-
-    }
 }
 
 private fun shouldShowNamirialTerms(method: String): Boolean {

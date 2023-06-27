@@ -18,7 +18,6 @@ class PhoneVerificationView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
-    private val titleTextView: TextView
     private val descriptionTextView: TextView
     private val codeProgress: ProgressBar
     private val resendTimerTextView: TextView
@@ -36,13 +35,12 @@ class PhoneVerificationView @JvmOverloads constructor(
         gravity = Gravity.CENTER
         LayoutInflater.from(context).inflate(R.layout.identhub_view_phone_verification, this, true)
 
-        titleTextView = findViewById(R.id.title)
         descriptionTextView = findViewById(R.id.description)
         descriptionTextView.visibility = INVISIBLE
         pinView = findViewById(R.id.tanInput)
         pinView.setPinViewEventListener(object : PinView.PinViewEventListener {
-            override fun onDataEntered(pinview: PinView?, fromUser: Boolean) {
-                eventListener?.invoke(PhoneVerificationViewEvent.CodeChanged(code = pinview!!.value))
+            override fun onDataEntered(pinView: PinView?, fromUser: Boolean) {
+                eventListener?.invoke(PhoneVerificationViewEvent.CodeChanged(code = pinView!!.value))
             }
         })
         resendTimerTextView = findViewById(R.id.resendTimer)
@@ -115,10 +113,6 @@ class PhoneVerificationView @JvmOverloads constructor(
     fun customize(customization: Customization) {
         resendButton.customize(customization, style = ButtonStyle.SecondaryNoBackground)
         codeProgress.customize(customization)
-    }
-
-    fun updateTitle(titleResId: Int) {
-        titleTextView.text = context.getString(titleResId)
     }
 
     companion object {

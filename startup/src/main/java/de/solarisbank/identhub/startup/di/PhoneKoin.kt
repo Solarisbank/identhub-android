@@ -22,8 +22,8 @@ private val phoneVerificationModule = module {
     single<VerificationPhoneRepository> { VerificationPhoneDataSourceRepository(get()) }
     factory { AuthorizeVerificationPhoneUseCase(get()) }
     factory { ConfirmVerificationPhoneUseCase(get()) }
-    factory<PhoneVerificationUseCase> { PhoneVerificationUseCaseImpl(get(), get(), get()) }
-    viewModel { PhoneVerificationViewModel(get()) }
+    factory<PhoneVerificationUseCase> { PhoneVerificationUseCaseImpl(get(), get()) }
+    viewModel { PhoneVerificationViewModel(get(), get(), get()) }
     viewModel { PhoneViewModel() }
 }
 

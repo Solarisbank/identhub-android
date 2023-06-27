@@ -18,6 +18,7 @@ import de.solarisbank.identhub.session.R
 import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
+import de.solarisbank.identhub.session.module.customSdkModule
 import de.solarisbank.sdk.data.utils.parcelable
 import de.solarisbank.sdk.domain.model.result.Event
 import de.solarisbank.sdk.feature.alert.AlertDialogFragment
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
     private fun setUpKoin() {
         val startConfig: StartIdenthubConfig? = intent.parcelable(StartIdenthubContract.ConfigKey)
         IdentHubKoinContext.setUpKoinApp(this, startConfig!!)
-        loadModules(listOf(MainKoin.module))
+        loadModules(listOf(MainKoin.module, customSdkModule))
     }
 
     private fun setUpView() {

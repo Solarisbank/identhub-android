@@ -79,7 +79,6 @@ class ContractSigningFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        phoneVerificationView?.updateTitle(R.string.identhub_contract_signing_title)
         submitButton?.setOnClickListener {
             viewModel.onAction(ContractSigningAction.Submit(code = phoneVerificationView!!.code))
         }

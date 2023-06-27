@@ -6,7 +6,7 @@ import de.solarisbank.identhub.data.contract.ContractSignNetworkDataSource
 import de.solarisbank.identhub.mockro.fakes.*
 import de.solarisbank.identhub.startup.data.VerificationPhoneNetworkDataSource
 import de.solarisbank.sdk.data.datasource.IdentificationRemoteDataSource
-import de.solarisbank.sdk.data.datasource.MobileNumberNetworkDataSource
+import de.solarisbank.sdk.data.datasource.MobileNumberDataSource
 import de.solarisbank.sdk.data.di.koin.MockroInterface
 import de.solarisbank.sdk.data.di.koin.MockroPersona
 import de.solarisbank.sdk.data.di.koin.MockroOptions
@@ -43,7 +43,7 @@ class Mockro: MockroInterface {
 private val coreMockroModule = module {
     factory<InitializationDataSource> { FakeInitializationDataSource() }
     factory<IdentificationRemoteDataSource> { FakeIdentificationRemoteDataSource() }
-    factory<MobileNumberNetworkDataSource> { FakeMobileNumberNetworkSource() }
+    factory<MobileNumberDataSource> { FakeMobileNumberSource() }
 }
 
 private val bankMockroModule = module {

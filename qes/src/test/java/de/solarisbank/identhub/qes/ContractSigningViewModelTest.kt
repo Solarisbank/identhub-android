@@ -6,18 +6,26 @@ import de.solarisbank.identhub.qes.contract.sign.ContractSigningViewModel
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
 import de.solarisbank.identhub.qes.domain.AuthorizeContractSignUseCase
 import de.solarisbank.identhub.qes.domain.ConfirmContractSignUseCase
+import de.solarisbank.sdk.data.datasource.MobileNumberDataSourceImpl
 import de.solarisbank.sdk.data.dto.MobileNumberDto
+import de.solarisbank.sdk.data.utils.IdenthubDispatchers
 import de.solarisbank.sdk.domain.model.result.Result
-import de.solarisbank.sdk.domain.usecase.GetMobileNumberUseCase
+import de.solarisbank.sdk.domain.usecase.MobileNumberUseCaseImpl
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.reactivex.Completable
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.setMain
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ContractSigningViewModelTest: StringSpec({
     val testPhoneNumber = "+15551234"
+    val maskedPhoneNumber = "+****1234"
     val testIdentId = "identId"
     val testSigningResult = Result.Success(ContractSigningResult.Confirmed(testIdentId), null)
     lateinit var viewModel: ContractSigningViewModel
@@ -25,12 +33,15 @@ class ContractSigningViewModelTest: StringSpec({
     beforeAny {
         val authorizeUseCase = mockk<AuthorizeContractSignUseCase>()
         val confirmUseCase = mockk<ConfirmContractSignUseCase>()
-        val mobileNumberUseCase = mockk<GetMobileNumberUseCase>()
+        val mobileNumberDataSource = mockk<MobileNumberDataSourceImpl>()
+        val mobileNumberUseCase = MobileNumberUseCaseImpl(mobileNumberDataSource)
+        Dispatchers.setMain(Dispatchers.Default)
+        val dispatchers = IdenthubDispatchers(Dispatchers.Default, Dispatchers.Default)
 
         every { authorizeUseCase.execute(Unit) } returns Completable.complete()
         every { confirmUseCase.execute(any()) } returns Single.just(testSigningResult)
-        every { mobileNumberUseCase.execute(Unit) } returns Single.just(Result.Success(MobileNumberDto(testPhoneNumber)))
-        viewModel = ContractSigningViewModel(authorizeUseCase, confirmUseCase, mobileNumberUseCase)
+        coEvery { mobileNumberDataSource.getMobileNumber() } returns MobileNumberDto(testPhoneNumber)
+        viewModel = ContractSigningViewModel(authorizeUseCase, confirmUseCase, mobileNumberUseCase, dispatchers)
     }
 
     "When timer expires resend button will be visible" {
@@ -55,7 +66,7 @@ class ContractSigningViewModelTest: StringSpec({
 
     "Phone number will be available" {
         viewModel.state().observeForever {
-            it.phoneNumber shouldBe testPhoneNumber
+            it.phoneNumber shouldBe maskedPhoneNumber
         }
     }
 

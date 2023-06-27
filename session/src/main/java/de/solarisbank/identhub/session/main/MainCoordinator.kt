@@ -1,13 +1,12 @@
 package de.solarisbank.identhub.session.main
 
 import android.os.Bundle
-import de.solarisbank.sdk.data.IdentificationStep
-import de.solarisbank.identhub.session.module.outcome.PhoneModuleOutcome
 import de.solarisbank.identhub.session.module.IdenthubModuleResolver
 import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.module.ResolvedModule
+import de.solarisbank.identhub.session.module.outcome.PhoneModuleOutcome
 import de.solarisbank.sdk.data.IdenthubResult
-import de.solarisbank.sdk.data.di.koin.initialConfigModule
+import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 
