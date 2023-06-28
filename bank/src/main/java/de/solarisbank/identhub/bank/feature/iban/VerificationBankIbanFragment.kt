@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.core.view.isVisible
 import de.solarisbank.identhub.bank.BankFlow
@@ -91,6 +92,7 @@ class VerificationBankIbanFragment : BaseFragment() {
             progressBar!!.isVisible = state.isProgressBarShown
             ibanInputErrorLabel!!.visibility = state.ibanInputErrorLabelVisibility
             submitButton!!.isEnabled = state.isSubmitButtonEnabled && termsCheckBox!!.isChecked
+            submitButton!!.isVisible = !state.isProgressBarShown
 
             if (state is ErrorState) {
                 Timber.d("setState 3")
@@ -149,15 +151,25 @@ class VerificationBankIbanFragment : BaseFragment() {
     private fun initViews() {
         Timber.d("initViews()")
         setState(SealedVerificationState.IbanIput())
-        ibanNumber!!.addTextChangedListener(ibanTextValidator)
-        ibanNumber!!.filters = arrayOf<InputFilter>(InputFilter.AllCaps())
-        submitButton?.setOnClickListener {
-            hideKeyboard()
-            val iban = ibanNumber!!.text.toString().filter { !it.isWhitespace() }
-            sharedViewModel.iban = iban
-            ibanViewModel.onSubmitButtonClicked(iban)
+        ibanNumber?.addTextChangedListener(ibanTextValidator)
+        ibanNumber?.filters = arrayOf<InputFilter>(InputFilter.AllCaps())
+        ibanNumber?.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                submit()
+                true
+            } else {
+                false
+            }
         }
+        submitButton?.setOnClickListener { submit() }
         setTermsText()
+    }
+
+    private fun submit() {
+        hideKeyboard()
+        val iban = ibanNumber!!.text.toString().filter { !it.isWhitespace() }
+        sharedViewModel.iban = iban
+        ibanViewModel.onSubmitButtonClicked(iban)
     }
 
     private fun setTermsText() {

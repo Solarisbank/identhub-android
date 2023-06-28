@@ -7,7 +7,7 @@
     <string name="identhub_fourthline_terms_description_list_item2">Votre appareil photo</string>
     <string name="identhub_fourthline_terms_notice_title">Remarque</string>
     <string name="identhub_fourthline_privacy_statement">Je reconnais la <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">déclaration de confidentialité de SAFENED Fourthline</a></string>
-    <string name="identhub_fourthline_intro_title">Bienvenue</string>
+    <string name="identhub_fourthline_intro_title">Vérifier l’identité</string>
     <string name="identhub_fourthline_intro_slide_title_one">Scanner votre document d’identité</string>
     <string name="identhub_fourthline_intro_slide_description_one">Nous pouvons ainsi nous assurer que vous êtes bien celui que vous prétendez être et éviter l’usurpation d’identité.</string>
     <string name="identhub_fourthline_intro_slide_title_two">ourire pour la caméra</string>

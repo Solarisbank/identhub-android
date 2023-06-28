@@ -35,7 +35,7 @@ class KycUploadFragment : BaseFragment() {
         return inflater.inflate(R.layout.identhub_fragment_kyc_upload, container, false)
             .also {
                 title = it.findViewById(R.id.title)
-                subtitle = it.findViewById(R.id.subtitle)
+                subtitle = it.findViewById(R.id.description)
                 progressBar = it.findViewById(R.id.progressBar)
                 errorImage = it.findViewById(R.id.errorImage)
             }

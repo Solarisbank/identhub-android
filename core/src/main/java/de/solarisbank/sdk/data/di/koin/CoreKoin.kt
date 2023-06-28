@@ -35,6 +35,10 @@ object IdentHubKoinContext {
         IdLogger.inject(getKoin().get(), getKoin().get())
     }
 
+    fun clear() {
+        app = null
+    }
+
     private fun setUpMockro() {
         if (BuildConfig.DEBUG) {
             try {

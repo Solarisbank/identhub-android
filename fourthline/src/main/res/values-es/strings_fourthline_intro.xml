@@ -7,7 +7,7 @@
     <string name="identhub_fourthline_terms_description_list_item2">Tu cámara</string>
     <string name="identhub_fourthline_terms_notice_title">Aviso</string>
     <string name="identhub_fourthline_privacy_statement">Reconozco la <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">declaración de privacidad de SAFENED Fourthline</a></string>
-    <string name="identhub_fourthline_intro_title">Bienvenido</string>
+    <string name="identhub_fourthline_intro_title">Verificar identidad</string>
     <string name="identhub_fourthline_intro_slide_title_one">Escanea tu documento de identidad</string>
     <string name="identhub_fourthline_intro_slide_description_one">Con esto podemos asegurarnos de que eres realmente quien dices ser y evitar la suplantación de identidad.</string>
     <string name="identhub_fourthline_intro_slide_title_two">Sonríe a la cámara</string>

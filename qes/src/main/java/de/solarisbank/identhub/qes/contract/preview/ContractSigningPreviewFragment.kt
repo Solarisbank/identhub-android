@@ -61,6 +61,7 @@ class ContractSigningPreviewFragment : BaseFragment() {
     override fun customizeView(view: View) {
         submitButton?.customize(customization)
         termsDescription?.customizeLinks(customization)
+        termsCheckBox?.customize(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

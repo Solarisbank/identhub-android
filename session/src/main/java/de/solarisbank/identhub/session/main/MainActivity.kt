@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
                     Intent().putExtra(StartIdenthubContract.ResultKey, content.result.toBundle())
                 )
                 finish()
+                IdentHubKoinContext.clear()
             }
         }
     }

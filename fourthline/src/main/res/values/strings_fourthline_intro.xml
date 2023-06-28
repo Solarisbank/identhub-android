@@ -9,7 +9,7 @@
     <string name="identhub_namirial_terms_and_conditions">I agree to Namirial\'s Terms &amp; Conditions</string>
     <string name="identhub_namirial_terms_link_part">Terms &amp; Conditions</string>
     <string name="identhub_fourthline_privacy_statement">I acknowledge SafeNed-Fourthline\'s <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">Privacy Statement</a></string>
-    <string name="identhub_fourthline_intro_title">Welcome</string>
+    <string name="identhub_fourthline_intro_title">Verify identity</string>
     <string name="identhub_fourthline_intro_slide_title_one">Scan your ID document</string>
     <string name="identhub_fourthline_intro_slide_description_one">With this we can make sure that you\'re really who you say you are and avoid identity theft.</string>
     <string name="identhub_fourthline_intro_slide_title_two">Smile for the camera</string>

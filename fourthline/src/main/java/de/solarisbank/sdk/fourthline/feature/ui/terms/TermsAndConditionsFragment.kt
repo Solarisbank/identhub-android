@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
+import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
@@ -66,6 +67,8 @@ class TermsAndConditionsFragment : BaseFragment() {
         submitButton?.customize(customization)
         checkBox?.customize(customization)
         progressBar?.customize(customization)
+        privacyStatementTextView?.customizeLinks(customization)
+        namirialTermsDescription?.customizeLinks(customization)
     }
 
     private fun updateSubmitButtonState() {

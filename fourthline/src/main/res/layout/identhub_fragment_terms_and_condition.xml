@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -82,6 +83,7 @@
                 app:layout_constraintStart_toStartOf="@id/start_guideline">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
+                    style="@style/IdentHubCheckBoxStyle"
                     android:id="@+id/namirialTermsCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
