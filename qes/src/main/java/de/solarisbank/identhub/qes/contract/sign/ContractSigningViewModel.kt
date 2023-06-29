@@ -76,27 +76,27 @@ class ContractSigningViewModel(
 
     private fun submitToken(confirmToken: String) {
         Timber.d("onSubmitButtonClicked, confirmToken: $confirmToken")
-        viewState.update { copy(signingResult = Result.Loading) }
+        viewState.update { copy(signingResult = Result.Loading, shouldShowResend = false) }
 
         compositeDisposable.add(
-                confirmContractSignUseCase
-                    .execute(confirmToken)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { result ->
-                            viewState.update { copy(signingResult = result) }
-                            if (result.succeeded) {
-                                Timber.d("onSubmitButtonClicked 1, success")
+            confirmContractSignUseCase
+                .execute(confirmToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+                        viewState.update { copy(signingResult = result, shouldShowResend = true) }
+                        if (result.succeeded) {
+                            Timber.d("onSubmitButtonClicked 1, success")
 
-                            } else {
-                                Timber.d("onSubmitButtonClicked 2, else")
-                            }
-                        },
-                        {
-                            Timber.d("onSubmitButtonClicked 3, fail")
-                            viewState.update { copy(signingResult = Result.createUnknown(it)) }
+                        } else {
+                            Timber.d("onSubmitButtonClicked 2, else")
                         }
+                    },
+                    {
+                        Timber.d("onSubmitButtonClicked 3, fail")
+                        viewState.update { copy(signingResult = Result.createUnknown(it), shouldShowResend = true) }
+                    }
                 )
         )
     }

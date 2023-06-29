@@ -3,7 +3,6 @@ package de.solarisbank.sdk.domain
 import android.annotation.SuppressLint
 import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
-import timber.log.Timber
 
 /**
  * This class selects the next step based on partner settings.
@@ -19,13 +18,5 @@ interface NextStepSelector {
 }
 
 fun selectNextStep(nextStep: String?, fallbackStep: String?, initialConfig: IdenthubInitialConfig): String? {
-    val defaultToFallbackStep =
-        initialConfig
-            .partnerSettings
-            ?.defaultToFallbackStep
-    return if (defaultToFallbackStep == true) {
-        fallbackStep ?: nextStep
-    } else {
-        nextStep
-    }
+    return nextStep ?: fallbackStep
 }

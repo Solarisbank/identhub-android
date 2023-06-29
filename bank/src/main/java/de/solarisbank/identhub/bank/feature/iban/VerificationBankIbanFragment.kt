@@ -92,7 +92,11 @@ class VerificationBankIbanFragment : BaseFragment() {
             progressBar!!.isVisible = state.isProgressBarShown
             ibanInputErrorLabel!!.visibility = state.ibanInputErrorLabelVisibility
             submitButton!!.isEnabled = state.isSubmitButtonEnabled && termsCheckBox!!.isChecked
-            submitButton!!.isVisible = !state.isProgressBarShown
+            if (state.isProgressBarShown) {
+                submitButton?.visibility = View.INVISIBLE
+            } else {
+                submitButton?.visibility = View.VISIBLE
+            }
 
             if (state is ErrorState) {
                 Timber.d("setState 3")
