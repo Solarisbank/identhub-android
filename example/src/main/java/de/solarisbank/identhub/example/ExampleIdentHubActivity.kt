@@ -16,7 +16,6 @@ class ExampleIdentHubActivity : AppCompatActivity() {
 
     private val identhub = registerForActivityResult(StartIdenthubContract()) {
         when (it) {
-            is IdenthubResult.Success -> onSuccess(it.identificationId)
             is IdenthubResult.Confirmed -> onConfirmationSuccess(it.identificationId)
             is IdenthubResult.Failed -> onFailure(it.message)
         }
@@ -47,18 +46,11 @@ class ExampleIdentHubActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    private fun onSuccess(identificationId: String) {
-        setResultState()
-        Timber.d("onSuccess; IdentHubSessionResult identification id: $identificationId")
-        binding.callbackResult.text = "onSuccess called, identificationId: $identificationId"
-        binding.callbackResult.setTextColor(Color.GREEN)
-    }
-
     private fun onConfirmationSuccess(identificationId: String) {
         setResultState()
         Timber.d("onConfirmationSuccess")
         binding.callbackResult.text = "onConfirmationSuccess called,  identification id: $identificationId"
-        binding.callbackResult.setTextColor(Color.BLUE)
+        binding.callbackResult.setTextColor(Color.GREEN)
     }
 
     private fun onFailure(message: String?) {

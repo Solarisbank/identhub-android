@@ -63,11 +63,7 @@ class MainCoordinator(
     }
 
     private fun handleFinishedOutcome(outcome: ModuleOutcome.Finished) {
-        val result = if (outcome.finalStatus == Status.SUCCESSFUL.label) {
-            IdenthubResult.Success(outcome.identificationId)
-        } else {
-            IdenthubResult.Confirmed(outcome.identificationId)
-        }
+        val result = IdenthubResult.Confirmed(outcome.identificationId)
         eventHandler(MainCoordinatorEvent.ResultAvailable(result))
     }
 

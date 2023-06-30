@@ -70,9 +70,7 @@ You can use the new [ActivityResult API](https://developer.android.com/training/
 ```kotlin
 val identhub = registerForActivityResult(StartIdenthubContract()) {
     when (it) {
-        // Identification was successful
-        is IdenthubResult.Success -> onSuccess(it.identificationId)
-        // Identification is confirmed and awaiting manual review
+        // Identification is confirmed
         is IdenthubResult.Confirmed -> onConfirmationSuccess(it.identificationId)
         // Identification failed with error message
         is IdenthubResult.Failed -> onFailure(it.message)

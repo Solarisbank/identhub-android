@@ -27,7 +27,7 @@ private val qesPreviewDocumentsModule = module {
 
 private val qesSignDocumentsModule = module {
     factory { AuthorizeContractSignUseCase(get()) }
-    factory { ConfirmContractSignUseCase(get(), get(), get()) }
+    factory { ConfirmContractSignUseCase(get(), get()) }
     viewModel { ContractSigningViewModel(get(), get(), get(), get()) }
 }
 

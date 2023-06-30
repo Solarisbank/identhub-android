@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 
 sealed class IdenthubResult {
-    data class Success(val identificationId: String): IdenthubResult()
     data class Confirmed(val identificationId: String): IdenthubResult()
     data class Failed(val message: String?): IdenthubResult()
 
     fun toBundle(): Bundle {
         val bundle = bundleOf(KEY_STATUS to this::class.java.name)
         when(this) {
-            is Success -> bundle.putString(KEY_IDENTIFICATION_ID, identificationId)
             is Confirmed -> bundle.putString(KEY_IDENTIFICATION_ID, identificationId)
             is Failed -> bundle.putString(KEY_MESSAGE, message)
         }
@@ -25,11 +23,6 @@ sealed class IdenthubResult {
 
         fun fromBundle(bundle: Bundle): IdenthubResult? {
             when (bundle.getString(KEY_STATUS)) {
-                Success::class.java.name -> {
-                    bundle.getString(KEY_IDENTIFICATION_ID)?.let {
-                        return Success(it)
-                    }
-                }
                 Confirmed::class.java.name -> {
                     bundle.getString(KEY_IDENTIFICATION_ID)?.let {
                         return Confirmed(it)

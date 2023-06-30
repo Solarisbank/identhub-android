@@ -2,7 +2,6 @@ package de.solarisbank.identhub.qes.domain
 
 import de.solarisbank.identhub.data.contract.ContractSignRepository
 import de.solarisbank.identhub.qes.data.dto.ContractSigningResult
-import de.solarisbank.identhub.session.module.config.QesConfig
 import de.solarisbank.sdk.data.dto.IdentificationDto
 import de.solarisbank.sdk.data.entity.NavigationalResult
 import de.solarisbank.sdk.data.entity.Status
@@ -16,7 +15,6 @@ import io.reactivex.Single
 class ConfirmContractSignUseCase(
     private val contractSignRepository: ContractSignRepository,
     private val identificationPollingStatusUseCase: IdentificationPollingStatusUseCase,
-    private val qesConfig: QesConfig
 ) : SingleUseCase<String, ContractSigningResult>() {
 
     override fun invoke(confirmToken: String): Single<NavigationalResult<ContractSigningResult>> {
@@ -33,22 +31,18 @@ class ConfirmContractSignUseCase(
                 )
             }.andThen(
                 identificationPollingStatusUseCase.execute(PollingParametersDto(
-                    qesConfig.isConfirmAcceptable
+                    isConfirmedAcceptable = true
                 ))
             )
             .map { result ->
+                val status = Status.getEnum(result.data?.status)
                 return@map if (
                     result.succeeded &&
-                    Status.getEnum(result.data?.status) == Status.SUCCESSFUL
-                ) {
-                    ContractSigningResult.Successful(result.data!!.id)
-                } else if (
-                    result.succeeded &&
-                    Status.getEnum(result.data?.status) == Status.CONFIRMED
+                    status == Status.SUCCESSFUL || status == Status.CONFIRMED
                 ) {
                     ContractSigningResult.Confirmed(result.data!!.id)
                 } else if (
-                    Status.getEnum(result.data?.status) == Status.FAILED
+                    status == Status.FAILED
                 ) {
                     ContractSigningResult.Failed(result.data!!.id)
                 } else {

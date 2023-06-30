@@ -115,9 +115,6 @@ class ContractSigningFragment : BaseFragment() {
     private fun updateViewWithSigningResult(result: ContractSigningResult) {
         submitButton?.isEnabled = false
         when (result) {
-            is ContractSigningResult.Successful -> {
-                showTransactionDescription(result.identificationId)
-            }
             is ContractSigningResult.Confirmed -> {
                 showTransactionDescription(result.identificationId)
             }

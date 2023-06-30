@@ -17,7 +17,6 @@ class ContractViewModel: ViewModel() {
 
     fun onContractSigningResult(result: ContractSigningResult) {
         when(result) {
-            is ContractSigningResult.Successful -> handleSuccessResult(result.identificationId)
             is ContractSigningResult.Confirmed -> handleConfirmedResult(result.identificationId)
             is ContractSigningResult.Failed -> handleFailedResult()
             is ContractSigningResult.GenericError -> { /* TODO What to do with generic error? */ }
@@ -28,12 +27,8 @@ class ContractViewModel: ViewModel() {
         navigator?.navigate(R.id.action_contractSigningPreviewFragment_to_contractSigningFragment)
     }
 
-    private fun handleSuccessResult(identificationId: String) {
-        navigator?.onOutcome(ModuleOutcome.Finished(identificationId, Status.SUCCESSFUL.label))
-    }
-
     private fun handleConfirmedResult(identificationId: String) {
-        navigator?.onOutcome(ModuleOutcome.Finished(identificationId, Status.CONFIRMED.label))
+        navigator?.onOutcome(ModuleOutcome.Finished(identificationId))
     }
 
     private fun handleFailedResult() {

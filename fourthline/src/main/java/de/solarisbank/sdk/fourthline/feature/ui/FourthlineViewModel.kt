@@ -154,7 +154,7 @@ class FourthlineViewModel (
         if (outcome.nextStep != null) {
             navigator?.onOutcome(ModuleOutcome.NextStepOutcome(outcome.nextStep))
         } else if (outcome.identificationId != null) {
-            navigator?.onOutcome(ModuleOutcome.Finished(outcome.identificationId, Status.SUCCESSFUL.label))
+            navigator?.onOutcome(ModuleOutcome.Finished(outcome.identificationId))
         }
     }
 

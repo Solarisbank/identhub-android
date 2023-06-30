@@ -3,7 +3,6 @@ package de.solarisbank.identhub.session.module
 import de.solarisbank.identhub.session.module.config.BankConfig
 import de.solarisbank.sdk.data.IdentificationStep
 import de.solarisbank.identhub.session.module.config.FourthlineIdentificationConfig
-import de.solarisbank.identhub.session.module.config.QesConfig
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.module.abstraction.GeneralModuleLoader
 import org.koin.core.module.Module
@@ -24,13 +23,6 @@ class IdenthubModuleConfigurator: GeneralModuleLoader, IdenthubKoinComponent {
                             shouldShowNamirialTerms
                         )
                     }
-                }
-            }
-            IdenthubModules.QESClassName -> {
-                val isConfirmAcceptable =
-                    nextStep.contains(IdentificationStep.FOURTHLINE_SIGNING.destination)
-                configModule = module {
-                    single { QesConfig(isConfirmAcceptable) }
                 }
             }
             IdenthubModules.BankClassName -> {
