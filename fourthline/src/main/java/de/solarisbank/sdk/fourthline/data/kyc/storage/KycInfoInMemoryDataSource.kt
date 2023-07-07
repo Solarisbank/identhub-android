@@ -5,6 +5,7 @@ import com.fourthline.core.DeviceMetadata
 import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.core.Gender
+import com.fourthline.core.location.Coordinate
 import com.fourthline.core.mrz.MrtdMrzInfo
 import com.fourthline.kyc.*
 import com.fourthline.vision.document.DocumentScannerResult
@@ -110,8 +111,8 @@ class KycInfoInMemoryDataSource {
         try {
             Timber.d("updateKycWithSelfieScannerResult : " +
                     "\ntimestamp:${result.metadata.timestamp}" +
-                    "\nlocation?.first: ${result.metadata.location?.first}" +
-                    "\nlocation?.second: ${result.metadata.location?.second}"
+                    "\nlocation.latitude: ${result.metadata.location?.latitude}" +
+                    "\nlocation.longitude: ${result.metadata.location?.longitude}"
             )
             kycInfo.selfie = Attachment.Selfie(
                     image = result.image.full,
@@ -143,8 +144,8 @@ class KycInfoInMemoryDataSource {
         try {
             Timber.d("updateKycInfoWithDocumentScannerStepResult : " +
                     "\ntimestamp:${result.metadata.timestamp}" +
-                    "\nlocation?.first: ${result.metadata.location?.first}" +
-                    "\nlocation?.second: ${result.metadata.location?.second}"
+                    "\nlocation.latitude: ${result.metadata.location?.latitude}" +
+                    "\nlocation.longitude: ${result.metadata.location?.longitude}"
             )
 
             val resultMap =
@@ -263,8 +264,7 @@ class KycInfoInMemoryDataSource {
     suspend fun updateKycLocation(resultLocation: Location) {
         mutex.lock()
         try {
-            kycInfo.metadata.location =
-                Pair(resultLocation.latitude, resultLocation.longitude)
+            kycInfo.metadata.location = Coordinate(resultLocation.latitude, resultLocation.longitude)
         } finally {
             mutex.unlock()
         }

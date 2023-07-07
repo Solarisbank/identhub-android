@@ -54,8 +54,8 @@ class KycInfoUseCaseImpl(
     override suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         Timber.d("updateKycWithSelfieScannerResult : " +
                 "\ntimestamp:${result.metadata.timestamp}" +
-                "\nlocation?.first: ${result.metadata.location?.first}" +
-                "\nlocation?.second: ${result.metadata.location?.second}"
+                "\nlocation.latitude: ${result.metadata.location?.latitude}" +
+                "\nlocation.longitude: ${result.metadata.location?.longitude}"
         )
         kycInfoRepository.updateKycWithSelfieScannerResult(result)
         _selfieResultCroppedBitmapLiveData.value = result.image.cropped

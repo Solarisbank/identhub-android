@@ -91,8 +91,8 @@ class KycInfoUseCaseTest : StringSpec ({
         val metadataMockk = mockk<com.fourthline.vision.selfie.SelfieScannerMetadata> {
             every { timestamp } returns Date()
             every { location } returns mockk {
-                every { first } returns 1111.0
-                every { second } returns 1111.0
+                every { latitude } returns 1111.0
+                every { longitude } returns 1111.0
             }
         }
         val selfieScannerResult = mockk<SelfieScannerResult> {
@@ -115,8 +115,8 @@ class KycInfoUseCaseTest : StringSpec ({
             mockk<com.fourthline.vision.document.DocumentScannerStepMetadata> {
                 every { timestamp } returns Date()
                 every { location } returns mockk {
-                    every { first } returns 1111.0
-                    every { second } returns 2222.0
+                    every { latitude } returns 1111.0
+                    every { longitude } returns 2222.0
                 }
                 every { fileSide } returns mockk()
                 every { isAngled } returns false andThen true andThen false andThen true
