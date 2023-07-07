@@ -94,58 +94,16 @@
                 app:layout_constraintTop_toBottomOf="@id/docNumberTextInput" />
 
             <TextView
-                android:id="@+id/issueDateInputLayout"
-                style="@style/IdentHubTextView.InputLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_44"
-                android:orientation="vertical"
-                android:text="@string/identhub_fourthline_doc_result_issue_date_input"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/docNumberErrorText" />
-
-            <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
-                android:id="@+id/issueDateTextInput"
-                style="@style/IdentHubDateField"
-                android:focusable="false"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/identhub_text_box_height"
-                android:layout_marginTop="@dimen/identhub_text_box_label_margin"
-                android:cursorVisible="false"
-                android:hint="@string/identhub_fourthline_doc_scan_date_placeholder"
-                android:maxLines="1"
-                android:paddingStart="@dimen/identhub_text_box_message_label_margin"
-                android:paddingEnd="@dimen/identhub_text_box_message_label_margin"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/issueDateInputLayout" />
-
-            <TextView
-                android:id="@+id/issueDateError"
-                style="@style/IdentHubTextView.InputLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
-                android:orientation="vertical"
-                android:text="@string/identhub_fourthline_doc_scan_date_past_error"
-                android:textColor="@color/identhub_color_error"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/endGuideline"
-                app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/issueDateTextInput" />
-
-            <TextView
                 android:id="@+id/expireDateInputLayout"
                 style="@style/IdentHubTextView.InputLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_margin_44"
                 android:orientation="vertical"
                 android:text="@string/identhub_fourthline_doc_result_expiry_date_input"
+                android:layout_marginTop="@dimen/identhub_margin_44"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/issueDateTextInput" />
+                app:layout_constraintTop_toBottomOf="@+id/docNumberTextInput" />
 
             <de.solarisbank.sdk.fourthline.feature.ui.custom.DateInputTextView
                 android:id="@+id/expireDateTextInput"

@@ -115,8 +115,6 @@ class FakeKycInfoUseCase : KycInfoUseCase {
     ) {
     }
 
-    override suspend fun updateIssueDate(issueDate: Date) {}
-
     override suspend fun updateExpireDate(expireDate: Date) {}
 
     override suspend fun updateDocumentNumber(number: String) {}

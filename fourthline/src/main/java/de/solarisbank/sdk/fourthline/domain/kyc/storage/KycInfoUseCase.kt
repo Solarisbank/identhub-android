@@ -28,7 +28,6 @@ interface KycInfoUseCase {
     suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult)
     suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult, isSecondaryDocument: Boolean)
     suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult)
-    suspend fun updateIssueDate(issueDate: Date)
     suspend fun updateExpireDate(expireDate: Date)
     suspend fun updateDocumentNumber(number: String)
     suspend fun updateIpAddress(ipAddress: String)
@@ -83,10 +82,6 @@ class KycInfoUseCaseImpl(
         result: DocumentScannerResult
     ) {
         kycInfoRepository.updateKycInfoWithDocumentScannerResult(docType, result)
-    }
-
-    override suspend fun updateIssueDate(issueDate: Date) {
-        kycInfoRepository.updateIssueDate(issueDate)
     }
 
     override suspend fun updateExpireDate(expireDate: Date) {

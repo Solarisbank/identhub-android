@@ -154,20 +154,6 @@ class KycInfoUseCaseTest : StringSpec ({
         verify { metadataMockk.location = any() }
     }
 
-    "checkUpdateIssueDate" {
-        val documentMockk = mockk<com.fourthline.kyc.Document> {
-            every { issueDate = any() } returns Unit
-        }
-        mockkConstructor(KycInfo::class)
-        every { anyConstructed<KycInfo>().document } returns documentMockk
-
-
-        val issueDateMockk = mockk<Date>()
-        val kycInfoUseCase = initKycInfoUseCase()
-        kycInfoUseCase.updateIssueDate(issueDateMockk)
-        verify { documentMockk.issueDate = issueDateMockk }
-    }
-
     "checkUpdateExpirationDate" {
         val documentMockk = mockk<com.fourthline.kyc.Document> {
             every { expirationDate = any() } returns Unit

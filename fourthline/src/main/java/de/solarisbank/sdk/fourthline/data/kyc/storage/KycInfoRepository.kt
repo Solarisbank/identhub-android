@@ -35,10 +35,6 @@ class KycInfoRepository(private val kycInfoInMemoryDataSource: KycInfoInMemoryDa
         kycInfoInMemoryDataSource.updateKycLocation(resultLocation)
     }
 
-    suspend fun updateIssueDate(issueDate: Date) {
-        kycInfoInMemoryDataSource.updateIssueDate(issueDate)
-    }
-
     suspend fun updateExpireDate(expireDate: Date) {
         kycInfoInMemoryDataSource.updateExpireDate(expireDate)
     }

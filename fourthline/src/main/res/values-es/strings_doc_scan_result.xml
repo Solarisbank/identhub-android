@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="identhub_fourthline_doc_scan_date_placeholder">Seleccionar</string>
-    <string name="identhub_fourthline_doc_scan_issue_future_error">Error, la fecha de emisión es futura.</string>
-    <string name="identhub_fourthline_doc_scan_date_past_error">Error, la fecha de emisión es posterior a la fecha de caducidad</string>
     <string name="identhub_fourthline_doc_scan_expiry_past_error">Error, la fecha de caducidad expira en el pasado</string>
     <string name="identhub_fourthline_doc_scan_continue_button">Continuar</string>
 </resources>

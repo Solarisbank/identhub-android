@@ -270,15 +270,6 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateIssueDate(issueDate: Date) {
-        mutex.lock()
-        try {
-            kycInfo.document!!.issueDate = issueDate
-        } finally {
-            mutex.unlock()
-        }
-    }
-
     suspend fun updateExpireDate(expireDate: Date) {
         mutex.lock()
         try {

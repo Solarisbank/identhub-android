@@ -170,10 +170,6 @@ class KycSharedViewModel(
         return runBlocking { kycInfoUseCase.createKycZip(applicationContext) }
     }
 
-    fun updateIssueDate(issueDate: Date) {
-        runBlocking { kycInfoUseCase.updateIssueDate(issueDate) }
-    }
-
     fun updateExpireDate(expireDate: Date) {
         runBlocking { kycInfoUseCase.updateExpireDate(expireDate) }
     }
