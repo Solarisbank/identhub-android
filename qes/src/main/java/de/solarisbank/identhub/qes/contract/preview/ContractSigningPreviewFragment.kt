@@ -81,8 +81,8 @@ class ContractSigningPreviewFragment : BaseFragment() {
         documentsList!!.adapter = adapter
         val isPreview = arguments?.getBoolean("isPreview") ?: true
         if (isPreview) {
-            titleView?.text = getString(R.string.identhub_contract_signing_preview_title)
-            subtitleView?.text = getString(R.string.identhub_contract_signing_preview_subtitle)
+            titleView?.text = getString(R.string.identhub_qes_doc_title)
+            subtitleView?.text = getString(R.string.identhub_qes_doc_description)
             submitButton?.text = getString(R.string.identhub_next)
         } else {
             titleView?.text = getString(R.string.identhub_contract_signing_finish_title)

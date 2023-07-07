@@ -34,7 +34,7 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_fourthline_doc_scan_result_title"
+                android:text="@string/identhub_fourthline_doc_result_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
-                android:text="@string/identhub_fourthline_doc_scan_result_subtitle"
+                android:text="@string/identhub_fourthline_doc_result_description"
                 app:layout_constraintStart_toEndOf="@id/startGuideline"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintTop_toBottomOf="@id/title" />
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
                 android:orientation="vertical"
-                android:text="@string/identhub_fourthline_doc_scan_document_number"
+                android:text="@string/identhub_fourthline_doc_result_number_input"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/description" />
@@ -69,7 +69,7 @@
                 android:layout_marginTop="@dimen/identhub_text_box_label_margin"
                 android:background="@drawable/identhub_textbox_drawable_selector"
                 android:baselineAligned="false"
-                android:hint="@string/identhub_fourthline_doc_scan_document_number"
+                android:hint="@string/identhub_fourthline_doc_result_number_input"
                 android:imeOptions="actionDone"
                 android:maxLength="17"
                 android:maxLines="1"
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_44"
                 android:orientation="vertical"
-                android:text="@string/identhub_fourthline_doc_scan_date_of_issue"
+                android:text="@string/identhub_fourthline_doc_result_issue_date_input"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/docNumberErrorText" />
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_margin_44"
                 android:orientation="vertical"
-                android:text="@string/identhub_fourthline_doc_scan_expiry_date"
+                android:text="@string/identhub_fourthline_doc_result_expiry_date_input"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/issueDateTextInput" />

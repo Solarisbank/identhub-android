@@ -40,7 +40,7 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_verification_bank_title"
+                android:text="@string/identhub_bank_iban_title"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
-                android:text="@string/identhub_verification_bank_description"
+                android:text="@string/identhub_bank_iban_description"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/title" />
@@ -71,7 +71,7 @@
                 android:layout_marginStart="@dimen/identhub_text_box_message_label_margin"
                 android:textStyle="bold"
                 android:textColor="@color/identhub_color_dark_green"
-                android:text="@string/identhub_verification_bank_encrypted_label"
+                android:text="@string/identhub_bank_iban_secured_text"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toEndOf="@+id/lock_image"
                 app:layout_constraintBottom_toBottomOf="@id/lock_image"
@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="@dimen/identhub_margin_4"
                     android:layout_marginStart="@dimen/identhub_margin_8"
-                    tools:text="I’ve read and accept the Terms and Conditions" />
+                    tools:text="I’ve read and accepted the Terms and Conditions" />
 
             </LinearLayout>
 

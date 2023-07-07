@@ -130,7 +130,7 @@ class ContractSigningFragment : BaseFragment() {
     private fun showTransactionDescription(identificationId: String) {
         transactionDescription!!.visibility = View.VISIBLE
         transactionDescription!!.text = String.format(
-            getString(R.string.identhub_contract_signing_preview_transaction_info),
+            getString(R.string.identhub_phone_transcation_detail_text),
             identificationId
         )
     }

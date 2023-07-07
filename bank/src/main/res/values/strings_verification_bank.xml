@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_verification_bank_title">Enter your IBAN</string>
-    <string name="identhub_verification_bank_description">Please enter the IBAN of your German bank account. Unfortunately, joint accounts are not supported.</string>
-    <string name="identhub_verification_bank_encrypted_label">Your data is secured with encryption</string>
     <string name="identhub_verification_bank_notice_label">Notice</string>
     <string name="identhub_verification_bank_notice_value" />
     <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="identhub_verification_bank_input_not_valid_message">IBAN format is not valid!</string>
-    <string name="identhub_verification_bank_action_next_step">Continue</string>
 </resources>

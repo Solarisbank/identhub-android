@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_scan_result_title">Dokumentinformation</string>
-    <string name="identhub_fourthline_doc_scan_result_subtitle">Bitte bestätigen Sie die Korrektheit der Daten ihres Dokuments.</string>
-    <string name="identhub_fourthline_doc_scan_document_number">Dokumenten- / Ausweisnummer</string>
-    <string name="identhub_fourthline_doc_scan_date_of_issue">Ausstellungsdatum</string>
-    <string name="identhub_fourthline_doc_scan_expiry_date">Ablaufdatum / gültig bis</string>
     <string name="identhub_fourthline_doc_scan_date_placeholder">Auswählen</string>
     <string name="identhub_fourthline_doc_scan_issue_future_error">Fehler, Austellungsdatum ist in der Zukunft.</string>
     <string name="identhub_fourthline_doc_scan_date_past_error">Fehler, Ausstellungsdatum ist nach Ablaufdatum</string>

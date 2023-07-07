@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_type_selection_title" >Tu documento de identidad</string>
-    <string name="identhub_fourthline_toc_type_selection_choose_title">Elige el tipo de documento:</string>
     <string name="identhub_fourthline_doc_type_selection_next_button">Siguiente</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">Documento de identidad no admitido</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_message">Lamentablemente no podemos admitir tu documento de identidad en este momento.</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_button">OK</string>
-    <string name="identhub_fourthline_doc_type_passport">Pasaporte</string>
     <string name="identhub_fourthline_doc_type_id_card">Documento de identidad</string>
     <string name="identhub_fourthline_doc_type_french_id_card">Documento de identidad francés</string>
-    <string name="identhub_fourthline_doc_type_paper_id">Documento de identidad en papel</string>
     <string name="identhub_fourthline_doc_type_residence_permit">Permiso de residencia</string>
     <string name="identhub_fourthline_doc_type_drivers_licence">Carnet de conducir</string>
     <string name="identhub_fourthline_doc_type_driving_licence">Carnet de conducir</string>

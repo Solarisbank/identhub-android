@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_selfie_scanner_scan_successful">Scan successful</string>
-    <string name="identhub_selfie_scanner_retake">Retake</string>
-    <string name="identhub_selfie_scanner_confirm">Confirm</string>
-    <string name="identhub_selfie_intro">Is your face clearly visible and in the frame?</string>
-    <string name="identhub_selfie_manual">"Please take a selfie"</string>
-    <string name="identhub_selfie_turn_left">Please turn your head to the left</string>
-    <string name="identhub_selfie_turn_right">Please turn your head to the right</string>
-    <string name="identhub_selfie_step_scanning">Detecting…</string>
-    <string name="identhub_selfie_step_checking_liveness">Checking liveliness…</string>
-    <string name="identhub_selfie_result_successful">Scan successful</string>
-    <string name="identhub_selfie_warning_not_detected">Face not detected</string>
-    <string name="identhub_selfie_warning_not_in_frame">Fit face in frame</string>
-    <string name="identhub_selfie_warning_too_close">Move the phone farther</string>
-    <string name="identhub_selfie_warning_too_far">Move the phone closer</string>
     <string name="identhub_selfie_warning_yaw_too_big">Face the camera directly</string>
-    <string name="identhub_selfie_warning_eyes_closed">Open both eyes</string>
-    <string name="identhub_selfie_warning_device_not_steady">Device not steady</string>
 </resources>

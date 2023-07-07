@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.solarisbank.identhub.qes.R
+import de.solarisbank.identhub.qes.contract.adapter.DocumentViewHolder
 import de.solarisbank.sdk.data.dto.DocumentDto
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/identhub_margin_12"
-            android:text="@string/identhub_document_scanner_scan_success"
+            android:text="@string/identhub_fourthline_successful_scan_title"
             tools:text="Success!" />
 
     </LinearLayout>

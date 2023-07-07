@@ -60,7 +60,7 @@
                 android:background="@drawable/identhub_textbox_without_border_drawable"
                 android:drawablePadding="@dimen/identhub_drawable_start_margin"
                 android:padding="@dimen/identhub_margin_12"
-                android:text="@string/identhub_contract_signing_preview_transaction_info"
+                android:text="@string/identhub_phone_transcation_detail_text"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/endGuideline"
                 app:layout_constraintStart_toStartOf="@+id/startGuideline"

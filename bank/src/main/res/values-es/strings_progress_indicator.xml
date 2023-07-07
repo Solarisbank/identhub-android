@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_progress_indicator_secure_connection_message">Estableciendo conexión segura con su banco...</string>
     <string name="identhub_progress_indicator_precessing_verification_message">Procesando la verificación...</string>
     <string name="identhub_progress_indicator_precessing_application_title">Tu solicitud está siendo procesada...</string>
     <string name="identhub_progress_indicator_precessing_application_message">Pronto podrás descargar todos los documentos firmados.</string>

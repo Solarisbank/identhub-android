@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_health_scan_title">Scansiona la tua tessera sanitaria</string>
-    <string name="identhub_health_scan_description">Fornire il codice fiscale è obbligatorio ai fini dell\'apertura di un conto bancario. Al fine di poter continuare il process, ti sarà richiesto di scansionare la tua tessera sanitaria nazionale. \n\nPer favore tieni pronta la tua tessere sanitaria nazionale per quando ti verrà richiesto di scansionarla.</string>
-</resources>

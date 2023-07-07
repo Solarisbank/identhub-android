@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_type_selection_title" >Ihr Ausweisdokument</string>
-    <string name="identhub_fourthline_toc_type_selection_choose_title">Bitte wählen Sie Ihr Ausweisdokument:</string>
     <string name="identhub_fourthline_doc_type_selection_next_button">Weiter</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">Identifikationsdokument nicht unterstützt</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_message">Derzeit unterstützen wir Ihre Identifikationsdokumente leider noch nicht.</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_button">OK</string>
-    <string name="identhub_fourthline_doc_type_passport">Reisepass</string>
     <string name="identhub_fourthline_doc_type_id_card">Personalausweis</string>
     <string name="identhub_fourthline_doc_type_french_id_card">Französischer Personalausweis</string>
-    <string name="identhub_fourthline_doc_type_paper_id">Papier ID</string>
     <string name="identhub_fourthline_doc_type_residence_permit">Aufenthaltsgenehmigung</string>
     <string name="identhub_fourthline_doc_type_drivers_licence">Führerschein</string>
     <string name="identhub_fourthline_doc_type_driving_licence">Führerschein</string>

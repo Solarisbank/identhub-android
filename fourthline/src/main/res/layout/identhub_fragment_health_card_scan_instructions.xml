@@ -35,7 +35,7 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_health_scan_title"
+                android:text="@string/identhub_fourthline_health_card_instructions_title"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
-                android:text="@string/identhub_health_scan_description"
+                android:text="@string/identhub_fourthline_health_card_instructions_description"
                 app:layout_constraintEnd_toEndOf="@id/endGuideline"
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@+id/healthScanTitle" />

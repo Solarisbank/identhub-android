@@ -25,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
         android:gravity="center_horizontal"
-        android:text="@string/identhub_kyc_upload_success_title"
+        android:text="@string/identhub_fourthline_kyc_result_title"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +50,7 @@
         android:layout_marginTop="@dimen/identhub_sub_paragraph_margin"
         android:gravity="center_horizontal"
         android:maxLines="4"
-        android:text="@string/identhub_kyc_upload_success_subtitle"
+        android:text="@string/identhub_fourthline_kyc_result_label"
         app:layout_constraintEnd_toEndOf="@+id/endGuideline"
         app:layout_constraintStart_toStartOf="@+id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/indicator" />

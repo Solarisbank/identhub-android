@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/identhub_text_box_message_label_margin"
-            android:text="@string/identhub_selfie_result_successful" />
+            android:text="@string/identhub_fourthline_successful_scan_title" />
 
     </LinearLayout>
 

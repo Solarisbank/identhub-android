@@ -113,15 +113,15 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
         lifecycleScope.launch(Dispatchers.Main) {
             when (step) {
                 SelfieScannerStep.SELFIE -> {
-                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_scanning)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_fourthline_selfie_step_detecting)
                 }
                 SelfieScannerStep.TURN_HEAD_LEFT -> {
-                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_fourthline_selfie_step_liveness_detection)
                     livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_left_direction)
                     selfieMask!!.visibility = View.INVISIBLE
                 }
                 SelfieScannerStep.TURN_HEAD_RIGHT -> {
-                    stepName!!.text = context?.resources?.getString(R.string.identhub_selfie_step_checking_liveness)
+                    stepName!!.text = context?.resources?.getString(R.string.identhub_fourthline_selfie_step_liveness_detection)
                     livenessMask!!.setImageResource(R.drawable.identhub_ic_liveness_right_direction)
                     selfieMask!!.visibility = View.INVISIBLE
                 }
@@ -136,7 +136,7 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
             icon?.visibility = View.VISIBLE
             icon?.setImageLevel(1)
             warningsLabel?.hide()
-            stepName?.setText(R.string.identhub_selfie_scanner_scan_successful)
+            stepName?.setText(R.string.identhub_fourthline_successful_scan_title)
             stepName?.show()
             kycSharedViewModel.updateKycWithSelfieScannerResult(result)
             activityViewModel.onSelfieOutcome(SelfieOutcome.Success)

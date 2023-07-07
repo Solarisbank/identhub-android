@@ -361,11 +361,11 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
         toggleTiltingCard(false)
         docImageView?.hide()
         bulletList?.updateItems(
-            title = getString(R.string.identhub_document_scanner_clear_picture_list_title),
+            title = getString(R.string.identhub_fourthline_successful_scan_list_title),
             items = listOf(
-                getString(R.string.identhub_document_scanner_clear_picture_list_item1),
-                getString(R.string.identhub_document_scanner_clear_picture_list_item2),
-                getString(R.string.identhub_document_scanner_clear_picture_list_item3)
+                getString(R.string.identhub_fourthline_successful_scan_list_item_one),
+                getString(R.string.identhub_fourthline_successful_scan_list_item_two),
+                getString(R.string.identhub_fourthline_successful_scan_list_item_three)
             )
         )
         bulletList?.show()

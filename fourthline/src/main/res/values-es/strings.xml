@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_fourthline_doc_result_description">Confirma que la información de tu documento es correcta</string>
+    <string name="identhub_fourthline_doc_result_expiry_date_input">fecha de caducidad del documento</string>
+    <string name="identhub_fourthline_doc_result_issue_date_input">fecha de emisión</string>
+    <string name="identhub_fourthline_doc_result_number_input">número de documento</string>
+    <string name="identhub_fourthline_doc_result_title">Información del documento</string>
+    <string name="identhub_fourthline_doc_scan_angled">Escanee de manera angular la parte frontal del documento</string>
+    <string name="identhub_fourthline_doc_scan_back">Escanee la parte trasera del documento</string>
+    <string name="identhub_fourthline_doc_scan_back_angled">Escanee de manera angular la parte trasera del documento</string>
+    <string name="identhub_fourthline_doc_scan_front">Escanee la parte frontal del documento</string>
+    <string name="identhub_fourthline_doctype_title">Tu documento de identidad</string>
+    <string name="identhub_fourthline_doctype_paper_id">Identificación de papel</string>
+    <string name="identhub_fourthline_doctype_passport">Pasaporte</string>
+    <string name="identhub_fourthline_doctype_description">Elige el tipo de documento:</string>
+    <string name="identhub_fourthline_kyc_result_label">Tus datos se han confirmado correctamente</string>
+    <string name="identhub_fourthline_kyc_result_title">Enhorabuena, tu verificación se ha completado</string>
+    <string name="identhub_fourthline_kyc_upload_title">Verificación de datos</string>
+    <string name="identhub_fourthline_selfie_instructions_description">Asegúrate de que hay suficiente luz para el selfie. Si llevas gafas, asegúrate de que no hay reflejos.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_one">La aplicación reconocerá su cara.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_two">Prueba la viveza siguiendo las instrucciones que aparecen en la pantalla.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_description">Si el escáner no reconoce tu cara, se produce un error de tiempo de espera después de 10 segundos y tendrás que volver a iniciar el proceso de escaneo del selfie.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_title">Aviso</string>
+    <string name="identhub_fourthline_selfie_instructions_title">Hazte un selfie</string>
+    <string name="identhub_fourthline_selfie_scan_step_left">Gira la cabeza hacia la izquierda</string>
+    <string name="identhub_fourthline_selfie_scan_step_right">Gira la cabeza hacia la derecha</string>
+    <string name="identhub_fourthline_selfie_scan_title">¿Tu cara es claramente visible y está en el recuadro?</string>
+    <string name="identhub_fourthline_selfie_step_detecting">Detectando...</string>
+    <string name="identhub_fourthline_selfie_step_liveness_detection">Comprobando la viveza...</string>
+    <string name="identhub_fourthline_selfie_warning_device_steadiness">El dispositivo no está estable</string>
+    <string name="identhub_fourthline_selfie_warning_eyes">Abra ambos ojos</string>
+    <string name="identhub_fourthline_selfie_warning_face_in_frame">Encaja la cara en el recuadro</string>
+    <string name="identhub_fourthline_selfie_warning_not_detected">Cara no detectada</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_close">Aleja el teléfono</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_far">Acerca el teléfono</string>
+    <string name="identhub_fourthline_successful_scan_list_item_one">¿Se puede leer el texto?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_three">¿Están todas las esquinas en la imagen?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_two">¿No hay nada que cubra la imagen?</string>
+    <string name="identhub_fourthline_successful_scan_list_title">¿Se ve todo bien?</string>
+    <string name="identhub_fourthline_successful_scan_title">Escaneo realizado con éxito</string>
+    <string name="identhub_generic_please_wait_title">Espera...</string>
+    <string name="identhub_loading_bottom_message">Esto puede tardar un par de minutos, por favor no cierre esta pantalla hasta que la verificación se haya completado.</string>
+</resources>

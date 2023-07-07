@@ -7,5 +7,4 @@
     <string name="identhub_location_fetching_error_title">Erreur de localisation</string>
     <string name="identhub_location_fetching_error_message">La localisation n’a pas été obtenue</string>
     <string name="identhub_doc_type_retry_button">Réessayer</string>
-    <string name="identhub_fourthline_location_permission_rationale_message">Nous avons besoin de l’accès à la localisation pour vous identifier.</string>
 </resources>

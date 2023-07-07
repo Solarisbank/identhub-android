@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_onboarding_intro_title">Inizia identificazione</string>
-    <string name="identhub_onboarding_intro_description">Devi inserire i dati del tuo conto bancario per verificare la tua identità.</string>
-    <string name="identhub_onboarding_intro_step_1">1. fornisci il tuo IBAN</string>
-    <string name="identhub_onboarding_intro_step_2">2° trasferimento € 0,05</string>
-    <string name="identhub_onboarding_intro_step_3">3. firma elettronicamente i documenti</string>
-    <string name="identhub_onboarding_intro_verify_button">Inizia identificazione</string>
-</resources>

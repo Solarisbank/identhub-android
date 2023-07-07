@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_bank_establishing_connection_text">Verifizierung in Bearbeitung…</string>
+    <string name="identhub_bank_iban_description">Bitte geben Sie die IBAN Ihres deutschen Bankkontos ein (kein Gemeinschaftskonto)</string>
+    <string name="identhub_bank_iban_secured_text">Ihre Daten werden verschlüsselt übertragen</string>
+    <string name="identhub_bank_iban_title">Geben Sie Ihre IBAN ein</string>
+    <string name="identhub_bank_payment_verification_description">Unterschreiben Sie die Dokumente, um Ihren Identifikationsprozess abzuschließen.</string>
+    <string name="identhub_bank_payment_verification_title">Zahlungsüberprüfung erfolgreich</string>
+</resources>

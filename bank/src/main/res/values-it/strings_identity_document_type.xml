@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_qes_document">Documento QES</string>
-    <string name="identhub_loan_mandate_contract">Documento contrattuale</string>
-    <string name="identhub_signed_qes_document">Documento QES firmato</string>
-    <string name="identhub_signed_loan_mandate_contract">Documento di contratto firmato</string>
-</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_bank_establishing_connection_text">Établissement d’une connexion sécurisée avec votre banque en cours...</string>
+    <string name="identhub_bank_iban_description">Veuillez saisir l\'IBAN de votre compte bancaire allemand. Malheureusement, les comptes joints ne sont pas supportés. Vos données sont chiffrées.</string>
+    <string name="identhub_bank_iban_secured_text">Vos données sont chiffrées.</string>
+    <string name="identhub_bank_iban_title">Entrez votre IBAN</string>
+    <string name="identhub_bank_payment_verification_description">Continuer pour signer les documents et terminer votre processus d’identification.</string>
+    <string name="identhub_bank_payment_verification_title">Vérification du paiement réussie</string>
+</resources>

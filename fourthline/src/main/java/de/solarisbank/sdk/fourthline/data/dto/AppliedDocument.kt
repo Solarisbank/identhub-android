@@ -2,6 +2,7 @@ package de.solarisbank.sdk.fourthline.data.dto
 
 import android.content.Context
 import com.fourthline.core.DocumentType
+import de.solarisbank.sdk.fourthline.R
 import java.io.Serializable
 
 /**
@@ -32,12 +33,12 @@ fun AppliedDocument.toDocumentType(): DocumentType {
 }
 
 fun AppliedDocument.asString(context: Context) = when (this) {
-    AppliedDocument.PASSPORT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_passport)
-    AppliedDocument.NATIONAL_ID_CARD -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_id_card)
-    AppliedDocument.FRENCH_ID_CARD -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_french_id_card)
-    AppliedDocument.PAPER_ID -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_paper_id)
-    AppliedDocument.RESIDENCE_PERMIT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_residence_permit)
-    AppliedDocument.DRIVING_LICENSE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_driving_licence)
-    AppliedDocument.DUTCH_DRIVERS_LICENCE -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_drivers_licence)
-    AppliedDocument.TIN_DOCUMENT -> context.resources.getString(de.solarisbank.sdk.fourthline.R.string.identhub_fourthline_doc_type_id_card)
+    AppliedDocument.PASSPORT -> context.resources.getString(R.string.identhub_fourthline_doctype_passport)
+    AppliedDocument.NATIONAL_ID_CARD -> context.resources.getString(R.string.identhub_fourthline_doc_type_id_card)
+    AppliedDocument.FRENCH_ID_CARD -> context.resources.getString(R.string.identhub_fourthline_doc_type_french_id_card)
+    AppliedDocument.PAPER_ID -> context.resources.getString(R.string.identhub_fourthline_doctype_paper_id)
+    AppliedDocument.RESIDENCE_PERMIT -> context.resources.getString(R.string.identhub_fourthline_doc_type_residence_permit)
+    AppliedDocument.DRIVING_LICENSE -> context.resources.getString(R.string.identhub_fourthline_doc_type_driving_licence)
+    AppliedDocument.DUTCH_DRIVERS_LICENCE -> context.resources.getString(R.string.identhub_fourthline_doc_type_drivers_licence)
+    AppliedDocument.TIN_DOCUMENT -> context.resources.getString(R.string.identhub_fourthline_doc_type_id_card)
 }

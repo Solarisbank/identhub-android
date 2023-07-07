@@ -12,10 +12,6 @@
     <string name="identhub_kyc_upload_generic_error_title">Une erreur s’est produite lors du téléchargement de vos données</string>
     <string name="identhub_kyc_upload_generic_error_subtitle">Malheureusement, vos données n’ont pas pu être confirmées. Veuillez réessayer</string>
     <string name="identhub_kyc_upload_generic_error_button">Réessayer</string>
-    <string name="identhub_kyc_upload_success_title">Félicitations, votre vérification est terminée</string>
-    <string name="identhub_kyc_upload_success_subtitle">Vos données ont été confirmées avec succès</string>
     <string name="identhub_kyc_upload_success_button">Continuer</string>
-    <string name="identhub_kyc_upload_to_next_title">Félicitations, votre vérification est terminée</string>
-    <string name="identhub_kyc_upload_to_next_subtitle">Vos données ont été confirmées avec succès</string>
     <string name="identhub_kyc_upload_to_next_button">Continuer</string>
 </resources>

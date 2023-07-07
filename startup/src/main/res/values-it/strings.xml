@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_phone_verification_description">Introduzca el código de 6 dígitos enviado a su número móvil %1$s</string>
+    <string name="identhub_phone_verification_request_code">Richiedi nuovo codice in</string>
+    <string name="identhub_phone_verification_send_new_code">Invia nuovo codice</string>
+    <string name="identhub_phone_verification_title">Confermare il telefono</string>
+    <string name="identhub_terms_and_conditions_checkbox_text">Accetto %1$s e %2$s</string>
+    <string name="identhub_terms_and_conditions_info">Per continuare, leggi e accetta l\'informativa sulla privacy e i Termini &amp; Condizioni.</string>
+    <string name="identhub_terms_and_conditions_title">Termini e Condizioni</string>
+</resources>

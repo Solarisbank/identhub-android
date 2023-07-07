@@ -13,10 +13,6 @@
     <string name="identhub_kyc_upload_generic_error_title">There was an error uploading your data</string>
     <string name="identhub_kyc_upload_generic_error_subtitle">Unfortunately your data could not be confirmed. Please try again</string>
     <string name="identhub_kyc_upload_generic_error_button">Retry</string>
-    <string name="identhub_kyc_upload_success_title">Congratulations, your verification is completed</string>
-    <string name="identhub_kyc_upload_success_subtitle">Your data was successfully confirmed</string>
     <string name="identhub_kyc_upload_success_button">Continue</string>
-    <string name="identhub_kyc_upload_to_next_title">Congratulations, your verification is completed</string>
-    <string name="identhub_kyc_upload_to_next_subtitle">Your data was successfully confirmed</string>
     <string name="identhub_kyc_upload_to_next_button">Continue</string>
 </resources>

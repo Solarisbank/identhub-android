@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_doc_type_selection_title" >Votre document d’identité</string>
-    <string name="identhub_fourthline_toc_type_selection_choose_title">Choisissez votre type de document :</string>
     <string name="identhub_fourthline_doc_type_selection_next_button">Suivant</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_headline">Document d’identité non pris en charge</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_message">Malheureusement, nous ne pouvons pas prendre en charge votre document d’identité pour le moment.</string>
     <string name="identhub_fourthline_doc_type_country_not_supported_button">OK</string>
-    <string name="identhub_fourthline_doc_type_passport">Passeport</string>
     <string name="identhub_fourthline_doc_type_id_card">Carte d’identité</string>
     <string name="identhub_fourthline_doc_type_french_id_card">Carte d’identité française</string>
-    <string name="identhub_fourthline_doc_type_paper_id">Document d’identité papier</string>
     <string name="identhub_fourthline_doc_type_residence_permit">Permis de séjopur</string>
     <string name="identhub_fourthline_doc_type_drivers_licence">Permis de conduire</string>
     <string name="identhub_fourthline_doc_type_driving_licence">Permis de conduire</string>

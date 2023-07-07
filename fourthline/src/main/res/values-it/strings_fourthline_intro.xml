@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="identhub_fourthline_terms_button_submit">Continua</string>
-    <string name="identhub_fourthline_terms_verify_title">Verifica la tua identità</string>
     <string name="identhub_fourthline_terms_description_start">Scatta un selfie e scansiona il tuo documento d\'identità o il passaporto.\n\nAssicurati di consentire l\'accesso a:</string>
     <string name="identhub_fourthline_terms_description_list_item1">La tua posizione</string>
     <string name="identhub_fourthline_terms_description_list_item2">La tua fotocamera</string>
-    <string name="identhub_fourthline_terms_notice_title">Nota</string>
     <string name="identhub_fourthline_privacy_statement">Ho preso atto delle informazioni sulla <a href="https://api.fourthline.com/v1/qualifiedElectronicSignature/legal/PrivacyStatement_SafeNedFourthline_1.0.pdf">protezione dei dati di SAFENED Fourthline</a></string>
     <string name="identhub_fourthline_intro_title">Verifica dell\'identità</string>
     <string name="identhub_fourthline_intro_slide_title_one">Scansiona il tuo documento di identità</string>

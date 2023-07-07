@@ -107,15 +107,15 @@ class KycUploadFragment : BaseFragment() {
     private fun getUploadDataForStatus(uploadStatusDto: KycUploadStatusDto): UploadViewState {
         return when (uploadStatusDto) {
             is KycUploadStatusDto.FinishIdentSuccess -> UploadViewState(
-                alertTitle = getString(R.string.identhub_kyc_upload_success_title),
-                alertMessage = getString(R.string.identhub_kyc_upload_success_subtitle),
+                alertTitle = getString(R.string.identhub_fourthline_kyc_result_title),
+                alertMessage = getString(R.string.identhub_fourthline_kyc_result_label),
                 positiveButtonLabel = getString(R.string.identhub_kyc_upload_success_button),
                 positiveAlertButtonAction = null,
                 negativeAlertButtonAction = null
             )
             is KycUploadStatusDto.ToNextStepSuccess -> UploadViewState(
-                alertTitle = getString(R.string.identhub_kyc_upload_to_next_title),
-                alertMessage = getString(R.string.identhub_kyc_upload_to_next_subtitle),
+                alertTitle = getString(R.string.identhub_fourthline_kyc_result_title),
+                alertMessage = getString(R.string.identhub_fourthline_kyc_result_label),
                 positiveButtonLabel = getString(R.string.identhub_kyc_upload_to_next_button),
                 positiveAlertButtonAction = null,
                 negativeAlertButtonAction = null

@@ -12,10 +12,6 @@
     <string name="identhub_kyc_upload_generic_error_title">Qualcosa è andato storto…</string>
     <string name="identhub_kyc_upload_generic_error_subtitle">Purtroppo non abbiamo potuto confermare i tuoi dati. Per favore riprova.</string>
     <string name="identhub_kyc_upload_generic_error_button">Ripetere</string>
-    <string name="identhub_kyc_upload_success_title">Congratulazioni, la verifica è completa.</string>
-    <string name="identhub_kyc_upload_success_subtitle">I tuoi dati sono stati confermati con successo</string>
     <string name="identhub_kyc_upload_success_button">Continua</string>
-    <string name="identhub_kyc_upload_to_next_title">Congratulazioni, la verifica è stata completata.</string>
-    <string name="identhub_kyc_upload_to_next_subtitle">I tuoi dati sono stati confermati con successo</string>
     <string name="identhub_kyc_upload_to_next_button">Continuare</string>
 </resources>

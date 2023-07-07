@@ -25,7 +25,7 @@ class EstablishConnectionFragment : ProgressIndicatorFragment() {
     }
 
     override fun getTitleResource(): Int {
-        return R.string.identhub_progress_indicator_secure_connection_message
+        return R.string.identhub_bank_establishing_connection_text
     }
 
     private fun observeScreenState() {

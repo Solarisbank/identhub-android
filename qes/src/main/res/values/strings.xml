@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_phone_transcation_detail_text">Your transaction ID is %1$s\nMake sure it is the same in SMS you just received.</string>
+    <string name="identhub_phone_verification_qes_title">Confirm your details</string>
+    <string name="identhub_qes_doc_description">Please review the document(s) below.</string>
+    <string name="identhub_qes_doc_terms_and_conditions_text">*Terms &amp; Conditions of Swisscom apply.</string>
+    <string name="identhub_qes_doc_title">Download and check your details</string>
+</resources>

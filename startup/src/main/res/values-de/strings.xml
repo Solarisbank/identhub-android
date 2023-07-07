@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_phone_verification_description">Geben Sie den 6-stelligen Code ein, der an Ihre Handynummer %1$s gesendet</string>
+    <string name="identhub_phone_verification_request_code">Neuen Code anfordern in</string>
+    <string name="identhub_phone_verification_send_new_code">Neuen Code senden</string>
+    <string name="identhub_phone_verification_title">Rufnummer bestätigen</string>
+    <string name="identhub_terms_and_conditions_checkbox_text">Ich stimme der %1$s und den %2$s zu</string>
+    <string name="identhub_terms_and_conditions_info">Um fortzufahren, lesen Sie bitte die Datenschutzerklärung und die allgemeinen Geschäftsbedingungen und stimmen Sie denen zu.</string>
+    <string name="identhub_terms_and_conditions_title">AGBs</string>
+</resources>

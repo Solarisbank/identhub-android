@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_phone_transcation_detail_text">Ihre Transaktions-ID ist %1$s\nStellen Sie sicher, dass Sie die gleiche Transaktions-ID in der SMS erhalten haben.</string>
+    <string name="identhub_phone_verification_qes_title">Bestätigen Sie Ihre Angaben</string>
+    <string name="identhub_qes_doc_description">Bitte überprüfen Sie die Informationen in den Dokumenten.</string>
+    <string name="identhub_qes_doc_terms_and_conditions_text">Es gelten die Allgemeinen Geschäftsbedingungen von Swisscom.</string>
+    <string name="identhub_qes_doc_title">Herunterladen und überprüfen.</string>
+</resources>

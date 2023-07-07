@@ -60,7 +60,7 @@
         app:layout_constraintStart_toStartOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/selfieMask"
-        tools:text="@string/identhub_selfie_intro" />
+        tools:text="@string/identhub_fourthline_selfie_scan_title" />
 
     <ProgressBar
         style="@style/IdentHubProgressBarStyle"

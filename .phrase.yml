@@ -14,3 +14,7 @@ phrase:
       params:
         file_format: xml
         tags: bank
+    - file: ./startup/src/main/res/values-<locale_code>/strings.xml
+      params:
+        file_format: xml
+        tags: startup

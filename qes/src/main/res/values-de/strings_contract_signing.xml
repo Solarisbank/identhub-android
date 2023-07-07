@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_contract_signing_preview_title">Herunterladen und überprüfen.</string>
-    <string name="identhub_contract_signing_preview_subtitle">Bitte überprüfen Sie die Informationen in den Dokumenten.</string>
     <string name="identhub_contract_signing_finish_title">Erfolgreich identifiziert!</string>
     <string name="identhub_contract_signing_finish_subtitle">Sie haben die Identifikation abgeschlossen!\nLaden Sie die Dokumente herunter und bewahren Sie diese an einem sicheren Ort auf, um später darauf zurückgreifen zu können.</string>
     <string name="identhub_contract_signing_finish_button">Beenden</string>
     <string name="identhub_contract_signing_preview_view_document">Dokument ansehen</string>
-    <string name="identhub_contract_signing_preview_notice">Hinweis</string>
-    <string name="identhub_contract_signing_preview_notice_label">Sehen Sie Ihre Dokumente hier ein:</string>
-    <string name="identhub_contract_signing_preview_send_code_action">Code empfangen und unterzeichnen</string>
-    <string name="identhub_contract_signing_description">Geben Sie den 6-stelligen Code ein, den Sie empfangen haben %1$s.</string>
-    <string name="identhub_contract_signing_sign_action">Unterschreiben und abschicken</string>
-    <string name="identhub_contract_signing_code_expires">Sie können einen neuen Code anfordern in %1$s</string>
     <string name="identhub_contract_signing_code_request_new">Der Code ist nicht korrekt oder abgelaufen.</string>
     <string name="identhub_contract_signing_code_request_new_button">Neuen Code senden</string>
-    <string name="identhub_contract_signing_terms_label">Es gelten die AGBs</string>
-    <string name="identhub_contract_signing_terms_bank_ident_label">Es gelten die AGBs der Swisscom</string>
-    <string name="identhub_contract_signing_terms_bank_id_label">Es gelten die AGBs der Namirial</string>
     <string name="identhub_contract_signing_preview_render_pdf_error">Could not able to renderer pdf file.</string>
     <string name="identhub_contract_signing_preview_download_error">Could not download all files.</string>
-    <string name="identhub_contract_signing_preview_transaction_info">Ihre Transaktions-ID ist %1$s\nStellen Sie sicher, dass Sie die gleiche Transaktions-ID in der SMS erhalten haben.</string>
 
     <plurals name="identhub_contract_signing_preview_downloaded_message">
         <item quantity="one">1 file has been downloaded.</item>
@@ -30,5 +18,4 @@
     <string name="identhub_contract_signing_confirm">Bestätigen</string>
     <string name="identhub_contract_signing_preview_terms_condition">Es gelten die Allgemeinen Geschäftsbedingungen von %1$s.</string>
     <string name="identhub_contract_signing_preview_terms_condition_part">Swisscom</string>
-    <string name="identhub_contract_signing_precessing_application_message">You will be able to download all of the signed documents soon.</string>
 </resources>

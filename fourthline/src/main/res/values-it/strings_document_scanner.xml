@@ -6,21 +6,7 @@
     <string name="identhub_document_scanner_warning_too_dark">Il documento è troppo scuro</string>
     <string name="identhub_document_scanner_warning_device_not_steady">Il cellulare non è in una posizione stabile</string>
     <string name="identhub_document_scanner_warning_recognition_models_not_downloaded">Controlla la tua connessione internet e/o lo spazio disponibile</string>
-    <string name="identhub_document_scanner_file_side_front">Davanti</string>
-    <string name="identhub_document_scanner_file_side_back">Indietro</string>
-    <string name="identhub_document_scanner_file_side_inside_left">Dentro a sinistra</string>
-    <string name="identhub_document_scanner_file_side_inside_right">Dentro a destra</string>
-    <string name="identhub_document_scanner_file_tilted">Angolato</string>
-    <string name="identhub_document_scanner_scan_success">Foto scattata</string>
-    <string name="identhub_document_scanner_clear_picture_list_title">Ti sembra tutto giusto?</string>
-    <string name="identhub_document_scanner_clear_picture_list_item1">Il testo è leggibile?</string>
-    <string name="identhub_document_scanner_clear_picture_list_item2">Niente oscura l\'immagine?</string>
-    <string name="identhub_document_scanner_clear_picture_list_item3">Nella foto sono visibili tutti gli angoli?</string>
 
-    <string name="identhub_document_scanner_side_front_title">Scansiona il fronte del documento</string>
-    <string name="identhub_document_scanner_side_front_angled_title">Scansiona il fronte del documento inclinato</string>
-    <string name="identhub_document_scanner_side_back_title">Scansiona il retro del documento</string>
-    <string name="identhub_document_scanner_side_back_angled_title">Scansiona il retro del documento inclinato</string>
     <string name="identhub_document_scanner_side_inside_left_title">Scansiona la parte interna sinistra del documento</string>
     <string name="identhub_document_scanner_side_inside_left_angled_title">Scansiona la parte interna sinistra del documento inclinato</string>
     <string name="identhub_document_scanner_side_inside_right_title">Scansiona la parte interna destra del documento</string>

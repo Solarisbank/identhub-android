@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_fourthline_doc_result_description">Bitte bestätigen Sie die Korrektheit der Daten ihres Dokuments.</string>
+    <string name="identhub_fourthline_doc_result_expiry_date_input">Ablaufdatum / gültig bis</string>
+    <string name="identhub_fourthline_doc_result_issue_date_input">Ausstellungsdatum</string>
+    <string name="identhub_fourthline_doc_result_number_input">Dokumenten- / Ausweisnummer</string>
+    <string name="identhub_fourthline_doc_result_title">Dokumentinformation</string>
+    <string name="identhub_fourthline_doc_scan_angled">Bitte scannen Sie die Vorderseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="identhub_fourthline_doc_scan_back">Bitte scannen Sie die Hinterseite von Ihrem Ausweisdokument</string>
+    <string name="identhub_fourthline_doc_scan_back_angled">Bitte scannen Sie die Hinterseite von Ihrem Ausweisdokument angewinkelt</string>
+    <string name="identhub_fourthline_doc_scan_front">Bitte scannen Sie die Vorderseite von Ihrem Ausweisdokument</string>
+    <string name="identhub_fourthline_doctype_title">Ihr Ausweisdokument</string>
+    <string name="identhub_fourthline_doctype_paper_id">Papierausweis</string>
+    <string name="identhub_fourthline_doctype_passport">Reisepass</string>
+    <string name="identhub_fourthline_doctype_description">bitte wählen Sie Ihr Ausweisdokument:</string>
+    <string name="identhub_fourthline_kyc_result_label">Ihre Daten wurden erfolgreich bestätigt</string>
+    <string name="identhub_fourthline_kyc_result_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
+    <string name="identhub_fourthline_kyc_upload_title">Datenverifizierung</string>
+    <string name="identhub_fourthline_selfie_instructions_description">Stellen Sie sicher, dass Sie genug Licht haben. Wenn Sie eine Brille tragen achten Sie darauf, dass diese nicht spiegelt.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_one">Die App wird Ihr Gesicht erkennen.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_two">Beweisen Sie Ihre Lebendigkeit in dem Sie den Instruktionen auf dem Bildschirm folgen.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_description">Wenn die App Ihr Gesicht nicht erkennt, wird nach 10 Sekunden ein Zeitlimit erreicht und Sie werden den Prozess von vorne beginnen müssen.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_title">Hinweis</string>
+    <string name="identhub_fourthline_selfie_instructions_title">Machen Sie ein Selfie-Foto</string>
+    <string name="identhub_fourthline_selfie_scan_step_left">Bitte drehen Sie Ihren Kopf nach links</string>
+    <string name="identhub_fourthline_selfie_scan_step_right">Bitte drehen Sie Ihren Kopf nach rechts</string>
+    <string name="identhub_fourthline_selfie_scan_title">Ist Ihr Gesicht deutlich sichtbar und im angezeigten Rahmen?</string>
+    <string name="identhub_fourthline_selfie_step_detecting">Erkennen…</string>
+    <string name="identhub_fourthline_selfie_step_liveness_detection">Lebendigkeitsprüfung…</string>
+    <string name="identhub_fourthline_selfie_warning_device_steadiness">Handy ist nicht in einer stabilen Position</string>
+    <string name="identhub_fourthline_selfie_warning_eyes">Öffnen Sie beide Augen</string>
+    <string name="identhub_fourthline_selfie_warning_face_in_frame">Gesicht an den Fotorahmen anpassen</string>
+    <string name="identhub_fourthline_selfie_warning_not_detected">Gesicht nicht erkannt</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_close">Halten Sie das Handy weiter entfernt von Ihrem Gesicht</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_far">Halten Sie das Handy näher an Ihr Gesicht</string>
+    <string name="identhub_fourthline_successful_scan_list_item_one">Ist der Text lesbar?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_three">Sind alle Ecken im Bild sichtbar?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_two">Wird das Bild durch nichts verdeckt?</string>
+    <string name="identhub_fourthline_successful_scan_list_title">Sieht alles gut aus?</string>
+    <string name="identhub_fourthline_successful_scan_title">Scan erfolgreich</string>
+    <string name="identhub_generic_please_wait_title">Bitte warten...</string>
+    <string name="identhub_loading_bottom_message">Dieser Vorgang kann einige Minuten dauern. Bitte schließen Sie dieses Fenster nicht, bevor die Überprüfung abgeschlossen ist.</string>
+</resources>

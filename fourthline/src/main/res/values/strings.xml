@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_fourthline_doc_result_description">Please confirm your document  information is correct.</string>
+    <string name="identhub_fourthline_doc_result_expiry_date_input">Document expiry date</string>
+    <string name="identhub_fourthline_doc_result_issue_date_input">Date of issue</string>
+    <string name="identhub_fourthline_doc_result_number_input">Document number</string>
+    <string name="identhub_fourthline_doc_result_title">Document information</string>
+    <string name="identhub_fourthline_doc_scan_angled">Scan the front of the document at an angle</string>
+    <string name="identhub_fourthline_doc_scan_back">Scan the back of the document</string>
+    <string name="identhub_fourthline_doc_scan_back_angled">Scan the back of the document at an angle</string>
+    <string name="identhub_fourthline_doc_scan_front">Scan the front of the document</string>
+    <string name="identhub_fourthline_doctype_title">Your ID-document</string>
+    <string name="identhub_fourthline_doctype_paper_id">Paper ID</string>
+    <string name="identhub_fourthline_doctype_passport">Passport</string>
+    <string name="identhub_fourthline_doctype_description">Choose your document type:</string>
+    <string name="identhub_fourthline_health_card_instructions_description">Providing your social security number is mandatory for the purpose of opening a bank account. In order to continue the process, you will be asked to scan your national health insurance card.\n\nPlease have your national health insurance card ready for when you are asked to scan it.</string>
+    <string name="identhub_fourthline_health_card_instructions_title">Scan your health card</string>
+    <string name="identhub_fourthline_kyc_result_label">Your data was successfully confirmed</string>
+    <string name="identhub_fourthline_kyc_result_title">Congratulations, your verification is completed</string>
+    <string name="identhub_fourthline_kyc_upload_title">Data verification</string>
+    <string name="identhub_fourthline_selfie_instructions_description">Make sure there is enough lighting for your selfie. If you wear glasses, make sure there is no glare.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_one">The app will recognise your face.</string>
+    <string name="identhub_fourthline_selfie_instructions_item_two">Prove your liveness by following the instructions on the screen.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_description">If the scan fails to recognise your face, a time out error occurs after 10 seconds and you will have to start the selfie scan process again.</string>
+    <string name="identhub_fourthline_selfie_instructions_notice_title">Notice</string>
+    <string name="identhub_fourthline_selfie_instructions_title">Take a selfie</string>
+    <string name="identhub_fourthline_selfie_scan_step_left">Please turn your head to the left</string>
+    <string name="identhub_fourthline_selfie_scan_step_right">Please turn your head to the right</string>
+    <string name="identhub_fourthline_selfie_scan_title">Is your face clearly visible and in the frame?</string>
+    <string name="identhub_fourthline_selfie_step_detecting">Detecting...</string>
+    <string name="identhub_fourthline_selfie_step_liveness_detection">Checking liveliness...</string>
+    <string name="identhub_fourthline_selfie_warning_device_steadiness">Device not steady</string>
+    <string name="identhub_fourthline_selfie_warning_eyes">Open both eyes</string>
+    <string name="identhub_fourthline_selfie_warning_face_in_frame">Fit face in frame</string>
+    <string name="identhub_fourthline_selfie_warning_not_detected">Face not detected</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_close">Move the  phone farther</string>
+    <string name="identhub_fourthline_selfie_warning_phone_too_far">Move the phone closer</string>
+    <string name="identhub_fourthline_successful_scan_list_item_one">Is the text readable?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_three">Are all corners in the picture?</string>
+    <string name="identhub_fourthline_successful_scan_list_item_two">Is nothing covering the picture?</string>
+    <string name="identhub_fourthline_successful_scan_list_title">Does everything look good?</string>
+    <string name="identhub_fourthline_successful_scan_title">Scan successful</string>
+    <string name="identhub_generic_please_wait_title">Please wait...</string>
+    <string name="identhub_loading_bottom_message">This may take a couple of minutes, Please do not close this screen until the verification is complete</string>
+</resources>

@@ -12,10 +12,6 @@
     <string name="identhub_kyc_upload_generic_error_title">Etwas ist schiefgelaufen...</string>
     <string name="identhub_kyc_upload_generic_error_subtitle">Wir konnten Ihre Daten leider nicht bestätigen. Bitte versuchen Sie es erneut.</string>
     <string name="identhub_kyc_upload_generic_error_button">Wiederholen</string>
-    <string name="identhub_kyc_upload_success_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
-    <string name="identhub_kyc_upload_success_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
     <string name="identhub_kyc_upload_success_button">Weiter</string>
-    <string name="identhub_kyc_upload_to_next_title">Herzlichen Glückwunsch, die Verifizierung ist abgeschlossen.</string>
-    <string name="identhub_kyc_upload_to_next_subtitle">Ihre Daten wurden erfolgreich bestätigt</string>
     <string name="identhub_kyc_upload_to_next_button">Weiter</string>
 </resources>

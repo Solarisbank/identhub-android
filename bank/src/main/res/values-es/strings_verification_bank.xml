@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_verification_bank_title">Introduzca su IBAN</string>
-    <string name="identhub_verification_bank_description">Introduzca el IBAN de su cuenta bancaria alemana. Desafortunadamente, las cuentas conjuntas no son compatibles. Sus datos están encriptados.</string>
-    <string name="identhub_verification_bank_encrypted_label">Sus datos están encriptados.</string>
     <string name="identhub_verification_bank_notice_label">Aviso</string>
     <string name="identhub_verification_bank_notice_value" />
     <string name="identhub_verification_bank_input_hint">DEXX XXXX XXXX XXXX XXXX XX</string>
     <string name="identhub_verification_bank_input_not_valid_message">El formato IBAN no es válido.</string>
-    <string name="identhub_verification_bank_action_next_step">Continuar</string>
 </resources>

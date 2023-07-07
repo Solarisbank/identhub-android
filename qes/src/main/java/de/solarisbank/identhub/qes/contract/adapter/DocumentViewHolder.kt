@@ -1,4 +1,4 @@
-package de.solarisbank.identhub.contract.adapter
+package de.solarisbank.identhub.qes.contract.adapter
 
 import android.view.View
 import android.widget.TextView

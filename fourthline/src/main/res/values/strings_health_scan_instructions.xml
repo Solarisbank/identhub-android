@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="identhub_health_scan_title">Scan your health card</string>
-    <string name="identhub_health_scan_description">Providing your social security number is mandatory for the purpose of opening a bank account. In order to continue the process, you will be asked to scan your national health insurance card.\n\nPlease have your national health insurance card ready for when you are asked to scan it.</string>
-</resources>

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="identhub_fourthline_welcome_container_title">Prenez un selfie</string>
-    <string name="identhub_fourthline_welcome_container_first_tick">L’application reconnaîtra votre visage.</string>
-    <string name="identhub_fourthline_welcome_container_second_tick">Prouvez que vous êtes bien en vie en suivant les instructions à l’écran.</string>
-    <string name="identhub_fourthline_welcome_container_description">Assurez-vous que l’éclairage est suffisant pour votre selfie. Si vous portez des lunettes, veillez à ce qu’elles ne créent pas de reflets.</string>
-    <string name="identhub_fourthline_welcome_container_notice">Si le scan ne parvient pas à reconnaître votre visage, une erreur se produit après 10 secondes et vous devrez recommencer le processus de scan du selfie.</string>
     <string name="identhub_fourthline_welcome_container_continue_button">Continuer</string>
     <string name="identhub_fourthline_permission_rationale_title">Autorisations</string>
     <string name="identhub_fourthline_permission_rationale_message">Nous ne pouvons pas terminer le processus d’identification sans ces autorisations. Veuillez autoriser l’accès pour compléter le processus d’identification.</string>

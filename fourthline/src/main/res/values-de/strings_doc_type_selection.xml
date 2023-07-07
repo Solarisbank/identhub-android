@@ -7,5 +7,4 @@
     <string name="identhub_location_fetching_error_title">Location error</string>
     <string name="identhub_location_fetching_error_message">Location was not obtained</string>
     <string name="identhub_doc_type_retry_button">Erneut versuchen</string>
-    <string name="identhub_fourthline_location_permission_rationale_message">Wir benötigen Zugriff auf Ihren Standort, um Sie zu identifizieren.</string>
 </resources>

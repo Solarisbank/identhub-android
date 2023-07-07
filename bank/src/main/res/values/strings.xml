@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_bank_establishing_connection_text">Establishing secure connection to your bank…</string>
+    <string name="identhub_bank_iban_description">Please enter the IBAN of your German bank account. Unfortunately, joint accounts are not supported.</string>
+    <string name="identhub_bank_iban_secured_text">Your data is secured with encryption</string>
+    <string name="identhub_bank_iban_title">Enter your IBAN</string>
+    <string name="identhub_bank_payment_verification_description">Continue to sign documents to finish your identification process.</string>
+    <string name="identhub_bank_payment_verification_title">Payment verification successful</string>
+</resources>

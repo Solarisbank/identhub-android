@@ -8,8 +8,6 @@
     <string name="identhub_iban_verification_retry_button">Réessayer</string>
     <string name="identhub_iban_verification_invalid_iban_retry_button">Réessayer avec un IBAN différent</string>
     <string name="identhub_iban_verification_invalid_iban_ok_button">S’identifier avec une autre méthode</string>
-    <string name="identhub_iban_verification_about_identity_verification_title">À propos de la vérification de l’identité</string>
-    <string name="identhub_iban_verification_about_identity_verification_message">Il vous sera demandé de créer une signature électronique en vous connectant à votre compte bancaire existant, où une transaction de référence automatique de 5 cents sera lancée pour fournir une preuve. Vos 5 centimes seront automatiquement reversés sur votre compte par la suite.</string>
     <string name="identhub_iban_verification_terms_agreement">J’accepte la %1$s et les %2$s</string>
     <string name="identhub_iban_verification_terms_agreement_terms">Conditions générales</string>
     <string name="identhub_iban_verification_terms_agreement_privacy">Déclaration de confidentialité</string>

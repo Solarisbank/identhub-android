@@ -29,19 +29,19 @@ fun View.onLayoutMeasuredOnce(action: (View) -> Unit) = viewTreeObserver.addOnGl
 
 
 fun SelfieScannerStep.asString(context: Context) =  when (this) {
-    SelfieScannerStep.SELFIE -> context.resources.getString(R.string.identhub_selfie_intro)
-    SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.identhub_selfie_turn_left)
-    SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.identhub_selfie_turn_right)
+    SelfieScannerStep.SELFIE -> context.resources.getString(R.string.identhub_fourthline_selfie_scan_title)
+    SelfieScannerStep.TURN_HEAD_LEFT -> context.resources.getString(R.string.identhub_fourthline_selfie_scan_step_left)
+    SelfieScannerStep.TURN_HEAD_RIGHT -> context.resources.getString(R.string.identhub_fourthline_selfie_scan_step_right)
 }
 
 fun SelfieScannerWarning.asString(context: Context) = when (this) {
-    SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.identhub_selfie_warning_not_detected)
-    SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.identhub_selfie_warning_not_in_frame)
-    SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.identhub_selfie_warning_too_close)
-    SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.identhub_selfie_warning_too_far)
+    SelfieScannerWarning.FACE_NOT_DETECTED -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_not_detected)
+    SelfieScannerWarning.FACE_NOT_IN_FRAME -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_face_in_frame)
+    SelfieScannerWarning.FACE_TOO_CLOSE -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_phone_too_close)
+    SelfieScannerWarning.FACE_TOO_FAR -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_phone_too_far)
     SelfieScannerWarning.FACE_YAW_TOO_BIG -> context.resources.getString(R.string.identhub_selfie_warning_yaw_too_big)
-    SelfieScannerWarning.EYES_CLOSED -> context.resources.getString(R.string.identhub_selfie_warning_eyes_closed)
-    SelfieScannerWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.identhub_selfie_warning_device_not_steady)
+    SelfieScannerWarning.EYES_CLOSED -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_eyes)
+    SelfieScannerWarning.DEVICE_NOT_STEADY -> context.resources.getString(R.string.identhub_fourthline_selfie_warning_device_steadiness)
 }
 
 fun SelfieScannerError.asString(context: Context) = when (this) {
@@ -82,12 +82,12 @@ fun DocumentScannerError.asString(context: Context) = when (this) {
 fun DocumentScannerStep.asString(context: Context): CharSequence {
     val resource = when(fileSide) {
         DocumentFileSide.FRONT -> {
-            if (isAngled) R.string.identhub_document_scanner_side_front_angled_title
-            else R.string.identhub_document_scanner_side_front_title
+            if (isAngled) R.string.identhub_fourthline_doc_scan_angled
+            else R.string.identhub_fourthline_doc_scan_front
         }
         DocumentFileSide.BACK -> {
-            if (isAngled) R.string.identhub_document_scanner_side_back_angled_title
-            else R.string.identhub_document_scanner_side_back_title
+            if (isAngled) R.string.identhub_fourthline_doc_scan_back_angled
+            else R.string.identhub_fourthline_doc_scan_back
         }
         DocumentFileSide.INSIDE_LEFT -> {
             if (isAngled) R.string.identhub_document_scanner_side_inside_left_angled_title

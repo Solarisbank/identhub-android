@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_bank_establishing_connection_text">Estableciendo conexión segura con su banco...</string>
+    <string name="identhub_bank_iban_description">Introduzca el IBAN de su cuenta bancaria alemana. Desafortunadamente, las cuentas conjuntas no son compatibles. Sus datos están encriptados.</string>
+    <string name="identhub_bank_iban_secured_text">Sus datos están encriptados.</string>
+    <string name="identhub_bank_iban_title">Introduzca su IBAN</string>
+    <string name="identhub_bank_payment_verification_description">Continúa firmando los documentos para finalizar tu proceso de identificación.</string>
+    <string name="identhub_bank_payment_verification_title">Verificación del pago realizada con éxito</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="identhub_bank_establishing_connection_text">Verifica in corso...</string>
+    <string name="identhub_bank_iban_description">La preghiamo di inserire l´IBAN del Suo conto tedesco. Purtroppo non é possibile inserire un conto corrente cointestato. I suoi dati sono criptati.</string>
+    <string name="identhub_bank_iban_secured_text">I suoi dati sono criptati.</string>
+    <string name="identhub_bank_iban_title">Inserisca il suo IBAN</string>
+    <string name="identhub_bank_payment_verification_description">Firma i documenti per completare il processo di identificazione.</string>
+    <string name="identhub_bank_payment_verification_title">Verifica del pagamento riuscita</string>
+</resources>

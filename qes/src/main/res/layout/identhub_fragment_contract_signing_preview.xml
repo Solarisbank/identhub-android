@@ -41,14 +41,15 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_contract_signing_preview_title" />
+                android:text="@string/identhub_qes_doc_title" />
+
             <TextView
                 android:id="@+id/subtitle"
                 style="@style/IdentHubTextView.ParagraphText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
-                android:text="@string/identhub_contract_signing_preview_subtitle" />
+                android:text="@string/identhub_qes_doc_description" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/documentsList"

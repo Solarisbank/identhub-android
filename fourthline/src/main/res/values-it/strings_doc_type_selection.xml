@@ -7,5 +7,4 @@
     <string name="identhub_location_fetching_error_title">Errore di posizione</string>
     <string name="identhub_location_fetching_error_message">La posizione non è stata ottenuta</string>
     <string name="identhub_doc_type_retry_button">Riprovare</string>
-    <string name="identhub_fourthline_location_permission_rationale_message">Le richiediamo accesso alla posizione per poterla identificare.</string>
 </resources>
