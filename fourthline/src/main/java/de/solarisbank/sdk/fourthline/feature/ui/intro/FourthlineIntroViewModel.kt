@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.feature.ui.terms
+package de.solarisbank.sdk.fourthline.feature.ui.intro
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

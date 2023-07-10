@@ -4,10 +4,10 @@ import android.os.Bundle
 import de.solarisbank.identhub.session.module.IdenthubModuleResolver
 import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.identhub.session.module.ResolvedModule
+import de.solarisbank.identhub.session.module.outcome.TermsModuleOutcome
 import de.solarisbank.identhub.session.module.outcome.PhoneModuleOutcome
 import de.solarisbank.sdk.data.IdenthubResult
 import de.solarisbank.sdk.data.IdentificationStep
-import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 
 class MainCoordinator(
@@ -17,14 +17,24 @@ class MainCoordinator(
 ) : Navigator {
 
     private var phoneVerified = false
+    private var termsAndConditionsAccepted = false
     private var firstStep: String? = null
 
     fun start(firstStep: String) {
         this.firstStep = firstStep
+        processStartup()
+    }
+
+    private fun processStartup() {
+        if (!termsAndConditionsAccepted)
+            termsAndConditionsAccepted = configStorage.get().isTermsPreAccepted
+
         if (!phoneVerified)
             phoneVerified = configStorage.get().isPhoneNumberVerified
 
-        if (!phoneVerified) {
+        if (!termsAndConditionsAccepted) {
+            handleStep(IdentificationStep.TERMS_AND_CONDITIONS.destination)
+        } else if (!phoneVerified) {
             handleStep(IdentificationStep.MOBILE_NUMBER.destination)
         } else {
             goToFirstStep()
@@ -68,9 +78,15 @@ class MainCoordinator(
     }
 
     private fun handleOtherOutcome(outcome: Any) {
-        if (outcome is PhoneModuleOutcome) {
-            phoneVerified = true
-            goToFirstStep()
+        when (outcome) {
+            is PhoneModuleOutcome -> {
+                phoneVerified = true
+                processStartup()
+            }
+            is TermsModuleOutcome -> {
+                termsAndConditionsAccepted = true
+                processStartup()
+            }
         }
     }
 

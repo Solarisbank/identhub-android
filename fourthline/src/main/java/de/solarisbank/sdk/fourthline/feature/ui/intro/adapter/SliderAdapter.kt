@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.feature.ui.terms.adapter
+package de.solarisbank.sdk.fourthline.feature.ui.intro.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

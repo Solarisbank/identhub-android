@@ -8,7 +8,4 @@
     <string name="identhub_iban_verification_retry_button">Reintentar</string>
     <string name="identhub_iban_verification_invalid_iban_retry_button">Vuelve a intentarlo con otro IBAN</string>
     <string name="identhub_iban_verification_invalid_iban_ok_button">Identifícate con un método alternativo</string>
-    <string name="identhub_iban_verification_terms_agreement">Estoy de acuerdo con la %1$s y los %2$s</string>
-    <string name="identhub_iban_verification_terms_agreement_terms">Términos y condiciones</string>
-    <string name="identhub_iban_verification_terms_agreement_privacy">Declaración de privacidad</string>
 </resources>

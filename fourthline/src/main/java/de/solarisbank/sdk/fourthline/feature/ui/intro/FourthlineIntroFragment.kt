@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.feature.ui.terms
+package de.solarisbank.sdk.fourthline.feature.ui.intro
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -22,8 +22,8 @@ import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.terms.adapter.Slide
-import de.solarisbank.sdk.fourthline.feature.ui.terms.adapter.SlideAdapter
+import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.Slide
+import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.SlideAdapter
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,7 +45,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     private val viewModel: TermsAndConditionsViewModel by viewModel()
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.identhub_fragment_terms_and_condition, container, false)
+        return inflater.inflate(R.layout.identhub_fragment_fourthline_intro, container, false)
                 .also {
                     submitButton = it.findViewById(R.id.submitButton)
                     checkBox = it.findViewById(R.id.namirialTermsCheckBox)

@@ -35,7 +35,7 @@ import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.intro.TermsAndConditionsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

@@ -6,6 +6,7 @@ import de.solarisbank.identhub.session.module.IdenthubModules.BankClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.FourthlineClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.PhoneClassName
 import de.solarisbank.identhub.session.module.IdenthubModules.QESClassName
+import de.solarisbank.identhub.session.module.IdenthubModules.TermsAndConditionsClassName
 import de.solarisbank.sdk.logger.IdLogger
 import de.solarisbank.sdk.module.abstraction.IdenthubFlow
 import kotlin.reflect.full.createInstance
@@ -40,6 +41,8 @@ class IdenthubModuleResolver {
                 ResolvedModule.Module(FourthlineClassName, nextStep)
             MOBILE_NUMBER ->
                 ResolvedModule.Module(PhoneClassName, nextStep)
+            TERMS_AND_CONDITIONS ->
+                ResolvedModule.Module(TermsAndConditionsClassName, nextStep)
             ABORT -> ResolvedModule.Abort
             null -> ResolvedModule.UnknownModule
         }

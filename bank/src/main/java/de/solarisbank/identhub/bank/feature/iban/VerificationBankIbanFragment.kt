@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +17,7 @@ import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.ButtonStyle
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.buttonDisabled
-import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.feature.view.hideKeyboard
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -37,9 +34,6 @@ class VerificationBankIbanFragment : BaseFragment() {
     private var ibanInputErrorLabel: TextView? = null
     private var progressBar: ProgressBar? = null
     private var submitButton: Button? = null
-    private var termsCheckBox: CheckBox? = null
-    private var termsDisclaimer: TextView? = null
-    private var termsLayout: View? = null
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_verification_bank_iban, container, false)
@@ -48,17 +42,12 @@ class VerificationBankIbanFragment : BaseFragment() {
                     ibanInputErrorLabel = it.findViewById(R.id.errorMessage)
                     progressBar = it.findViewById(R.id.progressBar)
                     submitButton = it.findViewById(R.id.submitButton)
-                    termsCheckBox = it.findViewById(R.id.termsCheckBox)
-                    termsCheckBox?.setOnCheckedChangeListener { _, _ -> updateSubmitButtonState() }
-                    termsDisclaimer = it.findViewById(R.id.termsDisclaimer)
-                    termsLayout = it.findViewById(R.id.termsLayout)
+                    updateSubmitButtonState()
                 }
     }
 
     override fun customizeView(view: View) {
         submitButton?.customize(customization, ButtonStyle.Primary)
-        termsCheckBox?.customize(customization)
-        termsDisclaimer?.customizeLinks(customization)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,14 +58,6 @@ class VerificationBankIbanFragment : BaseFragment() {
 
     private fun observeVerifyResult() {
         ibanViewModel.getVerificationStateLiveData().observe(viewLifecycleOwner) { setState(it) }
-        ibanViewModel.getTermsAgreedLiveData().observe(viewLifecycleOwner) { agreed ->
-            if (agreed) {
-                termsCheckBox?.isChecked = true
-                termsLayout?.isVisible = false
-            } else {
-                termsCheckBox?.isVisible = true
-            }
-        }
         sharedViewModel.navigator = navigator
     }
 
@@ -88,10 +69,8 @@ class VerificationBankIbanFragment : BaseFragment() {
         } else {
             Timber.d("setState 2")
             ibanNumber!!.isEnabled = state.isIbanNumberEnabled
-            termsCheckBox!!.isEnabled = state.isIbanNumberEnabled
             progressBar!!.isVisible = state.isProgressBarShown
             ibanInputErrorLabel!!.visibility = state.ibanInputErrorLabelVisibility
-            submitButton!!.isEnabled = state.isSubmitButtonEnabled && termsCheckBox!!.isChecked
             if (state.isProgressBarShown) {
                 submitButton?.visibility = View.INVISIBLE
             } else {
@@ -141,9 +120,8 @@ class VerificationBankIbanFragment : BaseFragment() {
     }
 
     private fun updateSubmitButtonState() {
-        //TODO checkbox logic will be moved to new screen once implemented, lets leave it as it is now
         submitButton?.apply {
-            isEnabled = isInputFilled() && termsCheckBox!!.isChecked
+            isEnabled = isInputFilled()
             buttonDisabled(!isEnabled)
         }
     }
@@ -166,7 +144,6 @@ class VerificationBankIbanFragment : BaseFragment() {
             }
         }
         submitButton?.setOnClickListener { submit() }
-        setTermsText()
     }
 
     private fun submit() {
@@ -174,16 +151,6 @@ class VerificationBankIbanFragment : BaseFragment() {
         val iban = ibanNumber!!.text.toString().filter { !it.isWhitespace() }
         sharedViewModel.iban = iban
         ibanViewModel.onSubmitButtonClicked(iban)
-    }
-
-    private fun setTermsText() {
-        val termsPartText = getString(R.string.identhub_iban_verification_terms_agreement_terms)
-        val privacyPartText = getString(R.string.identhub_iban_verification_terms_agreement_privacy)
-        val termsText = getString(R.string.identhub_iban_verification_terms_agreement, termsPartText, privacyPartText)
-        val spanned = termsText.linkOccurrenceOf(termsPartText, termsLink)
-        spanned.linkOccurrenceOf(privacyPartText, privacyLink)
-        termsDisclaimer?.text = spanned
-        termsDisclaimer?.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private val ibanTextValidator = object : TextWatcher {
@@ -237,16 +204,11 @@ class VerificationBankIbanFragment : BaseFragment() {
         ibanInputErrorLabel = null
         progressBar = null
         submitButton = null
-        termsCheckBox = null
-        termsDisclaimer = null
-        termsLayout = null
         super.onDestroyView()
     }
 
     companion object {
         private const val MIN_IBAN_LENGTH = 15
-        private const val privacyLink = "https://www.solarisbank.com/en/privacy-policy/"
-        private const val termsLink = "https://www.solarisbank.com/en/customer-information/"
     }
 }
 

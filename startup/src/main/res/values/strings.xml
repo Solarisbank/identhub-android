@@ -3,10 +3,12 @@
     <string name="identhub_phone_verification_description">Enter the 6-digit code sent to your mobile number %1$s:</string>
     <string name="identhub_phone_verification_request_code">"Request a new code in "</string>
     <string name="identhub_phone_verification_send_new_code">Send a new code</string>
-    <string name="identhub_phone_verification_success_description">For the next step please have your IBAN and login credentials for your online banking at hand.</string>
-    <string name="identhub_phone_verification_success_title">Phone verification succesful!</string>
     <string name="identhub_phone_verification_title">Confirm phone</string>
     <string name="identhub_terms_and_conditions_checkbox_text">I agree to the %1$s and %2$s</string>
     <string name="identhub_terms_and_conditions_info">In order to proceed, please carefully read and agree to the Privacy Statement and Terms &amp; Conditions policies</string>
     <string name="identhub_terms_and_conditions_title">Terms &amp; Conditions</string>
+    <string name="identhub_terms_agreement_terms">Terms &amp; Conditions</string>
+    <string name="identhub_terms_agreement_privacy">Privacy Statement</string>
+    <string name="identhub_terms_agreement">I agree to the %1$s and %2$s</string>
+    <string name="identhub_terms_and_conditions_button_continue">Continue</string>
 </resources>

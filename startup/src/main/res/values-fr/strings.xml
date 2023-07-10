@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="identhub_terms_agreement_terms">Conditions générales</string>
+    <string name="identhub_terms_agreement_privacy">Déclaration de confidentialité</string>
+    <string name="identhub_terms_agreement">J’accepte la %1$s et les %2$s</string>
     <string name="identhub_phone_verification_description">Saisissez le code à 6 chiffres envoyé à votre numéro de téléphone mobile %1$s</string>
     <string name="identhub_phone_verification_request_code">Demander un nouveau code</string>
     <string name="identhub_phone_verification_send_new_code">Envoyer un nouveau code</string>
@@ -7,4 +10,5 @@
     <string name="identhub_terms_and_conditions_checkbox_text">J’accepte la %1$s et les %2$s</string>
     <string name="identhub_terms_and_conditions_info">Afin de poursuivre, veuillez lire attentivement et accepter la déclaration de confidentialité et les conditions générales d’utilisation</string>
     <string name="identhub_terms_and_conditions_title">Conditions générales</string>
+    <string name="identhub_terms_and_conditions_button_continue">Continuer</string>
 </resources>

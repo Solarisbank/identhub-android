@@ -1,4 +1,4 @@
-package de.solarisbank.sdk.fourthline.feature.ui.terms
+package de.solarisbank.sdk.fourthline.feature.ui.intro
 
 import android.content.Context
 import android.util.AttributeSet

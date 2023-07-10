@@ -51,7 +51,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <de.solarisbank.sdk.fourthline.feature.ui.terms.ClassicWelcomeView
+            <de.solarisbank.sdk.fourthline.feature.ui.intro.ClassicWelcomeView
                 android:id="@+id/classicWelcomeView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

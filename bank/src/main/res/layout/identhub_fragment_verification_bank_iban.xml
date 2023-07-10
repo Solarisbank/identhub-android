@@ -108,33 +108,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/ibanInputView"
                 tools:visibility="visible" />
 
-            <LinearLayout
-                android:id="@+id/termsLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/identhub_terms_and_conditions_margin"
-                app:layout_constraintTop_toBottomOf="@+id/errorMessage"
-                app:layout_constraintStart_toStartOf="@+id/errorMessage"
-                app:layout_constraintEnd_toEndOf="@+id/errorMessage"
-                android:orientation="horizontal"
-                android:clipToPadding="false">
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/termsCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/termsDisclaimer"
-                    style="@style/IdentHubTextView.ParagraphText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/identhub_margin_4"
-                    android:layout_marginStart="@dimen/identhub_margin_8"
-                    tools:text="I’ve read and accepted the Terms and Conditions" />
-
-            </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

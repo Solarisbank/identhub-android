@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/termsAndConditionsFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.terms.TermsAndConditionsFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.intro.TermsAndConditionsFragment"
         android:label="TermsAndConditionsFragment"
         >
         <action
