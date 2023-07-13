@@ -1,3 +1,9 @@
 package de.solarisbank.identhub.startup.model
 
-data class VerificationPhoneResponse(val id: String, val number: String, val isVerified: Boolean)
+import com.squareup.moshi.Json
+
+data class VerificationPhoneResponse(
+    val id: String,
+    val number: String,
+    @Json(name = "verified") val isVerified: Boolean,
+)
