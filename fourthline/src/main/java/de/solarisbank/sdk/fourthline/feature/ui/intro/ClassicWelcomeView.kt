@@ -11,7 +11,7 @@ class ClassicWelcomeView @JvmOverloads constructor(
 
     init {
         orientation = VERTICAL
-        inflate(context, R.layout.identhub_view_classic_welcome, this)
+        inflate(context, R.layout.identhub_view_orca_welcome, this)
     }
 
 }

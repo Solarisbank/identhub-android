@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="identhub_fourthline_doc_result_confirmation_warning_label">Confermi, per favore</string>
     <string name="identhub_fourthline_doc_result_description">Si prega di confermare la correttezza dei dati del documento.</string>
+    <string name="identhub_fourthline_doc_result_empty_warning_label">Entri, per favore</string>
     <string name="identhub_fourthline_doc_result_expiry_date_input">Data di scadenza / valido fino al</string>
     <string name="identhub_fourthline_doc_result_issue_date_input">Data di emissione</string>
     <string name="identhub_fourthline_doc_result_number_input">Documento/Numero ID</string>
@@ -9,15 +11,19 @@
     <string name="identhub_fourthline_doc_scan_back">Scansiona il retro del documento</string>
     <string name="identhub_fourthline_doc_scan_back_angled">Scansiona il retro del documento inclinato</string>
     <string name="identhub_fourthline_doc_scan_front">Scansiona il fronte del documento</string>
-    <string name="identhub_fourthline_doctype_title">Il tuo documento d’identità</string>
+    <string name="identhub_fourthline_doctype_description">Seleziona il tuo documento di identità:</string>
+    <string name="identhub_fourthline_doctype_id_card">Carta d’identità elettronica</string>
     <string name="identhub_fourthline_doctype_paper_id">C. d’identità cartacea</string>
     <string name="identhub_fourthline_doctype_passport">Passaporto</string>
-    <string name="identhub_fourthline_doctype_description">Seleziona il tuo documento di identità:</string>
+    <string name="identhub_fourthline_doctype_title">Il tuo documento d’identità</string>
     <string name="identhub_fourthline_health_card_instructions_description">Fornire il codice fiscale è obbligatorio ai fini dell\'apertura di un conto bancario. Al fine di poter continuare il process, ti sarà richiesto di scansionare la tua tessera sanitaria nazionale.\n\nPer favore tieni pronta la tua tessere sanitaria nazionale per quando ti verrà richiesto di scansionarla.</string>
     <string name="identhub_fourthline_health_card_instructions_title">Scansione della tessera sanitaria</string>
     <string name="identhub_fourthline_kyc_result_label">I tuoi dati sono stati confermati con successo</string>
     <string name="identhub_fourthline_kyc_result_title">Congratulazioni, la verifica è completa.</string>
     <string name="identhub_fourthline_kyc_upload_title">Verifica dei dati</string>
+    <string name="identhub_fourthline_orca_welcome_camera_info">Utilizziamo la vostra fotocamera per scattare un selfie e scansionare i documenti (passaporto / carta d’identità / carta d’identità).</string>
+    <string name="identhub_fourthline_orca_welcome_description">Per procedere ulteriormente, è necessario concedere l’autorizzazione ad accedere alla propria posizione e alla propria fotocamera.\n\nSi prega di notare che la perdita di connettività a Internet o l’acquisizione di un’immagine manomessa possono comportare il fallimento dell’identificazione.</string>
+    <string name="identhub_fourthline_orca_welcome_location_info">Abilitare la vostra posizione ci aiuta a identificare la vostra regione.</string>
     <string name="identhub_fourthline_selfie_instructions_description">Assicurati di avere abbastanza luce. Se indossi gli occhiali, assicurati che non siano riflettenti.</string>
     <string name="identhub_fourthline_selfie_instructions_item_one">L\'app riconoscerà il tuo viso.</string>
     <string name="identhub_fourthline_selfie_instructions_item_two">Dimostra di non essere un robot seguendo le istruzioni sullo schermo.</string>
@@ -40,6 +46,17 @@
     <string name="identhub_fourthline_successful_scan_list_item_two">Niente oscura l\'immagine?</string>
     <string name="identhub_fourthline_successful_scan_list_title">Ti sembra tutto giusto?</string>
     <string name="identhub_fourthline_successful_scan_title">Scansione riuscita</string>
-    <string name="identhub_generic_please_wait_title">Attendere prego...</string>
+    <string name="identhub_fourthline_welcome_doc_scan_description">Questo è il modo in cui ci assicuriamo che sia davvero tu e preveniamo il furto di identità.</string>
+    <string name="identhub_fourthline_welcome_doc_scan_title">Scansiona il tuo documento di identità</string>
+    <string name="identhub_fourthline_welcome_location_description">Questo è il modo in cui ci assicuriamo che sia davvero tu e preveniamo il furto di identità.</string>
+    <string name="identhub_fourthline_welcome_location_title">Attiva e carica la posizione</string>
+    <string name="identhub_fourthline_welcome_namirial_terms">Accetto i Termini e Condizioni di Namirial</string>
+    <string name="identhub_fourthline_welcome_privacy_hyperlink">Informativa sulla privacy</string>
+    <string name="identhub_fourthline_welcome_privacy_statement">Ho preso atto delle informazioni sulla protezione dei dati di SafeNed-Fourthline.</string>
+    <string name="identhub_fourthline_welcome_selfie_description">Il tuo selfie verrà confrontato con la foto sul tuo documento d\'identità. Non preoccuparti, non vedrà mai la luce del giorno, promesso!</string>
+    <string name="identhub_fourthline_welcome_selfie_title">Si prega di guardare la fotocamera</string>
+    <string name="identhub_fourthline_welcome_terms_hyperlink">Termini e Condizioni</string>
+    <string name="identhub_fourthline_welcome_title">Verificare la propria identità</string>
     <string name="identhub_loading_bottom_message">L’operazione potrebbe richiedere un paio di minuti. Non chiudere questa schermata fino al completamento della verifica.</string>
+    <string name="identhub_fourthline_terms_button_submit">Continua</string>
 </resources>

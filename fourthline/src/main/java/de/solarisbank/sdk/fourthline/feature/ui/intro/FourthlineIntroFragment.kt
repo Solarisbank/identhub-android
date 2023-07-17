@@ -53,7 +53,6 @@ class TermsAndConditionsFragment : BaseFragment() {
                     namirialTermsDescription = it.findViewById(R.id.namirialTermsDescription)
                     namirialTermsDescription?.movementMethod = LinkMovementMethod.getInstance()
                     privacyStatementTextView = it.findViewById(R.id.fourthlinePrivacyDescription)
-                    privacyStatementTextView?.movementMethod = LinkMovementMethod.getInstance()
                     namirialLayout = it.findViewById(R.id.namirialTermsLayout)
                     introSlider = it.findViewById(R.id.introViewPager)
                     slideIndicator = it.findViewById(R.id.slideIndicator)
@@ -120,10 +119,14 @@ class TermsAndConditionsFragment : BaseFragment() {
     }
 
     private fun createNamirialLinks(url: String) {
-        val description = getString(R.string.identhub_namirial_terms_and_conditions)
-        val linkPart = getString(R.string.identhub_namirial_terms_link_part)
-        val spanned = description.linkOccurrenceOf(linkPart, url, true)
-        namirialTermsDescription?.text = spanned
+        val namirialTerms = getString(R.string.identhub_fourthline_welcome_namirial_terms)
+        val namirialTermsLink = getString(R.string.identhub_fourthline_welcome_terms_hyperlink)
+        val fourthlinePrivacy = getString(R.string.identhub_fourthline_welcome_privacy_statement)
+        val fourthlinePrivacyLink = getString(R.string.identhub_fourthline_welcome_privacy_hyperlink)
+        val namirialTermsSpanned = namirialTerms.linkOccurrenceOf(namirialTermsLink, url, true)
+        val fourthlinePrivacySpanned = fourthlinePrivacy.linkOccurrenceOf(fourthlinePrivacyLink, url, true)
+        namirialTermsDescription?.text = namirialTermsSpanned
+        privacyStatementTextView?.text = fourthlinePrivacySpanned
     }
 
     private fun handleAcceptState(state: ResultState<Unit>) {
@@ -152,14 +155,14 @@ class TermsAndConditionsFragment : BaseFragment() {
     private fun getSlides(): List<Slide> {
         return listOf(
             Slide(R.drawable.identhub_ic_welcome_page_doc_scan,
-                R.string.identhub_fourthline_intro_slide_title_one,
-                R.string.identhub_fourthline_intro_slide_description_one),
+                R.string.identhub_fourthline_welcome_doc_scan_title,
+                R.string.identhub_fourthline_welcome_doc_scan_description),
             Slide(R.drawable.identhub_ic_welcome_page_selfie,
-                R.string.identhub_fourthline_intro_slide_title_two,
-                R.string.identhub_fourthline_intro_slide_description_two),
+                R.string.identhub_fourthline_welcome_selfie_title,
+                R.string.identhub_fourthline_welcome_selfie_description),
             Slide(R.drawable.identhub_ic_welcome_page_location,
-                R.string.identhub_fourthline_intro_slide_title_three,
-                R.string.identhub_fourthline_intro_slide_description_three)
+                R.string.identhub_fourthline_welcome_location_title,
+                R.string.identhub_fourthline_welcome_location_description)
         )
     }
 

@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/identhub_top_paragraph_margin"
-        android:text="@string/identhub_fourthline_terms_description_start" />
+        android:text="@string/identhub_fourthline_orca_welcome_description" />
 
     <LinearLayout
         android:id="@+id/condition1Layout"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/identhub_drawable_start_margin"
-            android:text="@string/identhub_fourthline_terms_description_list_item1" />
+            android:text="@string/identhub_fourthline_orca_welcome_location_info" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,6 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/identhub_drawable_start_margin"
-            android:text="@string/identhub_fourthline_terms_description_list_item2" />
+            android:text="@string/identhub_fourthline_orca_welcome_camera_info" />
     </LinearLayout>
 </merge>

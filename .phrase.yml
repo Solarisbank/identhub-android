@@ -10,6 +10,8 @@ phrase:
       params:
         file_format: xml
         tags: fourthline
+        format_options:
+          escape_linebreaks: true
     - file: ./bank/src/main/res/values-<locale_code>/strings.xml
       params:
         file_format: xml

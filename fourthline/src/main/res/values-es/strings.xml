@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="identhub_fourthline_doc_result_confirmation_warning_label">Por favor confirme</string>
     <string name="identhub_fourthline_doc_result_description">Confirma que la información de tu documento es correcta</string>
+    <string name="identhub_fourthline_doc_result_empty_warning_label">Favor de introducir</string>
     <string name="identhub_fourthline_doc_result_expiry_date_input">fecha de caducidad del documento</string>
     <string name="identhub_fourthline_doc_result_issue_date_input">fecha de emisión</string>
     <string name="identhub_fourthline_doc_result_number_input">número de documento</string>
@@ -9,13 +11,17 @@
     <string name="identhub_fourthline_doc_scan_back">Escanee la parte trasera del documento</string>
     <string name="identhub_fourthline_doc_scan_back_angled">Escanee de manera angular la parte trasera del documento</string>
     <string name="identhub_fourthline_doc_scan_front">Escanee la parte frontal del documento</string>
-    <string name="identhub_fourthline_doctype_title">Tu documento de identidad</string>
+    <string name="identhub_fourthline_doctype_description">Elige el tipo de documento:</string>
+    <string name="identhub_fourthline_doctype_id_card">Documento de identidad</string>
     <string name="identhub_fourthline_doctype_paper_id">Identificación de papel</string>
     <string name="identhub_fourthline_doctype_passport">Pasaporte</string>
-    <string name="identhub_fourthline_doctype_description">Elige el tipo de documento:</string>
+    <string name="identhub_fourthline_doctype_title">Tu documento de identidad</string>
     <string name="identhub_fourthline_kyc_result_label">Tus datos se han confirmado correctamente</string>
     <string name="identhub_fourthline_kyc_result_title">Enhorabuena, tu verificación se ha completado</string>
     <string name="identhub_fourthline_kyc_upload_title">Verificación de datos</string>
+    <string name="identhub_fourthline_orca_welcome_camera_info">Utilizamos su cámara para hacernos un selfie y escanear documentos (pasaporte / DNI / documento de identidad).</string>
+    <string name="identhub_fourthline_orca_welcome_description">Para seguir adelante, debe darnos permiso para acceder a su ubicación y a su cámara.\n\nTenga en cuenta que la pérdida de conectividad a Internet o una captura de imagen manipulada pueden hacer que falle su identificación.</string>
+    <string name="identhub_fourthline_orca_welcome_location_info">Habilitar su ubicación nos ayuda a identificar su región.</string>
     <string name="identhub_fourthline_selfie_instructions_description">Asegúrate de que hay suficiente luz para el selfie. Si llevas gafas, asegúrate de que no hay reflejos.</string>
     <string name="identhub_fourthline_selfie_instructions_item_one">La aplicación reconocerá su cara.</string>
     <string name="identhub_fourthline_selfie_instructions_item_two">Prueba la viveza siguiendo las instrucciones que aparecen en la pantalla.</string>
@@ -38,6 +44,17 @@
     <string name="identhub_fourthline_successful_scan_list_item_two">¿No hay nada que cubra la imagen?</string>
     <string name="identhub_fourthline_successful_scan_list_title">¿Se ve todo bien?</string>
     <string name="identhub_fourthline_successful_scan_title">Escaneo realizado con éxito</string>
-    <string name="identhub_generic_please_wait_title">Espera...</string>
+    <string name="identhub_fourthline_welcome_doc_scan_description">Con esto podemos asegurarnos de que eres realmente quien dices ser y evitar la suplantación de identidad.</string>
+    <string name="identhub_fourthline_welcome_doc_scan_title">Escanea tu documento de identidad</string>
+    <string name="identhub_fourthline_welcome_location_description">Con esto podemos asegurarnos de que eres realmente quien dices ser y evitar la suplantación de identidad.</string>
+    <string name="identhub_fourthline_welcome_location_title">Enviar tu caso</string>
+    <string name="identhub_fourthline_welcome_namirial_terms">Acepto los Términos y Condiciones de Namirial</string>
+    <string name="identhub_fourthline_welcome_privacy_hyperlink">Política de privacidad</string>
+    <string name="identhub_fourthline_welcome_privacy_statement">Reconozco la declaración de privacidad de SafeNed-Fourthline.</string>
+    <string name="identhub_fourthline_welcome_selfie_description">Tu selfie será comparado con el de tu documento de identidad. No te preocupes, nunca saldrá a la luz, ¡prometido!</string>
+    <string name="identhub_fourthline_welcome_selfie_title">Sonríe a la cámara</string>
+    <string name="identhub_fourthline_welcome_terms_hyperlink">Términos y Condiciones</string>
+    <string name="identhub_fourthline_welcome_title">Verifique su identidad</string>
     <string name="identhub_loading_bottom_message">Esto puede tardar un par de minutos, por favor no cierre esta pantalla hasta que la verificación se haya completado.</string>
+    <string name="identhub_fourthline_terms_button_submit">Siguiente</string>
 </resources>

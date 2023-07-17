@@ -37,7 +37,7 @@
                 style="@style/IdentHubTextView.TopHeaderTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/identhub_fourthline_intro_title"
+                android:text="@string/identhub_fourthline_welcome_title"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
                 app:layout_constraintStart_toEndOf="@id/start_guideline"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/identhub_text_box_label_margin"
-                    android:text="@string/identhub_namirial_terms_and_conditions" />
+                    android:text="@string/identhub_fourthline_welcome_namirial_terms" />
 
             </LinearLayout>
 
@@ -105,10 +105,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/identhub_text_box_message_label_margin"
                 android:layout_marginBottom="@dimen/identhub_margin_12"
-                android:text="@string/identhub_fourthline_privacy_statement"
-                app:layout_constraintTop_toBottomOf="@id/namirialTermsLayout"
+                android:text="@string/identhub_fourthline_welcome_privacy_statement"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/start_guideline" />
+                app:layout_constraintStart_toStartOf="@+id/start_guideline"
+                app:layout_constraintTop_toBottomOf="@id/namirialTermsLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
