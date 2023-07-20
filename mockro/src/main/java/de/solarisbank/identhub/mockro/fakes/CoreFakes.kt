@@ -35,7 +35,8 @@ class FakeInitializationDataSource: InitializationDataSource {
             phoneVerified = true,
             style = null,
             sdkLogging = false,
-            secondaryDocScanRequired = null
+            secondaryDocScanRequired = null,
+            orcaEnabled = false
         )
     }
 }

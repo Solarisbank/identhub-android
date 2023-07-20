@@ -44,6 +44,7 @@ class ContractSigningPreviewViewModelTest: StringSpec({
                         isPhoneNumberVerified = true,
                         isRemoteLoggingEnabled = false,
                         isSecondaryDocScanRequired = false,
+                        isOrcaEnabled = false,
                         firstStep = "",
                         defaultFallbackStep = "",
                         allowedRetries = 1,

@@ -36,6 +36,7 @@ class KycInfoUseCaseTest : StringSpec ({
                 isPhoneNumberVerified = true,
                 isRemoteLoggingEnabled = false,
                 isSecondaryDocScanRequired = false,
+                isOrcaEnabled = false,
                 firstStep = "",
                 defaultFallbackStep = null,
                 allowedRetries = 5,

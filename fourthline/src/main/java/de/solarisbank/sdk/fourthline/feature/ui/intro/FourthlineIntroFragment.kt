@@ -96,10 +96,12 @@ class TermsAndConditionsFragment : BaseFragment() {
     }
 
     private fun setUpInfoViews() {
-        if (resources.getBoolean(R.bool.identhub_use_old_welcome)) {
-            classicWelcomeView?.isVisible = true
-        } else {
-            setUpSlides()
+        activityViewModel.getOrcaEnabledLiveData().observe(viewLifecycleOwner) { enabled ->
+            if (enabled) {
+                classicWelcomeView?.isVisible = true
+            } else {
+                setUpSlides()
+            }
         }
     }
 
@@ -115,6 +117,7 @@ class TermsAndConditionsFragment : BaseFragment() {
                 setSlideIndicator(position)
             }
         })
+        slideIndicator?.isVisible = true
         introSlider?.isVisible = true
     }
 

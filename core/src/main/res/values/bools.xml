@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="identhub_customization_enabled">true</bool>
-    <bool name="identhub_use_old_welcome">false</bool>
 </resources>

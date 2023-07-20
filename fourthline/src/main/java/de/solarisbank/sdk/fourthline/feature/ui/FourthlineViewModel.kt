@@ -2,10 +2,11 @@ package de.solarisbank.sdk.fourthline.feature.ui
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.solarisbank.identhub.session.main.Navigator
 import de.solarisbank.identhub.session.module.ModuleOutcome
-import de.solarisbank.sdk.data.entity.Status
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.FourthlineStorage
@@ -27,6 +28,16 @@ class FourthlineViewModel (
     ) : ViewModel() {
 
     var navigator: Navigator? = null
+
+    private val orcaEnabledLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    init {
+        orcaEnabledLiveData.value = initialConfigStorage.get().isOrcaEnabled
+    }
+
+    fun getOrcaEnabledLiveData(): LiveData<Boolean> {
+        return orcaEnabledLiveData
+    }
 
     fun onPassingPossibilityOutcome(outcome: PassingPossibilityOutcome) {
         when (outcome) {

@@ -18,26 +18,16 @@ import timber.log.Timber
 class VerificationBankIbanViewModel(
     private val verifyIBanUseCase: VerifyIBanUseCase,
     private val bankIdPostUseCase: BankIdPostUseCase,
-    initialConfigStorage: InitialConfigStorage,
     private val bankConfig: BankConfig
 ) : ViewModel() {
 
     private val verifyResultLiveData: MutableLiveData<VerificationState> = MutableLiveData()
-    private val termsAgreedLiveData: MutableLiveData<Boolean> = MutableLiveData()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private var ibanAttempts = 0
 
-    init {
-        termsAgreedLiveData.value = initialConfigStorage.get().isTermsPreAccepted
-    }
-
     fun getVerificationStateLiveData(): LiveData<VerificationState> {
         return verifyResultLiveData
-    }
-
-    fun getTermsAgreedLiveData(): LiveData<Boolean> {
-        return termsAgreedLiveData
     }
 
     fun onSubmitButtonClicked(iBan: String) {
