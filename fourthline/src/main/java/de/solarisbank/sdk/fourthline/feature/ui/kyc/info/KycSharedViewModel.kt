@@ -54,6 +54,8 @@ class KycSharedViewModel(
     private val _supportedDocLiveData = MutableLiveData<PersonDataStateDto>()
     val supportedDocLiveData = _supportedDocLiveData as LiveData<PersonDataStateDto>
     private val locationBehaviorSubject = BehaviorSubject.create<Unit>()
+    private val _selfieResultCroppedBitmapLiveData = MutableLiveData<Bitmap>()
+    val selfieResultCroppedBitmapLiveData = _selfieResultCroppedBitmapLiveData as LiveData<Bitmap>
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -85,6 +87,7 @@ class KycSharedViewModel(
                 val personData = withContext(dispatchers.IO) {
                     fourthlineIdentificationUseCase.getPersonData(initialData.identification.id)
                 }
+                fourthlineStorage.rawDocumentList = personData.supportedDocumentsRaw
                 val supportedDocuments = personData.appliedDocuments()
                 if (supportedDocuments.isNullOrEmpty()) {
                     _personDataStateLiveData.value = PersonDataStateDto.EMPTY_DOCS_LIST_ERROR
@@ -145,10 +148,7 @@ class KycSharedViewModel(
 
     suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         kycInfoUseCase.updateKycWithSelfieScannerResult(result)
-    }
-
-    fun getSelfieResultCroppedBitmapLiveData(): LiveData<Bitmap> {
-        return kycInfoUseCase.selfieResultCroppedBitmapLiveData
+        _selfieResultCroppedBitmapLiveData.value = result.image.cropped
     }
 
     suspend fun updateKycInfoWithDocumentScannerStepResult(
@@ -166,8 +166,8 @@ class KycSharedViewModel(
         kycInfoUseCase.updateKycInfoWithDocumentScannerResult(docType, result)
     }
 
-    fun createKycZip(applicationContext: Context): ZipCreationStateDto {
-        return runBlocking { kycInfoUseCase.createKycZip(applicationContext) }
+    fun createKycZip(): ZipCreationStateDto {
+        return runBlocking { kycInfoUseCase.createKycZip() }
     }
 
     fun updateExpireDate(expireDate: Date) {

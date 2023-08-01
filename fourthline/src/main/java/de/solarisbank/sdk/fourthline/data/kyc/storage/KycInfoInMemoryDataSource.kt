@@ -20,10 +20,25 @@ import kotlinx.coroutines.sync.Mutex
 import timber.log.Timber
 import java.util.*
 
-class KycInfoInMemoryDataSource {
+interface KycInfoDataSource {
+    suspend fun finalizeAndGetKycInfo(): KycInfo
+    suspend fun getKycDocument(): Document
+    suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String)
+    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult)
+    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult)
+    suspend fun updateKycInfoWithDocumentSecondaryScan(docType: DocumentType, result: DocumentScannerStepResult)
+    suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult)
+    suspend fun updateIpAddress(ipAddress: String)
+    suspend fun updateKycLocation(resultLocation: Location)
+    suspend fun updateExpireDate(expireDate: Date)
+    suspend fun updateDocumentNumber(number: String)
+    suspend fun overrideKycInfo(kycInfo: KycInfo)
+}
+
+class KycInfoInMemoryDataSource: KycInfoDataSource {
 
     private val mutex: Mutex = Mutex()
-    private val kycInfo = KycInfo().also {
+    private var kycInfo = KycInfo().also {
         it.person = Person()
         it.metadata = DeviceMetadata()
     }
@@ -31,7 +46,7 @@ class KycInfoInMemoryDataSource {
     private val secondaryPagesMap = LinkedHashMap<DocPageKey, Attachment.Document>()
     private var _personDataDto: PersonDataDto? = null
 
-    suspend fun finalizeAndGetKycInfo(): KycInfo {
+    override suspend fun finalizeAndGetKycInfo(): KycInfo {
         mutex.lock()
         try {
             finalizeSecondaryDocuments()
@@ -41,10 +56,19 @@ class KycInfoInMemoryDataSource {
         }
     }
 
+    override suspend fun overrideKycInfo(kycInfo: KycInfo) {
+        mutex.lock()
+        try {
+            this.kycInfo = kycInfo
+        } finally {
+            mutex.unlock()
+        }
+    }
+
     /**
      * Provides @Document for display
      */
-    suspend fun getKycDocument(): Document {
+    override suspend fun getKycDocument(): Document {
         mutex.lock()
         try {
             return kycInfo.document!!
@@ -53,7 +77,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
+    override suspend fun updateWithPersonDataDto(personDataDto: PersonDataDto, providerName: String) {
         mutex.lock()
         Timber.d("updateWithPersonDataDto : $personDataDto")
         try {
@@ -106,7 +130,7 @@ class KycInfoInMemoryDataSource {
     }
 
     @SuppressLint("BinaryOperationInTimber")
-    suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
+    override suspend fun updateKycWithSelfieScannerResult(result: SelfieScannerResult) {
         mutex.lock()
         try {
             Timber.d("updateKycWithSelfieScannerResult : " +
@@ -125,7 +149,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateIpAddress(ipAddress: String) {
+    override suspend fun updateIpAddress(ipAddress: String) {
         mutex.lock()
         try {
             kycInfo.metadata.ipAddress = ipAddress
@@ -139,7 +163,7 @@ class KycInfoInMemoryDataSource {
      * Called from DocScanFragment.onStepSuccess()
      */
     @SuppressLint("BinaryOperationInTimber")
-    suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
+    override suspend fun updateKycInfoWithDocumentScannerStepResult(docType: DocumentType, result: DocumentScannerStepResult) {
         mutex.lock()
         try {
             Timber.d("updateKycInfoWithDocumentScannerStepResult : " +
@@ -170,7 +194,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateKycInfoWithDocumentSecondaryScan(docType: DocumentType, result: DocumentScannerStepResult) {
+    override suspend fun updateKycInfoWithDocumentSecondaryScan(docType: DocumentType, result: DocumentScannerStepResult) {
         mutex.lock()
         try {
             secondaryPagesMap[DocPageKey(docType, result.metadata.fileSide, result.metadata.isAngled)] = Attachment.Document(
@@ -189,7 +213,7 @@ class KycInfoInMemoryDataSource {
     /**
      * Retains recognized String data of the documents
      */
-    suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
+    override suspend fun updateKycInfoWithDocumentScannerResult(docType: DocumentType, result: DocumentScannerResult) {
         mutex.lock()
         try {
             obtainDocument(docType, result)
@@ -261,7 +285,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateKycLocation(resultLocation: Location) {
+    override suspend fun updateKycLocation(resultLocation: Location) {
         mutex.lock()
         try {
             kycInfo.metadata.location = Coordinate(resultLocation.latitude, resultLocation.longitude)
@@ -270,7 +294,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateExpireDate(expireDate: Date) {
+    override suspend fun updateExpireDate(expireDate: Date) {
         mutex.lock()
         try {
             kycInfo.document!!.expirationDate = expireDate
@@ -279,7 +303,7 @@ class KycInfoInMemoryDataSource {
         }
     }
 
-    suspend fun updateDocumentNumber(number: String) {
+    override suspend fun updateDocumentNumber(number: String) {
         mutex.lock()
         try {
             kycInfo.document!!.number = number

@@ -4,6 +4,6 @@ import java.net.URI
 
 sealed class ZipCreationStateDto {
     //todo describe all possible errors
-    data class SUCCESS(val uri: URI) : ZipCreationStateDto()
-    object ERROR : ZipCreationStateDto()
+    data class Success(val uri: URI) : ZipCreationStateDto()
+    object Error : ZipCreationStateDto()
 }

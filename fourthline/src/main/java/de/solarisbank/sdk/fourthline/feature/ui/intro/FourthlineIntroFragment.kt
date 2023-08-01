@@ -18,8 +18,8 @@ import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.buttonDisabled
-import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
+import de.solarisbank.sdk.fourthline.FourthlineFlow
 import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.Slide
@@ -27,7 +27,7 @@ import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.SlideAdapter
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TermsAndConditionsFragment : BaseFragment() {
+class FourthlineIntroFragment : BaseFragment() {
 
     private var introSlider: ViewPager2? = null
     private var slideIndicator: LinearLayout? = null
@@ -42,7 +42,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     private var classicWelcomeView: View? = null
 
     private val activityViewModel: FourthlineViewModel by koinNavGraphViewModel(FourthlineFlow.navigationId)
-    private val viewModel: TermsAndConditionsViewModel by viewModel()
+    private val viewModel: FourthlineIntroViewModel by viewModel()
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.identhub_fragment_fourthline_intro, container, false)
@@ -77,7 +77,7 @@ class TermsAndConditionsFragment : BaseFragment() {
 
     private fun initView() {
         updateSubmitButtonState()
-        submitButton?.setOnClickListener { viewModel.onAction(TermsAndConditionsAction.NextTapped) }
+        submitButton?.setOnClickListener { viewModel.onAction(FourthlineIntroAction.NextTapped) }
         viewModel.state().observe(viewLifecycleOwner) {
             if (it.namirialTerms != null) {
                 submitButton?.buttonDisabled(true)
@@ -134,17 +134,19 @@ class TermsAndConditionsFragment : BaseFragment() {
 
     private fun handleAcceptState(state: ResultState<Unit>) {
         when (state) {
-            is ResultState.Success -> activityViewModel.onTermsOutcome(TermsOutcome.Success)
+            is ResultState.Success -> {
+                activityViewModel.onIntroOutcome(IntroOutcome.Success)
+            }
             is ResultState.Loading -> {
                 submitButton?.visibility = View.INVISIBLE
                 progressBar?.visibility = View.VISIBLE
             }
             is ResultState.Failure -> {
                 showGenericErrorWithRetry(
-                    retryAction = { viewModel.onAction(TermsAndConditionsAction.NextTapped) },
+                    retryAction = { viewModel.onAction(FourthlineIntroAction.NextTapped) },
                     quitAction = {
-                        activityViewModel.onTermsOutcome(
-                            TermsOutcome.Failure("Could not accept Namirial terms")
+                        activityViewModel.onIntroOutcome(
+                            IntroOutcome.Failure("Could not accept Namirial terms")
                         )
                     }
                 )
@@ -152,8 +154,6 @@ class TermsAndConditionsFragment : BaseFragment() {
             is ResultState.Unknown -> { /* Ignore */ }
         }
     }
-
-
 
     private fun getSlides(): List<Slide> {
         return listOf(
@@ -208,7 +208,7 @@ class TermsAndConditionsFragment : BaseFragment() {
     }
 }
 
-sealed class TermsOutcome {
-    object Success: TermsOutcome()
-    data class Failure(val message: String): TermsOutcome()
+sealed class IntroOutcome {
+    object Success: IntroOutcome()
+    data class Failure(val message: String): IntroOutcome()
 }

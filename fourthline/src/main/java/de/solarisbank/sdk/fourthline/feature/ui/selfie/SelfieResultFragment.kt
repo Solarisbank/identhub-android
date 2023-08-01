@@ -48,7 +48,7 @@ class SelfieResultFragment : BaseFragment() {
     }
 
     private fun initView() {
-        kycSharedViewModel.getSelfieResultCroppedBitmapLiveData().observe(viewLifecycleOwner) {
+        kycSharedViewModel.selfieResultCroppedBitmapLiveData.observe(viewLifecycleOwner) {
             imageResult!!.setImageBitmap(it)
         }
 

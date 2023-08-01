@@ -14,25 +14,25 @@ import de.solarisbank.sdk.logger.IdLogger
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TermsAndConditionsViewModel(
+class FourthlineIntroViewModel(
     private val fourthlineStorage: FourthlineStorage,
     private val termsAndConditionsUseCase: TermsAndConditionsUseCase,
     private val dispatchers: IdenthubDispatchers
 ): ViewModel() {
-    private val viewState = MutableLiveData<TermsAndConditionsState>()
+    private val viewState = MutableLiveData<FourthlineIntroState>()
 
-    fun state(): LiveData<TermsAndConditionsState> = viewState
+    fun state(): LiveData<FourthlineIntroState> = viewState
 
     init {
-        viewState.value = TermsAndConditionsState(
+        viewState.value = FourthlineIntroState(
             namirialTerms = fourthlineStorage.namirialTerms,
-            acceptState = ResultState.Unknown(),
+            acceptState = ResultState.Unknown()
         )
     }
 
-    fun onAction(action: TermsAndConditionsAction) {
+    fun onAction(action: FourthlineIntroAction) {
         when (action) {
-            is TermsAndConditionsAction.NextTapped -> {
+            is FourthlineIntroAction.NextTapped -> {
                 acceptTermsAndContinue()
             }
         }
@@ -54,14 +54,13 @@ class TermsAndConditionsViewModel(
             }
         }
     }
-
 }
 
-sealed class TermsAndConditionsAction {
-    object NextTapped: TermsAndConditionsAction()
+sealed class FourthlineIntroAction {
+    object NextTapped: FourthlineIntroAction()
 }
 
-data class TermsAndConditionsState(
+data class FourthlineIntroState(
     val namirialTerms: TermsAndConditions?,
-    val acceptState: ResultState<Unit>
+    val acceptState: ResultState<Unit>,
 )

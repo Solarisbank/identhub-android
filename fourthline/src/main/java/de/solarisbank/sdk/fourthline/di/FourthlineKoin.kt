@@ -8,8 +8,8 @@ import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificatio
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationDataSource
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationRetrofitDataSource
 import de.solarisbank.sdk.fourthline.data.ip.IpApi
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoDataSource
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
-import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadApi
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadDataSource
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadRepository
@@ -29,13 +29,15 @@ import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
 import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCaseImpl
 import de.solarisbank.sdk.fourthline.domain.kyc.delete.DeleteKycInfoUseCase
 import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
-import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCaseImpl
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoZipper
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoZipperImpl
 import de.solarisbank.sdk.fourthline.domain.kyc.upload.KycUploadUseCase
 import de.solarisbank.sdk.fourthline.domain.location.LocationUseCase
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.upload.KycUploadViewModel
-import de.solarisbank.sdk.fourthline.feature.ui.intro.TermsAndConditionsViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.intro.FourthlineIntroViewModel
+import de.solarisbank.sdk.fourthline.feature.ui.orca.OrcaViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -50,9 +52,9 @@ private val fourthlineModule = module {
     factory { get<Retrofit>().create(PersonDataApi::class.java) }
     factory { FourthlineIdentificationUseCase(get(), get(), get(), get(), get()) }
     factory { DeleteKycInfoUseCase(get()) }
-    single { KycInfoInMemoryDataSource() }
-    single { KycInfoRepository(get()) }
-    factory<KycInfoUseCase> { KycInfoUseCaseImpl(get(), get()) }
+    single<KycInfoDataSource> { KycInfoInMemoryDataSource() }
+    factory<KycInfoZipper> { KycInfoZipperImpl(get()) }
+    factory { KycInfoUseCase(get(), get(), get()) }
     single<LocationDataSource> { LocationDataSourceImpl(get()) }
     single<LocationRepository> { LocationRepositoryImpl(get()) }
     factory { get<Retrofit>().create(IpApi::class.java) }
@@ -79,7 +81,10 @@ private val fourthlineModule = module {
         KycUploadViewModel(get())
     }
     viewModel {
-        TermsAndConditionsViewModel(get(), get(), get())
+        FourthlineIntroViewModel(get(), get(), get())
+    }
+    viewModel {
+        OrcaViewModel(get(), get(), get())
     }
 }
 

@@ -20,7 +20,8 @@ import de.solarisbank.sdk.fourthline.feature.ui.scan.DocTypeSelectionOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieResultOutcome
 import de.solarisbank.sdk.fourthline.feature.ui.selfie.SelfieInstructionsOutcome
-import de.solarisbank.sdk.fourthline.feature.ui.intro.TermsOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.intro.IntroOutcome
+import de.solarisbank.sdk.fourthline.feature.ui.orca.OrcaOutcome
 
 class FourthlineViewModel (
         private val initialConfigStorage: InitialConfigStorage,
@@ -42,7 +43,7 @@ class FourthlineViewModel (
     fun onPassingPossibilityOutcome(outcome: PassingPossibilityOutcome) {
         when (outcome) {
             is PassingPossibilityOutcome.Success -> {
-                navigateTo(R.id.action_passingPossibilityFragment_to_termsAndConditionsFragment)
+                navigateTo(R.id.action_passingPossibilityFragment_to_fourthlineIntroFragment)
             }
             is PassingPossibilityOutcome.Failed -> {
                 setFourthlineIdentificationFailure(outcome.message)
@@ -50,12 +51,27 @@ class FourthlineViewModel (
         }
     }
 
-    fun onTermsOutcome(outcome: TermsOutcome) {
+    fun onIntroOutcome(outcome: IntroOutcome) {
         when (outcome) {
-            is TermsOutcome.Success -> {
-                navigateTo(R.id.action_termsAndConditionsFragment_to_documentTypeSelectionFragment)
+            is IntroOutcome.Success -> {
+                if (initialConfigStorage.get().isOrcaEnabled) {
+                    navigateTo(R.id.action_fourthlineIntroFragment_to_orcaFragment)
+                } else {
+                    navigateTo(R.id.action_fourthlineIntroFragment_to_documentTypeSelectionFragment)
+                }
             }
-            is TermsOutcome.Failure -> {
+            is IntroOutcome.Failure -> {
+                setFourthlineIdentificationFailure(outcome.message)
+            }
+        }
+    }
+
+    fun onOrcaOutcome(outcome: OrcaOutcome) {
+        when (outcome) {
+            is OrcaOutcome.Success -> {
+                navigateTo(R.id.action_orcaFragment_to_kycUploadFragment)
+            }
+            is OrcaOutcome.Failure -> {
                 setFourthlineIdentificationFailure(outcome.message)
             }
         }

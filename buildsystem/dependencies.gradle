@@ -25,10 +25,9 @@ ext {
             "androidx.fragment:fragment-ktx:$fragmentVersion",
     ]
 
-    fourthlineVersion = "2.25.0"
+    fourthlineVersion = "2.26.0"
     fourthline = [
-            "com.fourthline:fourthline-kyc:$fourthlineVersion",
-            "com.fourthline:fourthline-vision:$fourthlineVersion"
+            "com.fourthline:fourthline-sdk:$fourthlineVersion"
     ]
 
     lifecycleVersion = "2.5.1"

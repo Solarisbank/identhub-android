@@ -45,8 +45,8 @@ class KycUploadFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         kycUploadViewModel.uploadingStatus.observe(viewLifecycleOwner) { it.content?.let { statusDto -> setUiState(statusDto) }}
         //todo move to usecase
-        val kycCreationState = kycSharedViewModel.createKycZip(requireContext().applicationContext)
-        if (kycCreationState is ZipCreationStateDto.SUCCESS) {
+        val kycCreationState = kycSharedViewModel.createKycZip()
+        if (kycCreationState is ZipCreationStateDto.Success) {
             kycUploadViewModel.uploadKyc(kycCreationState.uri)
         } else {
             showGenericAlertFragment {  }

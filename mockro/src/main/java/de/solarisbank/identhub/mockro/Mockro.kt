@@ -12,12 +12,13 @@ import de.solarisbank.sdk.data.di.koin.MockroPersona
 import de.solarisbank.sdk.data.di.koin.MockroOptions
 import de.solarisbank.sdk.data.initial.InitializationDataSource
 import de.solarisbank.sdk.fourthline.data.identification.FourthlineIdentificationDataSource
+import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoDataSource
 import de.solarisbank.sdk.fourthline.data.kyc.upload.KycUploadDataSource
 import de.solarisbank.sdk.fourthline.data.location.LocationDataSource
 import de.solarisbank.sdk.fourthline.data.person.PersonDataSource
 import de.solarisbank.sdk.fourthline.data.terms.TermsAndConditionsUseCase
 import de.solarisbank.sdk.fourthline.domain.ip.IpObtainingUseCase
-import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoUseCase
+import de.solarisbank.sdk.fourthline.domain.kyc.storage.KycInfoZipper
 import org.koin.core.Koin
 import org.koin.dsl.module
 
@@ -59,7 +60,8 @@ private val fourthlineMockroModule = module {
     factory<PersonDataSource> { FakePersonDataSource() }
     factory<IpObtainingUseCase> {  FakeIpObtainingUseCase() }
     factory<KycUploadDataSource> { FakeKycUploadDataSource() }
-    factory<KycInfoUseCase> { FakeKycInfoUseCase() }
+    factory<KycInfoDataSource> { FakeKycInfoDataSource() }
+    factory<KycInfoZipper> { FakeKycInfoZipper() }
     factory<LocationDataSource> { FakeLocationDataSource() }
     factory<TermsAndConditionsUseCase> { FakeTermsUseCase() }
 }

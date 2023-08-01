@@ -7,6 +7,7 @@ import de.solarisbank.sdk.fourthline.data.dto.TermsAndConditions
 
 private const val IdCardSelectedKey = "isIdCardSelected"
 private const val NamirialTermsKey = "namirialTermsKey"
+private const val RawDocumentListKey = "rawCountryList"
 
 class FourthlineStorage(private val storage: PersistentStorage) {
     var isIdCardSelected: Boolean
@@ -16,4 +17,8 @@ class FourthlineStorage(private val storage: PersistentStorage) {
     var namirialTerms: TermsAndConditions?
     get() = storage.get(NamirialTermsKey)
     set(value) = storage.put(NamirialTermsKey, value)
+
+    var rawDocumentList: String?
+    get() = storage.getString(RawDocumentListKey)
+    set(value) = storage.putString(RawDocumentListKey, value)
 }

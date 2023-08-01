@@ -13,7 +13,6 @@ import de.solarisbank.sdk.data.initial.IdenthubInitialConfig
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
 import de.solarisbank.sdk.fourthline.data.dto.Location
 import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoInMemoryDataSource
-import de.solarisbank.sdk.fourthline.data.kyc.storage.KycInfoRepository
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.every
 import io.mockk.mockk
@@ -46,7 +45,7 @@ class KycInfoUseCaseTest : StringSpec ({
             )
         )
 
-        return KycInfoUseCaseImpl(KycInfoRepository(KycInfoInMemoryDataSource()), storage)
+        return KycInfoUseCase(KycInfoInMemoryDataSource(), KycInfoZipperImpl(mockk()), storage)
     }
 
     "checkUpdateWithPersonDataDto" {

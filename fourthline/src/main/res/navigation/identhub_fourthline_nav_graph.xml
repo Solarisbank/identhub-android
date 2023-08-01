@@ -41,21 +41,24 @@
     </action>
 
     <fragment
-        android:id="@+id/termsAndConditionsFragment"
-        android:name="de.solarisbank.sdk.fourthline.feature.ui.intro.TermsAndConditionsFragment"
-        android:label="TermsAndConditionsFragment"
+        android:id="@+id/fourthlineIntroFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.intro.FourthlineIntroFragment"
+        android:label="FourthlineIntroFragment"
         >
         <action
-            android:id="@+id/action_termsAndConditionsFragment_to_documentTypeSelectionFragment"
+            android:id="@+id/action_fourthlineIntroFragment_to_documentTypeSelectionFragment"
             app:destination="@id/documentTypeSelectionFragment" />
         <action
-            android:id="@+id/action_termsAndConditionsFragment_to_webViewFragment"
+            android:id="@+id/action_fourthlineIntroFragment_to_webViewFragment"
             app:destination="@id/webViewFragment">
             <argument
                 android:name="WEB_VIEW_URL_KEY"
                 app:argType="string"
                 />
         </action>
+        <action
+            android:id="@+id/action_fourthlineIntroFragment_to_orcaFragment"
+            app:destination="@id/orcaFragment" />
     </fragment>
 
     <fragment
@@ -64,8 +67,8 @@
         android:label="PassingPossibilityFragment"
         >
         <action
-            android:id="@+id/action_passingPossibilityFragment_to_termsAndConditionsFragment"
-            app:destination="@id/termsAndConditionsFragment" />
+            android:id="@+id/action_passingPossibilityFragment_to_fourthlineIntroFragment"
+            app:destination="@id/fourthlineIntroFragment" />
     </fragment>
 
     <fragment
@@ -200,6 +203,15 @@
         android:label="WebViewFragment"
         >
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/orcaFragment"
+        android:name="de.solarisbank.sdk.fourthline.feature.ui.orca.OrcaFragment"
+        android:label="OrcaFragment" >
+        <action
+            android:id="@+id/action_orcaFragment_to_kycUploadFragment"
+            app:destination="@id/kycUploadFragment" />
     </fragment>
 
 </navigation>

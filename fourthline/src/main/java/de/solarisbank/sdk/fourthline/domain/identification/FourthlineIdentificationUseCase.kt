@@ -38,7 +38,10 @@ class FourthlineIdentificationUseCase(
     }
 
     suspend fun getPersonData(identificationId: String): PersonDataDto {
-        return personDataSource.getPersonData(identificationId)
+        return personDataSource.getPersonData(
+            identificationId = identificationId,
+            getRawDocumentList = initialConfigStorage.get().isOrcaEnabled
+        )
     }
 
     private fun isIdentificationIdCreationRequired(identificationDto: IdentificationDto): Boolean {

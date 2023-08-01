@@ -55,6 +55,9 @@ class DocScanResultFragment : BaseFragment() {
     }
 
     private fun initView() {
+        // Important to put this up here so that below logic has a chance to enable the button again
+        continueButton!!.buttonDisabled(true)
+
         expireDateWatcher = expireDateTextInput?.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             updateContinueButtonState()
         })
@@ -62,12 +65,12 @@ class DocScanResultFragment : BaseFragment() {
             updateContinueButtonState()
         })
 
-
         kycSharedViewModel.getKycDocument().let { doc ->
             IdLogger.info("Kyc Doc info was extracted: DocNumber: ${!doc.number.isNullOrEmpty()} " +
                     "ExpirationDate: ${doc.expirationDate != null}")
             docNumberTextInput!!.setText(doc.number)
             doc.expirationDate?.let { expireDateTextInput!!.setDate(it) }
+            updateContinueButtonState()
         }
 
         continueButton!!.setOnClickListener {
@@ -83,7 +86,6 @@ class DocScanResultFragment : BaseFragment() {
                 showGenericAlertFragment {  }
             }
         }
-        continueButton!!.buttonDisabled(true)
     }
 
     override fun onDestroyView() {

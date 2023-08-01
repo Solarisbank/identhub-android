@@ -8,7 +8,7 @@ interface PersistentStorage {
     fun getBoolean(key: String, defaultValue: Boolean): Boolean
     fun putBoolean(key: String, value: Boolean)
 
-    fun putString(key: String, value: String)
+    fun putString(key: String, value: String?)
 
     fun getString(key: String): String?
 
@@ -41,7 +41,7 @@ class SharedPrefsStorage(
         prefs.edit { putBoolean(key, value) }
     }
 
-    override fun putString(key: String, value: String) {
+    override fun putString(key: String, value: String?) {
         prefs.edit { putString(key, value) }
     }
 
