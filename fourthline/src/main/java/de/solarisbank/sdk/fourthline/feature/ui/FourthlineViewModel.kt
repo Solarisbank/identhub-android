@@ -5,10 +5,10 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.solarisbank.identhub.fourthline.R
 import de.solarisbank.identhub.session.main.Navigator
 import de.solarisbank.identhub.session.module.ModuleOutcome
 import de.solarisbank.sdk.data.initial.InitialConfigStorage
-import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.FourthlineStorage
 import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.result.UploadResultOutcome

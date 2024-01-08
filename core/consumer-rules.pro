@@ -4,3 +4,7 @@
 -keepnames class * extends de.solarisbank.sdk.module.abstraction.IdenthubModule
 -keepattributes *Annotation*
 -keepattributes Signature
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+-dontobfuscate
+-keep,allowobfuscation,allowshrinking class io.reactivex.Single
+-keep,allowobfuscation,allowshrinking class io.reactivex.Observable

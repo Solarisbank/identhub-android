@@ -1,2 +1,3 @@
 -keepnames class de.solarisbank.identhub.bank.BankFlow
 -keep class de.solarisbank.identhub.bank.data.** { *; }
+-dontobfuscate

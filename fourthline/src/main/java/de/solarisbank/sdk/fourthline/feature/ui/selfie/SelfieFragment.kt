@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.selfie.*
+import de.solarisbank.identhub.fourthline.R
+import androidx.appcompat.R as AppCompat
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.data.dto.Customization
@@ -83,7 +85,7 @@ class SelfieFragment : SelfieScannerFragment(), IdenthubKoinComponent {
     override fun getOverlayView(): View? {
         return LayoutInflater
                 .from(requireContext())
-                .inflate(R.layout.identhub_fragment_selfie, requireActivity().findViewById(R.id.content))
+                .inflate(R.layout.identhub_fragment_selfie, requireActivity().findViewById(AppCompat.id.content))
                 .also {
                     punchhole = it.findViewById(R.id.punchhole)
                     selfieMask = it.findViewById(R.id.selfieMask)

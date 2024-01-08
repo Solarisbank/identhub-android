@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import de.solarisbank.identhub.fourthline.R
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineFlow
-import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.domain.dto.KycUploadStatusDto
 import de.solarisbank.sdk.fourthline.domain.dto.ZipCreationStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel

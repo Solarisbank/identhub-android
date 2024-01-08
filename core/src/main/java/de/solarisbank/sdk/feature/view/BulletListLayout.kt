@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
-import de.solarisbank.sdk.core.R
+import de.solarisbank.identhub.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.customizeLinks
 

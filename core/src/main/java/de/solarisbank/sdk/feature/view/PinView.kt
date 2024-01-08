@@ -14,7 +14,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
-import de.solarisbank.sdk.core.R
+import de.solarisbank.identhub.R
 import kotlin.math.max
 
 class PinView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null

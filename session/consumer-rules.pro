@@ -1,1 +1,3 @@
 -keep public class de.solarisbank.identhub.session.** { *; }
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+-dontobfuscate

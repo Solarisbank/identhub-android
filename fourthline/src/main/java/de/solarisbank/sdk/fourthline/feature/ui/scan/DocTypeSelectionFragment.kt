@@ -16,11 +16,12 @@ import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import de.solarisbank.identhub.fourthline.R
+import de.solarisbank.identhub.R as coreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.fourthline.FourthlineFlow
-import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.data.dto.AppliedDocument
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
@@ -161,8 +162,8 @@ class DocTypeSelectionFragment: BaseFragment() {
                 Timber.d("processState 4")
                 progressBar!!.visibility = View.INVISIBLE
                 showAlertFragment(
-                        title = getString(R.string.identhub_generic_error_title),
-                        message = getString(R.string.identhub_generic_error_message),
+                        title = getString(coreR.string.identhub_generic_error_title),
+                        message = getString(coreR.string.identhub_generic_error_message),
                         positiveLabel = getString(R.string.identhub_quit_location_button),
                         positiveAction = {
                             identificationFailed(

@@ -2,7 +2,7 @@ package de.solarisbank.sdk.fourthline.data.dto
 
 import android.content.Context
 import com.fourthline.core.DocumentType
-import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.identhub.fourthline.R
 import java.io.Serializable
 
 /**

@@ -9,7 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.identhub.fourthline.R
 
 class WebViewFragment : Fragment() {
 

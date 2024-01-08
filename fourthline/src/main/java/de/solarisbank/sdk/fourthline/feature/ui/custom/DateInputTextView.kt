@@ -6,7 +6,8 @@ import android.text.format.DateFormat
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import de.solarisbank.sdk.fourthline.R
+import de.solarisbank.identhub.fourthline.R
+import de.solarisbank.identhub.R as CoreR
 import timber.log.Timber
 import java.util.*
 
@@ -45,28 +46,6 @@ class DateInputTextView : AppCompatTextView {
         return calendar?.time
     }
 
-    fun countIssueDate(expireDate: Date, subtractYears: Int = -10) {
-        calendar = createCalendar().apply {
-            time = expireDate
-            resetToMidnight()
-            add(Calendar.YEAR, subtractYears)
-            add(Calendar.DAY_OF_MONTH, 1)
-        }
-    }
-
-    fun setSuggestedDateWithOffset(date: Date, offsetYears: Int) {
-        // If text is not blank, user already selected a date and updated the calendar
-        if (text.isNotBlank()) {
-            return
-        }
-
-        calendar = createCalendar().apply {
-            time = date
-            resetToMidnight()
-            add(Calendar.YEAR, offsetYears)
-        }
-    }
-
     private fun showDialog() {
         if (calendar == null) {
             calendar = createCalendar().apply { resetToMidnight() }
@@ -87,9 +66,9 @@ class DateInputTextView : AppCompatTextView {
             datePickerDialog.setCanceledOnTouchOutside(false)
             datePickerDialog.show()
             datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_text))
+                .setTextColor(ContextCompat.getColor(context, CoreR.color.identhub_color_text))
             datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(context, R.color.identhub_color_primary))
+                .setTextColor(ContextCompat.getColor(context, CoreR.color.identhub_color_primary))
         }
     }
 

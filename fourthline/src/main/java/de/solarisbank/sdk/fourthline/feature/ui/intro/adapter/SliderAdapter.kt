@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import de.solarisbank.identhub.fourthline.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.feature.customization.ImageViewTint
 import de.solarisbank.sdk.feature.customization.customize
-import de.solarisbank.sdk.fourthline.R
 
 class SlideAdapter(private val context: Context,
                    private val slides: List<Slide>,

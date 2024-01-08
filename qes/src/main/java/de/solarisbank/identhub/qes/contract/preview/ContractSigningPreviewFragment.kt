@@ -16,6 +16,7 @@ import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.qes.QESFlow
 import de.solarisbank.identhub.qes.R
+import de.solarisbank.identhub.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.domain.model.result.*
@@ -83,7 +84,7 @@ class ContractSigningPreviewFragment : BaseFragment() {
         if (isPreview) {
             titleView?.text = getString(R.string.identhub_qes_doc_title)
             subtitleView?.text = getString(R.string.identhub_qes_doc_description)
-            submitButton?.text = getString(R.string.identhub_next)
+            submitButton?.text = getString(CoreR.string.identhub_next)
         } else {
             titleView?.text = getString(R.string.identhub_contract_signing_finish_title)
             subtitleView?.text = getString(R.string.identhub_contract_signing_finish_subtitle)

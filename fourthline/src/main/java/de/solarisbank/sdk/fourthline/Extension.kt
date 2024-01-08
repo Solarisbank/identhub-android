@@ -11,6 +11,7 @@ import com.fourthline.vision.document.DocumentScannerStepWarning
 import com.fourthline.vision.selfie.SelfieScannerError
 import com.fourthline.vision.selfie.SelfieScannerStep
 import com.fourthline.vision.selfie.SelfieScannerWarning
+import de.solarisbank.identhub.fourthline.R
 import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat

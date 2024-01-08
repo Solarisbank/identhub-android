@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import de.solarisbank.sdk.core.BuildConfig
+import de.solarisbank.identhub.BuildConfig
 import de.solarisbank.sdk.data.network.interceptor.DynamicBaseUrlInterceptor
 import de.solarisbank.sdk.logger.LoggerHttpInterceptor
 import okhttp3.Interceptor
@@ -97,7 +97,7 @@ internal fun loadAppName(context: Context): String {
 
     try {
         appInfo = packageManager.getApplicationInfo(context.applicationInfo.packageName, 0)
-    } catch (e: PackageManager.NameNotFoundException) {
+    } catch (_: PackageManager.NameNotFoundException) {
 
     }
 

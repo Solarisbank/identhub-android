@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import de.solarisbank.identhub.fourthline.R
+import de.solarisbank.identhub.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineFlow
-import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.domain.dto.PersonDataStateDto
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.kyc.info.KycSharedViewModel
@@ -52,7 +53,7 @@ class PassingPossibilityFragment : BaseFragment() {
                 showAlertFragment(
                         title = getString(R.string.identhub_empty_id_doc_list_title),
                         message = getString(R.string.identhub_empty_id_doc_list_message),
-                        positiveLabel = getString(R.string.identhub_ok_button),
+                        positiveLabel = getString(CoreR.string.identhub_ok_button),
                         positiveAction = {
                             activityViewModel.onPassingPossibilityOutcome(
                                 PassingPossibilityOutcome.Failed(

@@ -3,7 +3,7 @@ package de.solarisbank.sdk.data.customization
 import android.content.Context
 import android.graphics.Color
 import androidx.annotation.ColorRes
-import de.solarisbank.sdk.core.R
+import de.solarisbank.identhub.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.dto.StyleDto
 import de.solarisbank.sdk.data.initial.InitialConfigStorage

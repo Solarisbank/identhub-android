@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import de.solarisbank.identhub.bank.BankFlow
 import de.solarisbank.identhub.bank.R
+import de.solarisbank.identhub.R as coreR
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.VerificationBankViewModel
 import de.solarisbank.identhub.session.main.BaseFragment
@@ -255,9 +256,9 @@ sealed class SealedVerificationState : VerificationState {
         override val isProgressBarShown = false
         override val ibanInputErrorLabelVisibility = View.INVISIBLE
         override val isSubmitButtonEnabled = false
-        override val dialogTitleId = R.string.identhub_generic_error_title
-        override val dialogMessageId = R.string.identhub_generic_error_message
-        override val dialogPositiveLabelId = R.string.identhub_ok_button
+        override val dialogTitleId = coreR.string.identhub_generic_error_title
+        override val dialogMessageId = coreR.string.identhub_generic_error_message
+        override val dialogPositiveLabelId = coreR.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 
@@ -270,7 +271,7 @@ sealed class SealedVerificationState : VerificationState {
         override val isSubmitButtonEnabled = false
         override val dialogTitleId = R.string.identhub_iban_verification_invalid_iban_title
         override val dialogMessageId = R.string.identhub_iban_verification_invalid_iban_message
-        override val dialogPositiveLabelId = R.string.identhub_ok_button
+        override val dialogPositiveLabelId = coreR.string.identhub_ok_button
         override val dialogNegativeLabelId = R.string.identhub_iban_verification_retry_button
     }
 
@@ -282,7 +283,7 @@ sealed class SealedVerificationState : VerificationState {
         override val isSubmitButtonEnabled = false
         override val dialogTitleId = R.string.identhub_iban_verification_already_identified_title
         override val dialogMessageId = R.string.identhub_iban_verification_already_identified_title
-        override val dialogPositiveLabelId = R.string.identhub_ok_button
+        override val dialogPositiveLabelId = coreR.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 
@@ -294,7 +295,7 @@ sealed class SealedVerificationState : VerificationState {
         override val isSubmitButtonEnabled = false
         override val dialogTitleId = R.string.identhub_iban_verification_excess_attempts_title
         override val dialogMessageId = R.string.identhub_iban_verification_excess_attempts_message
-        override val dialogPositiveLabelId = R.string.identhub_ok_button
+        override val dialogPositiveLabelId = coreR.string.identhub_ok_button
         override val dialogNegativeLabelId = null
     }
 }

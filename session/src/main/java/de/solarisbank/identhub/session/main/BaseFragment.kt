@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.sdk.core.R
+import de.solarisbank.identhub.R
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.customization.GeneralCustomizer
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
@@ -67,11 +67,11 @@ abstract class BaseFragment: Fragment(), IdenthubKoinComponent {
 
     fun showGenericErrorWithRetry(retryAction: (() -> Unit), quitAction: (() -> Unit)) {
         showAlertFragment(
-            title = getString(de.solarisbank.identhub.session.R.string.identhub_generic_error_title),
-            message = getString(de.solarisbank.identhub.session.R.string.identhub_generic_error_message),
-            negativeLabel = getString(de.solarisbank.identhub.session.R.string.identhub_generic_retry_button),
+            title = getString(R.string.identhub_generic_error_title),
+            message = getString(R.string.identhub_generic_error_message),
+            negativeLabel = getString(R.string.identhub_generic_retry_button),
             negativeAction = retryAction,
-            positiveLabel = getString(de.solarisbank.identhub.session.R.string.identhub_identity_dialog_quit_process_positive_button),
+            positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
             positiveAction = quitAction
         )
     }

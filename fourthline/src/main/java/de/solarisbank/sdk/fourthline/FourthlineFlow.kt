@@ -1,6 +1,7 @@
 package de.solarisbank.sdk.fourthline
 
 import androidx.annotation.Keep
+import de.solarisbank.identhub.fourthline.R
 import de.solarisbank.sdk.fourthline.di.FourthlineKoin
 import de.solarisbank.sdk.module.abstraction.IdenthubFlow
 

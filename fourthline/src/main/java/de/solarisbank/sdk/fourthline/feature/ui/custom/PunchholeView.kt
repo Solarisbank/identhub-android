@@ -21,8 +21,8 @@ class PunchholeView @JvmOverloads constructor(
         paint
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas?.drawRect(punchholeRect, transparentPaint)
+        canvas.drawRect(punchholeRect, transparentPaint)
     }
 }

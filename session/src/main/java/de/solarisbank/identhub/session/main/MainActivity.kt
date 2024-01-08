@@ -13,8 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.identhub.session.R
+import de.solarisbank.identhub.R as coreR
+import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.identhub.session.StartIdenthubContract
 import de.solarisbank.sdk.data.di.koin.IdentHubKoinContext
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
@@ -131,11 +132,11 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
     private fun showGenericError() {
         showAlertFragment(
-            title = getString(R.string.identhub_generic_error_title),
-            message = getString(R.string.identhub_generic_error_message),
-            negativeLabel = getString(R.string.identhub_generic_retry_button),
+            title = getString(coreR.string.identhub_generic_error_title),
+            message = getString(coreR.string.identhub_generic_error_message),
+            negativeLabel = getString(coreR.string.identhub_generic_retry_button),
             negativeAction = { viewModel.onAction(MainAction.RetryTapped) },
-            positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
+            positiveLabel = getString(coreR.string.identhub_identity_dialog_quit_process_positive_button),
             positiveAction = ::close
         )
     }
@@ -191,10 +192,10 @@ class MainActivity : AppCompatActivity(), IdenthubKoinComponent {
 
     private fun showQuitDialog() {
         showAlertFragment(
-            title = getString(R.string.identhub_identity_dialog_quit_process_title),
-            message = getString(R.string.identhub_identity_dialog_quit_process_message),
-            positiveLabel = getString(R.string.identhub_identity_dialog_quit_process_positive_button),
-            negativeLabel = getString(R.string.identhub_identity_dialog_quit_process_negative_button),
+            title = getString(coreR.string.identhub_identity_dialog_quit_process_title),
+            message = getString(coreR.string.identhub_identity_dialog_quit_process_message),
+            positiveLabel = getString(coreR.string.identhub_identity_dialog_quit_process_positive_button),
+            negativeLabel = getString(coreR.string.identhub_identity_dialog_quit_process_negative_button),
             positiveAction = ::close,
             tag = "BackButtonAlert")
     }

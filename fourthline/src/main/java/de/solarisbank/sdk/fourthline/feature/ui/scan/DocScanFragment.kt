@@ -22,6 +22,8 @@ import com.fourthline.core.DocumentFileSide
 import com.fourthline.core.DocumentType
 import com.fourthline.vision.RecordingType
 import com.fourthline.vision.document.*
+import de.solarisbank.identhub.fourthline.R
+import androidx.appcompat.R as AppCompat
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent
 import de.solarisbank.sdk.data.dto.Customization
@@ -117,7 +119,8 @@ class DocScanFragment : DocumentScannerFragment(), IdenthubKoinComponent {
         Timber.d("getOverlayView()")
         return LayoutInflater
                 .from(requireContext())
-                .inflate(R.layout.identhub_fragment_doc_scan, requireActivity().findViewById(R.id.content), false)
+                .inflate(R.layout.identhub_fragment_doc_scan, requireActivity().findViewById(
+                    AppCompat.id.content), false)
                 .also(::initView)
     }
 

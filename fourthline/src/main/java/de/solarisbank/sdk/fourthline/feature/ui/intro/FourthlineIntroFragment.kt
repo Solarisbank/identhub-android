@@ -13,6 +13,8 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import de.solarisbank.identhub.fourthline.R
+import de.solarisbank.identhub.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
@@ -20,7 +22,6 @@ import de.solarisbank.sdk.feature.customization.customizeLinks
 import de.solarisbank.sdk.feature.extension.buttonDisabled
 import de.solarisbank.sdk.feature.extension.linkOccurrenceOf
 import de.solarisbank.sdk.fourthline.FourthlineFlow
-import de.solarisbank.sdk.fourthline.R
 import de.solarisbank.sdk.fourthline.feature.ui.FourthlineViewModel
 import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.Slide
 import de.solarisbank.sdk.fourthline.feature.ui.intro.adapter.SlideAdapter
@@ -171,8 +172,8 @@ class FourthlineIntroFragment : BaseFragment() {
 
     private fun addSlideIndicators() {
         val slides = getSlides()
-        val dotSize = resources.getDimensionPixelSize(R.dimen.identhub_slide_indicator_dot_size)
-        val dotMargin = resources.getDimensionPixelSize(R.dimen.identhub_slide_indicator_dot_margin)
+        val dotSize = resources.getDimensionPixelSize(CoreR.dimen.identhub_slide_indicator_dot_size)
+        val dotMargin = resources.getDimensionPixelSize(CoreR.dimen.identhub_slide_indicator_dot_margin)
 
         for (i in slides.indices) {
             val dot = View(requireContext())

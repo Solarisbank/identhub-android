@@ -2,3 +2,4 @@
 -keepnames class de.solarisbank.identhub.startup.TermsFlow
 
 -keep class de.solarisbank.identhub.startup.model.** { *; }
+-dontobfuscate

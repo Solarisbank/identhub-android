@@ -9,3 +9,5 @@
 -keep class kotlin.coroutines.Continuation {
   public protected *;
 }
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+-dontobfuscate

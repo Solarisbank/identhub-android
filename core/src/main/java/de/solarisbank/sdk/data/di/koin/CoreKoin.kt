@@ -1,7 +1,7 @@
 package de.solarisbank.sdk.data.di.koin
 
 import android.content.Context
-import de.solarisbank.sdk.core.BuildConfig
+import de.solarisbank.identhub.BuildConfig
 import de.solarisbank.sdk.data.StartIdenthubConfig
 import de.solarisbank.sdk.logger.IdLogger
 import org.koin.android.ext.koin.androidContext

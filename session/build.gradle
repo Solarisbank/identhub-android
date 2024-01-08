@@ -6,8 +6,8 @@ plugins {
 }
 
 android {
+    namespace 'de.solarisbank.identhub.session'
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
     resourcePrefix libConfig.resourcePrefix
 
     defaultConfig {
@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     testOptions {
         unitTests.all {
@@ -49,13 +49,11 @@ android {
 }
 
 dependencies {
+    implementation project(":core")
     implementation timber
     implementation lifecycle.libs
     implementation networking.libs
     implementation rxJava
-    
-    api project(":core")
-
     implementation kotlinCore
     implementation support
     implementation activity

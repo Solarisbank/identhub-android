@@ -3,6 +3,7 @@ package de.solarisbank.identhub.bank.feature.processing
 import android.os.Bundle
 import android.view.View
 import de.solarisbank.identhub.bank.R
+import de.solarisbank.identhub.R as coreR
 import de.solarisbank.identhub.bank.data.ErrorState
 import de.solarisbank.identhub.bank.feature.progress.ProgressIndicatorFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,7 +79,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
             : ProcessingVerificationResult(), ErrorState {// 8. payment init auth person
             override val dialogTitleId = R.string.identhub_payment_init_auth_person_title
             override val dialogMessageId = R.string.identhub_payment_init_auth_person_message
-            override val dialogPositiveLabelId = R.string.identhub_ok_button
+            override val dialogPositiveLabelId = coreR.string.identhub_ok_button
             override val dialogNegativeLabelId: Nothing? = null
         }
 
@@ -86,7 +87,7 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
             : ProcessingVerificationResult(), ErrorState {//  9. payment init failed
             override val dialogTitleId = R.string.identhub_payment_init_failed_title
             override val dialogMessageId = R.string.identhub_payment_init_failed_message
-            override val dialogPositiveLabelId = R.string.identhub_ok_button
+            override val dialogPositiveLabelId = coreR.string.identhub_ok_button
             override val dialogNegativeLabelId: Nothing? = null
         }
 
@@ -94,14 +95,14 @@ class ProcessingVerificationFragment : ProgressIndicatorFragment() {
             : ProcessingVerificationResult(), ErrorState {// 10. payment init expired
             override val dialogTitleId = R.string.identhub_payment_init_expired_title
             override val dialogMessageId = R.string.identhub_payment_init_expired_message
-            override val dialogPositiveLabelId = R.string.identhub_ok_button
+            override val dialogPositiveLabelId = coreR.string.identhub_ok_button
             override val dialogNegativeLabelId = R.string.identhub_iban_verification_invalid_iban_retry_button
         }
 
         object GenericError : ProcessingVerificationResult(), ErrorState {
-            override val dialogTitleId = R.string.identhub_generic_error_title
-            override val dialogMessageId = R.string.identhub_generic_error_message
-            override val dialogPositiveLabelId = R.string.identhub_ok_button
+            override val dialogTitleId = coreR.string.identhub_generic_error_title
+            override val dialogMessageId = coreR.string.identhub_generic_error_message
+            override val dialogPositiveLabelId = coreR.string.identhub_ok_button
             override val dialogNegativeLabelId: Nothing? = null
         }
     }

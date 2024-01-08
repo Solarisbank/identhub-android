@@ -5,25 +5,18 @@ plugins {
     id 'kotlin-kapt'
 }
 
+android.buildFeatures.buildConfig true
+
 android {
+    namespace 'de.solarisbank.identhub.bank'
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
     resourcePrefix libConfig.resourcePrefix
 
     sourceSets {
         test.java.srcDirs += ["${project(':core').projectDir}/src/test/java"]
     }
     defaultConfig {
-
-        gradle.startParameter.taskNames.each {
-            if (it.contains("AndroidTest")) {
-                //io.mockk has a bug that does not allow use a version of minSdk less than 26
-                minSdkVersion 26
-            } else {
-                minSdkVersion buildConfig.minSdk
-            }
-        }
-
+        minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -52,12 +45,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     testOptions {
         unitTests.all {
