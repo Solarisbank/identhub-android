@@ -52,6 +52,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+
     testOptions {
         unitTests.all {
             useJUnitPlatform()
@@ -59,6 +60,12 @@ android {
             testLogging {
                 events "PASSED", "FAILED", "SKIPPED", "STANDARD_OUT", "STANDARD_ERROR"
             }
+        }
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
         }
     }
 }
