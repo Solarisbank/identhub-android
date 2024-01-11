@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'de.solarisbank.identhub.mockro'
-    compileSdk 33
+    compileSdk buildConfig.compileSdk
 
     defaultConfig {
-        minSdk 26
-        targetSdk 33
+        minSdk buildConfig.minSdk
+        targetSdk buildConfig.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -21,12 +21,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility buildConfig.javaVersion
+        targetCompatibility buildConfig.javaVersion
     }
+
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = buildConfig.jvmTarget
     }
 }
 

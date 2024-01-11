@@ -1,8 +1,11 @@
 ext {
     buildConfig = [
             compileSdk: 34,
-            minSdk: 26,
+            minSdk: 23,
+            androidTestMinSdk: 26,
             targetSdk: 33,
+            jvmTarget: '17',
+            javaVersion: JavaVersion.VERSION_17
     ]
     libConfig = [
             resourcePrefix: 'identhub_'

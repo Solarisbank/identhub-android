@@ -16,8 +16,15 @@ android {
         test.java.srcDirs += ["${project(':core').projectDir}/src/test/java"]
     }
     defaultConfig {
-        minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
+        gradle.startParameter.taskNames.each {
+            if (it.contains("AndroidTest")) {
+                //io.mockk has a bug that does not allow use a version of minSdk less than 26
+                minSdkVersion buildConfig.androidTestMinSdk
+            } else {
+                minSdkVersion buildConfig.minSdk
+            }
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -45,12 +52,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility buildConfig.javaVersion
+        targetCompatibility buildConfig.javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = buildConfig.jvmTarget
     }
 
     testOptions {

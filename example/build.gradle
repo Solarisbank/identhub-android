@@ -54,12 +54,23 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility buildConfig.javaVersion
+        targetCompatibility buildConfig.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = buildConfig.jvmTarget
     }
 }
 
 dependencies {
+    implementation project(path: ':bank')
+    implementation project(path: ':fourthline')
+    implementation project(path: ':qes')
+    implementation project(path: ':startup')
+    implementation project(path: ':session')
+    implementation project(path: ':mockro')
+
     implementation timber
     implementation kotlinCore
     implementation support
@@ -67,10 +78,5 @@ dependencies {
     implementation fragment
     implementation lifecycle.libs
     implementation koin
-    implementation project(path: ':bank')
-    implementation project(path: ':fourthline')
-    implementation project(path: ':qes')
-    implementation project(path: ':startup')
-    implementation project(path: ':session')
-    implementation project(path: ':mockro')
+
 }
