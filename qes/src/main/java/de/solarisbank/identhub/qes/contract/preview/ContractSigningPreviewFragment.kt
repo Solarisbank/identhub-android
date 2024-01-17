@@ -16,7 +16,7 @@ import de.solarisbank.identhub.qes.contract.ContractViewModel
 import de.solarisbank.identhub.contract.adapter.DocumentAdapter
 import de.solarisbank.identhub.qes.QESFlow
 import de.solarisbank.identhub.qes.R
-import de.solarisbank.identhub.R as CoreR
+import de.solarisbank.sdk.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.data.dto.DocumentDto
 import de.solarisbank.sdk.domain.model.result.*

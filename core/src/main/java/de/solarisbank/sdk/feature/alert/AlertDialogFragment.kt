@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import de.solarisbank.identhub.R
+import de.solarisbank.sdk.R
 import de.solarisbank.sdk.domain.model.result.Event
 
 class AlertDialogFragment : BottomSheetDialogFragment() {

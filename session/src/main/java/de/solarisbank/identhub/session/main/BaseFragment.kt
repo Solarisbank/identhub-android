@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import de.solarisbank.identhub.R
+import de.solarisbank.sdk.R
 import de.solarisbank.sdk.data.customization.CustomizationRepository
 import de.solarisbank.sdk.data.customization.GeneralCustomizer
 import de.solarisbank.sdk.data.di.koin.IdenthubKoinComponent

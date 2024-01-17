@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import de.solarisbank.identhub.fourthline.R
-import de.solarisbank.identhub.R as CoreR
+import de.solarisbank.sdk.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.feature.customization.customize
 import de.solarisbank.sdk.fourthline.FourthlineFlow

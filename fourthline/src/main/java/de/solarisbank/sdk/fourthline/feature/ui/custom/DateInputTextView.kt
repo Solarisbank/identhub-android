@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import de.solarisbank.identhub.fourthline.R
-import de.solarisbank.identhub.R as CoreR
+import de.solarisbank.sdk.R as CoreR
 import timber.log.Timber
 import java.util.*
 

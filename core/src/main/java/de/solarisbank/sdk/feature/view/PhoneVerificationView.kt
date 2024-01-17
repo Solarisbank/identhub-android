@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.core.view.isVisible
-import de.solarisbank.identhub.R
+import de.solarisbank.sdk.R
 import de.solarisbank.sdk.data.dto.Customization
 import de.solarisbank.sdk.data.entity.formatMinutesAndSeconds
 import de.solarisbank.sdk.domain.model.result.Result

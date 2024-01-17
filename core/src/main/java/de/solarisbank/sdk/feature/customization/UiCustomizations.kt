@@ -5,7 +5,7 @@ import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.widget.*
-import de.solarisbank.identhub.R
+import de.solarisbank.sdk.R
 import de.solarisbank.sdk.data.dto.Customization
 
 sealed class ButtonStyle {

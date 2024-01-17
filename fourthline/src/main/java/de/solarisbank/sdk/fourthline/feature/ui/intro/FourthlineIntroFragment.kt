@@ -14,7 +14,7 @@ import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import de.solarisbank.identhub.fourthline.R
-import de.solarisbank.identhub.R as CoreR
+import de.solarisbank.sdk.R as CoreR
 import de.solarisbank.identhub.session.main.BaseFragment
 import de.solarisbank.sdk.domain.model.ResultState
 import de.solarisbank.sdk.feature.customization.customize
